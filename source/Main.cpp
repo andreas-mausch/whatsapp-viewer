@@ -4,6 +4,7 @@
 
 #include "Log.h"
 #include "Main.h"
+#include "SQLite/sqlite3.h"
 
 #include "AES/AES.h"
 
@@ -47,9 +48,72 @@ int CALLBACK WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR comma
 	// outputHexBuffer(databaseCrypted, filesize);
 
 	decrypt_aes_cbc_192(database, database, filesize, key, initVector);
-	log.logHexBuffer(database, filesize);
+	// log.logHexBuffer(database, filesize);
 
 	delete[] database;
+
+	sqlite3* sqLiteDatabase;
+	if(sqlite3_open("../data/msgstore.db", &sqLiteDatabase) != SQLITE_OK)
+	{
+		throw 2;
+	}
+
+	sqlite3_stmt    *res;
+	const char      *tail;
+	int             rec_count = 0;
+	int error = sqlite3_prepare_v2(sqLiteDatabase,
+        "SELECT * FROM chat_list",
+        1000, &res, &tail);
+
+	if (error != SQLITE_OK)
+		{
+		puts("We did not get any data!");
+		return 0;
+		}
+
+	puts("==========================");
+
+	while (sqlite3_step(res) == SQLITE_ROW)
+	{
+		const unsigned char *key = sqlite3_column_text(res, 1);
+		const unsigned char *subject = sqlite3_column_text(res, 3);
+		if (key != NULL)
+		{
+			log << "Key: " << key << "; ";
+		}
+		if (subject != NULL)
+		{
+			log << "Subject: " << subject;
+		}
+		log << std::endl;
+
+		rec_count++;
+	}
+
+	log << "We received records: " << rec_count << std::endl << std::endl;
+
+	error = sqlite3_prepare_v2(sqLiteDatabase,
+        "SELECT * FROM messages where key_remote_jid = '12468280372@s.whatsapp.net' order by timestamp asc",
+        1000, &res, &tail);
+
+	if (error != SQLITE_OK)
+		{
+		puts("We did not get any data!");
+		return 0;
+		}
+
+	puts("==========================");
+
+	while (sqlite3_step(res) == SQLITE_ROW)
+	{
+		const unsigned char *data = sqlite3_column_text(res, 6);
+		if (data != NULL)
+		{
+			log << "Data: " << data << std::endl;
+		}
+	}
+
+	sqlite3_close(sqLiteDatabase);
 
 	return 0;
 }

@@ -193,6 +193,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="SQLite"
+				>
+				<File
+					RelativePath="..\source\SQLite\shell.c"
+					>
+				</File>
+				<File
+					RelativePath="..\source\SQLite\sqlite3.c"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Headerdateien"
@@ -216,6 +228,18 @@
 				</File>
 				<File
 					RelativePath="..\source\AES\PolarSSL.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="SQLite"
+				>
+				<File
+					RelativePath="..\source\SQLite\sqlite3.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\SQLite\sqlite3ext.h"
 					>
 				</File>
 			</Filter>
