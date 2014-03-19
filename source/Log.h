@@ -31,6 +31,9 @@ public:
 		return *this;
 	}
 
+	void logHexBuffer(const char *buffer, int length);
+	void logHexBuffer(const unsigned char *buffer, int length);
+
 	Log& operator<< (std::ios_base& (*value)(std::ios_base&));
 	Log& operator<< (std::ios& (*value)(std::ios&));
 	Log& operator<< (std::ostream& (*value)(std::ostream&));

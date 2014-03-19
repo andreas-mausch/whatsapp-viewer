@@ -1,4 +1,5 @@
 #include "Log.h"
+#include "AES/AES.h"
 
 Log::Log()
 {
@@ -30,4 +31,34 @@ Log& Log::operator<< (std::streambuf* value)
 {
 	output << value;
 	return *this;
+}
+
+void Log::logHexBuffer(const char *buffer, int length)
+{
+	int blocks = (length + aesBlocksize - 1) / aesBlocksize;
+
+	for (size_t block = 0; block < blocks; block++)
+	{
+		for (int byte = 0; byte < aesBlocksize; byte++)
+		{
+			*this << std::hex << std::uppercase << std::setfill('0') << std::setw(2) << ((int)buffer[block * aesBlocksize + byte] & 0xFF) << " ";
+		}
+
+		*this << std::endl;
+	}
+}
+
+void Log::logHexBuffer(const unsigned char *buffer, int length)
+{
+	int blocks = (length + aesBlocksize - 1) / aesBlocksize;
+
+	for (size_t block = 0; block < blocks; block++)
+	{
+		for (int byte = 0; byte < aesBlocksize; byte++)
+		{
+			*this << std::hex << std::uppercase << std::setfill('0') << std::setw(2) << ((int)buffer[block * aesBlocksize + byte] & 0xFF) << " ";
+		}
+
+		*this << std::endl;
+	}
 }
