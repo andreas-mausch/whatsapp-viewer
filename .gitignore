@@ -2,3 +2,7 @@ WhatsApp Reader.ncb
 WhatsApp Reader.suo
 
 WhatsApp Reader/WhatsApp Reader.vcproj.Hauptrechner.neonew.user
+WhatsApp Reader/Debug
+WhatsApp Reader/Release
+
+target/
