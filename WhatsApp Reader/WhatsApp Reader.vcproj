@@ -174,9 +174,25 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\source\Log.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\source\Main.cpp"
 				>
 			</File>
+			<Filter
+				Name="AES"
+				>
+				<File
+					RelativePath="..\source\AES\AES.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\AES\PolarSSL.c"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Headerdateien"
@@ -184,9 +200,25 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\source\Log.h"
+				>
+			</File>
+			<File
 				RelativePath="..\source\Main.h"
 				>
 			</File>
+			<Filter
+				Name="AES"
+				>
+				<File
+					RelativePath="..\source\AES\AES.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\AES\PolarSSL.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Ressourcendateien"
