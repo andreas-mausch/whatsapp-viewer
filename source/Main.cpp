@@ -41,16 +41,11 @@ void outputHexBuffer(const unsigned char *buffer, int length)
 	}
 }
 
-void encrypt(unsigned char *buffer, int length, const char *password)
+void encrypt_aes_cbc_192(unsigned char *buffer, int length, const unsigned char *key, unsigned char *iv)
 {
 	aes_context ctx;
-	unsigned char key[32];
-	unsigned char iv[16];
-	memset( key, 0, 32 );
-	memset( iv , 0, 16 );
-	memcpy(key, password, strlen(password));
 
-	log << "Key: " << password << std::endl;
+	log << "Key: " << std::endl;
 	outputHexBuffer(key, 32);
 	log << std::endl;
 
@@ -59,93 +54,68 @@ void encrypt(unsigned char *buffer, int length, const char *password)
 	outputHexBuffer(iv, 16);
 	log << std::endl;
 
-	aes_setkey_enc( &ctx, key, 256);
+	aes_setkey_enc( &ctx, key, 192);
 	if (aes_crypt_cbc( &ctx, AES_ENCRYPT, length, iv, buffer, buffer ) != 0)
 	{
 		log << "error encrypting" << std::endl;
 	}
 }
 
-void decrypt(char *buffer, int length, const char *password)
+void decrypt_aes_cbc_192(unsigned char *buffer, int length, const unsigned char *key, unsigned char *iv)
 {
+	aes_context ctx;
+
+	log << "Key: " << std::endl;
+	outputHexBuffer(key, 32);
+	log << std::endl;
+
+	log << "Length: " << length << std::endl;
+	log << "Init Vector: " << std::endl;
+	outputHexBuffer(iv, 16);
+	log << std::endl;
+
+	aes_setkey_dec( &ctx, key, 192);
+	if (aes_crypt_cbc( &ctx, AES_DECRYPT, length, iv, buffer, buffer ) != 0)
+	{
+		log << "error encrypting" << std::endl;
+	}
 }
 
 int CALLBACK WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR commandLine, int commandShow)
 {
 	log << "WhatsApp Reader" << std::endl;
 
-	const char *plaintext = "Hello World!123";
-	char *password = "MyPasswordMyPasswordMyPassword12";
+	unsigned char key[] = { 141, 75, 21, 92, 201, 255, 129, 229, 203, 246, 250, 120, 25, 54, 106, 62, 198, 33, 166, 86, 65, 108, 215, 147 };
+	unsigned char iv[] = { 0x1E,0x39,0xF3,0x69,0xE9,0xD,0xB3,0x3A,0xA7,0x3B,0x44,0x2B,0xBB,0xB6,0xB0,0xB9 };
 
-	int length = strlen(plaintext) + 1;
+	const char *accountName = "neonew.mobile@googlemail.com";
+	unsigned char accountNameMd5[] = { 0x47, 0xac, 0xfb, 0x8f, 0xa4, 0x42, 0x68, 0x87, 0x75, 0x6c, 0x74, 0xd2, 0xee, 0x90, 0x17, 0x78 };
 
-	log << "Plaintext: " << std::endl;
-	outputHexBuffer(plaintext, length);
-	log << std::endl;
+	for (int i = 0; i < 24; i++)
+	{
+		key[i] ^= accountNameMd5[i & 0xF];
+	}
 
-	unsigned char *buffer = new unsigned char[length];
-	memcpy(buffer, plaintext, length);
+	std::ifstream file("../data/msgstore.db.crypt5", std::ios::binary);
+	file.seekg(0, std::ios::end);
+	int filesize = file.tellg();
+	file.seekg(0, std::ios::beg);
 
-	encrypt(buffer, length, password);
+	char *databaseCryptedSigned = new char[filesize];
+	file.read(databaseCryptedSigned, filesize);
+	file.close();
 
-	outputHexBuffer(buffer, 16);
-	log << std::endl;
+	unsigned char *database = new unsigned char[filesize];
+	memcpy(database, databaseCryptedSigned, filesize);
+	delete[] databaseCryptedSigned;
 
-	//aes_context ctx;
-	//unsigned char key[32];
-	//unsigned char iv[16];
-	//unsigned char prv[16];
-	//unsigned char buf[64];
-	//memset( key, 0, 32 );
-	//int u, v;
+	log << "Database: " << filesize << std::endl;
+	// outputHexBuffer(databaseCrypted, filesize);
 
-	//for(int i = 0; i < 6; i++ )
- //   {
- //       u = i >> 1;
- //       v = i  & 1;
+	decrypt_aes_cbc_192(database, filesize, key, iv);
+	outputHexBuffer(database, filesize);
 
-	//	log << "  AES-CBC-" << 128 + u * 64 << " (" << (( v == AES_DECRYPT ) ? "dec" : "enc") << "): ";
-
- //       memset( iv , 0, 16 );
- //       memset( prv, 0, 16 );
- //       memset( buf, 0, 16 );
-
- //       if( v == AES_DECRYPT )
- //       {
- //           aes_setkey_dec( &ctx, key, 128 + u * 64 );
-
- //           for(int j = 0; j < 10000; j++ )
- //               aes_crypt_cbc( &ctx, v, 16, iv, buf, buf );
-
- //       }
- //       else
- //       {
- //           aes_setkey_enc( &ctx, key, 128 + u * 64 );
-
- //           for(int j = 0; j < 10000; j++ )
- //           {
- //               unsigned char tmp[16];
-
- //               aes_crypt_cbc( &ctx, v, 16, iv, buf, buf );
-
- //               memcpy( tmp, prv, 16 );
- //               memcpy( prv, buf, 16 );
- //               memcpy( buf, tmp, 16 );
- //           }
-
- //       }
- //   }
-
-	/*AES aes;
-	int blocks = aes.encrypt(&buffer, length, password);
-
-	log << "Encrypted block count: " << blocks << std::endl;
-	outputHexBuffer(buffer, blocks * blocksize);
-	log << std::endl;
-
-	int decryptedLength = aes.decrypt(&buffer, length, password);
-	log << "Decrypted length: " << decryptedLength << std::endl;
-	outputHexBuffer(buffer, decryptedLength);*/
+	delete[] database;
 
 	return 0;
 }
