@@ -76,10 +76,7 @@ void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<Whatsa
 		std::string data = readString(res, 6);
 		long long timestamp = sqlite3_column_int64(res, 7);
 
-		if (data.length() > 0)
-		{
-			WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, "", "", 0);
-			messages.push_back(message);
-		}
+		WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, "", "", 0);
+		messages.push_back(message);
 	}
 }

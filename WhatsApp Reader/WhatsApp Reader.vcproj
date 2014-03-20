@@ -201,6 +201,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\source\WhatsApp\Crypt5.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\source\WhatsApp\Database.cpp"
 					>
 				</File>
@@ -248,10 +252,22 @@
 				</File>
 			</Filter>
 			<Filter
+				Name="MD5"
+				>
+				<File
+					RelativePath="..\source\MD5\MD5.h"
+					>
+				</File>
+			</Filter>
+			<Filter
 				Name="WhatsApp"
 				>
 				<File
 					RelativePath="..\source\WhatsApp\Chat.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\WhatsApp\Crypt5.h"
 					>
 				</File>
 				<File
