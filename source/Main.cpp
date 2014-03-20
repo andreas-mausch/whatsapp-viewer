@@ -5,6 +5,7 @@
 #include "WhatsApp/Crypt5.h"
 #include "WhatsApp/Message.h"
 #include "WhatsApp/Database.h"
+#include "Platforms/Win32/GUI/MainWindow.h"
 
 Log log;
 
@@ -38,6 +39,14 @@ void entryPoint()
 		for(std::vector<WhatsappMessage*>::iterator it = messages.begin(); it != messages.end(); ++it)
 		{
 			log << "Message: " << (*it)->getData() << std::endl;
+		}
+
+		MainWindow mainWindow;
+
+		while (true)
+		{
+			mainWindow.handleMessages();
+			Sleep(5);
 		}
 	}
 	catch (Exception &exception)

@@ -60,6 +60,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="comctl32.lib"
 				OutputFile="$(SolutionDir)target\$(ProjectName).exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
@@ -134,6 +135,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="comctl32.lib"
 				OutputFile="$(SolutionDir)\target\$(ProjectName).exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
@@ -246,6 +248,10 @@
 					<Filter
 						Name="GUI"
 						>
+						<File
+							RelativePath="..\source\Platforms\Win32\GUI\MainWindow.cpp"
+							>
+						</File>
 					</Filter>
 				</Filter>
 			</Filter>
@@ -336,6 +342,10 @@
 					<Filter
 						Name="GUI"
 						>
+						<File
+							RelativePath="..\source\Platforms\Win32\GUI\MainWindow.h"
+							>
+						</File>
 					</Filter>
 				</Filter>
 			</Filter>

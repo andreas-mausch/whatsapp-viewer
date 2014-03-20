@@ -8,6 +8,7 @@
 #define IDR_MENU_MAIN                   105
 #define IDC_MAIN_CHATS                  1001
 #define IDC_MAIN_MESSAGES               1002
+#define IDC_MAIN_STATUS                 1003
 #define ID_FILE_OPEN40001               40001
 #define ID_MENU_MAIN_FILE_OPEN          40002
 
