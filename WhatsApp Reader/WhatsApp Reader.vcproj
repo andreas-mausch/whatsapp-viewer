@@ -239,6 +239,10 @@
 				RelativePath="..\source\Main.h"
 				>
 			</File>
+			<File
+				RelativePath="..\resources\resource.h"
+				>
+			</File>
 			<Filter
 				Name="AES"
 				>
@@ -297,6 +301,14 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath="..\resources\Icon.ico"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\Resources.rc"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
