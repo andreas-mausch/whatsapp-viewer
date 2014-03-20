@@ -5,6 +5,7 @@
 #include "../../../../resources/resource.h"
 #include "../../../Exceptions/Exception.h"
 #include "../../../WhatsApp/Chat.h"
+#include "../../../WhatsApp/Message.h"
 
 #pragma comment(linker, \
   "\"/manifestdependency:type='Win32' "\
@@ -23,6 +24,18 @@ std::wstring strtowstr(const std::string &text)
     wText = szWText;
     delete[] szWText;
     return wText;
+}
+
+WCHAR *buildWcharString(const std::wstring &text)
+{
+	WCHAR *wcharString = new WCHAR[text.length() + 1];
+	wcscpy_s(wcharString, text.length() + 1, text.c_str());
+	return wcharString;
+}
+
+WCHAR *buildWcharString(const std::string &text)
+{
+	return buildWcharString(strtowstr(text));
 }
 
 MainWindow::MainWindow(std::vector<WhatsappChat *> &chats) : chats(chats)
@@ -77,6 +90,8 @@ bool MainWindow::handleMessages()
 
 void MainWindow::createChildWindows()
 {
+	setIcon();
+
 	// create the status bar at the bottom of the window
 	CreateWindowEx(0, STATUSCLASSNAME, L"file manager", WS_CHILD, 0, 0, 0, 0, dialog, reinterpret_cast<HMENU>(IDC_MAIN_STATUS), GetModuleHandle(NULL), 0);
 
@@ -96,10 +111,17 @@ void MainWindow::createChildWindows()
 		ListView_InsertColumn(GetDlgItem(dialog, IDC_MAIN_CHATS), i, &column);
 	}
 
+	ListView_SetExtendedListViewStyleEx(GetDlgItem(dialog, IDC_MAIN_CHATS), 0, LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
+
 	// set the image list for the list view, tree view and combo box
 	// ListView_SetImageList(GetDlgItem(dialog, IDC_MAIN_CHATS), windowFilemanager->m_imageList, LVSIL_SMALL);
+}
 
-	addChats();
+void MainWindow::setIcon()
+{
+	HICON icon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON));
+	SendMessage(dialog, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(icon));
+	SendMessage(dialog, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(icon));
 }
 
 void MainWindow::addChats()
@@ -112,17 +134,39 @@ void MainWindow::addChats()
 
 void MainWindow::addChat(WhatsappChat &chat)
 {
-	WCHAR text[256];
-	wcscpy_s(text, strtowstr(chat.getKey()).c_str());
+	WCHAR *text = buildWcharString(chat.getKey());
 
 	LVITEM item;
 	ZeroMemory(&item, sizeof(LVITEM));
 
 	item.iItem = ListView_GetItemCount(GetDlgItem(dialog, IDC_MAIN_CHATS));
-	item.mask = LVIF_TEXT;
+	item.mask = LVIF_TEXT | LVIF_PARAM;
 	item.pszText = text;
+	item.lParam = reinterpret_cast<LPARAM>(&chat);
 	// item.iImage = GetFileIconIndex(fileEntry);
 	ListView_InsertItem(GetDlgItem(dialog, IDC_MAIN_CHATS), &item);
+
+	delete[] text;
+}
+
+void MainWindow::selectChat(WhatsappChat &chat)
+{
+	SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, LB_RESETCONTENT, 0, 0);
+
+	std::vector<WhatsappMessage *> &messages = chat.getMessages();
+	for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
+	{
+		addMessage(**it);
+	}
+}
+
+void MainWindow::addMessage(WhatsappMessage &message)
+{
+	WCHAR *text = buildWcharString(message.getData());
+
+	SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, LB_INSERTSTRING, -1, reinterpret_cast<LPARAM>(text));
+
+	delete[] text;
 }
 
 void MainWindow::resizeChildWindows(int width, int height)
@@ -131,7 +175,7 @@ void MainWindow::resizeChildWindows(int width, int height)
 
 INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	MainWindow *mainWindow = reinterpret_cast<MainWindow *>(GetWindowLongPtr(dialog, 0));
+	MainWindow *mainWindow = reinterpret_cast<MainWindow *>(GetWindowLongPtr(dialog, GWLP_USERDATA));
 
 	switch (message)
 	{
@@ -145,7 +189,7 @@ INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPA
 			}
 
 			// save the pointer to the class
-			SetWindowLongPtr(dialog, 0, reinterpret_cast<LONG_PTR>(mainWindow));
+			SetWindowLongPtr(dialog, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(mainWindow));
 
 			// save the dialog handle of the dialog box
 			mainWindow->dialog = dialog;
@@ -178,21 +222,26 @@ INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPA
 
 			switch (hdr->code)
 			{
-				case TVN_SELCHANGED:
+				case LVN_ITEMCHANGED:
 				{
 					switch (hdr->idFrom)
 					{
 						case IDC_MAIN_CHATS:
 						{
-						} break;
-					}
-				} break;
-				case NM_DBLCLK:
-				{
-					switch (hdr->idFrom)
-					{
-						case IDC_MAIN_CHATS:
-						{
+							NMLISTVIEW *nmListView = reinterpret_cast<NMLISTVIEW *>(lParam);
+
+							if (nmListView->uChanged & LVIF_STATE &&
+								nmListView->uNewState & LVIS_SELECTED)
+							{
+								LVITEM item;
+								ZeroMemory(&item, sizeof(LVITEM));
+								item.mask = LVIF_PARAM;
+								item.iItem = nmListView->iItem;
+								ListView_GetItem(GetDlgItem(dialog, IDC_MAIN_CHATS), &item);
+
+								WhatsappChat &chat = *reinterpret_cast<WhatsappChat *>(item.lParam);
+								mainWindow->selectChat(chat);
+							}
 						} break;
 					}
 				} break;
