@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <commctrl.h>
 
+#include "ChatControl.h"
 #include "MainWindow.h"
 #include "../../../../resources/resource.h"
 #include "../../../Exceptions/Exception.h"
@@ -23,7 +24,9 @@ MainWindow::MainWindow(std::vector<WhatsappChat *> &chats) : chats(chats)
 	INITCOMMONCONTROLSEX icex;
     icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
 	icex.dwICC  = ICC_LISTVIEW_CLASSES | ICC_BAR_CLASSES | ICC_PROGRESS_CLASS;
-    InitCommonControlsEx(&icex); 
+    InitCommonControlsEx(&icex);
+
+	registerChatControl();
 
 	CreateDialogParam(GetModuleHandle(NULL),
 		MAKEINTRESOURCE(IDD_MAIN),

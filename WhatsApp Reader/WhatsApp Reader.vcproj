@@ -245,9 +245,17 @@
 						RelativePath="..\source\Platforms\Win32\EntryPoint.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\source\Platforms\Win32\StringHelper.cpp"
+						>
+					</File>
 					<Filter
 						Name="GUI"
 						>
+						<File
+							RelativePath="..\source\Platforms\Win32\GUI\ChatControl.cpp"
+							>
+						</File>
 						<File
 							RelativePath="..\source\Platforms\Win32\GUI\MainWindow.cpp"
 							>
@@ -339,9 +347,17 @@
 				<Filter
 					Name="Win32"
 					>
+					<File
+						RelativePath="..\source\Platforms\Win32\StringHelper.h"
+						>
+					</File>
 					<Filter
 						Name="GUI"
 						>
+						<File
+							RelativePath="..\source\Platforms\Win32\GUI\ChatControl.h"
+							>
+						</File>
 						<File
 							RelativePath="..\source\Platforms\Win32\GUI\MainWindow.h"
 							>
