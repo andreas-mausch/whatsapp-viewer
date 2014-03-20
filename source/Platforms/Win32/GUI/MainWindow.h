@@ -17,7 +17,6 @@ private:
 	void resizeChildWindows(int width, int height);
 	void addChats();
 	void addChat(WhatsappChat &chat);
-	void addMessage(WhatsappMessage &message);
 	void selectChat(int index);
 	void selectChat(WhatsappChat &chat);
 

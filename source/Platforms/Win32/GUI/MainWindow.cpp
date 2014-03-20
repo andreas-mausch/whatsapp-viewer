@@ -132,22 +132,7 @@ void MainWindow::addChat(WhatsappChat &chat)
 
 void MainWindow::selectChat(WhatsappChat &chat)
 {
-	SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, LB_RESETCONTENT, 0, 0);
-
-	std::vector<WhatsappMessage *> &messages = chat.getMessages();
-	for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
-	{
-		addMessage(**it);
-	}
-}
-
-void MainWindow::addMessage(WhatsappMessage &message)
-{
-	WCHAR *text = buildWcharString(message.getData());
-
-	SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, LB_INSERTSTRING, -1, reinterpret_cast<LPARAM>(text));
-
-	delete[] text;
+	SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL_SETCHAT, 0, reinterpret_cast<LPARAM>(&chat));
 }
 
 void MainWindow::resizeChildWindows(int width, int height)

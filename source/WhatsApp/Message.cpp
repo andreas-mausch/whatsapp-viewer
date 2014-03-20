@@ -9,3 +9,8 @@ const std::string& WhatsappMessage::getData() const
 {
 	return data;
 }
+
+bool WhatsappMessage::isFromMe() const
+{
+	return fromMe;
+}
