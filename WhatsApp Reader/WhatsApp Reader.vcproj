@@ -61,7 +61,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(SolutionDir)target\$(ProjectName).exe"
-				LinkIncremental="2"
+				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TargetDir)$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"
@@ -194,6 +194,14 @@
 				</File>
 			</Filter>
 			<Filter
+				Name="Exceptions"
+				>
+				<File
+					RelativePath="..\source\Exceptions\Exception.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
 				Name="WhatsApp"
 				>
 				<File
@@ -224,6 +232,22 @@
 					RelativePath="..\source\SQLite\sqlite3.c"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="Platforms"
+				>
+				<Filter
+					Name="Win32"
+					>
+					<File
+						RelativePath="..\source\Platforms\Win32\EntryPoint.cpp"
+						>
+					</File>
+					<Filter
+						Name="GUI"
+						>
+					</Filter>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -294,6 +318,26 @@
 					RelativePath="..\source\SQLite\sqlite3ext.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="Exceptions"
+				>
+				<File
+					RelativePath="..\source\Exceptions\Exception.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Platforms"
+				>
+				<Filter
+					Name="Win32"
+					>
+					<Filter
+						Name="GUI"
+						>
+					</Filter>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

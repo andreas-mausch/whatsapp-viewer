@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "../Exceptions/Exception.h"
 #include "../SQLite/sqlite3.h"
 #include "Chat.h"
 #include "Message.h"
@@ -21,7 +22,7 @@ WhatsappDatabase::WhatsappDatabase(const std::string &filename)
 {
 	if(sqlite3_open(filename.c_str(), &sqLiteDatabase) != SQLITE_OK)
 	{
-		throw 2;
+		throw Exception("Could not open SQLite database");
 	}
 }
 
@@ -40,7 +41,7 @@ void WhatsappDatabase::getChats(std::vector<WhatsappChat*> &chats)
 
 	if (error != SQLITE_OK)
 	{
-		throw 2;
+		throw Exception("Could not load chat list");
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW)
@@ -65,7 +66,7 @@ void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<Whatsa
 
 	if (error != SQLITE_OK)
 	{
-		throw 2;
+		throw Exception("Could not load messages");
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW)

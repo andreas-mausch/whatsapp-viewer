@@ -1,9 +1,15 @@
 #include "Log.h"
 #include "AES/AES.h"
+#include "Exceptions/Exception.h"
 
 Log::Log()
 {
 	output.open("WhatsApp Reader.log");
+
+	if (!output)
+	{
+		throw Exception("Could not open log file");
+	}
 }
 
 Log::~Log()
