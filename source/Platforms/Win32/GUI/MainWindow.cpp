@@ -4,6 +4,7 @@
 #include "MainWindow.h"
 #include "../../../../resources/resource.h"
 #include "../../../Exceptions/Exception.h"
+#include "../../../WhatsApp/Chat.h"
 
 #pragma comment(linker, \
   "\"/manifestdependency:type='Win32' "\
@@ -13,7 +14,18 @@
   "publicKeyToken='6595b64144ccf1df' "\
   "language='*'\"")
 
-MainWindow::MainWindow()
+std::wstring strtowstr(const std::string &text)
+{
+	std::wstring wText;
+    WCHAR *szWText = new WCHAR[text.length() + 1];
+    szWText[text.size()] = '\0';
+    MultiByteToWideChar(CP_UTF8, 0, text.c_str(), -1, szWText, static_cast<int>(text.length()));
+    wText = szWText;
+    delete[] szWText;
+    return wText;
+}
+
+MainWindow::MainWindow(std::vector<WhatsappChat *> &chats) : chats(chats)
 {
 	CoInitialize(NULL);
 
@@ -27,6 +39,8 @@ MainWindow::MainWindow()
 		NULL,
 		dialogCallback,
 		reinterpret_cast<LPARAM>(this));
+
+	addChats();
 
 	ShowWindow(dialog, SW_SHOW);
 }
@@ -68,7 +82,7 @@ void MainWindow::createChildWindows()
 
 	// create list view columns
 	WCHAR columnsStrings[][256] = { L"phone number", L"last message" };
-	DWORD columnsWidths[] = { 200, 60 };
+	DWORD columnsWidths[] = { 250, 80 };
 
 	for (DWORD i = 0; i < 2; i++)
 	{
@@ -84,6 +98,31 @@ void MainWindow::createChildWindows()
 
 	// set the image list for the list view, tree view and combo box
 	// ListView_SetImageList(GetDlgItem(dialog, IDC_MAIN_CHATS), windowFilemanager->m_imageList, LVSIL_SMALL);
+
+	addChats();
+}
+
+void MainWindow::addChats()
+{
+	for (std::vector<WhatsappChat *>::iterator it = chats.begin(); it != chats.end(); ++it)
+	{
+		addChat(**it);
+	}
+}
+
+void MainWindow::addChat(WhatsappChat &chat)
+{
+	WCHAR text[256];
+	wcscpy_s(text, strtowstr(chat.getKey()).c_str());
+
+	LVITEM item;
+	ZeroMemory(&item, sizeof(LVITEM));
+
+	item.iItem = ListView_GetItemCount(GetDlgItem(dialog, IDC_MAIN_CHATS));
+	item.mask = LVIF_TEXT;
+	item.pszText = text;
+	// item.iImage = GetFileIconIndex(fileEntry);
+	ListView_InsertItem(GetDlgItem(dialog, IDC_MAIN_CHATS), &item);
 }
 
 void MainWindow::resizeChildWindows(int width, int height)

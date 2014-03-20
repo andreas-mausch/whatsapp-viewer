@@ -25,23 +25,7 @@ void entryPoint()
 
 		whatsappDatabase.getChats(chats);
 
-		log << "Chat[0]: " << chats[0]->getKey() << std::endl;
-
-		std::vector<WhatsappMessage *> messages = chats[0]->getMessages();
-		for(std::vector<WhatsappMessage*>::iterator it = messages.begin(); it != messages.end(); ++it)
-		{
-			log << "Message: " << (*it)->getData() << std::endl;
-		}
-
-		log << std::endl;
-		log << "Chat[10]: " << chats[15]->getKey() << std::endl;
-		messages = chats[15]->getMessages();
-		for(std::vector<WhatsappMessage*>::iterator it = messages.begin(); it != messages.end(); ++it)
-		{
-			log << "Message: " << (*it)->getData() << std::endl;
-		}
-
-		MainWindow mainWindow;
+		MainWindow mainWindow(chats);
 
 		bool run = true;
 		while (run)
