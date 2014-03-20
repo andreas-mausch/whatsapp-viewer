@@ -15,5 +15,5 @@ public:
 	MainWindow();
 	~MainWindow();
 
-	void handleMessages();
+	bool handleMessages();
 };

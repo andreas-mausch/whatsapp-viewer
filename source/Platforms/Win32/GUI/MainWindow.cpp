@@ -5,6 +5,14 @@
 #include "../../../../resources/resource.h"
 #include "../../../Exceptions/Exception.h"
 
+#pragma comment(linker, \
+  "\"/manifestdependency:type='Win32' "\
+  "name='Microsoft.Windows.Common-Controls' "\
+  "version='6.0.0.0' "\
+  "processorArchitecture='*' "\
+  "publicKeyToken='6595b64144ccf1df' "\
+  "language='*'\"")
+
 MainWindow::MainWindow()
 {
 	CoInitialize(NULL);
@@ -27,14 +35,30 @@ MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::handleMessages()
+bool MainWindow::handleMessages()
 {
 	MSG message;
-	while (PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
+	BOOL ret = GetMessage(&message, 0, 0, 0);
+
+	if (ret == -1)
 	{
-		TranslateMessage(&message);
-		DispatchMessage(&message);
+		return false;
 	}
+	else if (ret == 0)
+	{
+		// WM_QUIT
+		return false;
+	}
+	else
+	{
+		if (!IsDialogMessage(dialog, &message))
+		{
+			TranslateMessage(&message);
+			DispatchMessage(&message);
+		}
+	}
+
+	return true;
 }
 
 void MainWindow::createChildWindows()
@@ -142,9 +166,15 @@ INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPA
 				mainWindow->resizeChildWindows(LOWORD(lParam), HIWORD(lParam));
 			}
 		} break;
+		case WM_CLOSE:
+		{
+			DestroyWindow(dialog);
+			return TRUE;
+		} break;
 		case WM_DESTROY:
 		{
-			// ListView_SetImageList(GetDlgItem(dialog, IDC_FILEMANAGER_FILES), NULL, LVSIL_SMALL);
+			PostQuitMessage(0);
+			return TRUE;
 		} break;
 	}
 

@@ -43,10 +43,13 @@ void entryPoint()
 
 		MainWindow mainWindow;
 
-		while (true)
+		bool run = true;
+		while (run)
 		{
-			mainWindow.handleMessages();
-			Sleep(5);
+			if (!mainWindow.handleMessages())
+			{
+				run = false;
+			}
 		}
 	}
 	catch (Exception &exception)
