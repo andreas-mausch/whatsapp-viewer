@@ -194,6 +194,22 @@
 				</File>
 			</Filter>
 			<Filter
+				Name="WhatsApp"
+				>
+				<File
+					RelativePath="..\source\WhatsApp\Chat.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\WhatsApp\Database.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\WhatsApp\Message.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
 				Name="SQLite"
 				>
 				<File
@@ -228,6 +244,22 @@
 				</File>
 				<File
 					RelativePath="..\source\AES\PolarSSL.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="WhatsApp"
+				>
+				<File
+					RelativePath="..\source\WhatsApp\Chat.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\WhatsApp\Database.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\WhatsApp\Message.h"
 					>
 				</File>
 			</Filter>
