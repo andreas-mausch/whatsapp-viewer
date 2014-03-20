@@ -6,6 +6,7 @@
 #include "../../../Exceptions/Exception.h"
 #include "../../../WhatsApp/Chat.h"
 #include "../../../WhatsApp/Message.h"
+#include "../StringHelper.h"
 
 #pragma comment(linker, \
   "\"/manifestdependency:type='Win32' "\
@@ -14,29 +15,6 @@
   "processorArchitecture='*' "\
   "publicKeyToken='6595b64144ccf1df' "\
   "language='*'\"")
-
-std::wstring strtowstr(const std::string &text)
-{
-	std::wstring wText;
-    WCHAR *szWText = new WCHAR[text.length() + 1];
-    szWText[text.size()] = '\0';
-    MultiByteToWideChar(CP_UTF8, 0, text.c_str(), -1, szWText, static_cast<int>(text.length()));
-    wText = szWText;
-    delete[] szWText;
-    return wText;
-}
-
-WCHAR *buildWcharString(const std::wstring &text)
-{
-	WCHAR *wcharString = new WCHAR[text.length() + 1];
-	wcscpy_s(wcharString, text.length() + 1, text.c_str());
-	return wcharString;
-}
-
-WCHAR *buildWcharString(const std::string &text)
-{
-	return buildWcharString(strtowstr(text));
-}
 
 MainWindow::MainWindow(std::vector<WhatsappChat *> &chats) : chats(chats)
 {
