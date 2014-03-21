@@ -95,6 +95,31 @@ void ChatControl::calculateScrollInfo()
 	SetScrollInfo(window, SB_VERT, &scrollInfo, TRUE);
 }
 
+void ChatControl::deleteBackbuffer()
+{
+	DeleteObject(backbufferBitmap);
+	backbufferBitmap = NULL;
+
+	DeleteDC(backbuffer);
+	backbuffer = NULL;
+}
+
+void ChatControl::createBackbuffer()
+{
+	deleteBackbuffer();
+
+	RECT clientRect;
+	GetClientRect(window, &clientRect);
+
+	HDC deviceContext = GetDC(window);
+
+	backbuffer = CreateCompatibleDC(deviceContext);
+	backbufferBitmap = CreateCompatibleBitmap(deviceContext, clientRect.right, clientRect.bottom);
+	SelectObject(backbuffer, backbufferBitmap);
+
+	ReleaseDC(window, deviceContext);
+}
+
 LRESULT ChatControl::onPaint()
 {
 //	LONGLONG frequency, start, end;
@@ -105,15 +130,15 @@ LRESULT ChatControl::onPaint()
 	PAINTSTRUCT paint;
 
 	deviceContext = BeginPaint(window, &paint);
-	HANDLE oldFont = SelectObject(deviceContext, GetStockObject(DEFAULT_GUI_FONT));
-	SetTextColor(deviceContext, RGB(0, 0, 0));
-	SetBkColor(deviceContext, RGB(230, 230, 210));
+	HANDLE oldFont = SelectObject(backbuffer, GetStockObject(DEFAULT_GUI_FONT));
+	SetTextColor(backbuffer, RGB(0, 0, 0));
+	SetBkColor(backbuffer, RGB(230, 230, 210));
 
 	RECT clientRect;
 	GetClientRect(window, &clientRect);
 
 	HBRUSH brush = CreateSolidBrush(RGB(230, 230, 210));
-	FillRect(deviceContext, &clientRect, brush);
+	FillRect(backbuffer, &clientRect, brush);
 	DeleteObject(brush);
 
 	int scrollPosition = GetScrollPos(window, SB_VERT);
@@ -138,15 +163,15 @@ LRESULT ChatControl::onPaint()
 
 		WCHAR *wcharText = buildWcharString(text);
 		RECT titleRect = { 10, 10, clientRect.right, clientRect.bottom };
-		DrawText(deviceContext, wcharText, text.length(), &titleRect, 0);
+		DrawText(backbuffer, wcharText, text.length(), &titleRect, 0);
 		delete[] wcharText;
 	}
 
 	y += 15;
 	if (y - scrollPosition)
 	{
-		MoveToEx(deviceContext, 10, y - scrollPosition, NULL);
-		LineTo(deviceContext, clientRect.right - 10, y - scrollPosition);
+		MoveToEx(backbuffer, 10, y - scrollPosition, NULL);
+		LineTo(backbuffer, clientRect.right - 10, y - scrollPosition);
 	}
 
 	y += 15;
@@ -159,7 +184,7 @@ LRESULT ChatControl::onPaint()
 
 			if (y + message.getHeight() - scrollPosition > 0)
 			{
-				drawMessage(message, deviceContext, y - scrollPosition, clientRect.right, dateFont);
+				drawMessage(message, backbuffer, y - scrollPosition, clientRect.right, dateFont);
 			}
 			y += message.getHeight();
 			y += 8;
@@ -171,7 +196,9 @@ LRESULT ChatControl::onPaint()
 		}
 	}
 
-	SelectObject(deviceContext, oldFont);
+	SelectObject(backbuffer, oldFont);
+
+	BitBlt(deviceContext, 0, 0, clientRect.right, clientRect.bottom, backbuffer, 0, 0, SRCCOPY);
 	EndPaint(window, &paint);
 
 //	QueryPerformanceCounter((LARGE_INTEGER*)&end);
@@ -302,6 +329,10 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 			SetWindowLongPtr(window, 0, reinterpret_cast<LONG>(chatControl));
 			ShowScrollBar(window, SB_VERT, FALSE);
 		} break;
+		case WM_CREATE:
+		{
+			chatControl->createBackbuffer();
+		} break;
 		case WM_CHATCONTROL_SETCHAT:
 		{
 			chatControl->chat = reinterpret_cast<WhatsappChat *>(lParam);
@@ -323,6 +354,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 		};
 		case WM_SIZE:
 		{
+			chatControl->createBackbuffer();
 			chatControl->buildMessages();
 		} break;
 		case WM_NCDESTROY:

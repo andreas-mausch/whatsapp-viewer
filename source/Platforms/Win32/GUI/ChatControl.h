@@ -12,6 +12,8 @@ class ChatControl
 private:
 	HWND window;
 	HGDIOBJ dateFont;
+	HDC backbuffer;
+	HBITMAP backbufferBitmap;
 	WhatsappChat *chat;
 	std::vector<ChatControlMessage *> messages;
 
@@ -27,6 +29,9 @@ private:
 	void redraw();
 
 	LRESULT onScroll(WPARAM wParam);
+
+	void createBackbuffer();
+	void deleteBackbuffer();
 
 public:
 
