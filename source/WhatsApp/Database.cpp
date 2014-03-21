@@ -76,8 +76,16 @@ void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<Whatsa
 		int status = sqlite3_column_int(res, 3);
 		std::string data = readString(res, 6);
 		long long timestamp = sqlite3_column_int64(res, 7);
+		std::string mediaUrl = readString(res, 8);
+		std::string mediaMimeType = readString(res, 9);
+		int mediaWhatsappType = sqlite3_column_int(res, 10);
+		int mediaSize = sqlite3_column_int(res, 11);
+		const void *thumbImage = sqlite3_column_blob(res, 18);
+		int thumbImageSize = sqlite3_column_bytes(res, 18);
+		const void *rawData = sqlite3_column_blob(res, 24);
+		int rawDataSize = sqlite3_column_bytes(res, 24);
 
-		WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, "", "", 0);
+		WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, thumbImage, thumbImageSize, rawData, rawDataSize);
 		messages.push_back(message);
 	}
 }

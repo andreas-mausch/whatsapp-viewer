@@ -1,6 +1,8 @@
 #include <windows.h>
 #include <commctrl.h>
 #include <vector>
+#include <iostream>
+#include <fstream>
 
 #include "ChatControl.h"
 #include "ChatControlMessage.h"
@@ -11,7 +13,7 @@
 ChatControl::ChatControl(HWND window)
 {
 	this->window = window;
-	dateFont = CreateFont(14, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New");
+	dateFont = CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New");
 	chat = NULL;
 }
 
@@ -225,10 +227,12 @@ void ChatControl::drawMessage(ChatControlMessage &message, HDC deviceContext, in
 	WCHAR *wcharDate = message.getDateText();
 
 	SetBkColor(deviceContext, color);
+	SetTextColor(deviceContext, RGB(0, 0, 0));
 	RECT textRect = { left, y, right, y };
 	int height = 0;
 
-	DrawText(deviceContext, wcharText, -1, &textRect, DT_CALCRECT | DT_WORDBREAK);
+	DrawText(deviceContext, wcharText, -1, &textRect, DT_CALCRECT | DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
+	textRect.right = right;
 	height += textRect.bottom - textRect.top;
 
 	RECT dateRect = { left, y + height, right, y + height };
@@ -244,9 +248,10 @@ void ChatControl::drawMessage(ChatControlMessage &message, HDC deviceContext, in
 	FillRect(deviceContext, &completeRect, brush);
 	DeleteObject(brush);
 
-	DrawText(deviceContext, wcharText, -1, &textRect, DT_WORDBREAK);
+	DrawText(deviceContext, wcharText, -1, &textRect, DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
 
 	oldFont = SelectObject(deviceContext, dateFont);
+	SetTextColor(deviceContext, RGB(110, 110, 110));
 	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_WORDBREAK | DT_RIGHT);
 	SelectObject(deviceContext, oldFont);
 }
