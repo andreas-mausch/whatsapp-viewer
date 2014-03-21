@@ -8,7 +8,19 @@
 #include "../../../WhatsApp/Chat.h"
 #include "../../../WhatsApp/Message.h"
 
-void registerChatControl()
+ChatControl::ChatControl(HWND window)
+{
+	this->window = window;
+	dateFont = CreateFont(14, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New");
+	chat = NULL;
+}
+
+ChatControl::~ChatControl()
+{
+	clearMessages();
+}
+
+void ChatControl::registerChatControl()
 {
 	WNDCLASSEX windowClass;
 	memset(&windowClass, 0, sizeof(WNDCLASSEX));
@@ -23,9 +35,27 @@ void registerChatControl()
 	RegisterClassEx(&windowClass);
 }
 
-void clearChatControlMessages(ChatControl &chatControl)
+void ChatControl::buildMessages()
 {
-	std::vector<ChatControlMessage *> &messages = chatControl.messages;
+	clearMessages();
+
+	if (chat != NULL)
+	{
+		std::vector<WhatsappMessage *> &messages = chat->getMessages();
+		for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
+		{
+			WhatsappMessage &message = **it;
+			ChatControlMessage *chatControlMessage = new ChatControlMessage(message);
+			this->messages.push_back(chatControlMessage);
+		}
+
+		calculateMessageHeights();
+		calculateScrollInfo();
+	}
+}
+
+void ChatControl::clearMessages()
+{
 	for (std::vector<ChatControlMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
 	{
 		delete *it;
@@ -33,22 +63,22 @@ void clearChatControlMessages(ChatControl &chatControl)
 	messages.clear();
 }
 
-void calculateMessageHeights(ChatControl &chatControl)
+void ChatControl::calculateMessageHeights()
 {
-	for (std::vector<ChatControlMessage *>::iterator it = chatControl.messages.begin(); it != chatControl.messages.end(); ++it)
+	for (std::vector<ChatControlMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
 	{
 		ChatControlMessage &message = **it;
-		message.calculateHeight(chatControl.window, chatControl.dateFont);
+		message.calculateHeight(window, dateFont);
 	}
 }
 
-void setScrollInfo(ChatControl &chatControl)
+void ChatControl::calculateScrollInfo()
 {
 	RECT clientRect;
-	GetClientRect(chatControl.window, &clientRect);
+	GetClientRect(window, &clientRect);
 
 	int y = 40;
-	for (std::vector<ChatControlMessage *>::iterator it = chatControl.messages.begin(); it != chatControl.messages.end(); ++it)
+	for (std::vector<ChatControlMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
 	{
 		ChatControlMessage &message = **it;
 		y += 8 + message.getHeight();
@@ -62,31 +92,95 @@ void setScrollInfo(ChatControl &chatControl)
 	scrollInfo.nMax = y;
 	scrollInfo.nPage = clientRect.bottom;
 
-	SetScrollInfo(chatControl.window, SB_VERT, &scrollInfo, TRUE);
+	SetScrollInfo(window, SB_VERT, &scrollInfo, TRUE);
 }
 
-void buildChatControlMessages(ChatControl &chatControl)
+LRESULT ChatControl::onPaint()
 {
-	clearChatControlMessages(chatControl);
+//	LONGLONG frequency, start, end;
+//	QueryPerformanceFrequency((LARGE_INTEGER*)&frequency);
+//	QueryPerformanceCounter((LARGE_INTEGER*)&start);
 
-	WhatsappChat *chat = chatControl.chat;
+	HDC deviceContext;
+	PAINTSTRUCT paint;
+
+	deviceContext = BeginPaint(window, &paint);
+	HANDLE oldFont = SelectObject(deviceContext, GetStockObject(DEFAULT_GUI_FONT));
+	SetTextColor(deviceContext, RGB(0, 0, 0));
+	SetBkColor(deviceContext, RGB(230, 230, 210));
+
+	RECT clientRect;
+	GetClientRect(window, &clientRect);
+
+	HBRUSH brush = CreateSolidBrush(RGB(230, 230, 210));
+	FillRect(deviceContext, &clientRect, brush);
+	DeleteObject(brush);
+
+	int scrollPosition = GetScrollPos(window, SB_VERT);
+
+	int y = 10;
+	if (y - scrollPosition > 0)
+	{
+		std::string text = "WhatsApp Chat";
+		if (chat != NULL)
+		{
+			text += " (";
+			text += chat->getKey();
+
+			if (chat->getSubject().length() > 0)
+			{
+				text += "; ";
+				text += chat->getSubject();
+			}
+
+			text += ")";
+		}
+
+		WCHAR *wcharText = buildWcharString(text);
+		RECT titleRect = { 10, 10, clientRect.right, clientRect.bottom };
+		DrawText(deviceContext, wcharText, text.length(), &titleRect, 0);
+		delete[] wcharText;
+	}
+
+	y += 15;
+	if (y - scrollPosition)
+	{
+		MoveToEx(deviceContext, 10, y - scrollPosition, NULL);
+		LineTo(deviceContext, clientRect.right - 10, y - scrollPosition);
+	}
+
+	y += 15;
 
 	if (chat != NULL)
 	{
-		std::vector<WhatsappMessage *> &messages = chat->getMessages();
-		for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
+		for (std::vector<ChatControlMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
 		{
-			WhatsappMessage &message = **it;
-			ChatControlMessage *chatControlMessage = new ChatControlMessage(message);
-			chatControl.messages.push_back(chatControlMessage);
-		}
+			ChatControlMessage &message = **it;
 
-		calculateMessageHeights(chatControl);
-		setScrollInfo(chatControl);
+			if (y + message.getHeight() - scrollPosition > 0)
+			{
+				drawMessage(message, deviceContext, y - scrollPosition, clientRect.right, dateFont);
+			}
+			y += message.getHeight();
+			y += 8;
+
+			if (y - scrollPosition > clientRect.bottom)
+			{
+				break;
+			}
+		}
 	}
+
+	SelectObject(deviceContext, oldFont);
+	EndPaint(window, &paint);
+
+//	QueryPerformanceCounter((LARGE_INTEGER*)&end);
+//	double dTimeDiff = (((double)(end-start))/((double)frequency));
+
+	return 0;
 }
 
-int drawMessage(ChatControlMessage &message, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont)
+void ChatControl::drawMessage(ChatControlMessage &message, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont)
 {
 	int gap = 40;
 	int left = 10;
@@ -128,111 +222,21 @@ int drawMessage(ChatControlMessage &message, HDC deviceContext, int y, int clien
 	oldFont = SelectObject(deviceContext, dateFont);
 	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_WORDBREAK | DT_RIGHT);
 	SelectObject(deviceContext, oldFont);
-
-	return completeRect.bottom - completeRect.top;
 }
 
-LRESULT onPaint(ChatControl &chatControl, WPARAM wParam, LPARAM lParam)
+void ChatControl::redraw()
 {
-	LONGLONG frequency, start, end;
-	QueryPerformanceFrequency((LARGE_INTEGER*)&frequency);
-	QueryPerformanceCounter((LARGE_INTEGER*)&start);
-
-	HDC deviceContext;
-	PAINTSTRUCT paint;
-
-	deviceContext = BeginPaint(chatControl.window, &paint);
-	HANDLE oldFont = SelectObject(deviceContext, GetStockObject(DEFAULT_GUI_FONT));
-	SetTextColor(deviceContext, RGB(0, 0, 0));
-	SetBkColor(deviceContext, RGB(230, 230, 210));
-
-	RECT clientRect;
-	GetClientRect(chatControl.window, &clientRect);
-
-	HBRUSH brush = CreateSolidBrush(RGB(230, 230, 210));
-	FillRect(deviceContext, &clientRect, brush);
-	DeleteObject(brush);
-
-	int scrollPosition = GetScrollPos(chatControl.window, SB_VERT);
-
-	int y = 10;
-	if (y - scrollPosition > 0)
-	{
-		std::string text = "WhatsApp Chat";
-		if (chatControl.chat != NULL)
-		{
-			text += " (";
-			text += chatControl.chat->getKey();
-
-			if (chatControl.chat->getSubject().length() > 0)
-			{
-				text += "; ";
-				text += chatControl.chat->getSubject();
-			}
-
-			text += ")";
-		}
-
-		WCHAR *wcharText = buildWcharString(text);
-		RECT titleRect = { 10, 10, clientRect.right, clientRect.bottom };
-		DrawText(deviceContext, wcharText, text.length(), &titleRect, 0);
-		delete[] wcharText;
-	}
-
-	y += 15;
-	if (y - scrollPosition)
-	{
-		MoveToEx(deviceContext, 10, y - scrollPosition, NULL);
-		LineTo(deviceContext, clientRect.right - 10, y - scrollPosition);
-	}
-
-	y += 15;
-
-	if (chatControl.chat != NULL)
-	{
-		WhatsappChat &chat = *chatControl.chat;
-		std::vector<ChatControlMessage *> &messages = chatControl.messages;
-
-		for (std::vector<ChatControlMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
-		{
-			ChatControlMessage &message = **it;
-
-			if (y + message.getHeight() - scrollPosition > 0)
-			{
-				drawMessage(message, deviceContext, y - scrollPosition, clientRect.right, chatControl.dateFont);
-			}
-			y += message.getHeight();
-			y += 8;
-
-			if (y - scrollPosition > clientRect.bottom)
-			{
-				break;
-			}
-		}
-	}
-
-	SelectObject(deviceContext, oldFont);
-	EndPaint(chatControl.window, &paint);
-
-	QueryPerformanceCounter((LARGE_INTEGER*)&end);
-	double dTimeDiff = (((double)(end-start))/((double)frequency));
-
-	return 0;
+	InvalidateRect(window, NULL, FALSE);
+	UpdateWindow(window);
 }
 
-void redraw(ChatControl &chatControl)
-{
-	InvalidateRect(chatControl.window, NULL, FALSE);
-	UpdateWindow(chatControl.window);
-}
-
-LRESULT onScroll(ChatControl &chatControl, WPARAM wParam)
+LRESULT ChatControl::onScroll(WPARAM wParam)
 {
 	SCROLLINFO scrollInfo;
 	memset(&scrollInfo, 0, sizeof(SCROLLINFO));
 	scrollInfo.cbSize = sizeof(SCROLLINFO);
 	scrollInfo.fMask = SIF_ALL;
-	GetScrollInfo(chatControl.window, SB_VERT, &scrollInfo);
+	GetScrollInfo(window, SB_VERT, &scrollInfo);
 
 	int previousPosition = scrollInfo.nPos;
 
@@ -269,20 +273,20 @@ LRESULT onScroll(ChatControl &chatControl, WPARAM wParam)
 	}
 
 	scrollInfo.fMask = SIF_POS;
-	SetScrollInfo(chatControl.window, SB_VERT, &scrollInfo, TRUE);
-	GetScrollInfo(chatControl.window, SB_VERT, &scrollInfo);
+	SetScrollInfo(window, SB_VERT, &scrollInfo, TRUE);
+	GetScrollInfo(window, SB_VERT, &scrollInfo);
 
 	if (scrollInfo.nPos != previousPosition)
 	{
 		// ScrollWindow(hwnd, 0, yChar * (yPos - si.nPos), NULL, NULL);
 		// UpdateWindow (hwnd);
-		redraw(chatControl);
+		redraw();
 	}
 
 	return 0;
 }
 
-LRESULT CALLBACK ChatControlCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	ChatControl *chatControl = reinterpret_cast<ChatControl *>(GetWindowLongPtr(window, 0));
 
@@ -293,10 +297,7 @@ LRESULT CALLBACK ChatControlCallback(HWND window, UINT message, WPARAM wParam, L
 			RECT rect;
 			GetClientRect(window, &rect);
 
-			chatControl = new ChatControl;
-			chatControl->window = window;
-			chatControl->dateFont = CreateFont(14, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New");
-			chatControl->chat = NULL;
+			chatControl = new ChatControl(window);
 
 			SetWindowLongPtr(window, 0, reinterpret_cast<LONG>(chatControl));
 			ShowScrollBar(window, SB_VERT, FALSE);
@@ -305,12 +306,12 @@ LRESULT CALLBACK ChatControlCallback(HWND window, UINT message, WPARAM wParam, L
 		{
 			chatControl->chat = reinterpret_cast<WhatsappChat *>(lParam);
 			SetScrollPos(window, SB_VERT, 0, TRUE);
-			buildChatControlMessages(*chatControl);
-			redraw(*chatControl);
+			chatControl->buildMessages();
+			chatControl->redraw();
 		} break;
 		case WM_PAINT:
 		{
-			return onPaint(*chatControl, wParam, lParam);
+			return chatControl->onPaint();
 		} break;
 		case WM_ERASEBKGND:
 		{
@@ -318,11 +319,11 @@ LRESULT CALLBACK ChatControlCallback(HWND window, UINT message, WPARAM wParam, L
 		} break;
 		case WM_VSCROLL:
 		{
-			return onScroll(*chatControl, wParam);
+			return chatControl->onScroll(wParam);
 		};
 		case WM_SIZE:
 		{
-			buildChatControlMessages(*chatControl);
+			chatControl->buildMessages();
 		} break;
 		case WM_NCDESTROY:
 		{
