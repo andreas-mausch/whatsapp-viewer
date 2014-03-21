@@ -1,3 +1,4 @@
+#include <time.h>
 #include <windows.h>
 #include <vector>
 
@@ -21,6 +22,16 @@ void registerChatControl()
 	RegisterClassEx(&windowClass);
 }
 
+std::string timestampToString(long long timestamp)
+{
+    char buffer[60];
+	tm date;
+	timestamp /= 1000;
+    localtime_s(&date, &timestamp);
+	strftime(buffer, 60, "%Y.%m.%d - %H:%M:%S", &date);
+    return buffer;
+}
+
 int drawMessage(WhatsappMessage &message, HDC deviceContext, int y, int clientRectWidth)
 {
 	int gap = 40;
@@ -40,24 +51,42 @@ int drawMessage(WhatsappMessage &message, HDC deviceContext, int y, int clientRe
 		left = left;
 	}
 
+	HGDIOBJ font = CreateFont(14, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New");
+
 	WCHAR *wcharText = buildWcharString(message.getData());
+	WCHAR *wcharDate = buildWcharString(timestampToString(message.getTimestamp()));
 
 	SetBkColor(deviceContext, color);
 	RECT textRect = { left, y, right, y };
-	DrawText(deviceContext, wcharText, -1, &textRect, DT_CALCRECT | DT_WORDBREAK);
+	int height = 0;
 
-	textRect.left = left;
-	textRect.right = right;
+	DrawText(deviceContext, wcharText, -1, &textRect, DT_CALCRECT | DT_WORDBREAK);
+	height += textRect.bottom - textRect.top;
+
+	RECT dateRect = { left, y + height, right, y + height };
+	HGDIOBJ oldFont = SelectObject(deviceContext, font);
+	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_CALCRECT | DT_WORDBREAK | DT_RIGHT);
+	dateRect.right = right;
+	SelectObject(deviceContext, oldFont);
+	height += dateRect.bottom - dateRect.top;
+
+	RECT completeRect = { left, y, right, y + height };
 
 	HBRUSH brush = CreateSolidBrush(color);
-	FillRect(deviceContext, &textRect, brush);
+	FillRect(deviceContext, &completeRect, brush);
 	DeleteObject(brush);
 
 	DrawText(deviceContext, wcharText, -1, &textRect, DT_WORDBREAK);
 
-	delete[] wcharText;
+	oldFont = SelectObject(deviceContext, font);
+	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_WORDBREAK | DT_RIGHT);
+	SelectObject(deviceContext, oldFont);
+	DeleteObject(font);
 
-	return textRect.bottom - textRect.top;
+	delete[] wcharText;
+	delete[] wcharDate;
+
+	return completeRect.bottom - completeRect.top;
 }
 
 LRESULT onPaint(ChatControl &chatControl, WPARAM wParam, LPARAM lParam)

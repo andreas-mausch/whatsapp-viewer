@@ -14,3 +14,8 @@ bool WhatsappMessage::isFromMe() const
 {
 	return fromMe;
 }
+
+long long WhatsappMessage::getTimestamp() const
+{
+	return timestamp;
+}

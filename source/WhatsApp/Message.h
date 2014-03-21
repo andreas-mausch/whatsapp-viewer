@@ -21,4 +21,5 @@ public:
 
 	const std::string &getData() const;
 	bool isFromMe() const;
+	long long getTimestamp() const;
 };
