@@ -10,5 +10,7 @@ LRESULT CALLBACK ChatControlCallback(HWND window, UINT message, WPARAM wParam, L
 struct ChatControl
 {
 	HWND window;
+	HGDIOBJ dateFont;
 	WhatsappChat *chat;
+	int chatSizeY;
 };
