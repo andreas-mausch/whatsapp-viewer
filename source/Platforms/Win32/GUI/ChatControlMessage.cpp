@@ -51,11 +51,13 @@ void ChatControlMessage::calculateHeight(HWND window, HGDIOBJ dateFont)
 	height = 0;
 
 	RECT textRect = { left, 0, right, 0 };
+	HGDIOBJ oldFont = SelectObject(deviceContext, GetStockObject(DEFAULT_GUI_FONT));
 	DrawText(deviceContext, wcharText, -1, &textRect, DT_CALCRECT | DT_WORDBREAK);
+	SelectObject(deviceContext, oldFont);
 	height += textRect.bottom - textRect.top;
 
 	RECT dateRect = { left, height, right, height };
-	HGDIOBJ oldFont = SelectObject(deviceContext, dateFont);
+	oldFont = SelectObject(deviceContext, dateFont);
 	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_CALCRECT | DT_WORDBREAK | DT_RIGHT);
 	dateRect.right = right;
 	SelectObject(deviceContext, oldFont);
