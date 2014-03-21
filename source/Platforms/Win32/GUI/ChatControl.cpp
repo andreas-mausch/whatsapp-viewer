@@ -1,54 +1,12 @@
-#include <time.h>
 #include <windows.h>
 #include <commctrl.h>
 #include <vector>
 
 #include "ChatControl.h"
+#include "ChatControlMessage.h"
 #include "../StringHelper.h"
 #include "../../../WhatsApp/Chat.h"
 #include "../../../WhatsApp/Message.h"
-
-WCHAR *timestampToString(long long timestamp)
-{
-    WCHAR *buffer = new WCHAR[60];
-	tm date;
-	timestamp /= 1000;
-    localtime_s(&date, &timestamp);
-	wcsftime(buffer, 60, L"%Y.%m.%d - %H:%M:%S", &date);
-    return buffer;
-}
-
-ChatControlMessage::ChatControlMessage(WhatsappMessage &message) : message(message)
-{
-	wcharText = buildWcharString(message.getData());
-	wcharDate = timestampToString(message.getTimestamp());
-	height = 0;
-}
-ChatControlMessage::~ChatControlMessage()
-{
-	delete[] wcharText;
-}
-WhatsappMessage &ChatControlMessage::getMessage()
-{
-	return message;
-}
-WCHAR *ChatControlMessage::getText()
-{
-	return wcharText;
-}
-WCHAR *ChatControlMessage::getDateText()
-{
-	return wcharDate;
-}
-int ChatControlMessage::getHeight()
-{
-	return height;
-}
-void ChatControlMessage::setHeight(int height)
-{
-	this->height = height;
-}
-
 
 void registerChatControl()
 {
@@ -75,6 +33,38 @@ void clearChatControlMessages(ChatControl &chatControl)
 	messages.clear();
 }
 
+void calculateMessageHeights(ChatControl &chatControl)
+{
+	for (std::vector<ChatControlMessage *>::iterator it = chatControl.messages.begin(); it != chatControl.messages.end(); ++it)
+	{
+		ChatControlMessage &message = **it;
+		message.calculateHeight(chatControl.window, chatControl.dateFont);
+	}
+}
+
+void setScrollInfo(ChatControl &chatControl)
+{
+	RECT clientRect;
+	GetClientRect(chatControl.window, &clientRect);
+
+	int y = 40;
+	for (std::vector<ChatControlMessage *>::iterator it = chatControl.messages.begin(); it != chatControl.messages.end(); ++it)
+	{
+		ChatControlMessage &message = **it;
+		y += 8 + message.getHeight();
+	}
+
+	SCROLLINFO scrollInfo;
+	memset(&scrollInfo, 0, sizeof(SCROLLINFO));
+	scrollInfo.cbSize = sizeof(SCROLLINFO);
+	scrollInfo.fMask = SIF_PAGE | SIF_RANGE;
+	scrollInfo.nMin = 0;
+	scrollInfo.nMax = y;
+	scrollInfo.nPage = clientRect.bottom;
+
+	SetScrollInfo(chatControl.window, SB_VERT, &scrollInfo, TRUE);
+}
+
 void buildChatControlMessages(ChatControl &chatControl)
 {
 	clearChatControlMessages(chatControl);
@@ -90,32 +80,10 @@ void buildChatControlMessages(ChatControl &chatControl)
 			ChatControlMessage *chatControlMessage = new ChatControlMessage(message);
 			chatControl.messages.push_back(chatControlMessage);
 		}
+
+		calculateMessageHeights(chatControl);
+		setScrollInfo(chatControl);
 	}
-}
-
-int determineMessageHeight(ChatControlMessage &message, HDC deviceContext, int clientRectWidth, HGDIOBJ dateFont)
-{
-	WCHAR *wcharText = message.getText();
-	WCHAR *wcharDate = message.getDateText();
-
-	int height = 0;
-
-	int gap = 40;
-	int left = 10;
-	int right = clientRectWidth - gap - 10;
-
-	RECT textRect = { left, 0, right, 0 };
-	DrawText(deviceContext, wcharText, -1, &textRect, DT_CALCRECT | DT_WORDBREAK);
-	height += textRect.bottom - textRect.top;
-
-	RECT dateRect = { left, height, right, height };
-	HGDIOBJ oldFont = SelectObject(deviceContext, dateFont);
-	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_CALCRECT | DT_WORDBREAK | DT_RIGHT);
-	dateRect.right = right;
-	SelectObject(deviceContext, oldFont);
-	height += dateRect.bottom - dateRect.top;
-
-	return height;
 }
 
 int drawMessage(ChatControlMessage &message, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont)
@@ -229,12 +197,6 @@ LRESULT onPaint(ChatControl &chatControl, WPARAM wParam, LPARAM lParam)
 		{
 			ChatControlMessage &message = **it;
 
-			if (message.getHeight() == 0)
-			{
-				int height = determineMessageHeight(message, deviceContext, clientRect.right, chatControl.dateFont);
-				message.setHeight(height);
-			}
-
 			if (y + message.getHeight() - scrollPosition > 0)
 			{
 				drawMessage(message, deviceContext, y - scrollPosition, clientRect.right, chatControl.dateFont);
@@ -244,26 +206,8 @@ LRESULT onPaint(ChatControl &chatControl, WPARAM wParam, LPARAM lParam)
 
 			if (y - scrollPosition > clientRect.bottom)
 			{
-				if (chatControl.scrollInfoDetermined)
-				{
-					break;
-				}
+				break;
 			}
-		}
-
-		if (!chatControl.scrollInfoDetermined)
-		{
-			SCROLLINFO scrollInfo;
-			memset(&scrollInfo, 0, sizeof(SCROLLINFO));
-			scrollInfo.cbSize = sizeof(SCROLLINFO);
-			scrollInfo.fMask = SIF_PAGE | SIF_RANGE;
-			scrollInfo.nMin = 0;
-			scrollInfo.nMax = y;
-			scrollInfo.nPage = clientRect.bottom;
-
-			SetScrollInfo(chatControl.window, SB_VERT, &scrollInfo, TRUE);
-
-			chatControl.scrollInfoDetermined = true;
 		}
 	}
 
@@ -353,7 +297,6 @@ LRESULT CALLBACK ChatControlCallback(HWND window, UINT message, WPARAM wParam, L
 			chatControl->window = window;
 			chatControl->dateFont = CreateFont(14, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New");
 			chatControl->chat = NULL;
-			chatControl->scrollInfoDetermined = false;
 
 			SetWindowLongPtr(window, 0, reinterpret_cast<LONG>(chatControl));
 			ShowScrollBar(window, SB_VERT, FALSE);
@@ -361,7 +304,6 @@ LRESULT CALLBACK ChatControlCallback(HWND window, UINT message, WPARAM wParam, L
 		case WM_CHATCONTROL_SETCHAT:
 		{
 			chatControl->chat = reinterpret_cast<WhatsappChat *>(lParam);
-			chatControl->scrollInfoDetermined = false;
 			SetScrollPos(window, SB_VERT, 0, TRUE);
 			buildChatControlMessages(*chatControl);
 			redraw(*chatControl);
@@ -380,7 +322,6 @@ LRESULT CALLBACK ChatControlCallback(HWND window, UINT message, WPARAM wParam, L
 		};
 		case WM_SIZE:
 		{
-			chatControl->scrollInfoDetermined = false;
 			buildChatControlMessages(*chatControl);
 		} break;
 		case WM_NCDESTROY:

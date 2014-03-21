@@ -249,11 +249,19 @@
 						RelativePath="..\source\Platforms\Win32\StringHelper.cpp"
 						>
 					</File>
+					<File
+						RelativePath="..\source\Platforms\Win32\Timestamp.cpp"
+						>
+					</File>
 					<Filter
 						Name="GUI"
 						>
 						<File
 							RelativePath="..\source\Platforms\Win32\GUI\ChatControl.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessage.cpp"
 							>
 						</File>
 						<File
@@ -351,11 +359,19 @@
 						RelativePath="..\source\Platforms\Win32\StringHelper.h"
 						>
 					</File>
+					<File
+						RelativePath="..\source\Platforms\Win32\Timestamp.h"
+						>
+					</File>
 					<Filter
 						Name="GUI"
 						>
 						<File
 							RelativePath="..\source\Platforms\Win32\GUI\ChatControl.h"
+							>
+						</File>
+						<File
+							RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessage.h"
 							>
 						</File>
 						<File
