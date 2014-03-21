@@ -5,12 +5,17 @@
 
 class WhatsappChat;
 class WhatsappMessage;
+class WhatsappDatabase;
 
 class MainWindow
 {
 private:
 	HWND dialog;
-	std::vector<WhatsappChat *> &chats;
+	std::vector<WhatsappChat *> chats;
+	WhatsappDatabase *database;
+
+	void openDatabase();
+	void clearChats();
 
 	void createChildWindows();
 	void setIcon();
@@ -23,7 +28,7 @@ private:
 	static INT_PTR CALLBACK dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam);
 
 public:
-	MainWindow(std::vector<WhatsappChat *> &chats);
+	MainWindow();
 	~MainWindow();
 
 	bool handleMessages();

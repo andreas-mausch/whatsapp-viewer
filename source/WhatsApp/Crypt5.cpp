@@ -2,6 +2,7 @@
 #include <fstream>
 
 #include "../AES/AES.h"
+#include "../Exceptions/Exception.h"
 #include "../MD5/MD5.h"
 #include "Crypt5.h"
 
@@ -11,6 +12,12 @@ const unsigned char initVector[] = { 0x1E,0x39,0xF3,0x69,0xE9,0xD,0xB3,0x3A,0xA7
 long loadFile(const std::string &filename, char **output)
 {
 	std::ifstream file(filename.c_str(), std::ios::binary);
+
+	if (!file)
+	{
+		throw Exception("database not found");
+	}
+
 	file.seekg(0, std::ios::end);
 	int filesize = file.tellg();
 	file.seekg(0, std::ios::beg);
@@ -25,6 +32,12 @@ long loadFile(const std::string &filename, char **output)
 long loadFileUnsigned(const std::string &filename, unsigned char **output)
 {
 	std::ifstream file(filename.c_str(), std::ios::binary);
+
+	if (!file)
+	{
+		throw Exception("database not found");
+	}
+
 	file.seekg(0, std::ios::end);
 	int filesize = file.tellg();
 	file.seekg(0, std::ios::beg);
@@ -50,11 +63,16 @@ void buildKey(unsigned char *key, const char *accountName)
 void decryptWhatsappDatabase(const std::string &filename, unsigned char *key)
 {
 	unsigned char *databaseBytes;
-	int filesize = loadFileUnsigned("../data/msgstore.db.crypt5", &databaseBytes);
+	int filesize = loadFileUnsigned(filename, &databaseBytes);
 
-	decrypt_aes_cbc_192(databaseBytes, databaseBytes, filesize, key, const_cast<unsigned char *>(initVector));
+	unsigned char iv[16];
+	memcpy(iv, initVector, 16);
+
+	decrypt_aes_cbc_192(databaseBytes, databaseBytes, filesize, key, iv);
 
 	// TODO: use databaseBytes
+	std::ofstream output("msgstore.db", std::ios::binary);
+	output.write(reinterpret_cast<char *>(databaseBytes), filesize);
 
 	delete[] databaseBytes;
 }

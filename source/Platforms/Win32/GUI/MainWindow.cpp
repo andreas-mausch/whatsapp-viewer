@@ -1,11 +1,14 @@
 #include <windows.h>
 #include <commctrl.h>
+#include <vector>
 
 #include "ChatControl.h"
 #include "MainWindow.h"
 #include "../../../../resources/resource.h"
 #include "../../../Exceptions/Exception.h"
 #include "../../../WhatsApp/Chat.h"
+#include "../../../WhatsApp/Crypt5.h"
+#include "../../../WhatsApp/Database.h"
 #include "../../../WhatsApp/Message.h"
 #include "../StringHelper.h"
 
@@ -17,7 +20,7 @@
   "publicKeyToken='6595b64144ccf1df' "\
   "language='*'\"")
 
-MainWindow::MainWindow(std::vector<WhatsappChat *> &chats) : chats(chats)
+MainWindow::MainWindow() : database(NULL)
 {
 	CoInitialize(NULL);
 
@@ -34,13 +37,12 @@ MainWindow::MainWindow(std::vector<WhatsappChat *> &chats) : chats(chats)
 		dialogCallback,
 		reinterpret_cast<LPARAM>(this));
 
-	addChats();
-
 	ShowWindow(dialog, SW_SHOW);
 }
 
 MainWindow::~MainWindow()
 {
+	delete database;
 }
 
 bool MainWindow::handleMessages()
@@ -107,6 +109,8 @@ void MainWindow::setIcon()
 
 void MainWindow::addChats()
 {
+	ListView_DeleteAllItems(GetDlgItem(dialog, IDC_MAIN_CHATS));
+
 	for (std::vector<WhatsappChat *>::iterator it = chats.begin(); it != chats.end(); ++it)
 	{
 		addChat(**it);
@@ -141,6 +145,33 @@ void MainWindow::resizeChildWindows(int width, int height)
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_MESSAGES), NULL, 430, 15, width - 445, height - 30, SWP_NOZORDER | SWP_SHOWWINDOW);
 }
 
+void MainWindow::clearChats()
+{
+	for (std::vector<WhatsappChat *>::iterator it = chats.begin(); it != chats.end(); ++it)
+	{
+		delete *it;
+	}
+	chats.clear();
+}
+
+void MainWindow::openDatabase()
+{
+	clearChats();
+	delete database;
+
+	unsigned char key[24];
+
+	const char *accountName = "neonew.mobile@googlemail.com";
+	buildKey(key, accountName);
+
+	decryptWhatsappDatabase("msgstore.db.crypt5", key);
+
+	database = new WhatsappDatabase("msgstore.db");
+	database->getChats(chats);
+
+	addChats();
+}
+
 INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	MainWindow *mainWindow = reinterpret_cast<MainWindow *>(GetWindowLongPtr(dialog, GWLP_USERDATA));
@@ -166,16 +197,11 @@ INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPA
 		} break;
 		case WM_COMMAND:
 		{
-			switch(HIWORD(wParam))
+			switch(LOWORD(wParam))
 			{
-				case BN_CLICKED:
+				case ID_MENU_MAIN_FILE_OPEN:
 				{
-					switch(LOWORD(wParam))
-					{
-						case ID_MENU_MAIN_FILE_OPEN:
-						{
-						} break;
-					}
+					mainWindow->openDatabase();
 				} break;
 			}
 		} break;

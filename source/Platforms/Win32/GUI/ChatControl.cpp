@@ -257,6 +257,27 @@ void ChatControl::redraw()
 	UpdateWindow(window);
 }
 
+void ChatControl::scroll(int newPosition)
+{
+	int previousPosition = GetScrollPos(window, SB_VERT);
+
+	SCROLLINFO scrollInfo;
+	memset(&scrollInfo, 0, sizeof(SCROLLINFO));
+	scrollInfo.cbSize = sizeof(SCROLLINFO);
+	scrollInfo.fMask = SIF_POS;
+	scrollInfo.nPos = newPosition;
+
+	SetScrollInfo(window, SB_VERT, &scrollInfo, TRUE);
+	GetScrollInfo(window, SB_VERT, &scrollInfo);
+
+	if (scrollInfo.nPos != previousPosition)
+	{
+		// ScrollWindow(hwnd, 0, yChar * (yPos - si.nPos), NULL, NULL);
+		// UpdateWindow (hwnd);
+		redraw();
+	}
+}
+
 LRESULT ChatControl::onScroll(WPARAM wParam)
 {
 	SCROLLINFO scrollInfo;
@@ -299,16 +320,14 @@ LRESULT ChatControl::onScroll(WPARAM wParam)
 		} break;
 	}
 
-	scrollInfo.fMask = SIF_POS;
-	SetScrollInfo(window, SB_VERT, &scrollInfo, TRUE);
-	GetScrollInfo(window, SB_VERT, &scrollInfo);
+	scroll(scrollInfo.nPos);
+	return 0;
+}
 
-	if (scrollInfo.nPos != previousPosition)
-	{
-		// ScrollWindow(hwnd, 0, yChar * (yPos - si.nPos), NULL, NULL);
-		// UpdateWindow (hwnd);
-		redraw();
-	}
+LRESULT ChatControl::onMousewheel(int delta)
+{
+	int previousPosition = GetScrollPos(window, SB_VERT);
+	scroll(previousPosition - delta / WHEEL_DELTA * 60);
 
 	return 0;
 }
@@ -351,7 +370,16 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 		case WM_VSCROLL:
 		{
 			return chatControl->onScroll(wParam);
-		};
+		} break;
+		case WM_MOUSEACTIVATE:
+		{
+			SetFocus(window);
+			return MA_ACTIVATE;
+		} break;
+		case WM_MOUSEWHEEL:
+		{
+			return chatControl->onMousewheel(GET_WHEEL_DELTA_WPARAM(wParam));
+		} break;
 		case WM_SIZE:
 		{
 			chatControl->createBackbuffer();

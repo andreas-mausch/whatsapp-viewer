@@ -5,5 +5,7 @@ WhatsApp Reader/WhatsApp Reader.vcproj.Hauptrechner.neonew.user
 WhatsApp Reader/Debug
 WhatsApp Reader/Release
 WhatsApp Reader/WhatsApp Reader.log
+WhatsApp Reader/msgstore.db
+WhatsApp Reader/msgstore.db.crypt5
 
 target/

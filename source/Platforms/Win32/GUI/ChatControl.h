@@ -28,7 +28,9 @@ private:
 	void drawMessage(ChatControlMessage &message, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont);
 	void redraw();
 
+	void scroll(int newPosition);
 	LRESULT onScroll(WPARAM wParam);
+	LRESULT onMousewheel(int delta);
 
 	void createBackbuffer();
 	void deleteBackbuffer();
