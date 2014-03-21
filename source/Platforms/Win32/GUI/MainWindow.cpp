@@ -137,6 +137,8 @@ void MainWindow::selectChat(WhatsappChat &chat)
 
 void MainWindow::resizeChildWindows(int width, int height)
 {
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_CHATS), NULL, 15, 15, 400, height - 30, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_MESSAGES), NULL, 430, 15, width - 445, height - 30, SWP_NOZORDER | SWP_SHOWWINDOW);
 }
 
 INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
@@ -179,7 +181,7 @@ INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPA
 		} break;
 		case WM_NOTIFY:
 		{
-			NMHDR *hdr																		= reinterpret_cast<NMHDR *>(lParam);
+			NMHDR *hdr = reinterpret_cast<NMHDR *>(lParam);
 
 			if (!hdr)
 			{
@@ -219,6 +221,12 @@ INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPA
 			{
 				mainWindow->resizeChildWindows(LOWORD(lParam), HIWORD(lParam));
 			}
+		} break;
+		case WM_GETMINMAXINFO:
+		{
+			MINMAXINFO *minmaxinfo = reinterpret_cast<MINMAXINFO *>(lParam);
+			minmaxinfo->ptMinTrackSize.x = 500;
+			minmaxinfo->ptMinTrackSize.y = 200;
 		} break;
 		case WM_CLOSE:
 		{
