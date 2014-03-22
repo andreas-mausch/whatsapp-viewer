@@ -48,3 +48,8 @@ int WhatsappMessage::getRawDataSize()
 {
 	return rawDataSize;
 }
+
+int WhatsappMessage::getMediaWhatsappType() const
+{
+	return mediaWhatsappType;
+}

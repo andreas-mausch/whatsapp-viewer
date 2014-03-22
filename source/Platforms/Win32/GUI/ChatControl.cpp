@@ -6,8 +6,8 @@
 
 #include "ChatControl.h"
 #include "ChatControlMessage.h"
-#include "../StringHelper.h"
 #include "../JpegDecoder.h"
+#include "../StringHelper.h"
 #include "../../../Exceptions/Exception.h"
 #include "../../../WhatsApp/Chat.h"
 #include "../../../WhatsApp/Message.h"
@@ -51,7 +51,7 @@ void ChatControl::buildMessages()
 		for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
 		{
 			WhatsappMessage &message = **it;
-			ChatControlMessage *chatControlMessage = new ChatControlMessage(message);
+			ChatControlMessage *chatControlMessage = new ChatControlMessage(message, *jpegDecoder);
 			this->messages.push_back(chatControlMessage);
 		}
 
@@ -128,10 +128,6 @@ void ChatControl::createBackbuffer()
 
 LRESULT ChatControl::onPaint()
 {
-//	LONGLONG frequency, start, end;
-//	QueryPerformanceFrequency((LARGE_INTEGER*)&frequency);
-//	QueryPerformanceCounter((LARGE_INTEGER*)&start);
-
 	HDC deviceContext;
 	PAINTSTRUCT paint;
 
@@ -202,26 +198,25 @@ LRESULT ChatControl::onPaint()
 		}
 	}
 
-	HBITMAP hBitmap = jpegDecoder->loadImage("test.jpg");
-	BITMAP bitmap;
-	HDC hdcMem = CreateCompatibleDC(backbuffer);
-	HGDIOBJ oldBitmap = SelectObject(hdcMem, hBitmap);
-
-	GetObject(hBitmap, sizeof(bitmap), &bitmap);
-	BitBlt(backbuffer, 30, 30, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
-
-	SelectObject(hdcMem, oldBitmap);
-	DeleteDC(hdcMem);
-
 	SelectObject(backbuffer, oldFont);
 
 	BitBlt(deviceContext, 0, 0, clientRect.right, clientRect.bottom, backbuffer, 0, 0, SRCCOPY);
 	EndPaint(window, &paint);
 
-//	QueryPerformanceCounter((LARGE_INTEGER*)&end);
-//	double dTimeDiff = (((double)(end-start))/((double)frequency));
-
 	return 0;
+}
+
+void renderBitmap(HBITMAP bitmapHandle, int x, int y, int height, HDC deviceContext)
+{
+	BITMAP bitmap;
+	HDC hdcMem = CreateCompatibleDC(deviceContext);
+	HGDIOBJ oldBitmap = SelectObject(hdcMem, bitmapHandle);
+
+	GetObject(bitmapHandle, sizeof(bitmap), &bitmap);
+	BitBlt(deviceContext, x, y + (height - bitmap.bmHeight) / 2, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
+
+	SelectObject(hdcMem, oldBitmap);
+	DeleteDC(hdcMem);
 }
 
 void ChatControl::drawMessage(ChatControlMessage &message, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont)
@@ -241,12 +236,6 @@ void ChatControl::drawMessage(ChatControlMessage &message, HDC deviceContext, in
 	WCHAR *wcharText = message.getText();
 	WCHAR *wcharDate = message.getDateText();
 
-	if (message.getMessage().getRawData() != NULL)
-	{
-		std::ofstream bla("test.raw", std::ios::binary);
-		bla.write((char *)message.getMessage().getRawData(), message.getMessage().getRawDataSize());
-	}
-
 	SetBkColor(deviceContext, color);
 	SetTextColor(deviceContext, RGB(0, 0, 0));
 	RECT textRect = { left, y, right, y };
@@ -256,20 +245,29 @@ void ChatControl::drawMessage(ChatControlMessage &message, HDC deviceContext, in
 	textRect.right = right;
 	height += textRect.bottom - textRect.top;
 
-	RECT dateRect = { left, y + height, right, y + height };
+	RECT dateRect = { left, 0, right, 0 };
 	HGDIOBJ oldFont = SelectObject(deviceContext, dateFont);
 	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_CALCRECT | DT_WORDBREAK | DT_RIGHT);
 	dateRect.right = right;
+	dateRect.top = y + message.getHeight() - dateRect.bottom;
+	dateRect.bottom = y + message.getHeight();
 	SelectObject(deviceContext, oldFont);
 	height += dateRect.bottom - dateRect.top;
 
-	RECT completeRect = { left, y, right, y + height };
+	RECT completeRect = { left, y, right, y + message.getHeight() };
 
 	HBRUSH brush = CreateSolidBrush(color);
 	FillRect(deviceContext, &completeRect, brush);
 	DeleteObject(brush);
 
-	DrawText(deviceContext, wcharText, -1, &textRect, DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
+	if (message.getMessage().getMediaWhatsappType() == TEXT)
+	{
+		DrawText(deviceContext, wcharText, -1, &textRect, DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
+	}
+	else if (message.getMessage().getMediaWhatsappType() == IMAGE && message.getBitmap() != NULL)
+	{
+		renderBitmap(message.getBitmap(), left + 10, y, message.getHeight(), backbuffer);
+	}
 
 	oldFont = SelectObject(deviceContext, dateFont);
 	SetTextColor(deviceContext, RGB(110, 110, 110));

@@ -30,9 +30,45 @@ HBITMAP JpegDecoder::loadImage(const std::string &filename)
 
 	if (FAILED(result))
 	{
-		throw Exception("could not get decoder");
+		throw Exception("could not create decoder");
 	}
 
+	HBITMAP bitmap = loadImage(decoder);
+
+	decoder->Release();
+
+	return bitmap;
+}
+
+HBITMAP JpegDecoder::loadImage(unsigned char *bytes, int size)
+{
+	IWICStream *stream = NULL;
+	if (FAILED(factory->CreateStream(&stream)))
+	{
+		throw Exception("could not create stream");
+	}
+
+	if (FAILED(stream->InitializeFromMemory(bytes, size)))
+	{
+		throw Exception("could not initialize stream");
+	}
+
+	IWICBitmapDecoder *decoder = NULL;
+	if (FAILED(factory->CreateDecoderFromStream(stream, NULL, WICDecodeMetadataCacheOnLoad, &decoder)))
+	{
+		throw Exception("could not create decoder");
+	}
+
+	HBITMAP bitmap = loadImage(decoder);
+
+	decoder->Release();
+	stream->Release();
+
+	return bitmap;
+}
+
+HBITMAP JpegDecoder::loadImage(IWICBitmapDecoder *decoder)
+{
 	IWICBitmapFrameDecode *frame = NULL;
 	if (FAILED(decoder->GetFrame(0, &frame)))
 	{
@@ -60,7 +96,6 @@ HBITMAP JpegDecoder::loadImage(const std::string &filename)
 
 	bitmapSource->Release();
 	frame->Release();
-	decoder->Release();
 
 	HBITMAP bitmap = CreateBitmap(width, height, 1, 32, &buffer[0]);
 	return bitmap;

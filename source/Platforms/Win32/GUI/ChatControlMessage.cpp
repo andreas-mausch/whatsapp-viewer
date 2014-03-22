@@ -2,18 +2,29 @@
 
 #include "ChatControlMessage.h"
 #include "../../../WhatsApp/Message.h"
+#include "../JpegDecoder.h"
 #include "../StringHelper.h"
 #include "../Timestamp.h"
 
-ChatControlMessage::ChatControlMessage(WhatsappMessage &message) : message(message)
+ChatControlMessage::ChatControlMessage(WhatsappMessage &message, JpegDecoder &jpegDecoder) : message(message), bitmap(NULL)
 {
 	wcharText = buildWcharString(message.getData());
 	wcharDate = buildTimestampString(message.getTimestamp());
 	height = 0;
+
+	if (message.getMediaWhatsappType() == IMAGE && message.getRawDataSize() > 0 && message.getRawData() != NULL)
+	{
+		bitmap = jpegDecoder.loadImage(message.getRawData(), message.getRawDataSize());
+	}
 }
 
 ChatControlMessage::~ChatControlMessage()
 {
+	if (bitmap != NULL)
+	{
+		DeleteObject(bitmap);
+	}
+
 	delete[] wcharText;
 	delete[] wcharDate;
 }
@@ -63,5 +74,17 @@ void ChatControlMessage::calculateHeight(HWND window, HGDIOBJ dateFont)
 	SelectObject(deviceContext, oldFont);
 	height += dateRect.bottom - dateRect.top;
 
+	if (message.getMediaWhatsappType() == IMAGE && bitmap != NULL)
+	{
+		BITMAP bitmapObject;
+		GetObject(bitmap, sizeof(bitmapObject), &bitmapObject);
+		height += bitmapObject.bmHeight;
+	}
+
 	ReleaseDC(window, deviceContext);
+}
+
+HBITMAP ChatControlMessage::getBitmap()
+{
+	return bitmap;
 }

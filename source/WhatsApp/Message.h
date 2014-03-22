@@ -2,6 +2,13 @@
 
 #include <string>
 
+enum MediaWhatsappType
+{
+	TEXT,
+	IMAGE,
+	AUDIO
+};
+
 class WhatsappMessage
 {
 private:
@@ -30,4 +37,5 @@ public:
 	long long getTimestamp() const;
 	unsigned char *getRawData();
 	int getRawDataSize();
+	int getMediaWhatsappType() const;
 };
