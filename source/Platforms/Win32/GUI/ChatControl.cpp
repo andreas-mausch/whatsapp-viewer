@@ -7,11 +7,14 @@
 #include "ChatControl.h"
 #include "ChatControlMessage.h"
 #include "../StringHelper.h"
+#include "../JpegDecoder.h"
+#include "../../../Exceptions/Exception.h"
 #include "../../../WhatsApp/Chat.h"
 #include "../../../WhatsApp/Message.h"
 
 ChatControl::ChatControl(HWND window)
 {
+	this->jpegDecoder = new JpegDecoder();
 	this->window = window;
 	dateFont = CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New");
 	chat = NULL;
@@ -20,6 +23,7 @@ ChatControl::ChatControl(HWND window)
 ChatControl::~ChatControl()
 {
 	clearMessages();
+	delete jpegDecoder;
 }
 
 void ChatControl::registerChatControl()
@@ -198,6 +202,17 @@ LRESULT ChatControl::onPaint()
 		}
 	}
 
+	HBITMAP hBitmap = jpegDecoder->loadImage("test.jpg");
+	BITMAP bitmap;
+	HDC hdcMem = CreateCompatibleDC(backbuffer);
+	HGDIOBJ oldBitmap = SelectObject(hdcMem, hBitmap);
+
+	GetObject(hBitmap, sizeof(bitmap), &bitmap);
+	BitBlt(backbuffer, 30, 30, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
+
+	SelectObject(hdcMem, oldBitmap);
+	DeleteDC(hdcMem);
+
 	SelectObject(backbuffer, oldFont);
 
 	BitBlt(deviceContext, 0, 0, clientRect.right, clientRect.bottom, backbuffer, 0, 0, SRCCOPY);
@@ -225,6 +240,12 @@ void ChatControl::drawMessage(ChatControlMessage &message, HDC deviceContext, in
 
 	WCHAR *wcharText = message.getText();
 	WCHAR *wcharDate = message.getDateText();
+
+	if (message.getMessage().getRawData() != NULL)
+	{
+		std::ofstream bla("test.raw", std::ios::binary);
+		bla.write((char *)message.getMessage().getRawData(), message.getMessage().getRawDataSize());
+	}
 
 	SetBkColor(deviceContext, color);
 	SetTextColor(deviceContext, RGB(0, 0, 0));

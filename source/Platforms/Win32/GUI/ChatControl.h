@@ -4,12 +4,15 @@
 
 class WhatsappChat;
 class ChatControlMessage;
+class JpegDecoder;
 
 #define WM_CHATCONTROL_SETCHAT (WM_USER+0)
 
 class ChatControl
 {
 private:
+	JpegDecoder *jpegDecoder;
+
 	HWND window;
 	HGDIOBJ dateFont;
 	HDC backbuffer;

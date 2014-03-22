@@ -60,7 +60,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib"
+				AdditionalDependencies="comctl32.lib windowscodecs.lib"
 				OutputFile="$(SolutionDir)target\$(ProjectName).exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
@@ -135,7 +135,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib"
+				AdditionalDependencies="comctl32.lib windowscodecs.lib"
 				OutputFile="$(SolutionDir)\target\$(ProjectName).exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
@@ -243,6 +243,10 @@
 					>
 					<File
 						RelativePath="..\source\Platforms\Win32\EntryPoint.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\source\Platforms\Win32\JpegDecoder.cpp"
 						>
 					</File>
 					<File
@@ -355,6 +359,10 @@
 				<Filter
 					Name="Win32"
 					>
+					<File
+						RelativePath="..\source\Platforms\Win32\JpegDecoder.h"
+						>
+					</File>
 					<File
 						RelativePath="..\source\Platforms\Win32\StringHelper.h"
 						>
