@@ -237,7 +237,6 @@ void ChatControl::drawMessage(ChatControlMessage &message, HDC deviceContext, in
 		color = RGB(190, 240, 150);
 	}
 
-	// WCHAR *wcharText = message.getText();
 	WCHAR *wcharDate = message.getDateText();
 
 	SetBkColor(deviceContext, color);

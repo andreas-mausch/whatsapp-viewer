@@ -53,6 +53,8 @@ void WhatsappDatabase::getChats(std::vector<WhatsappChat*> &chats)
 		WhatsappChat *chat = new WhatsappChat(*this, key, subject, creation);
 		chats.push_back(chat);
 	}
+
+	sqlite3_finalize(res);
 }
 
 void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<WhatsappMessage*> &messages)
@@ -88,4 +90,6 @@ void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<Whatsa
 		WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, thumbImage, thumbImageSize, rawData, rawDataSize);
 		messages.push_back(message);
 	}
+
+	sqlite3_finalize(res);
 }
