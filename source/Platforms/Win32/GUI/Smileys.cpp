@@ -3,13 +3,16 @@
 
 #include "Smileys.h"
 #include "Smiley.h"
+#include "SmileyList.h"
 #include "../../../Exceptions/Exception.h"
 #include "../../../../resources/resource.h"
 
 Smileys::Smileys(JpegDecoder &jpegDecoder) : jpegDecoder(jpegDecoder)
 {
-	load(0x0E418, MAKEINTRESOURCE(IDB_0E418));
-	load(0x1F61F, MAKEINTRESOURCE(IDB_1F61F));
+	for (int i = 0; i < smileyCount; i++)
+	{
+		load(smileyList[i].character, MAKEINTRESOURCE(smileyList[i].resource));
+	}
 }
 
 Smileys::~Smileys()
@@ -44,6 +47,5 @@ Smiley &Smileys::find(int character)
 		}
 	}
 
-	return *smileys[0];
-	// throw Exception("could not find smiley");
+	throw Exception("could not find smiley");
 }

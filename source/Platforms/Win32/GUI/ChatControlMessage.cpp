@@ -2,6 +2,7 @@
 
 #include "ChatControlMessage.h"
 #include "ChatControlMessageElement.h"
+#include "SmileyList.h"
 #include "../../../WhatsApp/Message.h"
 #include "../../../UTF8/utf8.h"
 #include "../JpegDecoder.h"
@@ -90,6 +91,19 @@ HBITMAP ChatControlMessage::getBitmap()
 	return bitmap;
 }
 
+bool isSmiley(int character)
+{
+	for (int i = 0; i < smileyCount; i++)
+	{
+		if (smileyList[i].character == character)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void ChatControlMessage::splitMessage(WhatsappMessage &message)
 {
 	std::string messageString = message.getData();
@@ -99,7 +113,7 @@ void ChatControlMessage::splitMessage(WhatsappMessage &message)
 		bool begin = (it - messageString.begin()) == lastSplit;
 		int character = utf8::next(it, messageString.end());
 
-		if (character == 0x1F61F || character == 0x0e418)
+		if (isSmiley(character))
 		{
 			if (!begin)
 			{
