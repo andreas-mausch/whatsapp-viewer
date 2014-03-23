@@ -111,6 +111,7 @@ void ChatControlMessage::splitMessage(WhatsappMessage &message)
 	for (std::string::iterator it = messageString.begin(); it != messageString.end();)
 	{
 		bool begin = (it - messageString.begin()) == lastSplit;
+		std::string::iterator before = it;
 		int character = utf8::next(it, messageString.end());
 
 		if (isSmiley(character))
@@ -118,7 +119,7 @@ void ChatControlMessage::splitMessage(WhatsappMessage &message)
 			if (!begin)
 			{
 				int end = it - messageString.begin();
-				std::string leftPart = messageString.substr(lastSplit, end);
+				std::string leftPart = messageString.substr(lastSplit, before - messageString.begin());
 				elements.push_back(new ChatControlMessageElement(leftPart));
 			}
 
