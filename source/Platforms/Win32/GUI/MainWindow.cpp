@@ -32,6 +32,8 @@ MainWindow::MainWindow() : database(NULL)
 
 	ChatControl::registerChatControl();
 
+	getTempFilename();
+
 	CreateDialogParam(GetModuleHandle(NULL),
 		MAKEINTRESOURCE(IDD_MAIN),
 		NULL,
@@ -44,6 +46,31 @@ MainWindow::MainWindow() : database(NULL)
 MainWindow::~MainWindow()
 {
 	delete database;
+
+	if (fileExists(tempFilename))
+	{
+		WCHAR *filenameWchar = buildWcharString(tempFilename);
+		DeleteFile(filenameWchar);
+		delete[] filenameWchar;
+	}
+}
+
+bool MainWindow::fileExists(const std::string &filename)
+{
+	WCHAR *filenameWchar = buildWcharString(filename);
+	DWORD attributes = GetFileAttributes(filenameWchar);
+	delete[] filenameWchar;
+
+	return (attributes != INVALID_FILE_ATTRIBUTES && !(attributes & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+void MainWindow::getTempFilename()
+{
+	WCHAR tempPath[MAX_PATH];
+	GetTempPath(MAX_PATH, tempPath);
+	WCHAR tempFilenameWchar[MAX_PATH];
+	GetTempFileName(tempPath, L"WAV", 0, tempFilenameWchar);
+	tempFilename = wstrtostr(tempFilenameWchar);
 }
 
 bool MainWindow::handleMessages()
@@ -168,9 +195,9 @@ void MainWindow::openDatabase()
 			unsigned char key[24];
 			buildKey(key, openFileDialogStruct.accountName);
 
-			decryptWhatsappDatabase(openFileDialogStruct.filename, "msgstore.db", key);
+			decryptWhatsappDatabase(openFileDialogStruct.filename, tempFilename, key);
 
-			database = new WhatsappDatabase("msgstore.db");
+			database = new WhatsappDatabase(tempFilename);
 			database->getChats(chats);
 
 			addChats();

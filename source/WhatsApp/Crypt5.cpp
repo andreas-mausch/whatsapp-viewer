@@ -70,7 +70,18 @@ void decryptWhatsappDatabase(const std::string &filename, const std::string &fil
 
 	decrypt_aes_cbc_192(databaseBytes, databaseBytes, filesize, key, iv);
 
+	const char expectedBytes[] = "SQLite format 3";
+	if (memcmp(databaseBytes, expectedBytes, sizeof(expectedBytes)) != 0)
+	{
+		throw Exception("Decryption failed. Wrong account name?");
+	}
+
 	std::ofstream output(filenameDecrypted.c_str(), std::ios::binary);
+	if (!output)
+	{
+		throw Exception("Could not save decrypted WhatsApp database. Permissions needed?");
+	}
+
 	output.write(reinterpret_cast<char *>(databaseBytes), filesize);
 
 	delete[] databaseBytes;
