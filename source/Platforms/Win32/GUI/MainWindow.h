@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <vector>
 
+class Exception;
 class WhatsappChat;
 class WhatsappMessage;
 class WhatsappDatabase;
@@ -32,4 +33,6 @@ public:
 	~MainWindow();
 
 	bool handleMessages();
+
+	void displayException(Exception &exception);
 };

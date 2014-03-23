@@ -852,9 +852,14 @@
 #define IDB_02934                       957
 #define IDB_02935                       958
 #define IDB_03030                       959
+#define IDD_OPEN_FILE                   959
 #define IDC_MAIN_CHATS                  1001
 #define IDC_MAIN_MESSAGES               1002
 #define IDC_MAIN_STATUS                 1003
+#define IDC_EDIT1                       1004
+#define IDC_OPEN_FILE_FILENAME          1004
+#define IDC_OPEN_FILE_SELECT            1005
+#define IDC_OPEN_FILE_ACCOUNT_NAME      1006
 #define ID_FILE_OPEN40001               40001
 #define ID_MENU_MAIN_FILE_OPEN          40002
 
@@ -862,9 +867,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        959
+#define _APS_NEXT_RESOURCE_VALUE        960
 #define _APS_NEXT_COMMAND_VALUE         40003
-#define _APS_NEXT_CONTROL_VALUE         1004
+#define _APS_NEXT_CONTROL_VALUE         1006
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

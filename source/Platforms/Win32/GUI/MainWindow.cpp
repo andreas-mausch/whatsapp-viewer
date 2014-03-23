@@ -4,6 +4,7 @@
 
 #include "ChatControl.h"
 #include "MainWindow.h"
+#include "OpenDatabaseDialog.h"
 #include "../../../../resources/resource.h"
 #include "../../../Exceptions/Exception.h"
 #include "../../../WhatsApp/Chat.h"
@@ -156,20 +157,36 @@ void MainWindow::clearChats()
 
 void MainWindow::openDatabase()
 {
-	clearChats();
-	delete database;
+	OpenFileDialogStruct openFileDialogStruct;
+	if (DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_OPEN_FILE), dialog, openFileCallback, reinterpret_cast<LPARAM>(&openFileDialogStruct)) == IDOK)
+	{
+		clearChats();
+		delete database;
 
-	unsigned char key[24];
+		try
+		{
+			unsigned char key[24];
+			buildKey(key, openFileDialogStruct.accountName);
 
-	const char *accountName = "neonew.mobile@googlemail.com";
-	buildKey(key, accountName);
+			decryptWhatsappDatabase(openFileDialogStruct.filename, "msgstore.db", key);
 
-	decryptWhatsappDatabase("msgstore.db.crypt5", key);
+			database = new WhatsappDatabase("msgstore.db");
+			database->getChats(chats);
 
-	database = new WhatsappDatabase("msgstore.db");
-	database->getChats(chats);
+			addChats();
+		}
+		catch (Exception &exception)
+		{
+			displayException(exception);
+		}
+	}
+}
 
-	addChats();
+void MainWindow::displayException(Exception &exception)
+{
+	WCHAR *cause = buildWcharString(exception.getCause());
+	MessageBox(dialog, cause, L"Error", MB_OK | MB_ICONERROR);
+	delete[] cause;
 }
 
 INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)

@@ -49,10 +49,10 @@ long loadFileUnsigned(const std::string &filename, unsigned char **output)
 	return filesize;
 }
 
-void buildKey(unsigned char *key, const char *accountName)
+void buildKey(unsigned char *key, const std::string &accountName)
 {
 	MD5 md5;
-	unsigned char *accountNameMd5 = md5.digestStringRaw(accountName);
+	unsigned char *accountNameMd5 = md5.digestStringRaw(accountName.c_str());
 
 	for (int i = 0; i < 24; i++)
 	{
@@ -60,7 +60,7 @@ void buildKey(unsigned char *key, const char *accountName)
 	}
 }
 
-void decryptWhatsappDatabase(const std::string &filename, unsigned char *key)
+void decryptWhatsappDatabase(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key)
 {
 	unsigned char *databaseBytes;
 	int filesize = loadFileUnsigned(filename, &databaseBytes);
@@ -70,8 +70,7 @@ void decryptWhatsappDatabase(const std::string &filename, unsigned char *key)
 
 	decrypt_aes_cbc_192(databaseBytes, databaseBytes, filesize, key, iv);
 
-	// TODO: use databaseBytes
-	std::ofstream output("msgstore.db", std::ios::binary);
+	std::ofstream output(filenameDecrypted.c_str(), std::ios::binary);
 	output.write(reinterpret_cast<char *>(databaseBytes), filesize);
 
 	delete[] databaseBytes;

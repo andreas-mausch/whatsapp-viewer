@@ -1,5 +1,17 @@
 #include "StringHelper.h"
 
+std::string wstrtostr(const WCHAR *text)
+{
+	std::string textString;
+	int size = WideCharToMultiByte(CP_UTF8, 0, text, -1, NULL, 0, NULL, NULL);
+    char *szText = new char[size];
+	memset(szText, 0, size);
+	WideCharToMultiByte(CP_UTF8, 0, text, -1, szText, size, NULL, NULL);
+    textString = szText;
+    delete[] szText;
+    return textString;
+}
+
 std::wstring strtowstr(const std::string &text)
 {
 	std::wstring wText;
