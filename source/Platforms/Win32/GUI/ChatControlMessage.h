@@ -3,6 +3,7 @@
 class ChatControlMessageElement;
 class JpegDecoder;
 class WhatsappMessage;
+class Smileys;
 
 #include <vector>
 
@@ -29,6 +30,6 @@ public:
 	int getHeight();
 	HBITMAP getBitmap();
 
-	void render(HDC deviceContext, int y, int left, int right);
+	void render(HDC deviceContext, int y, int left, int right, Smileys &smileys);
 
 };

@@ -6,6 +6,7 @@
 
 #include "ChatControl.h"
 #include "ChatControlMessage.h"
+#include "Smileys.h"
 #include "../JpegDecoder.h"
 #include "../StringHelper.h"
 #include "../../../Exceptions/Exception.h"
@@ -15,7 +16,8 @@
 
 ChatControl::ChatControl(HWND window)
 {
-	this->jpegDecoder = new JpegDecoder();
+	jpegDecoder = new JpegDecoder();
+	smileys = new Smileys(*jpegDecoder);
 	this->window = window;
 	dateFont = CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New");
 	chat = NULL;
@@ -24,6 +26,7 @@ ChatControl::ChatControl(HWND window)
 ChatControl::~ChatControl()
 {
 	clearMessages();
+	delete smileys;
 	delete jpegDecoder;
 }
 
@@ -257,7 +260,7 @@ void ChatControl::drawMessage(ChatControlMessage &message, HDC deviceContext, in
 
 	if (message.getMessage().getMediaWhatsappType() == MEDIA_WHATSAPP_TEXT)
 	{
-		message.render(deviceContext, y, left, right);
+		message.render(deviceContext, y, left, right, *smileys);
 	}
 	else if (message.getMessage().getMediaWhatsappType() == MEDIA_WHATSAPP_IMAGE && message.getBitmap() != NULL)
 	{

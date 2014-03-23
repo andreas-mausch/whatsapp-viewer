@@ -121,12 +121,12 @@ void ChatControlMessage::splitMessage(WhatsappMessage &message)
 	}
 }
 
-void ChatControlMessage::render(HDC deviceContext, int y, int left, int right)
+void ChatControlMessage::render(HDC deviceContext, int y, int left, int right, Smileys &smileys)
 {
 	for (std::vector<ChatControlMessageElement *>::iterator it = elements.begin(); it != elements.end(); it++)
 	{
 		ChatControlMessageElement &element = **it;
-		element.render(deviceContext, y, left, right);
+		element.render(deviceContext, y, left, right, smileys);
 		y += element.getHeight();
 	}
 }

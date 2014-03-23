@@ -2,6 +2,7 @@
 #include <windows.h>
 
 #include "ChatControlMessageElement.h"
+#include "Smileys.h"
 #include "../StringHelper.h"
 #include "../../../Exceptions/Exception.h"
 
@@ -41,7 +42,7 @@ void ChatControlMessageElement::calculateHeight(HDC deviceContext, int left, int
 	}
 }
 
-void ChatControlMessageElement::render(HDC deviceContext, int y, int left, int right)
+void ChatControlMessageElement::render(HDC deviceContext, int y, int left, int right, Smileys &smileys)
 {
 	if (type == CHAT_CONTROL_MESSAGE_ELEMENT_TEXT)
 	{
@@ -49,6 +50,9 @@ void ChatControlMessageElement::render(HDC deviceContext, int y, int left, int r
 		DrawText(deviceContext, wcharText, -1, &rect, DT_CALCRECT | DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
 		rect.right = right;
 		DrawText(deviceContext, wcharText, -1, &rect, DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
+	} else if (type == CHAT_CONTROL_MESSAGE_ELEMENT_SMILEY)
+	{
+		smileys.renderSmiley(smiley, deviceContext, left, y);
 	}
 }
 

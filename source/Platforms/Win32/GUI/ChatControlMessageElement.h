@@ -3,6 +3,8 @@
 #include <string>
 #include <windows.h>
 
+class Smileys;
+
 enum ChatControlMessageElementType
 {
 	CHAT_CONTROL_MESSAGE_ELEMENT_TEXT,
@@ -24,7 +26,7 @@ public:
 	~ChatControlMessageElement();
 
 	void calculateHeight(HDC deviceContext, int left, int right);
-	void render(HDC deviceContext, int y, int left, int right);
+	void render(HDC deviceContext, int y, int left, int right, Smileys &smileys);
 
 	int getHeight() const;
 

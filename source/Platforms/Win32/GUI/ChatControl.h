@@ -5,6 +5,7 @@
 class WhatsappChat;
 class ChatControlMessage;
 class JpegDecoder;
+class Smileys;
 
 #define WM_CHATCONTROL_SETCHAT (WM_USER+0)
 
@@ -12,6 +13,7 @@ class ChatControl
 {
 private:
 	JpegDecoder *jpegDecoder;
+	Smileys *smileys;
 
 	HWND window;
 	HGDIOBJ dateFont;

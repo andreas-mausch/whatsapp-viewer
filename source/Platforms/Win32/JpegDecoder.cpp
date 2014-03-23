@@ -40,6 +40,41 @@ HBITMAP JpegDecoder::loadImage(const std::string &filename)
 	return bitmap;
 }
 
+HBITMAP JpegDecoder::loadImageFromResource(const WCHAR *name, const WCHAR *type)
+{
+	HRSRC resource = FindResource(NULL, name, type);
+
+	if (resource == NULL)
+	{
+		throw Exception("could not find resource");
+	}
+
+	HGLOBAL resourceData = LoadResource(NULL, resource);
+
+	if (resourceData == NULL)
+	{
+		throw Exception("could not load resource");
+	}
+
+	unsigned char *bytes = reinterpret_cast<unsigned char *>(LockResource(resourceData));
+
+	if (bytes == NULL)
+	{
+		throw Exception("could not lock resource");
+	}
+
+	DWORD size = SizeofResource(NULL, resource);
+
+	if (size == NULL)
+	{
+		throw Exception("could not get size of resource");
+	}
+
+	HBITMAP bitmap = loadImage(bytes, size);
+
+	return bitmap;
+}
+
 HBITMAP JpegDecoder::loadImage(unsigned char *bytes, int size)
 {
 	IWICStream *stream = NULL;
