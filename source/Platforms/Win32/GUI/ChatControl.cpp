@@ -11,6 +11,7 @@
 #include "../../../Exceptions/Exception.h"
 #include "../../../WhatsApp/Chat.h"
 #include "../../../WhatsApp/Message.h"
+#include "../../../UTF8/utf8.h"
 
 ChatControl::ChatControl(HWND window)
 {
@@ -233,17 +234,12 @@ void ChatControl::drawMessage(ChatControlMessage &message, HDC deviceContext, in
 		color = RGB(190, 240, 150);
 	}
 
-	WCHAR *wcharText = message.getText();
+	// WCHAR *wcharText = message.getText();
 	WCHAR *wcharDate = message.getDateText();
 
 	SetBkColor(deviceContext, color);
 	SetTextColor(deviceContext, RGB(0, 0, 0));
 	RECT textRect = { left, y, right, y };
-	int height = 0;
-
-	DrawText(deviceContext, wcharText, -1, &textRect, DT_CALCRECT | DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
-	textRect.right = right;
-	height += textRect.bottom - textRect.top;
 
 	RECT dateRect = { left, 0, right, 0 };
 	HGDIOBJ oldFont = SelectObject(deviceContext, dateFont);
@@ -252,7 +248,6 @@ void ChatControl::drawMessage(ChatControlMessage &message, HDC deviceContext, in
 	dateRect.top = y + message.getHeight() - dateRect.bottom;
 	dateRect.bottom = y + message.getHeight();
 	SelectObject(deviceContext, oldFont);
-	height += dateRect.bottom - dateRect.top;
 
 	RECT completeRect = { left, y, right, y + message.getHeight() };
 
@@ -260,11 +255,11 @@ void ChatControl::drawMessage(ChatControlMessage &message, HDC deviceContext, in
 	FillRect(deviceContext, &completeRect, brush);
 	DeleteObject(brush);
 
-	if (message.getMessage().getMediaWhatsappType() == TEXT)
+	if (message.getMessage().getMediaWhatsappType() == MEDIA_WHATSAPP_TEXT)
 	{
-		DrawText(deviceContext, wcharText, -1, &textRect, DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
+		message.render(deviceContext, y, left, right);
 	}
-	else if (message.getMessage().getMediaWhatsappType() == IMAGE && message.getBitmap() != NULL)
+	else if (message.getMessage().getMediaWhatsappType() == MEDIA_WHATSAPP_IMAGE && message.getBitmap() != NULL)
 	{
 		renderBitmap(message.getBitmap(), left + 10, y, message.getHeight(), backbuffer);
 	}

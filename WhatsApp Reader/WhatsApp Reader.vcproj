@@ -269,6 +269,10 @@
 							>
 						</File>
 						<File
+							RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessageElement.cpp"
+							>
+						</File>
+						<File
 							RelativePath="..\source\Platforms\Win32\GUI\MainWindow.cpp"
 							>
 						</File>
@@ -380,6 +384,10 @@
 						</File>
 						<File
 							RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessage.h"
+							>
+						</File>
+						<File
+							RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessageElement.h"
 							>
 						</File>
 						<File

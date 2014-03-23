@@ -4,9 +4,9 @@
 
 enum MediaWhatsappType
 {
-	TEXT,
-	IMAGE,
-	AUDIO
+	MEDIA_WHATSAPP_TEXT,
+	MEDIA_WHATSAPP_IMAGE,
+	MEDIA_WHATSAPP_AUDIO
 };
 
 class WhatsappMessage

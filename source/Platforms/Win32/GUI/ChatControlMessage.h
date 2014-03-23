@@ -1,17 +1,22 @@
 #pragma once
 
+class ChatControlMessageElement;
 class JpegDecoder;
 class WhatsappMessage;
+
+#include <vector>
 
 class ChatControlMessage
 {
 private:
-	WCHAR *wcharText;
+	std::vector<ChatControlMessageElement *> elements;
 	WCHAR *wcharDate;
 	int height;
 	HBITMAP bitmap;
 
 	WhatsappMessage &message;
+
+	void splitMessage(WhatsappMessage &message);
 
 public:
 	ChatControlMessage(WhatsappMessage &message, JpegDecoder &jpegDecoder);
@@ -20,8 +25,10 @@ public:
 	void calculateHeight(HWND window, HGDIOBJ dateFont);
 
 	WhatsappMessage &getMessage();
-	WCHAR *getText();
 	WCHAR *getDateText();
 	int getHeight();
 	HBITMAP getBitmap();
+
+	void render(HDC deviceContext, int y, int left, int right);
+
 };
