@@ -1,0 +1,7 @@
+VSPerfCLREnv /traceon
+VsInstr "WhatsApp Viewer.exe"
+VsPerfCmd /start:trace /output:Report.vsp
+"WhatsApp Viewer.exe"
+VsPerfCmd /shutdown
+VSPerfCLREnv /off
+vsperfreport /summary:all Report.vsp
