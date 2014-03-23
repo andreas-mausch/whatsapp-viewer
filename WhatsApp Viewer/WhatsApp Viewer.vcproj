@@ -62,7 +62,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="comctl32.lib windowscodecs.lib Msimg32.lib"
 				OutputFile="$(SolutionDir)target\$(ProjectName).exe"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(SolutionDir)WhatsApp Viewer\$(ConfigurationName)\$(TargetName).pdb"
 				SubSystem="2"

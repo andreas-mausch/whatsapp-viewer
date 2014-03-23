@@ -4,7 +4,7 @@
 
 Log::Log()
 {
-	output.open("WhatsApp Reader.log");
+	output.open("WhatsApp Viewer.log");
 
 	if (!output)
 	{
@@ -43,7 +43,7 @@ void Log::logHexBuffer(const char *buffer, int length)
 {
 	int blocks = (length + aesBlocksize - 1) / aesBlocksize;
 
-	for (size_t block = 0; block < blocks; block++)
+	for (int block = 0; block < blocks; block++)
 	{
 		for (int byte = 0; byte < aesBlocksize; byte++)
 		{
@@ -58,7 +58,7 @@ void Log::logHexBuffer(const unsigned char *buffer, int length)
 {
 	int blocks = (length + aesBlocksize - 1) / aesBlocksize;
 
-	for (size_t block = 0; block < blocks; block++)
+	for (int block = 0; block < blocks; block++)
 	{
 		for (int byte = 0; byte < aesBlocksize; byte++)
 		{

@@ -315,17 +315,6 @@ public:
 
     // Zeroize sensitive information.
     memset((POINTER)&context, 0, sizeof (context));
-
-    writeToString() ;
-  }
-
-  /// Buffer must be 32+1 (nul) = 33 chars long at least 
-  void writeToString()
-  {
-    int pos ;
-
-    for( pos = 0 ; pos < 16 ; pos++ )
-      sprintf( digestChars+(pos*2), "%02x", digestRaw[pos] ) ;
   }
 
 
@@ -336,31 +325,6 @@ public:
   // This version of the digest is actually
   // a "printf'd" version of the digest.
   char digestChars[ 33 ] ;
-
-  /// Load a file from disk and digest it
-  // Digests a file and returns the result.
-  char* digestFile( char *filename )
-  {
-    Init() ;
-
-    FILE *file;
-    
-    int len;
-    unsigned char buffer[1024] ;
-
-    if( (file = fopen (filename, "rb")) == NULL )
-      printf( "%s can't be opened\n", filename ) ;
-    else
-    {
-      while( len = fread( buffer, 1, 1024, file ) )
-        Update( buffer, len ) ;
-      Final();
-
-      fclose( file );
-    }
-
-    return digestChars ;
-  }
 
   /// Digests a byte-array already in memory
   char* digestMemory( BYTE *memchunk, int len )

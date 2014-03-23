@@ -129,9 +129,10 @@ void ChatControlMessage::splitMessage(WhatsappMessage &message)
 		}
 	}
 
-	if (lastSplit < messageString.length() - 1)
+	int length = messageString.length();
+	if (lastSplit < length - 1)
 	{
-		std::string part = messageString.substr(lastSplit, messageString.length());
+		std::string part = messageString.substr(lastSplit, length);
 		elements.push_back(new ChatControlMessageElement(part));
 	}
 }

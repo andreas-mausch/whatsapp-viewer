@@ -9,7 +9,7 @@ void entryPoint()
 {
 	try
 	{
-		log << "WhatsApp Reader" << std::endl;
+		log << "WhatsApp Viewer" << std::endl;
 
 		MainWindow mainWindow;
 
