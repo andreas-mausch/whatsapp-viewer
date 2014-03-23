@@ -389,6 +389,26 @@
 					</Filter>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="UTF8"
+				>
+				<File
+					RelativePath="..\source\UTF8\checked.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\UTF8\core.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\UTF8\unchecked.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\UTF8\utf8.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Ressourcendateien"
