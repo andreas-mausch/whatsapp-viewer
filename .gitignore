@@ -8,4 +8,7 @@ WhatsApp Viewer/WhatsApp Viewer.log
 WhatsApp Viewer/msgstore.db
 WhatsApp Viewer/msgstore.db.crypt5
 
+data/msgstore.db
+data/msgstore.db.crypt5
+
 target/
