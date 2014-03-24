@@ -2,7 +2,6 @@
 // Microsoft Visual C++ generated include file.
 // Used by Resources.rc
 //
-#define IDI_ICON                        103
 #define IDD_MAIN                        104
 #define IDR_MENU1                       105
 #define IDR_MENU_MAIN                   105
@@ -853,6 +852,7 @@
 #define IDB_02935                       958
 #define IDB_03030                       959
 #define IDD_OPEN_FILE                   959
+#define IDI_ICON                        961
 #define IDC_MAIN_CHATS                  1001
 #define IDC_MAIN_MESSAGES               1002
 #define IDC_MAIN_STATUS                 1003
@@ -867,7 +867,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        960
+#define _APS_NEXT_RESOURCE_VALUE        963
 #define _APS_NEXT_COMMAND_VALUE         40003
 #define _APS_NEXT_CONTROL_VALUE         1006
 #define _APS_NEXT_SYMED_VALUE           101

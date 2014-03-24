@@ -79,15 +79,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Icon
-//
-
-// Icon with lowest ID value placed first to ensure application icon
-// remains consistent on all systems.
-IDI_ICON                ICON                    "Icon.ico"
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // DESIGNINFO
 //
 
@@ -981,6 +972,15 @@ IDB_02797               PNG                     "smileys\\02797.PNG"
 IDB_02934               PNG                     "smileys\\02934.PNG"
 IDB_02935               PNG                     "smileys\\02935.PNG"
 IDB_03030               PNG                     "smileys\\03030.PNG"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON                ICON                    "Icon.ico"
 #endif    // Deutsch (Deutschland) resources
 /////////////////////////////////////////////////////////////////////////////
 
