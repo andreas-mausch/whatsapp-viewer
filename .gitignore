@@ -1,12 +1,12 @@
 WhatsApp Viewer.ncb
 WhatsApp Viewer.suo
 
-WhatsApp Viewer/WhatsApp Viewer.vcproj.Hauptrechner.neonew.user
-WhatsApp Viewer/Debug
-WhatsApp Viewer/Release
-WhatsApp Viewer/WhatsApp Viewer.log
-WhatsApp Viewer/msgstore.db
-WhatsApp Viewer/msgstore.db.crypt5
+project/WhatsApp Viewer.vcproj.Hauptrechner.neonew.user
+project/Debug
+project/Release
+project/WhatsApp Viewer.log
+project/msgstore.db
+project/msgstore.db.crypt5
 
 data/msgstore.db
 data/msgstore.db.crypt5
