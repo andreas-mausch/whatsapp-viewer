@@ -11,6 +11,14 @@ How to use:
 
 Currently only text and image messages are supported (no audio, gps).
 You cannot see bigger images because only thumbnails are stored in the database.
-You see cryptic phone numbers because account names or details are not stored in the database.
+You see cryptic phone numbers because account names or details are not stored in the database (no support for wa.db yet).
 
 This release is not stable and known to crash sometimes. Sorry.
+
+Credits:
+	Whatsapp Xtract
+	pwncrypt5.py https://github.com/aramosf/pwncrypt5/blob/master/pwncrypt5.py
+	SQLite
+	MD5 http://bobobobo.wordpress.com/2010/10/17/md5-c-implementation/
+	UTF8 http://utfcpp.sourceforge.net/
+	AES https://polarssl.org/aes-source-code
