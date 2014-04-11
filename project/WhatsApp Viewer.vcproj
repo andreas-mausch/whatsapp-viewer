@@ -252,6 +252,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\source\Platforms\Win32\SettingsRegistry.cpp"
+						>
+					</File>
+					<File
 						RelativePath="..\source\Platforms\Win32\StringHelper.cpp"
 						>
 					</File>
@@ -327,6 +331,10 @@
 				RelativePath="..\resources\resource.h"
 				>
 			</File>
+			<File
+				RelativePath="..\source\Settings.h"
+				>
+			</File>
 			<Filter
 				Name="AES"
 				>
@@ -395,6 +403,10 @@
 					>
 					<File
 						RelativePath="..\source\Platforms\Win32\ImageDecoder.h"
+						>
+					</File>
+					<File
+						RelativePath="..\source\Platforms\Win32\SettingsRegistry.h"
 						>
 					</File>
 					<File

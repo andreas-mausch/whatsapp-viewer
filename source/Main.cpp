@@ -2,10 +2,12 @@
 #include "Main.h"
 #include "Exceptions/Exception.h"
 #include "Platforms/Win32/GUI/MainWindow.h"
+#include "Platforms/Win32/SettingsRegistry.h"
 
 void entryPoint()
 {
-	MainWindow mainWindow;
+	SettingsRegistry settingsRegistry;
+	MainWindow mainWindow(settingsRegistry);
 
 	bool run = true;
 	while (run)

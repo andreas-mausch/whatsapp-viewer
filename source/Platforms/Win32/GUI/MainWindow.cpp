@@ -6,6 +6,7 @@
 #include "ChatControl.h"
 #include "MainWindow.h"
 #include "OpenDatabaseDialog.h"
+#include "../../../Settings.h"
 #include "../../../../resources/resource.h"
 #include "../../../Exceptions/Exception.h"
 #include "../../../WhatsApp/Chat.h"
@@ -22,7 +23,8 @@
   "publicKeyToken='6595b64144ccf1df' "\
   "language='*'\"")
 
-MainWindow::MainWindow() : database(NULL)
+MainWindow::MainWindow(Settings &settings)
+	: settings(settings), database(NULL)
 {
 	CoInitialize(NULL);
 
@@ -34,6 +36,8 @@ MainWindow::MainWindow() : database(NULL)
 	ChatControl::registerChatControl();
 
 	getTempFilename();
+
+	readSettings();
 
 	CreateDialogParam(GetModuleHandle(NULL),
 		MAKEINTRESOURCE(IDD_MAIN),
@@ -53,6 +57,18 @@ MainWindow::~MainWindow()
 		WCHAR *filenameWchar = buildWcharString(tempFilename);
 		DeleteFile(filenameWchar);
 		delete[] filenameWchar;
+	}
+}
+
+void MainWindow::readSettings()
+{
+	try
+	{
+		lastDatabaseOpened.filename = settings.read("lastOpenedFile");
+		lastDatabaseOpened.accountName = settings.read("lastOpenedAccount");
+	}
+	catch (Exception &exception)
+	{
 	}
 }
 
@@ -221,6 +237,10 @@ void MainWindow::openDatabase()
 				filename = &tempFilename;
 			}
 
+			lastDatabaseOpened = openDatabaseStruct;
+			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
+			settings.write("lastOpenedAccount", lastDatabaseOpened.accountName);
+
 			database = new WhatsappDatabase(*filename);
 			database->getChats(chats);
 
@@ -244,6 +264,11 @@ void MainWindow::decryptDatabase()
 			buildKey(key, openDatabaseStruct.accountName);
 
 			decryptWhatsappDatabase(openDatabaseStruct.filename, "msgstore.decrypted.db", key);
+
+			lastDatabaseOpened = openDatabaseStruct;
+			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
+			settings.write("lastOpenedAccount", lastDatabaseOpened.accountName);
+
 			MessageBox(dialog, L"Database decrypted to file msgstore.decrypted.db", L"Success", MB_OK | MB_ICONINFORMATION);
 		}
 		catch (Exception &exception)
