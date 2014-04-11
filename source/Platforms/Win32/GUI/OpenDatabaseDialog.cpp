@@ -13,7 +13,11 @@ INT_PTR CALLBACK openDatabaseCallback(HWND dialog, UINT message, WPARAM wParam, 
     {
 		case WM_INITDIALOG:
 		{
+			openDatabaseStruct = reinterpret_cast<OpenDatabaseStruct *>(lParam);
 			SetWindowLongPtr(dialog, GWLP_USERDATA, lParam);
+
+			SetDlgItemText(dialog, IDC_OPEN_FILE_FILENAME, strtowstr(openDatabaseStruct->filename).c_str());
+			SetDlgItemText(dialog, IDC_OPEN_FILE_ACCOUNT_NAME, strtowstr(openDatabaseStruct->accountName).c_str());
 		} break;
         case WM_COMMAND:
 		{

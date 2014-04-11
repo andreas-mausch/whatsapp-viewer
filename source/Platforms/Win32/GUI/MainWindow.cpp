@@ -220,7 +220,7 @@ bool isUncryptedWhatsappDatabase(const std::string &filename)
 
 void MainWindow::openDatabase()
 {
-	OpenDatabaseStruct openDatabaseStruct;
+	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
 	if (DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_OPEN_FILE), dialog, openDatabaseCallback, reinterpret_cast<LPARAM>(&openDatabaseStruct)) == IDOK)
 	{
 		clearChats();
@@ -258,7 +258,7 @@ void MainWindow::openDatabase()
 
 void MainWindow::decryptDatabase()
 {
-	OpenDatabaseStruct openDatabaseStruct;
+	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
 	if (DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_OPEN_FILE), dialog, openDatabaseCallback, reinterpret_cast<LPARAM>(&openDatabaseStruct)) == IDOK)
 	{
 		try
