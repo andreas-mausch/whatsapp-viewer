@@ -81,8 +81,9 @@ void ChatControl::buildMessages()
 		}
 
 		calculateMessageHeights();
-		calculateScrollInfo();
 	}
+
+	calculateScrollInfo();
 }
 
 void ChatControl::clearMessages()

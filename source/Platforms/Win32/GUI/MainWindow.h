@@ -30,8 +30,7 @@ private:
 	void resizeChildWindows(int width, int height);
 	void addChats();
 	void addChat(WhatsappChat &chat);
-	void selectChat(int index);
-	void selectChat(WhatsappChat &chat);
+	void selectChat(WhatsappChat *chat);
 
 	void getTempFilename();
 	bool fileExists(const std::string &filename);

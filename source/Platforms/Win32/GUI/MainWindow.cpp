@@ -160,6 +160,8 @@ void MainWindow::addChats()
 	{
 		addChat(**it);
 	}
+
+	selectChat(NULL);
 }
 
 void MainWindow::addChat(WhatsappChat &chat)
@@ -179,9 +181,9 @@ void MainWindow::addChat(WhatsappChat &chat)
 	delete[] text;
 }
 
-void MainWindow::selectChat(WhatsappChat &chat)
+void MainWindow::selectChat(WhatsappChat *chat)
 {
-	SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL_SETCHAT, 0, reinterpret_cast<LPARAM>(&chat));
+	SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL_SETCHAT, 0, reinterpret_cast<LPARAM>(chat));
 }
 
 void MainWindow::resizeChildWindows(int width, int height)
@@ -223,6 +225,7 @@ void MainWindow::openDatabase()
 	{
 		clearChats();
 		delete database;
+		database = NULL;
 
 		try
 		{
@@ -243,13 +246,13 @@ void MainWindow::openDatabase()
 
 			database = new WhatsappDatabase(*filename);
 			database->getChats(chats);
-
-			addChats();
 		}
 		catch (Exception &exception)
 		{
 			displayException(exception);
 		}
+
+		addChats();
 	}
 }
 
@@ -351,7 +354,7 @@ INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPA
 								ListView_GetItem(GetDlgItem(dialog, IDC_MAIN_CHATS), &item);
 
 								WhatsappChat &chat = *reinterpret_cast<WhatsappChat *>(item.lParam);
-								mainWindow->selectChat(chat);
+								mainWindow->selectChat(&chat);
 							}
 						} break;
 					}
