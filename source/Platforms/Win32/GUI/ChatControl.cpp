@@ -360,6 +360,46 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 		{
 			return chatControl->onMousewheel(GET_WHEEL_DELTA_WPARAM(wParam));
 		} break;
+		case WM_KEYDOWN:
+		{
+			switch (wParam)
+			{
+				case VK_DOWN:
+				{
+					SendMessage(window, WM_VSCROLL, MAKELONG(SB_LINEDOWN, 0), 0);
+					return 0;
+				} break;
+				case VK_UP:
+				{
+					SendMessage(window, WM_VSCROLL, MAKELONG(SB_LINEUP, 0), 0);
+					return 0;
+				} break;
+				case VK_HOME:
+				{
+					SendMessage(window, WM_VSCROLL, MAKELONG(SB_TOP, 0), 0);
+					return 0;
+				} break;
+				case VK_END:
+				{
+					SendMessage(window, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), 0);
+					return 0;
+				} break;
+				case VK_PRIOR:
+				{
+					SendMessage(window, WM_VSCROLL, MAKELONG(SB_PAGEUP, 0), 0);
+					return 0;
+				} break;
+				case VK_NEXT:
+				{
+					SendMessage(window, WM_VSCROLL, MAKELONG(SB_PAGEDOWN, 0), 0);
+					return 0;
+				} break;
+			}
+         } break;
+		case WM_GETDLGCODE:
+		{
+			return DLGC_WANTARROWS;
+		} break;
 		case WM_SIZE:
 		{
 			chatControl->createBackbuffer();
