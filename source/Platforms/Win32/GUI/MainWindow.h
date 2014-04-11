@@ -32,6 +32,8 @@ private:
 	void addChat(WhatsappChat &chat);
 	void selectChat(WhatsappChat *chat);
 
+	void exportChat(WhatsappChat &chat);
+
 	void getTempFilename();
 	bool fileExists(const std::string &filename);
 

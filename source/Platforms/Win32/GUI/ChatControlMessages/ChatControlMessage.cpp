@@ -8,7 +8,7 @@
 ChatControlMessage::ChatControlMessage(WhatsappMessage &message, HGDIOBJ dateFont)
 	: message(message), dateFont(dateFont)
 {
-	wcharDate = buildTimestampString(message.getTimestamp());
+	wcharDate = buildTimestampStringW(message.getTimestamp());
 }
 
 ChatControlMessage::~ChatControlMessage()

@@ -1,3 +1,6 @@
 #pragma once
 
-WCHAR *buildTimestampString(long long timestamp);
+#include <string>
+
+std::string buildTimestampString(long long timestamp);
+WCHAR *buildTimestampStringW(long long timestamp);
