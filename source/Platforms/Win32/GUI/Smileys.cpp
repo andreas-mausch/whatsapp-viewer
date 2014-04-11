@@ -7,7 +7,7 @@
 #include "../../../Exceptions/Exception.h"
 #include "../../../../resources/resource.h"
 
-Smileys::Smileys(JpegDecoder &jpegDecoder) : jpegDecoder(jpegDecoder)
+Smileys::Smileys(ImageDecoder &imageDecoder) : imageDecoder(imageDecoder)
 {
 	for (int i = 0; i < smileyCount; i++)
 	{
@@ -25,7 +25,7 @@ Smileys::~Smileys()
 
 void Smileys::load(int character, const WCHAR *name)
 {
-	HBITMAP bitmap = jpegDecoder.loadImageFromResource(name, L"PNG");
+	HBITMAP bitmap = imageDecoder.loadImageFromResource(name, L"PNG");
 	Smiley *smiley = new Smiley(character, bitmap);
 	smileys.push_back(smiley);
 }

@@ -9,7 +9,7 @@
 #include "ChatControlMessages/ChatControlMessageImage.h"
 #include "ChatControlMessages/ChatControlMessageText.h"
 #include "Smileys.h"
-#include "../JpegDecoder.h"
+#include "../ImageDecoder.h"
 #include "../StringHelper.h"
 #include "../../../Exceptions/Exception.h"
 #include "../../../WhatsApp/Chat.h"
@@ -18,8 +18,8 @@
 
 ChatControl::ChatControl(HWND window)
 {
-	jpegDecoder = new JpegDecoder();
-	smileys = new Smileys(*jpegDecoder);
+	imageDecoder = new ImageDecoder();
+	smileys = new Smileys(*imageDecoder);
 	this->window = window;
 	dateFont = CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New");
 	chat = NULL;
@@ -29,7 +29,7 @@ ChatControl::~ChatControl()
 {
 	clearMessages();
 	delete smileys;
-	delete jpegDecoder;
+	delete imageDecoder;
 }
 
 void ChatControl::registerChatControl()
@@ -69,7 +69,7 @@ void ChatControl::buildMessages()
 				{
 					if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
 					{
-						chatControlMessage = new ChatControlMessageImage(message, dateFont, *jpegDecoder);
+						chatControlMessage = new ChatControlMessageImage(message, dateFont, *imageDecoder);
 					}
 				} break;
 			}

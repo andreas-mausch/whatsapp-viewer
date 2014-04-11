@@ -3,7 +3,7 @@
 #include <vector>
 #include "ChatControlMessage.h"
 
-class JpegDecoder;
+class ImageDecoder;
 class WhatsappMessage;
 
 class ChatControlMessageImage : public ChatControlMessage
@@ -13,7 +13,7 @@ private:
 	int height;
 
 public:
-	ChatControlMessageImage(WhatsappMessage &message, HGDIOBJ dateFont, JpegDecoder &imageDecoder);
+	ChatControlMessageImage(WhatsappMessage &message, HGDIOBJ dateFont, ImageDecoder &imageDecoder);
 	virtual ~ChatControlMessageImage();
 
 	virtual void calculateHeight(HWND window);

@@ -5,9 +5,9 @@
 
 #include "../../Exceptions/Exception.h"
 #include "StringHelper.h"
-#include "JpegDecoder.h"
+#include "ImageDecoder.h"
 
-JpegDecoder::JpegDecoder()
+ImageDecoder::ImageDecoder()
 {
 	if (FAILED(CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, reinterpret_cast<void **>(&factory))))
 	{
@@ -15,12 +15,12 @@ JpegDecoder::JpegDecoder()
 	}
 }
 
-JpegDecoder::~JpegDecoder()
+ImageDecoder::~ImageDecoder()
 {
 	factory->Release();
 }
 
-HBITMAP JpegDecoder::loadImage(const std::string &filename)
+HBITMAP ImageDecoder::loadImage(const std::string &filename)
 {
 	WCHAR *wcharFilename = buildWcharString(filename);
 	IWICBitmapDecoder *decoder = NULL;
@@ -40,7 +40,7 @@ HBITMAP JpegDecoder::loadImage(const std::string &filename)
 	return bitmap;
 }
 
-HBITMAP JpegDecoder::loadImageFromResource(const WCHAR *name, const WCHAR *type)
+HBITMAP ImageDecoder::loadImageFromResource(const WCHAR *name, const WCHAR *type)
 {
 	HRSRC resource = FindResource(NULL, name, type);
 
@@ -75,7 +75,7 @@ HBITMAP JpegDecoder::loadImageFromResource(const WCHAR *name, const WCHAR *type)
 	return bitmap;
 }
 
-HBITMAP JpegDecoder::loadImage(unsigned char *bytes, int size)
+HBITMAP ImageDecoder::loadImage(unsigned char *bytes, int size)
 {
 	IWICStream *stream = NULL;
 	if (FAILED(factory->CreateStream(&stream)))
@@ -102,7 +102,7 @@ HBITMAP JpegDecoder::loadImage(unsigned char *bytes, int size)
 	return bitmap;
 }
 
-HBITMAP JpegDecoder::loadImage(IWICBitmapDecoder *decoder)
+HBITMAP ImageDecoder::loadImage(IWICBitmapDecoder *decoder)
 {
 	IWICBitmapFrameDecode *frame = NULL;
 	if (FAILED(decoder->GetFrame(0, &frame)))

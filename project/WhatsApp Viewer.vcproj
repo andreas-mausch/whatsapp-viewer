@@ -248,7 +248,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\source\Platforms\Win32\JpegDecoder.cpp"
+						RelativePath="..\source\Platforms\Win32\ImageDecoder.cpp"
 						>
 					</File>
 					<File
@@ -394,7 +394,7 @@
 					Name="Win32"
 					>
 					<File
-						RelativePath="..\source\Platforms\Win32\JpegDecoder.h"
+						RelativePath="..\source\Platforms\Win32\ImageDecoder.h"
 						>
 					</File>
 					<File

@@ -2,11 +2,11 @@
 
 #include "ChatControlMessageImage.h"
 #include "../../../../WhatsApp/Message.h"
-#include "../../JpegDecoder.h"
+#include "../../ImageDecoder.h"
 #include "../../StringHelper.h"
 #include "../../Timestamp.h"
 
-ChatControlMessageImage::ChatControlMessageImage(WhatsappMessage &message, HGDIOBJ dateFont, JpegDecoder &imageDecoder)
+ChatControlMessageImage::ChatControlMessageImage(WhatsappMessage &message, HGDIOBJ dateFont, ImageDecoder &imageDecoder)
 	: ChatControlMessage(message, dateFont), height(0)
 {
 	bitmap = imageDecoder.loadImage(message.getRawData(), message.getRawDataSize());

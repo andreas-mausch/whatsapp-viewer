@@ -3,7 +3,7 @@
 struct IWICImagingFactory;
 struct IWICBitmapDecoder;
 
-class JpegDecoder
+class ImageDecoder
 {
 private:
 	IWICImagingFactory *factory;
@@ -11,8 +11,8 @@ private:
 	HBITMAP loadImage(IWICBitmapDecoder *decoder);
 
 public:
-	JpegDecoder();
-	~JpegDecoder();
+	ImageDecoder();
+	~ImageDecoder();
 
 	HBITMAP loadImage(const std::string &filename);
 	HBITMAP loadImageFromResource(const WCHAR *name, const WCHAR *type);
