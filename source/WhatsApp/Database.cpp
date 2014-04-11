@@ -34,10 +34,7 @@ WhatsappDatabase::~WhatsappDatabase()
 void WhatsappDatabase::getChats(std::vector<WhatsappChat*> &chats)
 {
 	sqlite3_stmt *res;
-	const char *tail;
-	int error = sqlite3_prepare_v2(sqLiteDatabase,
-        "SELECT * FROM chat_list",
-        1000, &res, &tail);
+	int error = sqlite3_prepare_v2(sqLiteDatabase, "SELECT * FROM chat_list", -1, &res, NULL);
 
 	if (error != SQLITE_OK)
 	{
@@ -63,8 +60,7 @@ void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<Whatsa
 	query << "SELECT * FROM messages where key_remote_jid = '" << chatId << "' order by timestamp asc";
 
 	sqlite3_stmt *res;
-	const char *tail;
-	int error = sqlite3_prepare_v2(sqLiteDatabase, query.str().c_str(), 1000, &res, &tail);
+	int error = sqlite3_prepare_v2(sqLiteDatabase, query.str().c_str(), -1, &res, NULL);
 
 	if (error != SQLITE_OK)
 	{
