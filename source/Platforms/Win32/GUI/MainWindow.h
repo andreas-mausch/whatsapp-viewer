@@ -17,6 +17,7 @@ private:
 	std::string tempFilename;
 
 	void openDatabase();
+	void decryptDatabase();
 	void clearChats();
 
 	void createChildWindows();

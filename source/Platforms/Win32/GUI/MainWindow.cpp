@@ -209,6 +209,25 @@ void MainWindow::openDatabase()
 	}
 }
 
+void MainWindow::decryptDatabase()
+{
+	OpenFileDialogStruct openFileDialogStruct;
+	if (DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_OPEN_FILE), dialog, openFileCallback, reinterpret_cast<LPARAM>(&openFileDialogStruct)) == IDOK)
+	{
+		try
+		{
+			unsigned char key[24];
+			buildKey(key, openFileDialogStruct.accountName);
+
+			decryptWhatsappDatabase(openFileDialogStruct.filename, "msgstore.decrypted.db", key);
+		}
+		catch (Exception &exception)
+		{
+			displayException(exception);
+		}
+	}
+}
+
 void MainWindow::displayException(Exception &exception)
 {
 	WCHAR *cause = buildWcharString(exception.getCause());
@@ -246,6 +265,10 @@ INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPA
 				case ID_MENU_MAIN_FILE_OPEN:
 				{
 					mainWindow->openDatabase();
+				} break;
+				case ID_MENU_MAIN_FILE_DECRYPT:
+				{
+					mainWindow->decryptDatabase();
 				} break;
 			}
 		} break;

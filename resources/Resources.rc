@@ -117,6 +117,7 @@ BEGIN
     POPUP "File"
     BEGIN
         MENUITEM "Open...",                     ID_MENU_MAIN_FILE_OPEN
+        MENUITEM "Decrypt...",                  ID_MENU_MAIN_FILE_DECRYPT
     END
 END
 
