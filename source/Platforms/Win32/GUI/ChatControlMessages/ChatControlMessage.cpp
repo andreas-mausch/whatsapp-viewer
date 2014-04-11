@@ -1,148 +1,78 @@
 #include <windows.h>
 
 #include "ChatControlMessage.h"
-#include "ChatControlMessageElement.h"
-#include "SmileyList.h"
-#include "../../../WhatsApp/Message.h"
-#include "../../../UTF8/utf8.h"
-#include "../JpegDecoder.h"
-#include "../StringHelper.h"
-#include "../Timestamp.h"
+#include "../../StringHelper.h"
+#include "../../Timestamp.h"
+#include "../../../../WhatsApp/Message.h"
 
-ChatControlMessage::ChatControlMessage(WhatsappMessage &message, JpegDecoder &jpegDecoder) : message(message), bitmap(NULL)
+ChatControlMessage::ChatControlMessage(WhatsappMessage &message, HGDIOBJ dateFont)
+	: message(message), dateFont(dateFont)
 {
-	splitMessage(message);
 	wcharDate = buildTimestampString(message.getTimestamp());
-	height = 0;
-
-	if (message.getMediaWhatsappType() == MEDIA_WHATSAPP_IMAGE && message.getRawDataSize() > 0 && message.getRawData() != NULL)
-	{
-		bitmap = jpegDecoder.loadImage(message.getRawData(), message.getRawDataSize());
-	}
 }
 
 ChatControlMessage::~ChatControlMessage()
 {
-	if (bitmap != NULL)
-	{
-		DeleteObject(bitmap);
-	}
-	for (std::vector<ChatControlMessageElement *>::iterator it = elements.begin(); it != elements.end(); it++)
-	{
-		delete *it;
-	}
-
 	delete[] wcharDate;
 }
 
-WhatsappMessage &ChatControlMessage::getMessage()
+void ChatControlMessage::render(HDC deviceContext, int y, int left, int right)
 {
-	return message;
-}
-
-WCHAR *ChatControlMessage::getDateText()
-{
-	return wcharDate;
-}
-
-int ChatControlMessage::getHeight()
-{
-	return height;
-}
-
-void ChatControlMessage::calculateHeight(HWND window, HGDIOBJ dateFont)
-{
-	RECT clientRect;
-	GetClientRect(window, &clientRect);
-
-	HDC deviceContext = GetDC(window);
-
 	int gap = 40;
-	int left = 10;
-	int right = clientRect.right - gap - 10;
-	height = 0;
+	int color;
 
-	for (std::vector<ChatControlMessageElement *>::iterator it = elements.begin(); it != elements.end(); it++)
+	if (fromMe())
 	{
-		ChatControlMessageElement &element = **it;
-		element.calculateHeight(deviceContext, left, right);
-		height += element.getHeight();
+		left += gap;
+		color = RGB(190, 240, 150);
+	}
+	else
+	{
+		right -= gap;
+		color = RGB(230, 230, 240);
 	}
 
-	RECT dateRect = { left, height, right, height };
+	renderBox(deviceContext, y, left, right, color);
+	renderInner(deviceContext, y, left, right);
+}
+
+void ChatControlMessage::renderBox(HDC deviceContext, int y, int left, int right, int color)
+{
+
+	SetBkColor(deviceContext, color);
+	RECT textRect = { left, y, right, y };
+
+	RECT dateRect = { left, 0, right, 0 };
+	HGDIOBJ oldFont = SelectObject(deviceContext, dateFont);
+	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_CALCRECT | DT_WORDBREAK | DT_RIGHT);
+	dateRect.right = right;
+	dateRect.top = y + getHeight() - dateRect.bottom;
+	dateRect.bottom = y + getHeight();
+	SelectObject(deviceContext, oldFont);
+
+	RECT completeRect = { left, y, right, y + getHeight() };
+
+	HBRUSH brush = CreateSolidBrush(color);
+	FillRect(deviceContext, &completeRect, brush);
+	DeleteObject(brush);
+
+	oldFont = SelectObject(deviceContext, dateFont);
+	SetTextColor(deviceContext, RGB(110, 110, 110));
+	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_WORDBREAK | DT_RIGHT);
+	SelectObject(deviceContext, oldFont);
+}
+
+bool ChatControlMessage::fromMe()
+{
+	return message.isFromMe();
+}
+
+int ChatControlMessage::getDateHeight(HDC deviceContext, int left, int right)
+{
+	RECT dateRect = { left, 0, right, 0 };
 	HGDIOBJ oldFont = SelectObject(deviceContext, dateFont);
 	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_CALCRECT | DT_WORDBREAK | DT_RIGHT);
 	dateRect.right = right;
 	SelectObject(deviceContext, oldFont);
-	height += dateRect.bottom - dateRect.top;
-
-	if (message.getMediaWhatsappType() == MEDIA_WHATSAPP_IMAGE && bitmap != NULL)
-	{
-		BITMAP bitmapObject;
-		GetObject(bitmap, sizeof(bitmapObject), &bitmapObject);
-		height += bitmapObject.bmHeight;
-	}
-
-	ReleaseDC(window, deviceContext);
-}
-
-HBITMAP ChatControlMessage::getBitmap()
-{
-	return bitmap;
-}
-
-bool isSmiley(int character)
-{
-	for (int i = 0; i < smileyCount; i++)
-	{
-		if (smileyList[i].character == character)
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
-void ChatControlMessage::splitMessage(WhatsappMessage &message)
-{
-	std::string messageString = message.getData();
-	int lastSplit = 0;
-	for (std::string::iterator it = messageString.begin(); it != messageString.end();)
-	{
-		bool begin = (it - messageString.begin()) == lastSplit;
-		std::string::iterator before = it;
-		int character = utf8::next(it, messageString.end());
-
-		if (isSmiley(character))
-		{
-			if (!begin)
-			{
-				int end = it - messageString.begin();
-				std::string leftPart = messageString.substr(lastSplit, before - messageString.begin());
-				elements.push_back(new ChatControlMessageElement(leftPart));
-			}
-
-			elements.push_back(new ChatControlMessageElement(character));
-
-			lastSplit = (it - messageString.begin());
-		}
-	}
-
-	int length = messageString.length();
-	if (lastSplit < length - 1)
-	{
-		std::string part = messageString.substr(lastSplit, length);
-		elements.push_back(new ChatControlMessageElement(part));
-	}
-}
-
-void ChatControlMessage::render(HDC deviceContext, int y, int left, int right, Smileys &smileys)
-{
-	for (std::vector<ChatControlMessageElement *>::iterator it = elements.begin(); it != elements.end(); it++)
-	{
-		ChatControlMessageElement &element = **it;
-		element.render(deviceContext, y, left, right, smileys);
-		y += element.getHeight();
-	}
+	return dateRect.bottom - dateRect.top;
 }

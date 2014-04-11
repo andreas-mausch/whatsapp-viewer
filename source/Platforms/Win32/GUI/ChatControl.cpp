@@ -5,7 +5,9 @@
 #include <fstream>
 
 #include "ChatControl.h"
-#include "ChatControlMessage.h"
+#include "ChatControlMessages/ChatControlMessage.h"
+#include "ChatControlMessages/ChatControlMessageImage.h"
+#include "ChatControlMessages/ChatControlMessageText.h"
 #include "Smileys.h"
 #include "../JpegDecoder.h"
 #include "../StringHelper.h"
@@ -55,8 +57,27 @@ void ChatControl::buildMessages()
 		for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
 		{
 			WhatsappMessage &message = **it;
-			ChatControlMessage *chatControlMessage = new ChatControlMessage(message, *jpegDecoder);
-			this->messages.push_back(chatControlMessage);
+			ChatControlMessage *chatControlMessage = NULL;
+			
+			switch (message.getMediaWhatsappType())
+			{
+				case MEDIA_WHATSAPP_TEXT:
+				{
+					chatControlMessage = new ChatControlMessageText(message, dateFont, *smileys);
+				} break;
+				case MEDIA_WHATSAPP_IMAGE:
+				{
+					if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
+					{
+						chatControlMessage = new ChatControlMessageImage(message, dateFont, *jpegDecoder);
+					}
+				} break;
+			}
+
+			if (chatControlMessage != NULL)
+			{
+				this->messages.push_back(chatControlMessage);
+			}
 		}
 
 		calculateMessageHeights();
@@ -78,7 +99,7 @@ void ChatControl::calculateMessageHeights()
 	for (std::vector<ChatControlMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
 	{
 		ChatControlMessage &message = **it;
-		message.calculateHeight(window, dateFont);
+		message.calculateHeight(window);
 	}
 }
 
@@ -190,7 +211,7 @@ LRESULT ChatControl::onPaint()
 
 			if (y + message.getHeight() - scrollPosition > 0)
 			{
-				drawMessage(message, backbuffer, y - scrollPosition, clientRect.right, dateFont);
+				message.render(backbuffer, y - scrollPosition, 10, clientRect.right - 10);
 			}
 			y += message.getHeight();
 			y += 8;
@@ -208,68 +229,6 @@ LRESULT ChatControl::onPaint()
 	EndPaint(window, &paint);
 
 	return 0;
-}
-
-void renderBitmap(HBITMAP bitmapHandle, int x, int y, int height, HDC deviceContext)
-{
-	BITMAP bitmap;
-	HDC hdcMem = CreateCompatibleDC(deviceContext);
-	HGDIOBJ oldBitmap = SelectObject(hdcMem, bitmapHandle);
-
-	GetObject(bitmapHandle, sizeof(bitmap), &bitmap);
-	BitBlt(deviceContext, x, y + (height - bitmap.bmHeight) / 2, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
-
-	SelectObject(hdcMem, oldBitmap);
-	DeleteDC(hdcMem);
-}
-
-void ChatControl::drawMessage(ChatControlMessage &message, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont)
-{
-	int gap = 40;
-	int left = 10;
-	int right = clientRectWidth - gap - 10;
-	int color = RGB(230, 230, 240);
-
-	if (message.getMessage().isFromMe())
-	{
-		left = 10 + gap;
-		right = clientRectWidth - 10;
-		color = RGB(190, 240, 150);
-	}
-
-	WCHAR *wcharDate = message.getDateText();
-
-	SetBkColor(deviceContext, color);
-	SetTextColor(deviceContext, RGB(0, 0, 0));
-	RECT textRect = { left, y, right, y };
-
-	RECT dateRect = { left, 0, right, 0 };
-	HGDIOBJ oldFont = SelectObject(deviceContext, dateFont);
-	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_CALCRECT | DT_WORDBREAK | DT_RIGHT);
-	dateRect.right = right;
-	dateRect.top = y + message.getHeight() - dateRect.bottom;
-	dateRect.bottom = y + message.getHeight();
-	SelectObject(deviceContext, oldFont);
-
-	RECT completeRect = { left, y, right, y + message.getHeight() };
-
-	HBRUSH brush = CreateSolidBrush(color);
-	FillRect(deviceContext, &completeRect, brush);
-	DeleteObject(brush);
-
-	if (message.getMessage().getMediaWhatsappType() == MEDIA_WHATSAPP_TEXT)
-	{
-		message.render(deviceContext, y, left, right, *smileys);
-	}
-	else if (message.getMessage().getMediaWhatsappType() == MEDIA_WHATSAPP_IMAGE && message.getBitmap() != NULL)
-	{
-		renderBitmap(message.getBitmap(), left + 10, y, message.getHeight(), backbuffer);
-	}
-
-	oldFont = SelectObject(deviceContext, dateFont);
-	SetTextColor(deviceContext, RGB(110, 110, 110));
-	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_WORDBREAK | DT_RIGHT);
-	SelectObject(deviceContext, oldFont);
 }
 
 void ChatControl::redraw()

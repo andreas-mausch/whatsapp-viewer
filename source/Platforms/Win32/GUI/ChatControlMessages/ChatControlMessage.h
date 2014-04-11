@@ -1,35 +1,29 @@
 #pragma once
 
-class ChatControlMessageElement;
-class JpegDecoder;
 class WhatsappMessage;
-class Smileys;
-
-#include <vector>
 
 class ChatControlMessage
 {
 private:
-	std::vector<ChatControlMessageElement *> elements;
-	WCHAR *wcharDate;
-	int height;
-	HBITMAP bitmap;
-
 	WhatsappMessage &message;
+	WCHAR *wcharDate;
+	HGDIOBJ dateFont;
 
-	void splitMessage(WhatsappMessage &message);
+	bool fromMe();
+
+	void renderBox(HDC deviceContext, int y, int left, int right, int color);
+	virtual void renderInner(HDC deviceContext, int y, int left, int right) = 0;
+
+protected:
+	int getDateHeight(HDC deviceContext, int left, int right);
 
 public:
-	ChatControlMessage(WhatsappMessage &message, JpegDecoder &jpegDecoder);
-	~ChatControlMessage();
+	ChatControlMessage(WhatsappMessage &message, HGDIOBJ dateFont);
+	virtual ~ChatControlMessage();
 
-	void calculateHeight(HWND window, HGDIOBJ dateFont);
+	virtual void calculateHeight(HWND window) = 0;
+	virtual int getHeight() = 0;
 
-	WhatsappMessage &getMessage();
-	WCHAR *getDateText();
-	int getHeight();
-	HBITMAP getBitmap();
-
-	void render(HDC deviceContext, int y, int left, int right, Smileys &smileys);
+	void render(HDC deviceContext, int y, int left, int right);
 
 };
