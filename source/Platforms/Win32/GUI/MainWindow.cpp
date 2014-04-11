@@ -202,20 +202,20 @@ bool isUncryptedWhatsappDatabase(const std::string &filename)
 
 void MainWindow::openDatabase()
 {
-	OpenFileDialogStruct openFileDialogStruct;
-	if (DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_OPEN_FILE), dialog, openFileCallback, reinterpret_cast<LPARAM>(&openFileDialogStruct)) == IDOK)
+	OpenDatabaseStruct openDatabaseStruct;
+	if (DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_OPEN_FILE), dialog, openDatabaseCallback, reinterpret_cast<LPARAM>(&openDatabaseStruct)) == IDOK)
 	{
 		clearChats();
 		delete database;
 
 		try
 		{
-			const std::string *filename = &openFileDialogStruct.filename;
+			const std::string *filename = &openDatabaseStruct.filename;
 
 			if (!isUncryptedWhatsappDatabase(*filename))
 			{
 				unsigned char key[24];
-				buildKey(key, openFileDialogStruct.accountName);
+				buildKey(key, openDatabaseStruct.accountName);
 
 				decryptWhatsappDatabase(*filename, tempFilename, key);
 				filename = &tempFilename;
@@ -235,15 +235,15 @@ void MainWindow::openDatabase()
 
 void MainWindow::decryptDatabase()
 {
-	OpenFileDialogStruct openFileDialogStruct;
-	if (DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_OPEN_FILE), dialog, openFileCallback, reinterpret_cast<LPARAM>(&openFileDialogStruct)) == IDOK)
+	OpenDatabaseStruct openDatabaseStruct;
+	if (DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_OPEN_FILE), dialog, openDatabaseCallback, reinterpret_cast<LPARAM>(&openDatabaseStruct)) == IDOK)
 	{
 		try
 		{
 			unsigned char key[24];
-			buildKey(key, openFileDialogStruct.accountName);
+			buildKey(key, openDatabaseStruct.accountName);
 
-			decryptWhatsappDatabase(openFileDialogStruct.filename, "msgstore.decrypted.db", key);
+			decryptWhatsappDatabase(openDatabaseStruct.filename, "msgstore.decrypted.db", key);
 			MessageBox(dialog, L"Database decrypted to file msgstore.decrypted.db", L"Success", MB_OK | MB_ICONINFORMATION);
 		}
 		catch (Exception &exception)

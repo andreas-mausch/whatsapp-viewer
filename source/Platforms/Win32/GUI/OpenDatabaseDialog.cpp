@@ -5,9 +5,9 @@
 #include "../StringHelper.h"
 #include "../../../../resources/resource.h"
 
-INT_PTR CALLBACK openFileCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK openDatabaseCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	OpenFileDialogStruct *openFileDialogStruct = reinterpret_cast<OpenFileDialogStruct *>(GetWindowLongPtr(dialog, GWLP_USERDATA));
+	OpenDatabaseStruct *openDatabaseStruct = reinterpret_cast<OpenDatabaseStruct *>(GetWindowLongPtr(dialog, GWLP_USERDATA));
 
 	switch (message)
     {
@@ -49,8 +49,8 @@ INT_PTR CALLBACK openFileCallback(HWND dialog, UINT message, WPARAM wParam, LPAR
 					GetDlgItemText(dialog, IDC_OPEN_FILE_FILENAME, filename, MAX_PATH);
 					GetDlgItemText(dialog, IDC_OPEN_FILE_ACCOUNT_NAME, accountName, 256);
 
-					openFileDialogStruct->filename = wstrtostr(filename);
-					openFileDialogStruct->accountName = wstrtostr(accountName);
+					openDatabaseStruct->filename = wstrtostr(filename);
+					openDatabaseStruct->accountName = wstrtostr(accountName);
 
 					EndDialog(dialog, LOWORD(wParam));
 					return TRUE;

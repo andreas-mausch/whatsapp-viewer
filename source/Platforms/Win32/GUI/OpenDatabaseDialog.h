@@ -1,9 +1,9 @@
 #pragma once
 
-struct OpenFileDialogStruct
+struct OpenDatabaseStruct
 {
 	std::string filename;
 	std::string accountName;
 };
 
-INT_PTR CALLBACK openFileCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK openDatabaseCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam);
