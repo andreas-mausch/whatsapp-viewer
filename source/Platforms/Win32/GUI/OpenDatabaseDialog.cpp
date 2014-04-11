@@ -30,7 +30,7 @@ INT_PTR CALLBACK openFileCallback(HWND dialog, UINT message, WPARAM wParam, LPAR
 					openFilename.hwndOwner = dialog;
 					openFilename.lpstrFile = filename;
 					openFilename.nMaxFile = MAX_PATH;
-					openFilename.lpstrFilter = L"WhatsApp Databases (*.crypt5)\0*.crypt5\0";
+					openFilename.lpstrFilter = L"WhatsApp Databases (*.db; *.crypt5)\0*.db;*.crypt5\0";
 					openFilename.lpstrInitialDir = NULL;
 					openFilename.lpstrDefExt = L"";
 					openFilename.Flags = OFN_EXPLORER | OFN_ENABLESIZING | OFN_HIDEREADONLY;

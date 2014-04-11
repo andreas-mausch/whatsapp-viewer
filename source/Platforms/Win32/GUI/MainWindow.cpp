@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <commctrl.h>
+#include <fstream>
 #include <vector>
 
 #include "ChatControl.h"
@@ -182,6 +183,23 @@ void MainWindow::clearChats()
 	chats.clear();
 }
 
+bool isUncryptedWhatsappDatabase(const std::string &filename)
+{
+	std::ifstream file(filename.c_str(), std::ios_base::in | std::ios_base::binary);
+	if (!file)
+	{
+		return false;
+	}
+
+	const char expectedBytes[] = "SQLite format 3";
+	const int length = sizeof(expectedBytes);
+	char bytes[length];
+
+	file.read(bytes, length);
+
+	return memcmp(bytes, expectedBytes, length) == 0;
+}
+
 void MainWindow::openDatabase()
 {
 	OpenFileDialogStruct openFileDialogStruct;
@@ -192,12 +210,18 @@ void MainWindow::openDatabase()
 
 		try
 		{
-			unsigned char key[24];
-			buildKey(key, openFileDialogStruct.accountName);
+			const std::string *filename = &openFileDialogStruct.filename;
 
-			decryptWhatsappDatabase(openFileDialogStruct.filename, tempFilename, key);
+			if (!isUncryptedWhatsappDatabase(*filename))
+			{
+				unsigned char key[24];
+				buildKey(key, openFileDialogStruct.accountName);
 
-			database = new WhatsappDatabase(tempFilename);
+				decryptWhatsappDatabase(*filename, tempFilename, key);
+				filename = &tempFilename;
+			}
+
+			database = new WhatsappDatabase(*filename);
 			database->getChats(chats);
 
 			addChats();
@@ -220,6 +244,7 @@ void MainWindow::decryptDatabase()
 			buildKey(key, openFileDialogStruct.accountName);
 
 			decryptWhatsappDatabase(openFileDialogStruct.filename, "msgstore.decrypted.db", key);
+			MessageBox(dialog, L"Database decrypted to file msgstore.decrypted.db", L"Success", MB_OK | MB_ICONINFORMATION);
 		}
 		catch (Exception &exception)
 		{
