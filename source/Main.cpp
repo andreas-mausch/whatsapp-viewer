@@ -1,3 +1,7 @@
+#ifdef _DEBUG
+	#include <vld.h>
+#endif
+
 #include "Log.h"
 #include "Main.h"
 #include "Exceptions/Exception.h"
