@@ -34,9 +34,7 @@ WhatsappDatabase::~WhatsappDatabase()
 void WhatsappDatabase::getChats(std::vector<WhatsappChat*> &chats)
 {
 	sqlite3_stmt *res;
-	int error = sqlite3_prepare_v2(sqLiteDatabase, "SELECT * FROM chat_list", -1, &res, NULL);
-
-	if (error != SQLITE_OK)
+	if (sqlite3_prepare_v2(sqLiteDatabase, "SELECT * FROM chat_list", -1, &res, NULL) != SQLITE_OK)
 	{
 		throw Exception("Could not load chat list");
 	}
@@ -56,15 +54,17 @@ void WhatsappDatabase::getChats(std::vector<WhatsappChat*> &chats)
 
 void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<WhatsappMessage*> &messages)
 {
-	std::ostringstream query;
-	query << "SELECT * FROM messages where key_remote_jid = '" << chatId << "' order by timestamp asc";
+	const char *query = "SELECT * FROM messages where key_remote_jid = ? order by timestamp asc";
 
 	sqlite3_stmt *res;
-	int error = sqlite3_prepare_v2(sqLiteDatabase, query.str().c_str(), -1, &res, NULL);
-
-	if (error != SQLITE_OK)
+	if (sqlite3_prepare_v2(sqLiteDatabase, query, -1, &res, NULL) != SQLITE_OK)
 	{
 		throw Exception("Could not load messages");
+	}
+
+	if (sqlite3_bind_text(res, 1, chatId.c_str(), -1, SQLITE_STATIC) != SQLITE_OK)
+	{
+		throw Exception("Could not bind sql parameter");
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW)
