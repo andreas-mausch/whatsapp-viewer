@@ -1,0 +1,1 @@
+sqlite3 test-database.db < test-database.sql

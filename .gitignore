@@ -8,6 +8,9 @@ project/WhatsApp Viewer.log
 project/msgstore.db
 project/msgstore.db.crypt5
 
+data/test-database.db
+data/test-database.sql
+
 *msgstore.db
 *msgstore.db.crypt5
 
