@@ -14,4 +14,6 @@ data/test-database.sql
 *msgstore.db
 *msgstore.db.crypt5
 
+whatsapp-viewer.bundle
+
 target/
