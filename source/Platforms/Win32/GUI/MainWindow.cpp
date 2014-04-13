@@ -108,10 +108,18 @@ bool MainWindow::handleMessages()
 	}
 	else
 	{
-		if (!IsDialogMessage(dialog, &message))
+		try
 		{
-			TranslateMessage(&message);
-			DispatchMessage(&message);
+			if (!IsDialogMessage(dialog, &message))
+			{
+				TranslateMessage(&message);
+				DispatchMessage(&message);
+			}
+		}
+		catch (Exception &exception)
+		{
+			displayException(exception);
+			return false;
 		}
 	}
 

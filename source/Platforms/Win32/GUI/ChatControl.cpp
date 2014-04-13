@@ -29,6 +29,7 @@ ChatControl::ChatControl(HWND window)
 ChatControl::~ChatControl()
 {
 	clearMessages();
+	DeleteObject(dateFont);
 	delete smileys;
 	delete imageDecoder;
 }
@@ -406,7 +407,6 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 		} break;
 		case WM_NCDESTROY:
 		{
-			DeleteObject(chatControl->dateFont);
 			delete chatControl;
 		} break;
 	}

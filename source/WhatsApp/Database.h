@@ -18,4 +18,8 @@ public:
 
 	void getChats(std::vector<WhatsappChat *> &chats);
 	void getMessages(const std::string &chatId, std::vector<WhatsappMessage *> &messages);
+
+	int getErrorCode();
+	std::string getErrorMessage();
+
 };

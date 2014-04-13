@@ -2,6 +2,7 @@
 #include <sstream>
 
 #include "../Exceptions/Exception.h"
+#include "../Exceptions/SQLiteException.h"
 #include "../SQLite/sqlite3.h"
 #include "Chat.h"
 #include "Message.h"
@@ -22,7 +23,7 @@ WhatsappDatabase::WhatsappDatabase(const std::string &filename)
 {
 	if(sqlite3_open(filename.c_str(), &sqLiteDatabase) != SQLITE_OK)
 	{
-		throw Exception("Could not open SQLite database");
+		throw SQLiteException("Could not open SQLite database", *this);
 	}
 }
 
@@ -36,7 +37,7 @@ void WhatsappDatabase::getChats(std::vector<WhatsappChat*> &chats)
 	sqlite3_stmt *res;
 	if (sqlite3_prepare_v2(sqLiteDatabase, "SELECT * FROM chat_list", -1, &res, NULL) != SQLITE_OK)
 	{
-		throw Exception("Could not load chat list");
+		throw SQLiteException("Could not load chat list", *this);
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW)
@@ -59,12 +60,12 @@ void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<Whatsa
 	sqlite3_stmt *res;
 	if (sqlite3_prepare_v2(sqLiteDatabase, query, -1, &res, NULL) != SQLITE_OK)
 	{
-		throw Exception("Could not load messages");
+		throw SQLiteException("Could not load messages", *this);
 	}
 
 	if (sqlite3_bind_text(res, 1, chatId.c_str(), -1, SQLITE_STATIC) != SQLITE_OK)
 	{
-		throw Exception("Could not bind sql parameter");
+		throw SQLiteException("Could not bind sql parameter", *this);
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW)
@@ -88,4 +89,14 @@ void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<Whatsa
 	}
 
 	sqlite3_finalize(res);
+}
+
+int WhatsappDatabase::getErrorCode()
+{
+	return sqlite3_errcode(sqLiteDatabase);
+}
+
+std::string WhatsappDatabase::getErrorMessage()
+{
+	return sqlite3_errmsg(sqLiteDatabase);
 }
