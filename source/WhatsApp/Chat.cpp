@@ -1,17 +1,7 @@
 #include "Chat.h"
 #include "Database.h"
 #include "Message.h"
-
-template<class T>
-void clearVector(std::vector<T*> &v)
-{
-	for(std::vector<T*>::iterator it = v.begin(); it != v.end(); ++it)
-	{
-		T* pointer = *it;
-		delete pointer;
-	}
-	v.clear();
-}
+#include "../VectorUtils.h"
 
 WhatsappChat::WhatsappChat(WhatsappDatabase &database, const std::string &key, const std::string &subject, long long creation)
 	: database(database), key(key), subject(subject), creation(creation), messagesLoaded(false)

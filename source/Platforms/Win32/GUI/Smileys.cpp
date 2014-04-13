@@ -5,6 +5,7 @@
 #include "Smiley.h"
 #include "SmileyList.h"
 #include "../../../Exceptions/Exception.h"
+#include "../../../VectorUtils.h"
 #include "../../../../resources/resource.h"
 
 Smileys::Smileys(ImageDecoder &imageDecoder) : imageDecoder(imageDecoder)
@@ -17,10 +18,7 @@ Smileys::Smileys(ImageDecoder &imageDecoder) : imageDecoder(imageDecoder)
 
 Smileys::~Smileys()
 {
-	for (std::vector<Smiley *>::iterator it = smileys.begin(); it != smileys.end(); it++)
-	{
-		delete *it;
-	}
+	clearVector(smileys);
 }
 
 void Smileys::load(int character, const WCHAR *name)

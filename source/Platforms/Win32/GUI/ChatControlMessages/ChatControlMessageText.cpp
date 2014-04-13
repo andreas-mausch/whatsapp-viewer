@@ -5,6 +5,7 @@
 #include "../SmileyList.h"
 #include "../../../../WhatsApp/Message.h"
 #include "../../../../UTF8/utf8.h"
+#include "../../../../VectorUtils.h"
 #include "../../StringHelper.h"
 #include "../../Timestamp.h"
 
@@ -16,10 +17,7 @@ ChatControlMessageText::ChatControlMessageText(WhatsappMessage &message, HGDIOBJ
 
 ChatControlMessageText::~ChatControlMessageText()
 {
-	for (std::vector<ChatControlMessageElement *>::iterator it = elements.begin(); it != elements.end(); it++)
-	{
-		delete *it;
-	}
+	clearVector(elements);
 }
 
 int ChatControlMessageText::getHeight()

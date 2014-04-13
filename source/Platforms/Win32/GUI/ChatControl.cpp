@@ -15,6 +15,7 @@
 #include "../../../WhatsApp/Chat.h"
 #include "../../../WhatsApp/Message.h"
 #include "../../../UTF8/utf8.h"
+#include "../../../VectorUtils.h"
 
 ChatControl::ChatControl(HWND window)
 {
@@ -87,11 +88,7 @@ void ChatControl::buildMessages()
 
 void ChatControl::clearMessages()
 {
-	for (std::vector<ChatControlMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
-	{
-		delete *it;
-	}
-	messages.clear();
+	clearVector(messages);
 }
 
 void ChatControl::calculateMessageHeights()

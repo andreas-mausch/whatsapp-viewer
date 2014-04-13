@@ -14,6 +14,7 @@
 #include "../../../WhatsApp/Crypt5.h"
 #include "../../../WhatsApp/Database.h"
 #include "../../../WhatsApp/Message.h"
+#include "../../../VectorUtils.h"
 #include "../StringHelper.h"
 
 #pragma comment(linker, \
@@ -201,11 +202,7 @@ void MainWindow::resizeChildWindows(int width, int height)
 
 void MainWindow::clearChats()
 {
-	for (std::vector<WhatsappChat *>::iterator it = chats.begin(); it != chats.end(); ++it)
-	{
-		delete *it;
-	}
-	chats.clear();
+	clearVector(chats);
 }
 
 bool isUncryptedWhatsappDatabase(const std::string &filename)
