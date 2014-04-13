@@ -52,7 +52,7 @@ MainWindow::MainWindow(Settings &settings)
 
 MainWindow::~MainWindow()
 {
-	delete database;
+	closeDatabase();
 
 	if (fileExists(tempFilename))
 	{
@@ -227,9 +227,7 @@ void MainWindow::openDatabase()
 	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
 	if (DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_OPEN_FILE), dialog, openDatabaseCallback, reinterpret_cast<LPARAM>(&openDatabaseStruct)) == IDOK)
 	{
-		clearChats();
-		delete database;
-		database = NULL;
+		closeDatabase();
 
 		try
 		{
@@ -258,6 +256,14 @@ void MainWindow::openDatabase()
 
 		addChats();
 	}
+}
+
+void MainWindow::closeDatabase()
+{
+	clearChats();
+
+	delete database;
+	database = NULL;
 }
 
 void MainWindow::exportChat(WhatsappChat &chat)

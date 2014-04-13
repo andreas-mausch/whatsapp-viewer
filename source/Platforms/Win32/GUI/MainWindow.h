@@ -22,6 +22,8 @@ private:
 	Settings &settings;
 
 	void openDatabase();
+	void closeDatabase();
+
 	void decryptDatabase();
 	void clearChats();
 
