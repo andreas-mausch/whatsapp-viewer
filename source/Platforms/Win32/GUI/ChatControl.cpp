@@ -80,10 +80,9 @@ void ChatControl::buildMessages()
 			}
 		}
 
-		calculateMessageHeights();
 	}
 
-	calculateScrollInfo();
+	calculateMessageHeights();
 }
 
 void ChatControl::clearMessages()
@@ -102,6 +101,8 @@ void ChatControl::calculateMessageHeights()
 		ChatControlMessage &message = **it;
 		message.calculateHeight(window);
 	}
+
+	calculateScrollInfo();
 }
 
 void ChatControl::calculateScrollInfo()
@@ -404,7 +405,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 		case WM_SIZE:
 		{
 			chatControl->createBackbuffer();
-			chatControl->buildMessages();
+			chatControl->calculateMessageHeights();
 		} break;
 		case WM_NCDESTROY:
 		{

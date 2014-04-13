@@ -38,7 +38,6 @@ void ChatControlMessage::render(HDC deviceContext, int y, int left, int right)
 
 void ChatControlMessage::renderBox(HDC deviceContext, int y, int left, int right, int color)
 {
-
 	SetBkColor(deviceContext, color);
 	RECT textRect = { left, y, right, y };
 
