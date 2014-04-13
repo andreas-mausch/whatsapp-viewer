@@ -16,4 +16,5 @@ data/test-database.sql
 
 whatsapp-viewer.bundle
 
+releases/
 target/
