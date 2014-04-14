@@ -16,6 +16,7 @@
 #include "../../../WhatsApp/Message.h"
 #include "../../../VectorUtils.h"
 #include "../StringHelper.h"
+#include "../Timestamp.h"
 
 #pragma comment(linker, \
   "\"/manifestdependency:type='Win32' "\
@@ -135,9 +136,9 @@ void MainWindow::createChildWindows()
 
 	// create list view columns
 	WCHAR columnsStrings[][256] = { L"phone number", L"last message" };
-	DWORD columnsWidths[] = { 250, 80 };
+	DWORD columnsWidths[] = { 240, 140 };
 
-	for (DWORD i = 0; i < 1; i++)
+	for (DWORD i = 0; i < 2; i++)
 	{
 		LVCOLUMN column;
 		ZeroMemory(&column, sizeof(LVCOLUMN));
@@ -177,6 +178,7 @@ void MainWindow::addChats()
 void MainWindow::addChat(WhatsappChat &chat)
 {
 	WCHAR *text = buildWcharString(chat.getKey());
+	WCHAR *lastMessageText = buildTimestampStringW(chat.getLastMessage());
 
 	LVITEM item;
 	ZeroMemory(&item, sizeof(LVITEM));
@@ -187,6 +189,9 @@ void MainWindow::addChat(WhatsappChat &chat)
 	item.lParam = reinterpret_cast<LPARAM>(&chat);
 	ListView_InsertItem(GetDlgItem(dialog, IDC_MAIN_CHATS), &item);
 
+	ListView_SetItemText(GetDlgItem(dialog, IDC_MAIN_CHATS), item.iItem, 1, lastMessageText);
+
+	delete[] lastMessageText;
 	delete[] text;
 }
 
@@ -200,7 +205,7 @@ void MainWindow::selectChat(WhatsappChat *chat)
 void MainWindow::resizeChildWindows(int width, int height)
 {
 	int border = 15;
-	int chatsWidth = 300;
+	int chatsWidth = 400;
 	int buttonRowHeight = 25;
 
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_CHATS), NULL, border, border, chatsWidth, height - border * 2, SWP_NOZORDER | SWP_SHOWWINDOW);
