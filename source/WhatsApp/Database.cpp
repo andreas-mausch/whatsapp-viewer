@@ -34,19 +34,27 @@ WhatsappDatabase::~WhatsappDatabase()
 
 void WhatsappDatabase::getChats(std::vector<WhatsappChat*> &chats)
 {
+	const char *query = "select chat_list.key_remote_jid, chat_list.subject, chat_list.creation, max(messages.timestamp) " \
+						"from chat_list " \
+						"left outer join messages on " \
+						"messages.key_remote_jid = chat_list.key_remote_jid " \
+						"group by chat_list.key_remote_jid, chat_list.subject, chat_list.creation " \
+						"order by max(messages.timestamp) desc";
+
 	sqlite3_stmt *res;
-	if (sqlite3_prepare_v2(sqLiteDatabase, "SELECT * FROM chat_list", -1, &res, NULL) != SQLITE_OK)
+	if (sqlite3_prepare_v2(sqLiteDatabase, query, -1, &res, NULL) != SQLITE_OK)
 	{
 		throw SQLiteException("Could not load chat list", *this);
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW)
 	{
-		std::string key = readString(res, 1);
-		std::string subject = readString(res, 3);
-		long long creation = sqlite3_column_int64(res, 4);
+		std::string key = readString(res, 0);
+		std::string subject = readString(res, 1);
+		long long creation = sqlite3_column_int64(res, 2);
+		long long lastMessage = sqlite3_column_int64(res, 3);
 
-		WhatsappChat *chat = new WhatsappChat(*this, key, subject, creation);
+		WhatsappChat *chat = new WhatsappChat(*this, key, subject, creation, lastMessage);
 		chats.push_back(chat);
 	}
 
