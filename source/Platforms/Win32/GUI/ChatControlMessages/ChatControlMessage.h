@@ -12,7 +12,7 @@ private:
 	bool fromMe();
 
 	void renderBox(HDC deviceContext, int y, int left, int right, int color);
-	virtual void renderInner(HDC deviceContext, int y, int left, int right) = 0;
+	virtual void renderInner(HDC deviceContext, int y, int left, int right, int clientHeight) = 0;
 
 protected:
 	int getDateHeight(HDC deviceContext, int left, int right);
@@ -24,6 +24,6 @@ public:
 	virtual void calculateHeight(HWND window) = 0;
 	virtual int getHeight() = 0;
 
-	void render(HDC deviceContext, int y, int left, int right);
+	void render(HDC deviceContext, int y, int left, int right, int clientHeight);
 
 };

@@ -16,7 +16,7 @@ ChatControlMessage::~ChatControlMessage()
 	delete[] wcharDate;
 }
 
-void ChatControlMessage::render(HDC deviceContext, int y, int left, int right)
+void ChatControlMessage::render(HDC deviceContext, int y, int left, int right, int clientHeight)
 {
 	int gap = 40;
 	int color;
@@ -33,7 +33,7 @@ void ChatControlMessage::render(HDC deviceContext, int y, int left, int right)
 	}
 
 	renderBox(deviceContext, y, left, right, color);
-	renderInner(deviceContext, y, left, right);
+	renderInner(deviceContext, y, left, right, clientHeight);
 }
 
 void ChatControlMessage::renderBox(HDC deviceContext, int y, int left, int right, int color)

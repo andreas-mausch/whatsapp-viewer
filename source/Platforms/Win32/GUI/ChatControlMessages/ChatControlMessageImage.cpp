@@ -46,7 +46,7 @@ void ChatControlMessageImage::calculateHeight(HWND window)
 	ReleaseDC(window, deviceContext);
 }
 
-void ChatControlMessageImage::renderInner(HDC deviceContext, int y, int left, int right)
+void ChatControlMessageImage::renderInner(HDC deviceContext, int y, int left, int right, int clientHeight)
 {
 	BITMAP bitmapObject;
 	HDC hdcMem = CreateCompatibleDC(deviceContext);

@@ -95,14 +95,23 @@ void ChatControlMessageText::splitMessage(WhatsappMessage &message)
 	}
 }
 
-void ChatControlMessageText::renderInner(HDC deviceContext, int y, int left, int right)
+void ChatControlMessageText::renderInner(HDC deviceContext, int y, int left, int right, int clientHeight)
 {
 	SetTextColor(deviceContext, RGB(0, 0, 0));
 
 	for (std::vector<ChatControlMessageElement *>::iterator it = elements.begin(); it != elements.end(); it++)
 	{
 		ChatControlMessageElement &element = **it;
-		element.render(deviceContext, y, left, right, smileys);
+
+		if (y + element.getHeight() > 0)
+		{
+			element.render(deviceContext, y, left, right, smileys);
+		}
 		y += element.getHeight();
+
+		if (y > clientHeight)
+		{
+			break;
+		}
 	}
 }

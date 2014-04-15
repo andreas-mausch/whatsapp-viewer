@@ -211,7 +211,7 @@ LRESULT ChatControl::onPaint()
 
 			if (y + message.getHeight() - scrollPosition > 0)
 			{
-				message.render(backbuffer, y - scrollPosition, 10, clientRect.right - 10);
+				message.render(backbuffer, y - scrollPosition, 10, clientRect.right - 10, clientRect.bottom);
 			}
 			y += message.getHeight();
 			y += 8;
