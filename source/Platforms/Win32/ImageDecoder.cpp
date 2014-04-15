@@ -91,7 +91,7 @@ HBITMAP ImageDecoder::loadImage(unsigned char *bytes, int size)
 	IWICBitmapDecoder *decoder = NULL;
 	if (FAILED(factory->CreateDecoderFromStream(stream, NULL, WICDecodeMetadataCacheOnLoad, &decoder)))
 	{
-		throw Exception("could not create decoder");
+		throw Exception("loadImage() failed: could not create decoder");
 	}
 
 	HBITMAP bitmap = loadImage(decoder);

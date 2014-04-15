@@ -42,6 +42,7 @@ private:
 	void readSettings();
 
 	static INT_PTR CALLBACK dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam);
+	INT_PTR handleMessage(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam);
 
 public:
 	MainWindow(Settings &settings);
@@ -49,5 +50,5 @@ public:
 
 	bool handleMessages();
 
-	void displayException(Exception &exception);
+	static void displayException(HWND mainWindow, Exception &exception);
 };

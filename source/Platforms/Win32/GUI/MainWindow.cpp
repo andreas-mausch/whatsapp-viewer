@@ -109,18 +109,10 @@ bool MainWindow::handleMessages()
 	}
 	else
 	{
-		try
+		if (!IsDialogMessage(dialog, &message))
 		{
-			if (!IsDialogMessage(dialog, &message))
-			{
-				TranslateMessage(&message);
-				DispatchMessage(&message);
-			}
-		}
-		catch (Exception &exception)
-		{
-			displayException(exception);
-			return false;
+			TranslateMessage(&message);
+			DispatchMessage(&message);
 		}
 	}
 
@@ -264,7 +256,7 @@ void MainWindow::openDatabase()
 		}
 		catch (Exception &exception)
 		{
-			displayException(exception);
+			displayException(dialog, exception);
 		}
 
 		addChats();
@@ -306,40 +298,28 @@ void MainWindow::decryptDatabase()
 		}
 		catch (Exception &exception)
 		{
-			displayException(exception);
+			displayException(dialog, exception);
 		}
 	}
 }
 
-void MainWindow::displayException(Exception &exception)
+void MainWindow::displayException(HWND mainWindow, Exception &exception)
 {
 	WCHAR *cause = buildWcharString(exception.getCause());
-	MessageBox(dialog, cause, L"Error", MB_OK | MB_ICONERROR);
+	MessageBox(mainWindow, cause, L"Error", MB_OK | MB_ICONERROR);
 	delete[] cause;
 }
 
-INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	MainWindow *mainWindow = reinterpret_cast<MainWindow *>(GetWindowLongPtr(dialog, GWLP_USERDATA));
-
 	switch (message)
 	{
 		case WM_INITDIALOG:
 		{
-			mainWindow = reinterpret_cast<MainWindow *>(lParam);
-
-			if (!mainWindow)
-			{
-				throw Exception("could not create main window: invalid pointer");
-			}
-
-			// save the pointer to the class
-			SetWindowLongPtr(dialog, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(mainWindow));
-
 			// save the dialog handle of the dialog box
-			mainWindow->dialog = dialog;
+			this->dialog = dialog;
 
-			mainWindow->createChildWindows();
+			createChildWindows();
 		} break;
 		case WM_COMMAND:
 		{
@@ -347,16 +327,16 @@ INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPA
 			{
 				case ID_MENU_MAIN_FILE_OPEN:
 				{
-					mainWindow->openDatabase();
+					openDatabase();
 				} break;
 				case ID_MENU_MAIN_FILE_DECRYPT:
 				{
-					mainWindow->decryptDatabase();
+					decryptDatabase();
 				} break;
 				case IDC_MAIN_EXPORT:
 				{
 					WhatsappChat *chat = reinterpret_cast<WhatsappChat *>(GetWindowLongPtr(GetDlgItem(dialog, IDC_MAIN_EXPORT), GWLP_USERDATA));
-					mainWindow->exportChat(*chat);
+					exportChat(*chat);
 				} break;
 			}
 		} break;
@@ -389,7 +369,7 @@ INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPA
 								ListView_GetItem(GetDlgItem(dialog, IDC_MAIN_CHATS), &item);
 
 								WhatsappChat &chat = *reinterpret_cast<WhatsappChat *>(item.lParam);
-								mainWindow->selectChat(&chat);
+								selectChat(&chat);
 							}
 						} break;
 					}
@@ -398,10 +378,7 @@ INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPA
 		} break;
 		case WM_SIZE:
 		{
-			if (mainWindow)
-			{
-				mainWindow->resizeChildWindows(LOWORD(lParam), HIWORD(lParam));
-			}
+			resizeChildWindows(LOWORD(lParam), HIWORD(lParam));
 		} break;
 		case WM_GETMINMAXINFO:
 		{
@@ -422,4 +399,40 @@ INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPA
 	}
 
 	return 0;
+}
+
+INT_PTR MainWindow::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	try
+	{
+		MainWindow *mainWindow = reinterpret_cast<MainWindow *>(GetWindowLongPtr(dialog, GWLP_USERDATA));
+
+		switch (message)
+		{
+			case WM_INITDIALOG:
+			{
+				mainWindow = reinterpret_cast<MainWindow *>(lParam);
+
+				if (!mainWindow)
+				{
+					throw Exception("could not create main window: invalid pointer");
+				}
+
+				// save the pointer to the class
+				SetWindowLongPtr(dialog, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(mainWindow));
+			} break;
+		}
+
+		if (mainWindow == NULL)
+		{
+			return 0;
+		}
+
+		return mainWindow->handleMessage(dialog, message, wParam, lParam);
+	}
+	catch (Exception &exception)
+	{
+		displayException(dialog, exception);
+		return 0;
+	}
 }
