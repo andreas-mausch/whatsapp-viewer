@@ -6,10 +6,25 @@
 
 std::string formatTimestamp(long long timestamp)
 {
-	char buffer[60];
+	long long todayTimestamp = time(NULL);
+	tm today;
+	localtime_s(&today, &todayTimestamp);
+
+	char buffer[256];
 	tm date;
 	timestamp /= 1000;
 	localtime_s(&date, &timestamp);
-	strftime(buffer, 60, "%Y.%m.%d - %H:%M:%S", &date);
+
+	const char *formatString = "%Y.%m.%d - %H:%M:%S";
+
+	if (date.tm_year == today.tm_year &&
+		date.tm_mon == today.tm_mon &&
+		date.tm_mday == today.tm_mday)
+	{
+		// today!
+		formatString = "%H:%M:%S";
+	}
+
+	strftime(buffer, 256, formatString, &date);
 	return buffer;
 }
