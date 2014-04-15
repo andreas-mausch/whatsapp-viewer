@@ -39,7 +39,7 @@ void ChatExporter::exportChat(const std::string &filename)
 	{
 		WhatsappMessage &message = **it;
 
-		file << buildTimestampString(message.getTimestamp()) << "; ";
+		file << formatTimestamp(message.getTimestamp()) << "; ";
 
 		if (message.isFromMe())
 		{

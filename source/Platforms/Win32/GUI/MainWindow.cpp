@@ -27,7 +27,7 @@
   "language='*'\"")
 
 MainWindow::MainWindow(Settings &settings)
-	: settings(settings), database(NULL)
+	: settings(settings), database(NULL), sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING)
 {
 	CoInitialize(NULL);
 
@@ -128,7 +128,7 @@ void MainWindow::createChildWindows()
 
 	// create list view columns
 	WCHAR columnsStrings[][256] = { L"phone number", L"last message" };
-	DWORD columnsWidths[] = { 240, 140 };
+	DWORD columnsWidths[] = { 220, 140 };
 
 	for (DWORD i = 0; i < 2; i++)
 	{
@@ -165,26 +165,24 @@ void MainWindow::addChats()
 	}
 
 	selectChat(NULL);
+	sortChats();
 }
 
 void MainWindow::addChat(WhatsappChat &chat)
 {
-	WCHAR *text = buildWcharString(chat.getKey());
-	WCHAR *lastMessageText = buildTimestampStringW(chat.getLastMessage());
+	std::wstring text = strtowstr(chat.getKey());
+	std::wstring lastMessageText = strtowstr(formatTimestamp(chat.getLastMessage()));
 
 	LVITEM item;
 	ZeroMemory(&item, sizeof(LVITEM));
 
 	item.iItem = ListView_GetItemCount(GetDlgItem(dialog, IDC_MAIN_CHATS));
 	item.mask = LVIF_TEXT | LVIF_PARAM;
-	item.pszText = text;
+	item.pszText = const_cast<WCHAR *>(text.c_str());
 	item.lParam = reinterpret_cast<LPARAM>(&chat);
 	ListView_InsertItem(GetDlgItem(dialog, IDC_MAIN_CHATS), &item);
 
-	ListView_SetItemText(GetDlgItem(dialog, IDC_MAIN_CHATS), item.iItem, 1, lastMessageText);
-
-	delete[] lastMessageText;
-	delete[] text;
+	ListView_SetItemText(GetDlgItem(dialog, IDC_MAIN_CHATS), item.iItem, 1, const_cast<WCHAR *>(lastMessageText.c_str()));
 }
 
 void MainWindow::selectChat(WhatsappChat *chat)
@@ -203,6 +201,89 @@ void MainWindow::resizeChildWindows(int width, int height)
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_CHATS), NULL, border, border, chatsWidth, height - border * 2, SWP_NOZORDER | SWP_SHOWWINDOW);
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_MESSAGES), NULL, chatsWidth + border * 2, border, width - chatsWidth - border * 3, height - border * 3 - buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT), NULL, chatsWidth + border * 2, height - border - buttonRowHeight, 150, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
+}
+
+void MainWindow::sortChats()
+{
+	ListView_SortItems(GetDlgItem(dialog, IDC_MAIN_CHATS), sortingCallback, reinterpret_cast<LPARAM>(this));
+	updateSortingArrow();
+}
+
+int CALLBACK MainWindow::sortingCallback(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
+{
+	WhatsappChat *chat1 = reinterpret_cast<WhatsappChat *>(lParam1);
+	WhatsappChat *chat2 = reinterpret_cast<WhatsappChat *>(lParam2);
+	MainWindow *mainWindow = reinterpret_cast<MainWindow *>(lParamSort);
+
+	int result = 0;
+
+	switch (mainWindow->sortingColumn)
+	{
+		case 0:
+		{
+			// key
+			result = chat1->getKey().compare(chat2->getKey());
+		} break;
+		case 1:
+		{
+			// timestamp
+			if (chat1->getLastMessage() == chat2->getLastMessage())
+			{
+				result = 0;
+			}
+			else if (chat1->getLastMessage() < chat2->getLastMessage())
+			{
+				result = -1;
+			}
+			else
+			{
+				result = 1;
+			}
+		} break;
+	}
+
+	if (mainWindow->sortingDirection == SORTING_DIRECTION_ASCENDING)
+	{
+		return result;
+	}
+	else
+	{
+		return -result;
+	}
+}
+
+void MainWindow::updateSortingArrow()
+{
+	ListViewShowArrow arrow = LISTVIEW_SHOW_UP_ARROW;
+	if (sortingDirection == SORTING_DIRECTION_DESCENDING)
+	{
+		arrow = LISTVIEW_SHOW_DOWN_ARROW;
+	}
+	xListViewSetSortArrow(GetDlgItem(dialog, IDC_MAIN_CHATS), 0, LISTVIEW_SHOW_NO_ARROW);
+	xListViewSetSortArrow(GetDlgItem(dialog, IDC_MAIN_CHATS), 1, LISTVIEW_SHOW_NO_ARROW);
+	xListViewSetSortArrow(GetDlgItem(dialog, IDC_MAIN_CHATS), sortingColumn, arrow);
+}
+
+void MainWindow::setSortingColumn(int columnIndex)
+{
+	if (sortingColumn == columnIndex)
+	{
+		if (sortingDirection == SORTING_DIRECTION_ASCENDING)
+		{
+			sortingDirection = SORTING_DIRECTION_DESCENDING;
+		}
+		else
+		{
+			sortingDirection = SORTING_DIRECTION_ASCENDING;
+		}
+	}
+	else
+	{
+		sortingColumn = columnIndex;
+		sortingDirection = SORTING_DIRECTION_ASCENDING;
+	}
+
+	sortChats();
 }
 
 void MainWindow::clearChats()
@@ -373,6 +454,11 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 							}
 						} break;
 					}
+				} break;
+				case LVN_COLUMNCLICK:
+				{
+					NMLISTVIEW *nmListView = reinterpret_cast<NMLISTVIEW *>(lParam);
+					setSortingColumn(nmListView->iSubItem);
 				} break;
 			}
 		} break;

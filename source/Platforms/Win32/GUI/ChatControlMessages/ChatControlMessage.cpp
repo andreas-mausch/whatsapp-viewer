@@ -8,12 +8,11 @@
 ChatControlMessage::ChatControlMessage(WhatsappMessage &message, HGDIOBJ dateFont)
 	: message(message), dateFont(dateFont)
 {
-	wcharDate = buildTimestampStringW(message.getTimestamp());
+	wcharDate = strtowstr(formatTimestamp(message.getTimestamp()));
 }
 
 ChatControlMessage::~ChatControlMessage()
 {
-	delete[] wcharDate;
 }
 
 void ChatControlMessage::render(HDC deviceContext, int y, int left, int right, int clientHeight)
@@ -43,7 +42,7 @@ void ChatControlMessage::renderBox(HDC deviceContext, int y, int left, int right
 
 	RECT dateRect = { left, 0, right, 0 };
 	HGDIOBJ oldFont = SelectObject(deviceContext, dateFont);
-	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_CALCRECT | DT_WORDBREAK | DT_RIGHT);
+	DrawText(deviceContext, wcharDate.c_str(), -1, &dateRect, DT_CALCRECT | DT_WORDBREAK | DT_RIGHT);
 	dateRect.right = right;
 	dateRect.top = y + getHeight() - dateRect.bottom;
 	dateRect.bottom = y + getHeight();
@@ -57,7 +56,7 @@ void ChatControlMessage::renderBox(HDC deviceContext, int y, int left, int right
 
 	oldFont = SelectObject(deviceContext, dateFont);
 	SetTextColor(deviceContext, RGB(110, 110, 110));
-	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_WORDBREAK | DT_RIGHT);
+	DrawText(deviceContext, wcharDate.c_str(), -1, &dateRect, DT_WORDBREAK | DT_RIGHT);
 	SelectObject(deviceContext, oldFont);
 }
 
@@ -70,7 +69,7 @@ int ChatControlMessage::getDateHeight(HDC deviceContext, int left, int right)
 {
 	RECT dateRect = { left, 0, right, 0 };
 	HGDIOBJ oldFont = SelectObject(deviceContext, dateFont);
-	DrawText(deviceContext, wcharDate, -1, &dateRect, DT_CALCRECT | DT_WORDBREAK | DT_RIGHT);
+	DrawText(deviceContext, wcharDate.c_str(), -1, &dateRect, DT_CALCRECT | DT_WORDBREAK | DT_RIGHT);
 	dateRect.right = right;
 	SelectObject(deviceContext, oldFont);
 	return dateRect.bottom - dateRect.top;

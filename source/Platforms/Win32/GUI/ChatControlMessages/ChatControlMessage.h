@@ -1,12 +1,14 @@
 #pragma once
 
+#include <string>
+
 class WhatsappMessage;
 
 class ChatControlMessage
 {
 private:
 	WhatsappMessage &message;
-	WCHAR *wcharDate;
+	std::wstring wcharDate;
 	HGDIOBJ dateFont;
 
 	bool fromMe();

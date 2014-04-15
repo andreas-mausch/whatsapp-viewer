@@ -2,5 +2,4 @@
 
 #include <string>
 
-std::string buildTimestampString(long long timestamp);
-WCHAR *buildTimestampStringW(long long timestamp);
+std::string formatTimestamp(long long timestamp);
