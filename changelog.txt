@@ -1,0 +1,16 @@
+v1.3
+	BUGFIX: app doesn't crash anymore if column order differents
+	BUGFIX: Exceptions are now displayed correctly to the user
+	BUGFIX: Smilies caused messages to be shown incorrectly
+	Smoother scrolling: Improved rendering speed of very long chat messages (clipping)
+	Show chats ordered by last message timestamp
+	Chat list can be sorted now by clicking the column header
+v1.2
+	Improved SQLite error handling
+	Bugfix: Memory Leak (68b842157a7bcf11985ff778476cabdebf112648)
+v1.1
+	Decrypt database (crypt5 only) to disk
+	Open database: support for plain databases in addition to crypt5
+	Improved scrolling: Arrow keys, PgUp/PgDown, Home/End can now be used in chat window
+	Last opened database will be remembered
+	Export to .TXT
