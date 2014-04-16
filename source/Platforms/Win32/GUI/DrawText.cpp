@@ -11,7 +11,7 @@ void calculateDrawTextRect(HDC deviceContext, const WCHAR *text, RECT &rect, int
 
 void calculateDrawTextRect(HDC deviceContext, const WCHAR *text, RECT &rect)
 {
-	calculateDrawTextRect(deviceContext, text, rect, DT_CALCRECT | DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
+	calculateDrawTextRect(deviceContext, text, rect, DT_CALCRECT | DT_WORDBREAK);
 }
 
 int calculateDrawTextHeight(HDC deviceContext, const WCHAR *text, int width, HFONT font)
@@ -31,7 +31,7 @@ void drawText(HDC deviceContext, const WCHAR *text, const RECT &rect, int flags)
 
 void drawText(HDC deviceContext, const WCHAR *text, const RECT &rect)
 {
-	drawText(deviceContext, text, rect, DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
+	drawText(deviceContext, text, rect, DT_WORDBREAK);
 }
 
 void drawText(HDC deviceContext, const WCHAR *text, int x, int y, int width)
