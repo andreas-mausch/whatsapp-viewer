@@ -25,6 +25,8 @@ private:
 
 	static LRESULT CALLBACK ChatControlCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam);
 
+	void setChat(WhatsappChat &chat);
+
 	void buildMessages();
 	void clearMessages();
 	void calculateScrollInfo();

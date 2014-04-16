@@ -13,6 +13,7 @@
 #include "ChatControlMessages/ChatControlMessageVideo.h"
 #include "DrawText.h"
 #include "Smileys.h"
+#include "../Counter.h"
 #include "../ImageDecoder.h"
 #include "../StringHelper.h"
 #include "../../../Exceptions/Exception.h"
@@ -51,6 +52,15 @@ void ChatControl::registerChatControl()
 	windowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	windowClass.cbWndExtra = sizeof(ChatControl *);
 	RegisterClassEx(&windowClass);
+}
+
+void ChatControl::setChat(WhatsappChat &chat)
+{
+	this->chat = &chat;
+	SetScrollPos(window, SB_VERT, 0, TRUE);
+	buildMessages();
+	paintBackbuffer();
+	redraw();
 }
 
 void ChatControl::buildMessages()
@@ -386,11 +396,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 		} break;
 		case WM_CHATCONTROL_SETCHAT:
 		{
-			chatControl->chat = reinterpret_cast<WhatsappChat *>(lParam);
-			SetScrollPos(window, SB_VERT, 0, TRUE);
-			chatControl->buildMessages();
-			chatControl->paintBackbuffer();
-			chatControl->redraw();
+			chatControl->setChat(*reinterpret_cast<WhatsappChat *>(lParam));
 		} break;
 		case WM_PAINT:
 		{
