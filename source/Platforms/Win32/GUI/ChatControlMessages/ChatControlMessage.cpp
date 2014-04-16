@@ -47,7 +47,7 @@ void ChatControlMessage::renderBox(HDC deviceContext, int y, int left, int right
 
 	SetTextColor(deviceContext, RGB(110, 110, 110));
 	int dateHeight = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), right - left, dateFont);
-	drawText(deviceContext, wcharDate.c_str(), left, y + getHeight() - dateHeight, right - left, dateFont);
+	drawTextRight(deviceContext, wcharDate.c_str(), left, y + getHeight() - dateHeight, right - left, dateFont);
 }
 
 bool ChatControlMessage::fromMe()

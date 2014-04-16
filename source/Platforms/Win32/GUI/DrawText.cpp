@@ -2,9 +2,16 @@
 
 #include "DrawText.h"
 
+void calculateDrawTextRect(HDC deviceContext, const WCHAR *text, RECT &rect, int flags)
+{
+	int right = rect.right;
+	DrawText(deviceContext, text, -1, &rect, DT_CALCRECT | flags);
+	rect.right = right;
+}
+
 void calculateDrawTextRect(HDC deviceContext, const WCHAR *text, RECT &rect)
 {
-	DrawText(deviceContext, text, -1, &rect, DT_CALCRECT | DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
+	calculateDrawTextRect(deviceContext, text, rect, DT_CALCRECT | DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
 }
 
 int calculateDrawTextHeight(HDC deviceContext, const WCHAR *text, int width, HFONT font)
@@ -16,10 +23,15 @@ int calculateDrawTextHeight(HDC deviceContext, const WCHAR *text, int width, HFO
 	return rect.bottom - rect.top;
 }
 
-void drawText(HDC deviceContext, const WCHAR *text, const RECT &rect)
+void drawText(HDC deviceContext, const WCHAR *text, const RECT &rect, int flags)
 {
 	RECT localRect = rect;
-	DrawText(deviceContext, text, -1, &localRect, DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
+	DrawText(deviceContext, text, -1, &localRect, flags);
+}
+
+void drawText(HDC deviceContext, const WCHAR *text, const RECT &rect)
+{
+	drawText(deviceContext, text, rect, DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
 }
 
 void drawText(HDC deviceContext, const WCHAR *text, int x, int y, int width)
@@ -29,9 +41,23 @@ void drawText(HDC deviceContext, const WCHAR *text, int x, int y, int width)
 	drawText(deviceContext, text, rect);
 }
 
+void drawText(HDC deviceContext, const WCHAR *text, int x, int y, int width, int flags)
+{
+	RECT rect = { x, y, x + width, y };
+	calculateDrawTextRect(deviceContext, text, rect, flags);
+	drawText(deviceContext, text, rect, flags);
+}
+
 void drawText(HDC deviceContext, const WCHAR *text, int x, int y, int width, HFONT font)
 {
 	HGDIOBJ oldFont = SelectObject(deviceContext, font);
 	drawText(deviceContext, text, x, y, width);
+	SelectObject(deviceContext, oldFont);
+}
+
+void drawTextRight(HDC deviceContext, const WCHAR *text, int x, int y, int width, HFONT font)
+{
+	HGDIOBJ oldFont = SelectObject(deviceContext, font);
+	drawText(deviceContext, text, x, y, width, DT_WORDBREAK | DT_RIGHT);
 	SelectObject(deviceContext, oldFont);
 }
