@@ -9,7 +9,7 @@ class ChatControlMessage
 private:
 	WhatsappMessage &message;
 	std::wstring wcharDate;
-	HGDIOBJ dateFont;
+	HFONT dateFont;
 
 	bool fromMe();
 
@@ -20,7 +20,7 @@ protected:
 	int getDateHeight(HDC deviceContext, int left, int right);
 
 public:
-	ChatControlMessage(WhatsappMessage &message, HGDIOBJ dateFont);
+	ChatControlMessage(WhatsappMessage &message, HFONT dateFont);
 	virtual ~ChatControlMessage();
 
 	virtual void calculateHeight(HWND window) = 0;

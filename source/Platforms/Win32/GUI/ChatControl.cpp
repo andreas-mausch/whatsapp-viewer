@@ -9,6 +9,7 @@
 #include "ChatControlMessages/ChatControlMessageImage.h"
 #include "ChatControlMessages/ChatControlMessageText.h"
 #include "ChatControlMessages/ChatControlMessageLocation.h"
+#include "DrawText.h"
 #include "Smileys.h"
 #include "../ImageDecoder.h"
 #include "../StringHelper.h"
@@ -194,8 +195,7 @@ LRESULT ChatControl::onPaint()
 		}
 
 		WCHAR *wcharText = buildWcharString(text);
-		RECT titleRect = { 10, 10, clientRect.right, clientRect.bottom };
-		DrawText(backbuffer, wcharText, text.length(), &titleRect, 0);
+		drawText(backbuffer, wcharText, 10, 10, clientRect.right - 10);
 		delete[] wcharText;
 	}
 

@@ -16,7 +16,7 @@ private:
 	Smileys *smileys;
 
 	HWND window;
-	HGDIOBJ dateFont;
+	HFONT dateFont;
 	HDC backbuffer;
 	HBITMAP backbufferBitmap;
 	WhatsappChat *chat;

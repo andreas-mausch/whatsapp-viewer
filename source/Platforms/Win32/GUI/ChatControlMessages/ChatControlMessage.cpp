@@ -1,11 +1,12 @@
 #include <windows.h>
 
 #include "ChatControlMessage.h"
+#include "../DrawText.h"
 #include "../../StringHelper.h"
 #include "../../Timestamp.h"
 #include "../../../../WhatsApp/Message.h"
 
-ChatControlMessage::ChatControlMessage(WhatsappMessage &message, HGDIOBJ dateFont)
+ChatControlMessage::ChatControlMessage(WhatsappMessage &message, HFONT dateFont)
 	: message(message), dateFont(dateFont)
 {
 	wcharDate = strtowstr(formatTimestamp(message.getTimestamp()));
@@ -38,26 +39,15 @@ void ChatControlMessage::render(HDC deviceContext, int y, int left, int right, i
 void ChatControlMessage::renderBox(HDC deviceContext, int y, int left, int right, int color)
 {
 	SetBkColor(deviceContext, color);
-	RECT textRect = { left, y, right, y };
-
-	RECT dateRect = { left, 0, right, 0 };
-	HGDIOBJ oldFont = SelectObject(deviceContext, dateFont);
-	DrawText(deviceContext, wcharDate.c_str(), -1, &dateRect, DT_CALCRECT | DT_WORDBREAK | DT_RIGHT);
-	dateRect.right = right;
-	dateRect.top = y + getHeight() - dateRect.bottom;
-	dateRect.bottom = y + getHeight();
-	SelectObject(deviceContext, oldFont);
 
 	RECT completeRect = { left, y, right, y + getHeight() };
-
 	HBRUSH brush = CreateSolidBrush(color);
 	FillRect(deviceContext, &completeRect, brush);
 	DeleteObject(brush);
 
-	oldFont = SelectObject(deviceContext, dateFont);
 	SetTextColor(deviceContext, RGB(110, 110, 110));
-	DrawText(deviceContext, wcharDate.c_str(), -1, &dateRect, DT_WORDBREAK | DT_RIGHT);
-	SelectObject(deviceContext, oldFont);
+	int dateHeight = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), right - left, dateFont);
+	drawText(deviceContext, wcharDate.c_str(), left, y + getHeight() - dateHeight, right - left, dateFont);
 }
 
 bool ChatControlMessage::fromMe()
@@ -67,10 +57,5 @@ bool ChatControlMessage::fromMe()
 
 int ChatControlMessage::getDateHeight(HDC deviceContext, int left, int right)
 {
-	RECT dateRect = { left, 0, right, 0 };
-	HGDIOBJ oldFont = SelectObject(deviceContext, dateFont);
-	DrawText(deviceContext, wcharDate.c_str(), -1, &dateRect, DT_CALCRECT | DT_WORDBREAK | DT_RIGHT);
-	dateRect.right = right;
-	SelectObject(deviceContext, oldFont);
-	return dateRect.bottom - dateRect.top;
+	return calculateDrawTextHeight(deviceContext, wcharDate.c_str(), right - left, dateFont);
 }

@@ -279,6 +279,10 @@
 							>
 						</File>
 						<File
+							RelativePath="..\source\Platforms\Win32\GUI\DrawText.cpp"
+							>
+						</File>
+						<File
 							RelativePath="..\source\Platforms\Win32\GUI\ListViewSorting.cpp"
 							>
 						</File>
@@ -323,6 +327,10 @@
 							</File>
 							<File
 								RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessages\ChatControlMessageText.cpp"
+								>
+							</File>
+							<File
+								RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessages\ChatControlMessageWithPreview.cpp"
 								>
 							</File>
 						</Filter>
@@ -453,6 +461,10 @@
 							>
 						</File>
 						<File
+							RelativePath="..\source\Platforms\Win32\GUI\DrawText.h"
+							>
+						</File>
+						<File
 							RelativePath="..\source\Platforms\Win32\GUI\ListViewSorting.h"
 							>
 						</File>
@@ -497,6 +509,10 @@
 							</File>
 							<File
 								RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessages\ChatControlMessageText.h"
+								>
+							</File>
+							<File
+								RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessages\ChatControlMessageWithPreview.h"
 								>
 							</File>
 						</Filter>

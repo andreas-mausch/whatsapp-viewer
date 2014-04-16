@@ -1,18 +1,17 @@
 #pragma once
 
-#include "ChatControlMessage.h"
+#include "ChatControlMessageWithPreview.h"
 
 class ImageDecoder;
 class WhatsappMessage;
 
-class ChatControlMessageImage : public ChatControlMessage
+class ChatControlMessageImage : public ChatControlMessageWithPreview
 {
 private:
-	HBITMAP bitmap;
 	int height;
 
 public:
-	ChatControlMessageImage(WhatsappMessage &message, HGDIOBJ dateFont, ImageDecoder &imageDecoder);
+	ChatControlMessageImage(WhatsappMessage &message, HFONT dateFont, ImageDecoder &imageDecoder);
 	virtual ~ChatControlMessageImage();
 
 	virtual void calculateHeight(HWND window);

@@ -9,7 +9,7 @@
 #include "../../StringHelper.h"
 #include "../../Timestamp.h"
 
-ChatControlMessageText::ChatControlMessageText(WhatsappMessage &message, HGDIOBJ dateFont, Smileys &smileys)
+ChatControlMessageText::ChatControlMessageText(WhatsappMessage &message, HFONT dateFont, Smileys &smileys)
 	: ChatControlMessage(message, dateFont), smileys(smileys), height(0)
 {
 	splitMessage(message);

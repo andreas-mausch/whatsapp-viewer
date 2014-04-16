@@ -6,18 +6,13 @@
 #include "../../StringHelper.h"
 #include "../../Timestamp.h"
 
-ChatControlMessageImage::ChatControlMessageImage(WhatsappMessage &message, HGDIOBJ dateFont, ImageDecoder &imageDecoder)
-	: ChatControlMessage(message, dateFont), height(0)
+ChatControlMessageImage::ChatControlMessageImage(WhatsappMessage &message, HFONT dateFont, ImageDecoder &imageDecoder)
+	: ChatControlMessageWithPreview(message, dateFont, imageDecoder), height(0)
 {
-	bitmap = imageDecoder.loadImage(message.getRawData(), message.getRawDataSize());
 }
 
 ChatControlMessageImage::~ChatControlMessageImage()
 {
-	if (bitmap != NULL)
-	{
-		DeleteObject(bitmap);
-	}
 }
 
 int ChatControlMessageImage::getHeight()
@@ -35,12 +30,8 @@ void ChatControlMessageImage::calculateHeight(HWND window)
 	int gap = 40;
 	int left = 10;
 	int right = clientRect.right - gap - 10;
-	height = 0;
 
-	BITMAP bitmapObject;
-	GetObject(bitmap, sizeof(bitmapObject), &bitmapObject);
-	height += bitmapObject.bmHeight;
-
+	height = getPreviewBitmapHeight();
 	height += getDateHeight(deviceContext, left, right);
 
 	ReleaseDC(window, deviceContext);
@@ -48,13 +39,5 @@ void ChatControlMessageImage::calculateHeight(HWND window)
 
 void ChatControlMessageImage::renderInner(HDC deviceContext, int y, int left, int right, int clientHeight)
 {
-	BITMAP bitmapObject;
-	HDC hdcMem = CreateCompatibleDC(deviceContext);
-	HGDIOBJ oldBitmap = SelectObject(hdcMem, bitmap);
-
-	GetObject(bitmap, sizeof(bitmapObject), &bitmapObject);
-	BitBlt(deviceContext, left + 5, y + (height - bitmapObject.bmHeight) / 2, bitmapObject.bmWidth, bitmapObject.bmHeight, hdcMem, 0, 0, SRCCOPY);
-
-	SelectObject(hdcMem, oldBitmap);
-	DeleteDC(hdcMem);
+	renderPreviewBitmap(deviceContext, left + 5, y + (height - getPreviewBitmapHeight()) / 2);
 }

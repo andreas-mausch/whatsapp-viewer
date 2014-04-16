@@ -2,6 +2,7 @@
 #include <windows.h>
 
 #include "ChatControlMessageElement.h"
+#include "../DrawText.h"
 #include "../Smileys.h"
 #include "../../StringHelper.h"
 #include "../../../../Exceptions/Exception.h"
@@ -31,11 +32,7 @@ void ChatControlMessageElement::calculateHeight(HDC deviceContext, int left, int
 {
 	if (type == CHAT_CONTROL_MESSAGE_ELEMENT_TEXT)
 	{
-		RECT textRect = { left, 0, right, 0 };
-		HGDIOBJ oldFont = SelectObject(deviceContext, GetStockObject(DEFAULT_GUI_FONT));
-		DrawText(deviceContext, wcharText, -1, &textRect, DT_CALCRECT | DT_WORDBREAK);
-		SelectObject(deviceContext, oldFont);
-		height = textRect.bottom - textRect.top;
+		height = calculateDrawTextHeight(deviceContext, wcharText, right - left, static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
 	} else if (type == CHAT_CONTROL_MESSAGE_ELEMENT_SMILEY)
 	{
 		height = 20;
@@ -46,10 +43,7 @@ void ChatControlMessageElement::render(HDC deviceContext, int y, int left, int r
 {
 	if (type == CHAT_CONTROL_MESSAGE_ELEMENT_TEXT)
 	{
-		RECT rect = { left, y, right, y };
-		DrawText(deviceContext, wcharText, -1, &rect, DT_CALCRECT | DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
-		rect.right = right;
-		DrawText(deviceContext, wcharText, -1, &rect, DT_WORDBREAK | DT_END_ELLIPSIS | DT_MODIFYSTRING);
+		drawText(deviceContext, wcharText, left, y, right - left);
 	} else if (type == CHAT_CONTROL_MESSAGE_ELEMENT_SMILEY)
 	{
 		smileys.renderSmiley(smiley, deviceContext, left, y);
