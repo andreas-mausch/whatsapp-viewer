@@ -1,11 +1,13 @@
 #include "Message.h"
 
-WhatsappMessage::WhatsappMessage(std::string chatId, bool fromMe, int status, std::string data, long long timestamp, long long receivedTimestamp, long long sendTimestamp, std::string mediaUrl, std::string mediaMimeType, int mediaWhatsappType, int mediaSize, double latitude, double longitude, const void *thumbImage, int thumbImageSize, const void *rawData, int rawDataSize) :
+WhatsappMessage::WhatsappMessage(std::string chatId, bool fromMe, int status, std::string data, long long timestamp, long long receivedTimestamp, long long sendTimestamp, std::string mediaUrl, std::string mediaMimeType, int mediaWhatsappType, int mediaSize, double latitude, double longitude, const void *thumbImage, int thumbImageSize, const std::string &remoteResource, const void *rawData, int rawDataSize) :
 	chatId(chatId), fromMe(fromMe), status(status), data(data), timestamp(timestamp),
 	receivedTimestamp(receivedTimestamp), sendTimestamp(sendTimestamp), mediaUrl(mediaUrl),
 	mediaMimeType(mediaMimeType), mediaWhatsappType(mediaWhatsappType), mediaSize(mediaSize),
 	latitude(latitude), longitude(longitude),
-	thumbImage(NULL), thumbImageSize(thumbImageSize), rawData(NULL), rawDataSize(rawDataSize)
+	thumbImage(NULL), thumbImageSize(thumbImageSize),
+	remoteResource(remoteResource),
+	rawData(NULL), rawDataSize(rawDataSize)
 {
 	if (thumbImage != NULL && thumbImageSize > 0)
 	{

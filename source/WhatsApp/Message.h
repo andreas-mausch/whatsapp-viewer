@@ -30,20 +30,22 @@ private:
 	double longitude;
 	unsigned char *thumbImage;
 	int thumbImageSize;
+	std::string remoteResource;
 	unsigned char *rawData;
 	int rawDataSize;
 
 public:
-	WhatsappMessage(std::string chatId, bool fromMe, int status, std::string data, long long timestamp, long long receivedTimestamp, long long sendTimestamp, std::string mediaUrl, std::string mediaMimeType, int mediaWhatsappType, int mediaSize, double latitude, double longitude, const void *thumbImage, int thumbImageSize, const void *rawData, int rawDataSize);
+	WhatsappMessage(std::string chatId, bool fromMe, int status, std::string data, long long timestamp, long long receivedTimestamp, long long sendTimestamp, std::string mediaUrl, std::string mediaMimeType, int mediaWhatsappType, int mediaSize, double latitude, double longitude, const void *thumbImage, int thumbImageSize, const std::string &remoteResource, const void *rawData, int rawDataSize);
 	~WhatsappMessage();
 
 	const std::string &getData() const;
 	bool isFromMe() const;
 	long long getTimestamp() const;
+	double getLatitude() const;
+	double getLongitude() const;
+	const std::string &getRemoteResource();
 	unsigned char *getRawData();
 	int getRawDataSize();
 	int getMediaWhatsappType() const;
-	double getLatitude() const;
-	double getLongitude() const;
 
 };

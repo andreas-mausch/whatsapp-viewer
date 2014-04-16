@@ -62,7 +62,7 @@ void WhatsappDatabase::getChats(std::vector<WhatsappChat*> &chats)
 
 void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<WhatsappMessage*> &messages)
 {
-	const char *query = "SELECT key_remote_jid, key_from_me, status, data, timestamp, media_url, media_mime_type, media_wa_type, media_size, latitude, longitude, thumb_image, raw_data " \
+	const char *query = "SELECT key_remote_jid, key_from_me, status, data, timestamp, media_url, media_mime_type, media_wa_type, media_size, latitude, longitude, thumb_image, remote_resource, raw_data " \
 						"FROM messages " \
 						"WHERE key_remote_jid = ? " \
 						"ORDER BY timestamp asc";
@@ -93,10 +93,11 @@ void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<Whatsa
 		double longitude = sqlite3_column_double(res, 10);
 		const void *thumbImage = sqlite3_column_blob(res, 11);
 		int thumbImageSize = sqlite3_column_bytes(res, 11);
-		const void *rawData = sqlite3_column_blob(res, 12);
-		int rawDataSize = sqlite3_column_bytes(res, 12);
+		std::string remoteResource = readString(res, 12);
+		const void *rawData = sqlite3_column_blob(res, 13);
+		int rawDataSize = sqlite3_column_bytes(res, 13);
 
-		WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, latitude, longitude, thumbImage, thumbImageSize, rawData, rawDataSize);
+		WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, latitude, longitude, thumbImage, thumbImageSize, remoteResource, rawData, rawDataSize);
 		messages.push_back(message);
 	}
 
