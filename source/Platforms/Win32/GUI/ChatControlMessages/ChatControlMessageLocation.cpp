@@ -4,8 +4,6 @@
 #include "../DrawText.h"
 #include "../../../../WhatsApp/Message.h"
 #include "../../ImageDecoder.h"
-#include "../../StringHelper.h"
-#include "../../Timestamp.h"
 
 ChatControlMessageLocation::ChatControlMessageLocation(WhatsappMessage &message, int width, int color, HFONT dateFont, ImageDecoder &imageDecoder)
 	: ChatControlMessageWithPreview(message, width, color, dateFont, imageDecoder)

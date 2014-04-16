@@ -330,6 +330,10 @@
 								>
 							</File>
 							<File
+								RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessages\ChatControlMessageVideo.cpp"
+								>
+							</File>
+							<File
 								RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessages\ChatControlMessageWithPreview.cpp"
 								>
 							</File>
@@ -509,6 +513,10 @@
 							</File>
 							<File
 								RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessages\ChatControlMessageText.h"
+								>
+							</File>
+							<File
+								RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessages\ChatControlMessageVideo.h"
 								>
 							</File>
 							<File

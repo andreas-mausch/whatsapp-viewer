@@ -7,8 +7,9 @@
 #include "ChatControl.h"
 #include "ChatControlMessages/ChatControlMessage.h"
 #include "ChatControlMessages/ChatControlMessageImage.h"
-#include "ChatControlMessages/ChatControlMessageText.h"
 #include "ChatControlMessages/ChatControlMessageLocation.h"
+#include "ChatControlMessages/ChatControlMessageText.h"
+#include "ChatControlMessages/ChatControlMessageVideo.h"
 #include "DrawText.h"
 #include "Smileys.h"
 #include "../ImageDecoder.h"
@@ -86,6 +87,10 @@ void ChatControl::buildMessages()
 					{
 						chatControlMessage = new ChatControlMessageImage(message, 0, color, dateFont, *imageDecoder);
 					}
+				} break;
+				case MEDIA_WHATSAPP_VIDEO:
+				{
+					chatControlMessage = new ChatControlMessageVideo(message, 0, color, dateFont, *imageDecoder);
 				} break;
 				case MEDIA_WHATSAPP_LOCATION:
 				{
