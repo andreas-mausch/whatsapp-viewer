@@ -9,8 +9,8 @@
 #include "../../StringHelper.h"
 #include "../../Timestamp.h"
 
-ChatControlMessageText::ChatControlMessageText(WhatsappMessage &message, HFONT dateFont, Smileys &smileys)
-	: ChatControlMessage(message, dateFont), smileys(smileys), height(0)
+ChatControlMessageText::ChatControlMessageText(WhatsappMessage &message, int width, int color, HFONT dateFont, Smileys &smileys)
+	: ChatControlMessage(message, width, color, dateFont), smileys(smileys), height(0)
 {
 	splitMessage(message);
 }
@@ -27,24 +27,18 @@ int ChatControlMessageText::getHeight()
 
 void ChatControlMessageText::calculateHeight(HWND window)
 {
-	RECT clientRect;
-	GetClientRect(window, &clientRect);
-
 	HDC deviceContext = GetDC(window);
 
-	int gap = 40;
-	int left = 10;
-	int right = clientRect.right - gap - 10;
 	height = 0;
 
 	for (std::vector<ChatControlMessageElement *>::iterator it = elements.begin(); it != elements.end(); it++)
 	{
 		ChatControlMessageElement &element = **it;
-		element.calculateHeight(deviceContext, left, right);
+		element.calculateHeight(deviceContext, width);
 		height += element.getHeight();
 	}
 
-	height += getDateHeight(deviceContext, left, right);
+	height += getDateHeight(deviceContext);
 
 	ReleaseDC(window, deviceContext);
 }
@@ -96,7 +90,7 @@ void ChatControlMessageText::splitMessage(WhatsappMessage &message)
 	}
 }
 
-void ChatControlMessageText::renderInner(HDC deviceContext, int y, int left, int right, int clientHeight)
+void ChatControlMessageText::renderInner(HDC deviceContext, int x, int y, int clientHeight)
 {
 	SetTextColor(deviceContext, RGB(0, 0, 0));
 
@@ -106,7 +100,7 @@ void ChatControlMessageText::renderInner(HDC deviceContext, int y, int left, int
 
 		if (y + element.getHeight() > 0)
 		{
-			element.render(deviceContext, y, left, right, smileys);
+			element.render(deviceContext, x, y, width, smileys);
 		}
 		y += element.getHeight();
 

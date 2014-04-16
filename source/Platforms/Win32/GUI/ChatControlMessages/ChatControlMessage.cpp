@@ -6,8 +6,8 @@
 #include "../../Timestamp.h"
 #include "../../../../WhatsApp/Message.h"
 
-ChatControlMessage::ChatControlMessage(WhatsappMessage &message, HFONT dateFont)
-	: message(message), dateFont(dateFont)
+ChatControlMessage::ChatControlMessage(WhatsappMessage &message, int width, int color, HFONT dateFont)
+	: message(message), width(width), color(color), dateFont(dateFont)
 {
 	wcharDate = strtowstr(formatTimestamp(message.getTimestamp()));
 }
@@ -16,46 +16,38 @@ ChatControlMessage::~ChatControlMessage()
 {
 }
 
-void ChatControlMessage::render(HDC deviceContext, int y, int left, int right, int clientHeight)
+void ChatControlMessage::updateWidth(HWND window, int width)
 {
-	int gap = 40;
-	int color;
-
-	if (fromMe())
-	{
-		left += gap;
-		color = RGB(190, 240, 150);
-	}
-	else
-	{
-		right -= gap;
-		color = RGB(230, 230, 240);
-	}
-
-	renderBox(deviceContext, y, left, right, color);
-	renderInner(deviceContext, y, left, right, clientHeight);
+	this->width = width;
+	calculateHeight(window);
 }
 
-void ChatControlMessage::renderBox(HDC deviceContext, int y, int left, int right, int color)
+void ChatControlMessage::render(HDC deviceContext, int x, int y, int clientHeight)
+{
+	renderBox(deviceContext, x, y);
+	renderInner(deviceContext, x, y, clientHeight);
+}
+
+void ChatControlMessage::renderBox(HDC deviceContext, int x, int y)
 {
 	SetBkColor(deviceContext, color);
 
-	RECT completeRect = { left, y, right, y + getHeight() };
+	RECT completeRect = { x, y, x + width, y + getHeight() };
 	HBRUSH brush = CreateSolidBrush(color);
 	FillRect(deviceContext, &completeRect, brush);
 	DeleteObject(brush);
 
 	SetTextColor(deviceContext, RGB(110, 110, 110));
-	int dateHeight = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), right - left, dateFont);
-	drawTextRight(deviceContext, wcharDate.c_str(), left, y + getHeight() - dateHeight, right - left, dateFont);
+	int dateHeight = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), width, dateFont);
+	drawTextRight(deviceContext, wcharDate.c_str(), x, y + getHeight() - dateHeight, width, dateFont);
 }
 
-bool ChatControlMessage::fromMe()
+int ChatControlMessage::getDateHeight(HDC deviceContext)
 {
-	return message.isFromMe();
+	return calculateDrawTextHeight(deviceContext, wcharDate.c_str(), width, dateFont);
 }
 
-int ChatControlMessage::getDateHeight(HDC deviceContext, int left, int right)
+WhatsappMessage &ChatControlMessage::getMessage()
 {
-	return calculateDrawTextHeight(deviceContext, wcharDate.c_str(), right - left, dateFont);
+	return message;
 }

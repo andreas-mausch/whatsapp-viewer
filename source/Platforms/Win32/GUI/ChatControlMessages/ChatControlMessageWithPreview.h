@@ -13,7 +13,7 @@ private:
 	int bitmapHeight;
 
 public:
-	ChatControlMessageWithPreview(WhatsappMessage &message, HFONT dateFont, ImageDecoder &imageDecoder);
+	ChatControlMessageWithPreview(WhatsappMessage &message, int width, int color, HFONT dateFont, ImageDecoder &imageDecoder);
 	virtual ~ChatControlMessageWithPreview();
 
 	void renderPreviewBitmap(HDC deviceContext, int x, int y);

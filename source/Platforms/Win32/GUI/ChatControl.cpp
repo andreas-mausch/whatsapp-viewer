@@ -62,23 +62,34 @@ void ChatControl::buildMessages()
 		{
 			WhatsappMessage &message = **it;
 			ChatControlMessage *chatControlMessage = NULL;
-			
+
+			int color;
+
+			if (message.isFromMe())
+			{
+				color = RGB(190, 240, 150);
+			}
+			else
+			{
+				color = RGB(230, 230, 240);
+			}
+
 			switch (message.getMediaWhatsappType())
 			{
 				case MEDIA_WHATSAPP_TEXT:
 				{
-					chatControlMessage = new ChatControlMessageText(message, dateFont, *smileys);
+					chatControlMessage = new ChatControlMessageText(message, 0, color, dateFont, *smileys);
 				} break;
 				case MEDIA_WHATSAPP_IMAGE:
 				{
 					if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
 					{
-						chatControlMessage = new ChatControlMessageImage(message, dateFont, *imageDecoder);
+						chatControlMessage = new ChatControlMessageImage(message, 0, color, dateFont, *imageDecoder);
 					}
 				} break;
 				case MEDIA_WHATSAPP_LOCATION:
 				{
-					chatControlMessage = new ChatControlMessageLocation(message, dateFont, *imageDecoder);
+					chatControlMessage = new ChatControlMessageLocation(message, 0, color, dateFont, *imageDecoder);
 				} break;
 			}
 
@@ -90,23 +101,30 @@ void ChatControl::buildMessages()
 
 	}
 
-	calculateMessageHeights();
+	resizeMessages();
+	calculateScrollInfo();
+}
+
+void ChatControl::resizeMessages()
+{
+	RECT clientRect;
+	GetClientRect(window, &clientRect);
+
+	int y = 40;
+	int gap = 40;
+	int width = clientRect.right - clientRect.left - 20 - gap;
+
+	for (std::vector<ChatControlMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
+	{
+		ChatControlMessage &message = **it;
+		message.updateWidth(window, width);
+		y += 8 + message.getHeight();
+	}
 }
 
 void ChatControl::clearMessages()
 {
 	clearVector(messages);
-}
-
-void ChatControl::calculateMessageHeights()
-{
-	for (std::vector<ChatControlMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
-	{
-		ChatControlMessage &message = **it;
-		message.calculateHeight(window);
-	}
-
-	calculateScrollInfo();
 }
 
 void ChatControl::calculateScrollInfo()
@@ -214,9 +232,16 @@ LRESULT ChatControl::onPaint()
 		{
 			ChatControlMessage &message = **it;
 
+			int x = 10;
+
+			if (message.getMessage().isFromMe())
+			{
+				x += 40;
+			}
+
 			if (y + message.getHeight() - scrollPosition > 0)
 			{
-				message.render(backbuffer, y - scrollPosition, 10, clientRect.right - 10, clientRect.bottom);
+				message.render(backbuffer, x, y - scrollPosition, clientRect.bottom);
 			}
 			y += message.getHeight();
 			y += 8;
@@ -408,7 +433,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 		case WM_SIZE:
 		{
 			chatControl->createBackbuffer();
-			chatControl->calculateMessageHeights();
+			chatControl->resizeMessages();
 		} break;
 		case WM_NCDESTROY:
 		{

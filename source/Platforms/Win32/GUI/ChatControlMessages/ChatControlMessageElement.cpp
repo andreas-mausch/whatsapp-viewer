@@ -28,25 +28,25 @@ ChatControlMessageElement::~ChatControlMessageElement()
 	delete[] wcharText;
 }
 
-void ChatControlMessageElement::calculateHeight(HDC deviceContext, int left, int right)
+void ChatControlMessageElement::calculateHeight(HDC deviceContext, int width)
 {
 	if (type == CHAT_CONTROL_MESSAGE_ELEMENT_TEXT)
 	{
-		height = calculateDrawTextHeight(deviceContext, wcharText, right - left, static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
+		height = calculateDrawTextHeight(deviceContext, wcharText, width, static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
 	} else if (type == CHAT_CONTROL_MESSAGE_ELEMENT_SMILEY)
 	{
 		height = 20;
 	}
 }
 
-void ChatControlMessageElement::render(HDC deviceContext, int y, int left, int right, Smileys &smileys)
+void ChatControlMessageElement::render(HDC deviceContext, int x, int y, int width, Smileys &smileys)
 {
 	if (type == CHAT_CONTROL_MESSAGE_ELEMENT_TEXT)
 	{
-		drawText(deviceContext, wcharText, left, y, right - left);
+		drawText(deviceContext, wcharText, x, y, width);
 	} else if (type == CHAT_CONTROL_MESSAGE_ELEMENT_SMILEY)
 	{
-		smileys.renderSmiley(smiley, deviceContext, left, y);
+		smileys.renderSmiley(smiley, deviceContext, x, y);
 	}
 }
 

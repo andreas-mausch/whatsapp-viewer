@@ -26,8 +26,8 @@ private:
 
 	void buildMessages();
 	void clearMessages();
-	void calculateMessageHeights();
 	void calculateScrollInfo();
+	void resizeMessages();
 
 	LRESULT onPaint();
 	void drawMessage(ChatControlMessage &message, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont);

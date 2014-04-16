@@ -11,12 +11,12 @@ private:
 	int height;
 
 public:
-	ChatControlMessageImage(WhatsappMessage &message, HFONT dateFont, ImageDecoder &imageDecoder);
+	ChatControlMessageImage(WhatsappMessage &message, int width, int color, HFONT dateFont, ImageDecoder &imageDecoder);
 	virtual ~ChatControlMessageImage();
 
 	virtual void calculateHeight(HWND window);
 	virtual int getHeight();
 
-	virtual void renderInner(HDC deviceContext, int y, int left, int right, int clientHeight);
+	virtual void renderInner(HDC deviceContext, int x, int y, int clientHeight);
 
 };

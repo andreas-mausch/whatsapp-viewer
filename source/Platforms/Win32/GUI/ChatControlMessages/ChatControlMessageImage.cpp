@@ -6,8 +6,8 @@
 #include "../../StringHelper.h"
 #include "../../Timestamp.h"
 
-ChatControlMessageImage::ChatControlMessageImage(WhatsappMessage &message, HFONT dateFont, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreview(message, dateFont, imageDecoder), height(0)
+ChatControlMessageImage::ChatControlMessageImage(WhatsappMessage &message, int width, int color, HFONT dateFont, ImageDecoder &imageDecoder)
+	: ChatControlMessageWithPreview(message, width, color, dateFont, imageDecoder), height(0)
 {
 }
 
@@ -22,22 +22,15 @@ int ChatControlMessageImage::getHeight()
 
 void ChatControlMessageImage::calculateHeight(HWND window)
 {
-	RECT clientRect;
-	GetClientRect(window, &clientRect);
-
 	HDC deviceContext = GetDC(window);
 
-	int gap = 40;
-	int left = 10;
-	int right = clientRect.right - gap - 10;
-
 	height = getPreviewBitmapHeight();
-	height += getDateHeight(deviceContext, left, right);
+	height += getDateHeight(deviceContext);
 
 	ReleaseDC(window, deviceContext);
 }
 
-void ChatControlMessageImage::renderInner(HDC deviceContext, int y, int left, int right, int clientHeight)
+void ChatControlMessageImage::renderInner(HDC deviceContext, int x, int y, int clientHeight)
 {
-	renderPreviewBitmap(deviceContext, left + 5, y + (height - getPreviewBitmapHeight()) / 2);
+	renderPreviewBitmap(deviceContext, x + 5, y  + (height - getPreviewBitmapHeight()) / 2);
 }

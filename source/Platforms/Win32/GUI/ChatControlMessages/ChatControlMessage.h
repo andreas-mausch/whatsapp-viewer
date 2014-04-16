@@ -9,23 +9,26 @@ class ChatControlMessage
 private:
 	WhatsappMessage &message;
 	std::wstring wcharDate;
+	int color;
 	HFONT dateFont;
 
-	bool fromMe();
-
-	void renderBox(HDC deviceContext, int y, int left, int right, int color);
-	virtual void renderInner(HDC deviceContext, int y, int left, int right, int clientHeight) = 0;
+	void renderBox(HDC deviceContext, int x, int y);
+	virtual void renderInner(HDC deviceContext, int x, int y, int clientHeight) = 0;
 
 protected:
-	int getDateHeight(HDC deviceContext, int left, int right);
+	int width;
+	int getDateHeight(HDC deviceContext);
 
 public:
-	ChatControlMessage(WhatsappMessage &message, HFONT dateFont);
+	ChatControlMessage(WhatsappMessage &message, int width, int color, HFONT dateFont);
 	virtual ~ChatControlMessage();
 
 	virtual void calculateHeight(HWND window) = 0;
 	virtual int getHeight() = 0;
 
-	void render(HDC deviceContext, int y, int left, int right, int clientHeight);
+	void updateWidth(HWND window, int width);
+	void render(HDC deviceContext, int x, int y, int clientHeight);
+
+	WhatsappMessage &getMessage();
 
 };

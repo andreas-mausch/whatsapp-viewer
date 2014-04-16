@@ -25,8 +25,8 @@ public:
 	ChatControlMessageElement(int smiley);
 	~ChatControlMessageElement();
 
-	void calculateHeight(HDC deviceContext, int left, int right);
-	void render(HDC deviceContext, int y, int left, int right, Smileys &smileys);
+	void calculateHeight(HDC deviceContext, int width);
+	void render(HDC deviceContext, int x, int y, int width, Smileys &smileys);
 
 	int getHeight() const;
 

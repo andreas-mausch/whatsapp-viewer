@@ -19,12 +19,12 @@ private:
 	bool isSmiley(int character);
 
 public:
-	ChatControlMessageText(WhatsappMessage &message, HFONT dateFont, Smileys &smileys);
+	ChatControlMessageText(WhatsappMessage &message, int width, int color, HFONT dateFont, Smileys &smileys);
 	virtual ~ChatControlMessageText();
 
 	virtual void calculateHeight(HWND window);
 	virtual int getHeight();
 
-	virtual void renderInner(HDC deviceContext, int y, int left, int right, int clientHeight);
+	virtual void renderInner(HDC deviceContext, int x, int y, int clientHeight);
 
 };
