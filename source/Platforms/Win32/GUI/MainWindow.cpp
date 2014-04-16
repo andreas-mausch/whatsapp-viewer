@@ -70,7 +70,7 @@ void MainWindow::readSettings()
 		lastDatabaseOpened.filename = settings.read("lastOpenedFile");
 		lastDatabaseOpened.accountName = settings.read("lastOpenedAccount");
 	}
-	catch (Exception &exception)
+	catch (Exception &)
 	{
 	}
 }
