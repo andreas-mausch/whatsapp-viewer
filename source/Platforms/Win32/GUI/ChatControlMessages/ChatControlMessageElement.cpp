@@ -28,11 +28,13 @@ ChatControlMessageElement::~ChatControlMessageElement()
 	delete[] wcharText;
 }
 
-void ChatControlMessageElement::calculateHeight(HDC deviceContext, int width)
+void ChatControlMessageElement::calculateHeight(int width)
 {
 	if (type == CHAT_CONTROL_MESSAGE_ELEMENT_TEXT)
 	{
+		HDC deviceContext = GetDC(NULL);
 		height = calculateDrawTextHeight(deviceContext, wcharText, width, static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
+		ReleaseDC(NULL, deviceContext);
 	} else if (type == CHAT_CONTROL_MESSAGE_ELEMENT_SMILEY)
 	{
 		height = 20;

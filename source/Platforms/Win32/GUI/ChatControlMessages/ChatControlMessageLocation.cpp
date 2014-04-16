@@ -8,7 +8,7 @@
 #include "../../Timestamp.h"
 
 ChatControlMessageLocation::ChatControlMessageLocation(WhatsappMessage &message, int width, int color, HFONT dateFont, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreview(message, width, color, dateFont, imageDecoder), height(0)
+	: ChatControlMessageWithPreview(message, width, color, dateFont, imageDecoder)
 {
 	latitude = message.getLatitude();
 	longitude = message.getLongitude();
@@ -19,23 +19,17 @@ ChatControlMessageLocation::~ChatControlMessageLocation()
 {
 }
 
-int ChatControlMessageLocation::getHeight()
+int ChatControlMessageLocation::calculateHeightInner()
 {
-	return height;
-}
+	int height = getPreviewBitmapHeight();
 
-void ChatControlMessageLocation::calculateHeight(HWND window)
-{
-	HDC deviceContext = GetDC(window);
+	HDC deviceContext = GetDC(NULL);
+	height += calculateDrawTextHeight(deviceContext, text, getWidth(), static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
+	ReleaseDC(NULL, deviceContext);
 
-	height = getPreviewBitmapHeight();
-
-	height += calculateDrawTextHeight(deviceContext, text, width, static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
 	height += 10;
 
-	height += getDateHeight(deviceContext);
-
-	ReleaseDC(window, deviceContext);
+	return height;
 }
 
 void ChatControlMessageLocation::renderInner(HDC deviceContext, int x, int y, int clientHeight)
@@ -43,5 +37,5 @@ void ChatControlMessageLocation::renderInner(HDC deviceContext, int x, int y, in
 	renderPreviewBitmap(deviceContext, x + 5, y + 5);
 
 	SetTextColor(deviceContext, RGB(0, 0, 0));
-	drawText(deviceContext, text, x, y + getPreviewBitmapHeight() + 10, width, static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
+	drawText(deviceContext, text, x, y + getPreviewBitmapHeight() + 10, getWidth(), static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
 }

@@ -102,7 +102,6 @@ void ChatControl::buildMessages()
 	}
 
 	resizeMessages();
-	calculateScrollInfo();
 }
 
 void ChatControl::resizeMessages()
@@ -120,6 +119,8 @@ void ChatControl::resizeMessages()
 		message.updateWidth(window, width);
 		y += 8 + message.getHeight();
 	}
+
+	calculateScrollInfo();
 }
 
 void ChatControl::clearMessages()

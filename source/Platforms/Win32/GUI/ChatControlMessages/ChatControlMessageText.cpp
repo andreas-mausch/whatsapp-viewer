@@ -10,7 +10,7 @@
 #include "../../Timestamp.h"
 
 ChatControlMessageText::ChatControlMessageText(WhatsappMessage &message, int width, int color, HFONT dateFont, Smileys &smileys)
-	: ChatControlMessage(message, width, color, dateFont), smileys(smileys), height(0)
+	: ChatControlMessage(message, width, color, dateFont), smileys(smileys)
 {
 	splitMessage(message);
 }
@@ -20,27 +20,18 @@ ChatControlMessageText::~ChatControlMessageText()
 	clearVector(elements);
 }
 
-int ChatControlMessageText::getHeight()
+int ChatControlMessageText::calculateHeightInner()
 {
-	return height;
-}
-
-void ChatControlMessageText::calculateHeight(HWND window)
-{
-	HDC deviceContext = GetDC(window);
-
-	height = 0;
+	int height = 0;
 
 	for (std::vector<ChatControlMessageElement *>::iterator it = elements.begin(); it != elements.end(); it++)
 	{
 		ChatControlMessageElement &element = **it;
-		element.calculateHeight(deviceContext, width);
+		element.calculateHeight(getWidth());
 		height += element.getHeight();
 	}
 
-	height += getDateHeight(deviceContext);
-
-	ReleaseDC(window, deviceContext);
+	return height;
 }
 
 bool ChatControlMessageText::isSmiley(int character)
@@ -100,7 +91,7 @@ void ChatControlMessageText::renderInner(HDC deviceContext, int x, int y, int cl
 
 		if (y + element.getHeight() > 0)
 		{
-			element.render(deviceContext, x, y, width, smileys);
+			element.render(deviceContext, x, y, getWidth(), smileys);
 		}
 		y += element.getHeight();
 

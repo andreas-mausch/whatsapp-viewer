@@ -7,7 +7,7 @@
 #include "../../../../WhatsApp/Message.h"
 
 ChatControlMessage::ChatControlMessage(WhatsappMessage &message, int width, int color, HFONT dateFont)
-	: message(message), width(width), color(color), dateFont(dateFont)
+	: message(message), width(width), height(0), color(color), dateFont(dateFont)
 {
 	wcharDate = strtowstr(formatTimestamp(message.getTimestamp()));
 }
@@ -19,7 +19,23 @@ ChatControlMessage::~ChatControlMessage()
 void ChatControlMessage::updateWidth(HWND window, int width)
 {
 	this->width = width;
-	calculateHeight(window);
+	calculateHeight();
+}
+
+void ChatControlMessage::calculateHeight()
+{
+	height = calculateHeightInner();
+	height += getDateHeight();
+}
+
+int ChatControlMessage::getWidth()
+{
+	return width;
+}
+
+int ChatControlMessage::getHeight()
+{
+	return height;
 }
 
 void ChatControlMessage::render(HDC deviceContext, int x, int y, int clientHeight)
@@ -42,9 +58,12 @@ void ChatControlMessage::renderBox(HDC deviceContext, int x, int y)
 	drawTextRight(deviceContext, wcharDate.c_str(), x, y + getHeight() - dateHeight, width, dateFont);
 }
 
-int ChatControlMessage::getDateHeight(HDC deviceContext)
+int ChatControlMessage::getDateHeight()
 {
-	return calculateDrawTextHeight(deviceContext, wcharDate.c_str(), width, dateFont);
+	HDC deviceContext = GetDC(NULL);
+	int height = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), width, dateFont);
+	ReleaseDC(NULL, deviceContext);
+	return height;
 }
 
 WhatsappMessage &ChatControlMessage::getMessage()
