@@ -29,6 +29,7 @@ private:
 	Settings &settings;
 	int sortingColumn;
 	SortingDirection sortingDirection;
+	bool maximized;
 
 	void openDatabase();
 	void closeDatabase();

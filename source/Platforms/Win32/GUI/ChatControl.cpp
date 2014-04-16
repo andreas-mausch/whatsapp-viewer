@@ -46,7 +46,7 @@ void ChatControl::registerChatControl()
 	windowClass.cbSize = sizeof(WNDCLASSEX);
 	windowClass.lpszClassName = L"ChatControl";
 	windowClass.hbrBackground = reinterpret_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
-	windowClass.style = CS_HREDRAW | CS_VREDRAW;
+	windowClass.style = 0;
 	windowClass.lpfnWndProc = ChatControlCallback;
 	windowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	windowClass.cbWndExtra = sizeof(ChatControl *);
@@ -186,14 +186,12 @@ void ChatControl::createBackbuffer()
 	SelectObject(backbuffer, backbufferBitmap);
 
 	ReleaseDC(window, deviceContext);
+
+	paintBackbuffer();
 }
 
-LRESULT ChatControl::onPaint()
+void ChatControl::paintBackbuffer()
 {
-	HDC deviceContext;
-	PAINTSTRUCT paint;
-
-	deviceContext = BeginPaint(window, &paint);
 	HANDLE oldFont = SelectObject(backbuffer, GetStockObject(DEFAULT_GUI_FONT));
 	SetTextColor(backbuffer, RGB(0, 0, 0));
 	SetBkColor(backbuffer, RGB(230, 230, 210));
@@ -267,7 +265,17 @@ LRESULT ChatControl::onPaint()
 	}
 
 	SelectObject(backbuffer, oldFont);
+}
 
+LRESULT ChatControl::onPaint()
+{
+	HDC deviceContext;
+	PAINTSTRUCT paint;
+
+	RECT clientRect;
+	GetClientRect(window, &clientRect);
+
+	deviceContext = BeginPaint(window, &paint);
 	BitBlt(deviceContext, 0, 0, clientRect.right, clientRect.bottom, backbuffer, 0, 0, SRCCOPY);
 	EndPaint(window, &paint);
 
@@ -297,6 +305,7 @@ void ChatControl::scroll(int newPosition)
 	{
 		// ScrollWindow(hwnd, 0, yChar * (yPos - si.nPos), NULL, NULL);
 		// UpdateWindow (hwnd);
+		paintBackbuffer();
 		redraw();
 	}
 }
@@ -380,6 +389,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 			chatControl->chat = reinterpret_cast<WhatsappChat *>(lParam);
 			SetScrollPos(window, SB_VERT, 0, TRUE);
 			chatControl->buildMessages();
+			chatControl->paintBackbuffer();
 			chatControl->redraw();
 		} break;
 		case WM_PAINT:
@@ -443,10 +453,16 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 		{
 			return DLGC_WANTARROWS;
 		} break;
+		case WM_CHATCONTROL_REPAINT:
+		{
+			chatControl->resizeMessages();
+			chatControl->createBackbuffer();
+			chatControl->redraw();
+		} break;
 		case WM_SIZE:
 		{
 			chatControl->createBackbuffer();
-			chatControl->resizeMessages();
+			chatControl->redraw();
 		} break;
 		case WM_NCDESTROY:
 		{

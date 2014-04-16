@@ -27,7 +27,7 @@
   "language='*'\"")
 
 MainWindow::MainWindow(Settings &settings)
-	: settings(settings), database(NULL), sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING)
+	: settings(settings), database(NULL), sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING), maximized(false)
 {
 	CoInitialize(NULL);
 
@@ -462,14 +462,33 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 				} break;
 			}
 		} break;
+		case WM_EXITSIZEMOVE:
+		{
+			SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL_REPAINT, 0, 0);
+		} break;
 		case WM_SIZE:
 		{
 			resizeChildWindows(LOWORD(lParam), HIWORD(lParam));
+
+			if (wParam == SIZE_RESTORED && maximized)
+			{
+				SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL_REPAINT, 0, 0);
+			}
+
+			if (wParam == SIZE_MAXIMIZED)
+			{
+				maximized = true;
+				SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL_REPAINT, 0, 0);
+			}
+			else
+			{
+				maximized = false;
+			}
 		} break;
 		case WM_GETMINMAXINFO:
 		{
 			MINMAXINFO *minmaxinfo = reinterpret_cast<MINMAXINFO *>(lParam);
-			minmaxinfo->ptMinTrackSize.x = 500;
+			minmaxinfo->ptMinTrackSize.x = 600;
 			minmaxinfo->ptMinTrackSize.y = 200;
 		} break;
 		case WM_CLOSE:

@@ -8,6 +8,7 @@ class ImageDecoder;
 class Smileys;
 
 #define WM_CHATCONTROL_SETCHAT (WM_USER+0)
+#define WM_CHATCONTROL_REPAINT (WM_USER+1)
 
 class ChatControl
 {
@@ -38,6 +39,7 @@ private:
 	LRESULT onMousewheel(int delta);
 
 	void createBackbuffer();
+	void paintBackbuffer();
 	void deleteBackbuffer();
 
 public:
