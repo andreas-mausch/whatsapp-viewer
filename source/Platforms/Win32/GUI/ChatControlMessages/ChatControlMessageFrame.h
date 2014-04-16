@@ -14,6 +14,7 @@ private:
 
 	void renderFrame(HDC deviceContext, int x, int y);
 	int getDateHeight();
+	int getRemoteResourceHeight();
 
 public:
 	ChatControlMessageFrame(ChatControlMessage *message, int width, int color, HFONT dateFont);

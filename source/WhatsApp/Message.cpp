@@ -66,3 +66,8 @@ double WhatsappMessage::getLongitude() const
 {
 	return longitude;
 }
+
+const std::string &WhatsappMessage::getRemoteResource()
+{
+	return remoteResource;
+}

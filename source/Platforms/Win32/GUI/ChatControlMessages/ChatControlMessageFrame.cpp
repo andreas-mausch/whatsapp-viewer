@@ -30,6 +30,11 @@ void ChatControlMessageFrame::calculateHeight()
 {
 	height = message->calculateHeight();
 	height += getDateHeight();
+
+	if (message->getMessage().getRemoteResource().size() > 0)
+	{
+		height += getRemoteResourceHeight();
+	}
 }
 
 ChatControlMessage *ChatControlMessageFrame::getMessage()
@@ -60,12 +65,27 @@ void ChatControlMessageFrame::renderFrame(HDC deviceContext, int x, int y)
 	SetTextColor(deviceContext, RGB(110, 110, 110));
 	int dateHeight = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), width, dateFont);
 	drawTextRight(deviceContext, wcharDate.c_str(), x, y + getHeight() - dateHeight, width, dateFont);
+
+	if (message->getMessage().getRemoteResource().size() > 0)
+	{
+		std::wstring remoteResource = strtowstr(message->getMessage().getRemoteResource());
+		int remoteResourceHeight = calculateDrawTextHeight(deviceContext, remoteResource.c_str(), width, dateFont);
+		drawTextRight(deviceContext, remoteResource.c_str(), x, y + getHeight() - dateHeight - remoteResourceHeight, width, dateFont);
+	}
 }
 
 int ChatControlMessageFrame::getDateHeight()
 {
 	HDC deviceContext = GetDC(NULL);
 	int height = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), width, dateFont);
+	ReleaseDC(NULL, deviceContext);
+	return height;
+}
+
+int ChatControlMessageFrame::getRemoteResourceHeight()
+{
+	HDC deviceContext = GetDC(NULL);
+	int height = calculateDrawTextHeight(deviceContext, strtowstr(message->getMessage().getRemoteResource()).c_str(), width, dateFont);
 	ReleaseDC(NULL, deviceContext);
 	return height;
 }
