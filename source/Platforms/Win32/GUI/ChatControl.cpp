@@ -91,11 +91,17 @@ void ChatControl::buildMessages()
 				} break;
 				case MEDIA_WHATSAPP_VIDEO:
 				{
-					messageFrame = new ChatControlMessageFrame(new ChatControlMessageVideo(message, 0, *imageDecoder), 0, color, dateFont);
+					if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
+					{
+						messageFrame = new ChatControlMessageFrame(new ChatControlMessageVideo(message, 0, *imageDecoder), 0, color, dateFont);
+					}
 				} break;
 				case MEDIA_WHATSAPP_LOCATION:
 				{
-					messageFrame = new ChatControlMessageFrame(new ChatControlMessageLocation(message, 0, *imageDecoder), 0, color, dateFont);
+					if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
+					{
+						messageFrame = new ChatControlMessageFrame(new ChatControlMessageLocation(message, 0, *imageDecoder), 0, color, dateFont);
+					}
 				} break;
 			}
 
