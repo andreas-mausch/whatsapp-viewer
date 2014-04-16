@@ -5,15 +5,17 @@
 class ImageDecoder;
 class WhatsappMessage;
 
-class ChatControlMessageImage : public ChatControlMessage
+class ChatControlMessageLocation : public ChatControlMessage
 {
 private:
 	HBITMAP bitmap;
 	int height;
+	double latitude;
+	double longitude;
 
 public:
-	ChatControlMessageImage(WhatsappMessage &message, HGDIOBJ dateFont, ImageDecoder &imageDecoder);
-	virtual ~ChatControlMessageImage();
+	ChatControlMessageLocation(WhatsappMessage &message, HGDIOBJ dateFont, ImageDecoder &imageDecoder);
+	virtual ~ChatControlMessageLocation();
 
 	virtual void calculateHeight(HWND window);
 	virtual int getHeight();
