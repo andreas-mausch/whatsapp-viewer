@@ -9,8 +9,8 @@
 #include "../../StringHelper.h"
 #include "../../Timestamp.h"
 
-ChatControlMessageText::ChatControlMessageText(WhatsappMessage &message, int width, int color, HFONT dateFont, Smileys &smileys)
-	: ChatControlMessage(message, width, color, dateFont), smileys(smileys)
+ChatControlMessageText::ChatControlMessageText(WhatsappMessage &message, int width, Smileys &smileys)
+	: ChatControlMessage(message, width), smileys(smileys)
 {
 	splitMessage(message);
 }
@@ -20,7 +20,7 @@ ChatControlMessageText::~ChatControlMessageText()
 	clearVector(elements);
 }
 
-int ChatControlMessageText::calculateHeightInner()
+int ChatControlMessageText::calculateHeight()
 {
 	int height = 0;
 
@@ -81,7 +81,7 @@ void ChatControlMessageText::splitMessage(WhatsappMessage &message)
 	}
 }
 
-void ChatControlMessageText::renderInner(HDC deviceContext, int x, int y, int clientHeight)
+void ChatControlMessageText::render(HDC deviceContext, int x, int y, int clientHeight)
 {
 	SetTextColor(deviceContext, RGB(0, 0, 0));
 

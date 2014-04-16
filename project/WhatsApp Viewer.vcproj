@@ -318,6 +318,10 @@
 								>
 							</File>
 							<File
+								RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessages\ChatControlMessageFrame.cpp"
+								>
+							</File>
+							<File
 								RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessages\ChatControlMessageImage.cpp"
 								>
 							</File>
@@ -501,6 +505,10 @@
 							</File>
 							<File
 								RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessages\ChatControlMessageElement.h"
+								>
+							</File>
+							<File
+								RelativePath="..\source\Platforms\Win32\GUI\ChatControlMessages\ChatControlMessageFrame.h"
 								>
 							</File>
 							<File

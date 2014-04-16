@@ -16,11 +16,11 @@ private:
 	void splitMessage(WhatsappMessage &message);
 	bool isSmiley(int character);
 
-	virtual int calculateHeightInner();
-	virtual void renderInner(HDC deviceContext, int x, int y, int clientHeight);
-
 public:
-	ChatControlMessageText(WhatsappMessage &message, int width, int color, HFONT dateFont, Smileys &smileys);
+	ChatControlMessageText(WhatsappMessage &message, int width, Smileys &smileys);
 	virtual ~ChatControlMessageText();
+
+	virtual int calculateHeight();
+	virtual void render(HDC deviceContext, int x, int y, int clientHeight);
 
 };

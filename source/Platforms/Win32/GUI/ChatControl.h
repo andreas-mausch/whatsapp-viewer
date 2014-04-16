@@ -3,7 +3,7 @@
 #include <vector>
 
 class WhatsappChat;
-class ChatControlMessage;
+class ChatControlMessageFrame;
 class ImageDecoder;
 class Smileys;
 
@@ -20,7 +20,7 @@ private:
 	HDC backbuffer;
 	HBITMAP backbufferBitmap;
 	WhatsappChat *chat;
-	std::vector<ChatControlMessage *> messages;
+	std::vector<ChatControlMessageFrame *> messages;
 
 	static LRESULT CALLBACK ChatControlCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -30,7 +30,7 @@ private:
 	void resizeMessages();
 
 	LRESULT onPaint();
-	void drawMessage(ChatControlMessage &message, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont);
+	void drawMessage(ChatControlMessageFrame &messageFrame, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont);
 	void redraw();
 
 	void scroll(int newPosition);

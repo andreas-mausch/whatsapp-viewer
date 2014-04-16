@@ -7,12 +7,11 @@ class WhatsappMessage;
 
 class ChatControlMessageImage : public ChatControlMessageWithPreview
 {
-private:
-	virtual int calculateHeightInner();
-	virtual void renderInner(HDC deviceContext, int x, int y, int clientHeight);
-
 public:
-	ChatControlMessageImage(WhatsappMessage &message, int width, int color, HFONT dateFont, ImageDecoder &imageDecoder);
+	ChatControlMessageImage(WhatsappMessage &message, int width, ImageDecoder &imageDecoder);
 	virtual ~ChatControlMessageImage();
+
+	virtual int calculateHeight();
+	virtual void render(HDC deviceContext, int x, int y, int clientHeight);
 
 };

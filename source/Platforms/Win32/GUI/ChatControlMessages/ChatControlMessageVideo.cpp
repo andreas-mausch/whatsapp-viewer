@@ -5,8 +5,8 @@
 #include "../../../../WhatsApp/Message.h"
 #include "../../ImageDecoder.h"
 
-ChatControlMessageVideo::ChatControlMessageVideo(WhatsappMessage &message, int width, int color, HFONT dateFont, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreview(message, width, color, dateFont, imageDecoder), text(L"Video")
+ChatControlMessageVideo::ChatControlMessageVideo(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
+	: ChatControlMessageWithPreview(message, width, imageDecoder), text(L"Video")
 {
 }
 
@@ -14,7 +14,7 @@ ChatControlMessageVideo::~ChatControlMessageVideo()
 {
 }
 
-int ChatControlMessageVideo::calculateHeightInner()
+int ChatControlMessageVideo::calculateHeight()
 {
 	int height = getPreviewBitmapHeight();
 
@@ -27,7 +27,7 @@ int ChatControlMessageVideo::calculateHeightInner()
 	return height;
 }
 
-void ChatControlMessageVideo::renderInner(HDC deviceContext, int x, int y, int clientHeight)
+void ChatControlMessageVideo::render(HDC deviceContext, int x, int y, int clientHeight)
 {
 	renderPreviewBitmap(deviceContext, x + 5, y + 5);
 

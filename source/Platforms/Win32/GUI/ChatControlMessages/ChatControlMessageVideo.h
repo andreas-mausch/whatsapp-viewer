@@ -10,11 +10,11 @@ class ChatControlMessageVideo : public ChatControlMessageWithPreview
 private:
 	std::wstring text;
 
-	virtual int calculateHeightInner();
-	virtual void renderInner(HDC deviceContext, int x, int y, int clientHeight);
-
 public:
-	ChatControlMessageVideo(WhatsappMessage &message, int width, int color, HFONT dateFont, ImageDecoder &imageDecoder);
+	ChatControlMessageVideo(WhatsappMessage &message, int width, ImageDecoder &imageDecoder);
 	virtual ~ChatControlMessageVideo();
+
+	virtual int calculateHeight();
+	virtual void render(HDC deviceContext, int x, int y, int clientHeight);
 
 };

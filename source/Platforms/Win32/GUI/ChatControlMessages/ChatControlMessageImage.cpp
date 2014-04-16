@@ -4,8 +4,8 @@
 #include "../../../../WhatsApp/Message.h"
 #include "../../ImageDecoder.h"
 
-ChatControlMessageImage::ChatControlMessageImage(WhatsappMessage &message, int width, int color, HFONT dateFont, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreview(message, width, color, dateFont, imageDecoder)
+ChatControlMessageImage::ChatControlMessageImage(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
+	: ChatControlMessageWithPreview(message, width, imageDecoder)
 {
 }
 
@@ -13,12 +13,12 @@ ChatControlMessageImage::~ChatControlMessageImage()
 {
 }
 
-int ChatControlMessageImage::calculateHeightInner()
+int ChatControlMessageImage::calculateHeight()
 {
 	return getPreviewBitmapHeight() + 10;
 }
 
-void ChatControlMessageImage::renderInner(HDC deviceContext, int x, int y, int clientHeight)
+void ChatControlMessageImage::render(HDC deviceContext, int x, int y, int clientHeight)
 {
-	renderPreviewBitmap(deviceContext, x + 5, y + (getHeight() - getPreviewBitmapHeight()) / 2);
+	renderPreviewBitmap(deviceContext, x + 5, y + 5);
 }

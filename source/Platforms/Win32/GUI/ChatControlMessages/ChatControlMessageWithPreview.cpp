@@ -4,8 +4,8 @@
 #include "../../../../WhatsApp/Message.h"
 #include "../../ImageDecoder.h"
 
-ChatControlMessageWithPreview::ChatControlMessageWithPreview(WhatsappMessage &message, int width, int color, HFONT dateFont, ImageDecoder &imageDecoder)
-	: ChatControlMessage(message, width, color, dateFont)
+ChatControlMessageWithPreview::ChatControlMessageWithPreview(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
+	: ChatControlMessage(message, width)
 {
 	bitmap = imageDecoder.loadImage(message.getRawData(), message.getRawDataSize());
 

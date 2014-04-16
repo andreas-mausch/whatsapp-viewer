@@ -5,8 +5,8 @@
 #include "../../../../WhatsApp/Message.h"
 #include "../../ImageDecoder.h"
 
-ChatControlMessageLocation::ChatControlMessageLocation(WhatsappMessage &message, int width, int color, HFONT dateFont, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreview(message, width, color, dateFont, imageDecoder)
+ChatControlMessageLocation::ChatControlMessageLocation(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
+	: ChatControlMessageWithPreview(message, width, imageDecoder)
 {
 	latitude = message.getLatitude();
 	longitude = message.getLongitude();
@@ -17,7 +17,7 @@ ChatControlMessageLocation::~ChatControlMessageLocation()
 {
 }
 
-int ChatControlMessageLocation::calculateHeightInner()
+int ChatControlMessageLocation::calculateHeight()
 {
 	int height = getPreviewBitmapHeight();
 
@@ -30,7 +30,7 @@ int ChatControlMessageLocation::calculateHeightInner()
 	return height;
 }
 
-void ChatControlMessageLocation::renderInner(HDC deviceContext, int x, int y, int clientHeight)
+void ChatControlMessageLocation::render(HDC deviceContext, int x, int y, int clientHeight)
 {
 	renderPreviewBitmap(deviceContext, x + 5, y + 5);
 

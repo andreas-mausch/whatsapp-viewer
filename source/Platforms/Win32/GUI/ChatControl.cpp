@@ -6,6 +6,7 @@
 
 #include "ChatControl.h"
 #include "ChatControlMessages/ChatControlMessage.h"
+#include "ChatControlMessages/ChatControlMessageFrame.h"
 #include "ChatControlMessages/ChatControlMessageImage.h"
 #include "ChatControlMessages/ChatControlMessageLocation.h"
 #include "ChatControlMessages/ChatControlMessageText.h"
@@ -62,7 +63,7 @@ void ChatControl::buildMessages()
 		for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
 		{
 			WhatsappMessage &message = **it;
-			ChatControlMessage *chatControlMessage = NULL;
+			ChatControlMessageFrame *messageFrame = NULL;
 
 			int color;
 
@@ -79,28 +80,28 @@ void ChatControl::buildMessages()
 			{
 				case MEDIA_WHATSAPP_TEXT:
 				{
-					chatControlMessage = new ChatControlMessageText(message, 0, color, dateFont, *smileys);
+					messageFrame = new ChatControlMessageFrame(new ChatControlMessageText(message, 0, *smileys), 0, color, dateFont);
 				} break;
 				case MEDIA_WHATSAPP_IMAGE:
 				{
 					if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
 					{
-						chatControlMessage = new ChatControlMessageImage(message, 0, color, dateFont, *imageDecoder);
+						messageFrame = new ChatControlMessageFrame(new ChatControlMessageImage(message, 0, *imageDecoder), 0, color, dateFont);
 					}
 				} break;
 				case MEDIA_WHATSAPP_VIDEO:
 				{
-					chatControlMessage = new ChatControlMessageVideo(message, 0, color, dateFont, *imageDecoder);
+					messageFrame = new ChatControlMessageFrame(new ChatControlMessageVideo(message, 0, *imageDecoder), 0, color, dateFont);
 				} break;
 				case MEDIA_WHATSAPP_LOCATION:
 				{
-					chatControlMessage = new ChatControlMessageLocation(message, 0, color, dateFont, *imageDecoder);
+					messageFrame = new ChatControlMessageFrame(new ChatControlMessageLocation(message, 0, *imageDecoder), 0, color, dateFont);
 				} break;
 			}
 
-			if (chatControlMessage != NULL)
+			if (messageFrame != NULL)
 			{
-				this->messages.push_back(chatControlMessage);
+				this->messages.push_back(messageFrame);
 			}
 		}
 
@@ -118,11 +119,11 @@ void ChatControl::resizeMessages()
 	int gap = 40;
 	int width = clientRect.right - clientRect.left - 20 - gap;
 
-	for (std::vector<ChatControlMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
+	for (std::vector<ChatControlMessageFrame *>::iterator it = messages.begin(); it != messages.end(); ++it)
 	{
-		ChatControlMessage &message = **it;
-		message.updateWidth(window, width);
-		y += 8 + message.getHeight();
+		ChatControlMessageFrame &messageFrame = **it;
+		messageFrame.updateWidth(window, width);
+		y += 8 + messageFrame.getHeight();
 	}
 
 	calculateScrollInfo();
@@ -139,10 +140,10 @@ void ChatControl::calculateScrollInfo()
 	GetClientRect(window, &clientRect);
 
 	int y = 40;
-	for (std::vector<ChatControlMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
+	for (std::vector<ChatControlMessageFrame *>::iterator it = messages.begin(); it != messages.end(); ++it)
 	{
-		ChatControlMessage &message = **it;
-		y += 8 + message.getHeight();
+		ChatControlMessageFrame &messageFrame = **it;
+		y += 8 + messageFrame.getHeight();
 	}
 
 	SCROLLINFO scrollInfo;
@@ -234,22 +235,22 @@ LRESULT ChatControl::onPaint()
 
 	if (chat != NULL)
 	{
-		for (std::vector<ChatControlMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
+		for (std::vector<ChatControlMessageFrame *>::iterator it = messages.begin(); it != messages.end(); ++it)
 		{
-			ChatControlMessage &message = **it;
+			ChatControlMessageFrame &messageFrame = **it;
 
 			int x = 10;
 
-			if (message.getMessage().isFromMe())
+			if (messageFrame.getMessage()->getMessage().isFromMe())
 			{
 				x += 40;
 			}
 
-			if (y + message.getHeight() - scrollPosition > 0)
+			if (y + messageFrame.getHeight() - scrollPosition > 0)
 			{
-				message.render(backbuffer, x, y - scrollPosition, clientRect.bottom);
+				messageFrame.render(backbuffer, x, y - scrollPosition, clientRect.bottom);
 			}
-			y += message.getHeight();
+			y += messageFrame.getHeight();
 			y += 8;
 
 			if (y - scrollPosition > clientRect.bottom)

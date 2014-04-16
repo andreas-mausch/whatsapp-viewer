@@ -12,11 +12,11 @@ private:
 	double latitude;
 	double longitude;
 
-	virtual int calculateHeightInner();
-	virtual void renderInner(HDC deviceContext, int x, int y, int clientHeight);
-
 public:
-	ChatControlMessageLocation(WhatsappMessage &message, int width, int color, HFONT dateFont, ImageDecoder &imageDecoder);
+	ChatControlMessageLocation(WhatsappMessage &message, int width, ImageDecoder &imageDecoder);
 	virtual ~ChatControlMessageLocation();
+
+	virtual int calculateHeight();
+	virtual void render(HDC deviceContext, int x, int y, int clientHeight);
 
 };
