@@ -64,6 +64,18 @@ void ChatExporter::exportChat(const std::string &filename)
 			{
 				file << "[ Audio ]";
 			} break;
+			case MEDIA_WHATSAPP_VIDEO:
+			{
+				file << "[ Video ]";
+			} break;
+			case MEDIA_WHATSAPP_CONTACT:
+			{
+				file << "[ Contact ]";
+			} break;
+			case MEDIA_WHATSAPP_LOCATION:
+			{
+				file << "[ Location: " << message.getLatitude() << "; " << message.getLongitude() << " ]";
+			} break;
 		}
 
 		file << std::endl;
