@@ -5,14 +5,17 @@
 #include "../../ImageDecoder.h"
 
 ChatControlMessageWithPreview::ChatControlMessageWithPreview(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
-	: ChatControlMessage(message, width)
+	: ChatControlMessage(message, width), bitmap(NULL), bitmapWidth(0), bitmapHeight(0)
 {
-	bitmap = imageDecoder.loadImage(message.getRawData(), message.getRawDataSize());
+	if (message.getRawData() != NULL && message.getRawDataSize() > 0)
+	{
+		bitmap = imageDecoder.loadImage(message.getRawData(), message.getRawDataSize());
 
-	BITMAP bitmapObject;
-	GetObject(bitmap, sizeof(BITMAP), &bitmapObject);
-	bitmapWidth = bitmapObject.bmWidth;
-	bitmapHeight = bitmapObject.bmHeight;
+		BITMAP bitmapObject;
+		GetObject(bitmap, sizeof(BITMAP), &bitmapObject);
+		bitmapWidth = bitmapObject.bmWidth;
+		bitmapHeight = bitmapObject.bmHeight;
+	}
 }
 
 ChatControlMessageWithPreview::~ChatControlMessageWithPreview()
@@ -35,11 +38,14 @@ int ChatControlMessageWithPreview::getPreviewBitmapHeight()
 
 void ChatControlMessageWithPreview::renderPreviewBitmap(HDC deviceContext, int x, int y)
 {
-	HDC hdcMem = CreateCompatibleDC(deviceContext);
-	HGDIOBJ oldBitmap = SelectObject(hdcMem, bitmap);
+	if (bitmap != NULL)
+	{
+		HDC hdcMem = CreateCompatibleDC(deviceContext);
+		HGDIOBJ oldBitmap = SelectObject(hdcMem, bitmap);
 
-	BitBlt(deviceContext, x, y, bitmapWidth, bitmapHeight, hdcMem, 0, 0, SRCCOPY);
+		BitBlt(deviceContext, x, y, bitmapWidth, bitmapHeight, hdcMem, 0, 0, SRCCOPY);
 
-	SelectObject(hdcMem, oldBitmap);
-	DeleteDC(hdcMem);
+		SelectObject(hdcMem, oldBitmap);
+		DeleteDC(hdcMem);
+	}
 }

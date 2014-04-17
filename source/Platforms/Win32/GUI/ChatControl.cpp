@@ -108,10 +108,7 @@ void ChatControl::buildMessages()
 				} break;
 				case MEDIA_WHATSAPP_LOCATION:
 				{
-					if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
-					{
-						messageFrame = new ChatControlMessageFrame(new ChatControlMessageLocation(message, 0, *imageDecoder), 0, color, dateFont);
-					}
+					messageFrame = new ChatControlMessageFrame(new ChatControlMessageLocation(message, 0, *imageDecoder), 0, color, dateFont);
 				} break;
 			}
 

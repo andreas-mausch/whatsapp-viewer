@@ -25,7 +25,10 @@ int ChatControlMessageLocation::calculateHeight()
 	height += calculateDrawTextHeight(deviceContext, text, getWidth(), static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
 	ReleaseDC(NULL, deviceContext);
 
-	height += 10;
+	if (getPreviewBitmapHeight() > 0)
+	{
+		height += 10;
+	}
 
 	return height;
 }
@@ -34,6 +37,13 @@ void ChatControlMessageLocation::render(HDC deviceContext, int x, int y, int cli
 {
 	renderPreviewBitmap(deviceContext, x + 5, y + 5);
 
+	int yText = 0;
+
+	if (getPreviewBitmapHeight() > 0)
+	{
+		yText += getPreviewBitmapHeight() + 10;
+	}
+
 	SetTextColor(deviceContext, RGB(0, 0, 0));
-	drawText(deviceContext, text, x, y + getPreviewBitmapHeight() + 10, getWidth(), static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
+	drawText(deviceContext, text, x, y + yText, getWidth(), static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
 }
