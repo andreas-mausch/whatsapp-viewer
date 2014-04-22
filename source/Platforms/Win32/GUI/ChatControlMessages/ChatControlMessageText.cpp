@@ -74,7 +74,7 @@ void ChatControlMessageText::splitMessage(WhatsappMessage &message)
 	}
 
 	int length = messageString.length();
-	if (lastSplit < length - 1)
+	if (lastSplit < length)
 	{
 		std::string part = messageString.substr(lastSplit, length);
 		elements.push_back(new ChatControlMessageElement(part));
