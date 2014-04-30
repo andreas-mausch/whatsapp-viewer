@@ -375,102 +375,125 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 {
 	ChatControl *chatControl = reinterpret_cast<ChatControl *>(GetWindowLongPtr(window, 0));
 
-	switch (message)
+	try
 	{
-		case WM_NCCREATE:
+		switch (message)
 		{
-			RECT rect;
-			GetClientRect(window, &rect);
-
-			chatControl = new ChatControl(window);
-
-			SetWindowLongPtr(window, 0, reinterpret_cast<LONG>(chatControl));
-			ShowScrollBar(window, SB_VERT, FALSE);
-		} break;
-		case WM_CREATE:
-		{
-			chatControl->createBackbuffer();
-		} break;
-		case WM_CHATCONTROL_SETCHAT:
-		{
-			chatControl->setChat(*reinterpret_cast<WhatsappChat *>(lParam));
-		} break;
-		case WM_PAINT:
-		{
-			return chatControl->onPaint();
-		} break;
-		case WM_ERASEBKGND:
-		{
-			return 1;
-		} break;
-		case WM_VSCROLL:
-		{
-			return chatControl->onScroll(wParam);
-		} break;
-		case WM_MOUSEACTIVATE:
-		{
-			SetFocus(window);
-			return MA_ACTIVATE;
-		} break;
-		case WM_MOUSEWHEEL:
-		{
-			return chatControl->onMousewheel(GET_WHEEL_DELTA_WPARAM(wParam));
-		} break;
-		case WM_KEYDOWN:
-		{
-			switch (wParam)
+			case WM_NCCREATE:
 			{
-				case VK_DOWN:
+				RECT rect;
+				GetClientRect(window, &rect);
+
+				try
 				{
-					SendMessage(window, WM_VSCROLL, MAKELONG(SB_LINEDOWN, 0), 0);
-					return 0;
-				} break;
-				case VK_UP:
+					chatControl = new ChatControl(window);
+				}
+				catch (Exception &exception)
 				{
-					SendMessage(window, WM_VSCROLL, MAKELONG(SB_LINEUP, 0), 0);
-					return 0;
-				} break;
-				case VK_HOME:
+					std::wstring cause = strtowstr(exception.getCause());
+					MessageBox(NULL, cause.c_str(), L"Error", MB_OK | MB_ICONERROR);
+					return FALSE;
+				}
+
+				SetWindowLongPtr(window, 0, reinterpret_cast<LONG>(chatControl));
+				ShowScrollBar(window, SB_VERT, FALSE);
+			} break;
+			case WM_CREATE:
+			{
+				if (!chatControl)
 				{
-					SendMessage(window, WM_VSCROLL, MAKELONG(SB_TOP, 0), 0);
-					return 0;
-				} break;
-				case VK_END:
+					return -1;
+				}
+
+				chatControl->createBackbuffer();
+			} break;
+			case WM_CHATCONTROL_SETCHAT:
+			{
+				chatControl->setChat(*reinterpret_cast<WhatsappChat *>(lParam));
+			} break;
+			case WM_PAINT:
+			{
+				return chatControl->onPaint();
+			} break;
+			case WM_ERASEBKGND:
+			{
+				return 1;
+			} break;
+			case WM_VSCROLL:
+			{
+				return chatControl->onScroll(wParam);
+			} break;
+			case WM_MOUSEACTIVATE:
+			{
+				SetFocus(window);
+				return MA_ACTIVATE;
+			} break;
+			case WM_MOUSEWHEEL:
+			{
+				return chatControl->onMousewheel(GET_WHEEL_DELTA_WPARAM(wParam));
+			} break;
+			case WM_KEYDOWN:
+			{
+				switch (wParam)
 				{
-					SendMessage(window, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), 0);
-					return 0;
-				} break;
-				case VK_PRIOR:
-				{
-					SendMessage(window, WM_VSCROLL, MAKELONG(SB_PAGEUP, 0), 0);
-					return 0;
-				} break;
-				case VK_NEXT:
-				{
-					SendMessage(window, WM_VSCROLL, MAKELONG(SB_PAGEDOWN, 0), 0);
-					return 0;
-				} break;
-			}
-         } break;
-		case WM_GETDLGCODE:
-		{
-			return DLGC_WANTARROWS;
-		} break;
-		case WM_CHATCONTROL_REPAINT:
-		{
-			chatControl->resizeMessages();
-			chatControl->createBackbuffer();
-			chatControl->redraw();
-		} break;
-		case WM_SIZE:
-		{
-			chatControl->createBackbuffer();
-			chatControl->redraw();
-		} break;
-		case WM_NCDESTROY:
-		{
-			delete chatControl;
-		} break;
+					case VK_DOWN:
+					{
+						SendMessage(window, WM_VSCROLL, MAKELONG(SB_LINEDOWN, 0), 0);
+						return 0;
+					} break;
+					case VK_UP:
+					{
+						SendMessage(window, WM_VSCROLL, MAKELONG(SB_LINEUP, 0), 0);
+						return 0;
+					} break;
+					case VK_HOME:
+					{
+						SendMessage(window, WM_VSCROLL, MAKELONG(SB_TOP, 0), 0);
+						return 0;
+					} break;
+					case VK_END:
+					{
+						SendMessage(window, WM_VSCROLL, MAKELONG(SB_BOTTOM, 0), 0);
+						return 0;
+					} break;
+					case VK_PRIOR:
+					{
+						SendMessage(window, WM_VSCROLL, MAKELONG(SB_PAGEUP, 0), 0);
+						return 0;
+					} break;
+					case VK_NEXT:
+					{
+						SendMessage(window, WM_VSCROLL, MAKELONG(SB_PAGEDOWN, 0), 0);
+						return 0;
+					} break;
+				}
+			 } break;
+			case WM_GETDLGCODE:
+			{
+				return DLGC_WANTARROWS;
+			} break;
+			case WM_CHATCONTROL_REPAINT:
+			{
+				chatControl->resizeMessages();
+				chatControl->createBackbuffer();
+				chatControl->redraw();
+			} break;
+			case WM_SIZE:
+			{
+				chatControl->createBackbuffer();
+				chatControl->redraw();
+			} break;
+			case WM_NCDESTROY:
+			{
+				delete chatControl;
+			} break;
+		}
+	}
+	catch (Exception &exception)
+	{
+		std::wstring cause = strtowstr(exception.getCause());
+		MessageBox(NULL, cause.c_str(), L"Error", MB_OK | MB_ICONERROR);
+		return DefWindowProc(window, message, wParam, lParam);
 	}
 
 	return DefWindowProc(window, message, wParam, lParam);

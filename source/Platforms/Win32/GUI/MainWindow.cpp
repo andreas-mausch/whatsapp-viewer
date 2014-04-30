@@ -27,7 +27,7 @@
   "language='*'\"")
 
 MainWindow::MainWindow(Settings &settings)
-	: settings(settings), database(NULL), sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING), maximized(false)
+	: settings(settings), database(NULL), sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING), maximized(false), dialog(NULL)
 {
 	CoInitialize(NULL);
 
@@ -42,11 +42,14 @@ MainWindow::MainWindow(Settings &settings)
 
 	readSettings();
 
-	CreateDialogParam(GetModuleHandle(NULL),
-		MAKEINTRESOURCE(IDD_MAIN),
-		NULL,
-		dialogCallback,
-		reinterpret_cast<LPARAM>(this));
+	if (!CreateDialogParam(GetModuleHandle(NULL),
+						   MAKEINTRESOURCE(IDD_MAIN),
+						   NULL,
+						   dialogCallback,
+						   reinterpret_cast<LPARAM>(this)))
+	{
+		throw Exception("could not create main dialog");
+	}
 
 	ShowWindow(dialog, SW_SHOW);
 }
@@ -386,9 +389,8 @@ void MainWindow::decryptDatabase()
 
 void MainWindow::displayException(HWND mainWindow, Exception &exception)
 {
-	WCHAR *cause = buildWcharString(exception.getCause());
-	MessageBox(mainWindow, cause, L"Error", MB_OK | MB_ICONERROR);
-	delete[] cause;
+	std::wstring cause = strtowstr(exception.getCause());
+	MessageBox(mainWindow, cause.c_str(), L"Error", MB_OK | MB_ICONERROR);
 }
 
 INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)

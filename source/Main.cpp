@@ -7,18 +7,27 @@
 #include "Exceptions/Exception.h"
 #include "Platforms/Win32/GUI/MainWindow.h"
 #include "Platforms/Win32/SettingsRegistry.h"
+#include "Platforms/Win32/StringHelper.h"
 
 void entryPoint()
 {
-	SettingsRegistry settingsRegistry;
-	MainWindow mainWindow(settingsRegistry);
-
-	bool run = true;
-	while (run)
+	try
 	{
-		if (!mainWindow.handleMessages())
+		SettingsRegistry settingsRegistry;
+		MainWindow mainWindow(settingsRegistry);
+
+		bool run = true;
+		while (run)
 		{
-			run = false;
+			if (!mainWindow.handleMessages())
+			{
+				run = false;
+			}
 		}
+	}
+	catch (Exception &exception)
+	{
+		std::wstring cause = strtowstr(exception.getCause());
+		MessageBox(NULL, cause.c_str(), L"Error", MB_OK | MB_ICONERROR);
 	}
 }
