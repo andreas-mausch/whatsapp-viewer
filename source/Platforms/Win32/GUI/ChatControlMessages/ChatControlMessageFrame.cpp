@@ -4,11 +4,13 @@
 #include "ChatControlMessage.h"
 #include "ChatControlMessageFrame.h"
 #include "../DrawText.h"
+#include "../../Objects/Brush.h"
+#include "../../Objects/Font.h"
 #include "../../StringHelper.h"
 #include "../../Timestamp.h"
 #include "../../../../WhatsApp/Message.h"
 
-ChatControlMessageFrame::ChatControlMessageFrame(ChatControlMessage *message, int width, int color, HFONT dateFont)
+ChatControlMessageFrame::ChatControlMessageFrame(ChatControlMessage *message, int width, int color, Font &dateFont)
 	: message(message), width(width), color(color), height(0), dateFont(dateFont)
 {
 	wcharDate = strtowstr(formatTimestamp(message->getMessage().getTimestamp()));
@@ -58,26 +60,25 @@ void ChatControlMessageFrame::renderFrame(HDC deviceContext, int x, int y)
 	SetBkColor(deviceContext, color);
 
 	RECT completeRect = { x, y, x + width, y + getHeight() };
-	HBRUSH brush = CreateSolidBrush(color);
-	FillRect(deviceContext, &completeRect, brush);
-	DeleteObject(brush);
+	Brush brush(CreateSolidBrush(color));
+	FillRect(deviceContext, &completeRect, brush.get());
 
 	SetTextColor(deviceContext, RGB(110, 110, 110));
-	int dateHeight = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), width, dateFont);
-	drawTextRight(deviceContext, wcharDate.c_str(), x, y + getHeight() - dateHeight, width, dateFont);
+	int dateHeight = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), width, dateFont.get());
+	drawTextRight(deviceContext, wcharDate.c_str(), x, y + getHeight() - dateHeight, width, dateFont.get());
 
 	if (message->getMessage().getRemoteResource().size() > 0)
 	{
 		std::wstring remoteResource = strtowstr(message->getMessage().getRemoteResource());
-		int remoteResourceHeight = calculateDrawTextHeight(deviceContext, remoteResource.c_str(), width, dateFont);
-		drawTextRight(deviceContext, remoteResource.c_str(), x, y + getHeight() - dateHeight - remoteResourceHeight, width, dateFont);
+		int remoteResourceHeight = calculateDrawTextHeight(deviceContext, remoteResource.c_str(), width, dateFont.get());
+		drawTextRight(deviceContext, remoteResource.c_str(), x, y + getHeight() - dateHeight - remoteResourceHeight, width, dateFont.get());
 	}
 }
 
 int ChatControlMessageFrame::getDateHeight()
 {
 	HDC deviceContext = GetDC(NULL);
-	int height = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), width, dateFont);
+	int height = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), width, dateFont.get());
 	ReleaseDC(NULL, deviceContext);
 	return height;
 }
@@ -85,7 +86,7 @@ int ChatControlMessageFrame::getDateHeight()
 int ChatControlMessageFrame::getRemoteResourceHeight()
 {
 	HDC deviceContext = GetDC(NULL);
-	int height = calculateDrawTextHeight(deviceContext, strtowstr(message->getMessage().getRemoteResource()).c_str(), width, dateFont);
+	int height = calculateDrawTextHeight(deviceContext, strtowstr(message->getMessage().getRemoteResource()).c_str(), width, dateFont.get());
 	ReleaseDC(NULL, deviceContext);
 	return height;
 }

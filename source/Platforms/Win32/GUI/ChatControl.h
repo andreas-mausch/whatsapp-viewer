@@ -2,10 +2,11 @@
 
 #include <vector>
 
-class WhatsappChat;
 class ChatControlMessageFrame;
+class Font;
 class ImageDecoder;
 class Smileys;
+class WhatsappChat;
 
 #define WM_CHATCONTROL_SETCHAT (WM_USER+0)
 #define WM_CHATCONTROL_REPAINT (WM_USER+1)
@@ -17,7 +18,7 @@ private:
 	Smileys *smileys;
 
 	HWND window;
-	HFONT dateFont;
+	Font *dateFont;
 	HDC backbuffer;
 	HBITMAP backbufferBitmap;
 	WhatsappChat *chat;

@@ -1,6 +1,7 @@
 #include <windows.h>
 
 #include "Smiley.h"
+#include "../Objects/Bitmap.h"
 
 // TODO: merge with ChatControl.cpp
 void renderBitmap2(HDC deviceContext, HBITMAP bitmapHandle, int x, int y)
@@ -28,12 +29,11 @@ Smiley::Smiley(int character, HBITMAP bitmap) : character(character), bitmap(bit
 
 Smiley::~Smiley()
 {
-	DeleteObject(bitmap);
 }
 
 void Smiley::render(HDC deviceContext, int x, int y)
 {
-	renderBitmap2(deviceContext, bitmap, x, y);
+	renderBitmap2(deviceContext, bitmap.get(), x, y);
 }
 
 int Smiley::getCharacter() const

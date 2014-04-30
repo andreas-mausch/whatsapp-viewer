@@ -1,6 +1,7 @@
 #pragma once
 
 class ChatControlMessage;
+class Font;
 
 class ChatControlMessageFrame
 {
@@ -9,7 +10,7 @@ private:
 	int width;
 	int height;
 	int color;
-	HFONT dateFont;
+	Font &dateFont;
 	std::wstring wcharDate;
 
 	void renderFrame(HDC deviceContext, int x, int y);
@@ -17,7 +18,7 @@ private:
 	int getRemoteResourceHeight();
 
 public:
-	ChatControlMessageFrame(ChatControlMessage *message, int width, int color, HFONT dateFont);
+	ChatControlMessageFrame(ChatControlMessage *message, int width, int color, Font &dateFont);
 	virtual ~ChatControlMessageFrame();
 
 	void updateWidth(HWND window, int width);

@@ -16,6 +16,8 @@
 #include "../Counter.h"
 #include "../ImageDecoder.h"
 #include "../StringHelper.h"
+#include "../Objects/Brush.h"
+#include "../Objects/Font.h"
 #include "../../../Exceptions/Exception.h"
 #include "../../../WhatsApp/Chat.h"
 #include "../../../WhatsApp/Message.h"
@@ -27,14 +29,14 @@ ChatControl::ChatControl(HWND window)
 	imageDecoder = new ImageDecoder();
 	smileys = new Smileys(*imageDecoder);
 	this->window = window;
-	dateFont = CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New");
+	dateFont = new Font(CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New"));
 	chat = NULL;
 }
 
 ChatControl::~ChatControl()
 {
 	clearMessages();
-	DeleteObject(dateFont);
+	delete dateFont;
 	delete smileys;
 	delete imageDecoder;
 }
@@ -90,25 +92,25 @@ void ChatControl::buildMessages()
 			{
 				case MEDIA_WHATSAPP_TEXT:
 				{
-					messageFrame = new ChatControlMessageFrame(new ChatControlMessageText(message, 0, *smileys), 0, color, dateFont);
+					messageFrame = new ChatControlMessageFrame(new ChatControlMessageText(message, 0, *smileys), 0, color, *dateFont);
 				} break;
 				case MEDIA_WHATSAPP_IMAGE:
 				{
 					if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
 					{
-						messageFrame = new ChatControlMessageFrame(new ChatControlMessageImage(message, 0, *imageDecoder), 0, color, dateFont);
+						messageFrame = new ChatControlMessageFrame(new ChatControlMessageImage(message, 0, *imageDecoder), 0, color, *dateFont);
 					}
 				} break;
 				case MEDIA_WHATSAPP_VIDEO:
 				{
 					if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
 					{
-						messageFrame = new ChatControlMessageFrame(new ChatControlMessageVideo(message, 0, *imageDecoder), 0, color, dateFont);
+						messageFrame = new ChatControlMessageFrame(new ChatControlMessageVideo(message, 0, *imageDecoder), 0, color, *dateFont);
 					}
 				} break;
 				case MEDIA_WHATSAPP_LOCATION:
 				{
-					messageFrame = new ChatControlMessageFrame(new ChatControlMessageLocation(message, 0, *imageDecoder), 0, color, dateFont);
+					messageFrame = new ChatControlMessageFrame(new ChatControlMessageLocation(message, 0, *imageDecoder), 0, color, *dateFont);
 				} break;
 			}
 
@@ -206,9 +208,8 @@ void ChatControl::paintBackbuffer()
 	RECT clientRect;
 	GetClientRect(window, &clientRect);
 
-	HBRUSH brush = CreateSolidBrush(RGB(230, 230, 210));
-	FillRect(backbuffer, &clientRect, brush);
-	DeleteObject(brush);
+	Brush brush(CreateSolidBrush(RGB(230, 230, 210)));
+	FillRect(backbuffer, &clientRect, brush.get());
 
 	int scrollPosition = GetScrollPos(window, SB_VERT);
 

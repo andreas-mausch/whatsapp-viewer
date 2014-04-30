@@ -2,13 +2,14 @@
 
 #include "ChatControlMessage.h"
 
+class Bitmap;
 class ImageDecoder;
 class WhatsappMessage;
 
 class ChatControlMessageWithPreview : public ChatControlMessage
 {
 private:
-	HBITMAP bitmap;
+	Bitmap *bitmap;
 	int bitmapWidth;
 	int bitmapHeight;
 

@@ -1,10 +1,14 @@
 #pragma once
 
+class Bitmap;
+
+#include "../Objects/Bitmap.h"
+
 class Smiley
 {
 private:
 	int character;
-	HBITMAP bitmap;
+	Bitmap bitmap;
 
 public:
 	Smiley(int character, HBITMAP bitmap);
