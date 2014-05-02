@@ -36,10 +36,12 @@ private:
 	bool maximized;
 
 	void openDatabase();
+	void openPlainDatabase(const std::string &filename);
 	void closeDatabase();
 
 	void decryptDatabase();
 	void clearChats();
+	void clearChatList();
 
 	void createChildWindows();
 	void setIcon();
@@ -60,6 +62,8 @@ private:
 
 	void showAboutDialog();
 	void close();
+
+	void onDrop(HDROP drop);
 
 	static INT_PTR CALLBACK dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam);
 	INT_PTR handleMessage(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam);

@@ -166,16 +166,27 @@ void MainWindow::setIcon()
 	SendMessage(dialog, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(icon));
 }
 
-void MainWindow::addChats()
+void MainWindow::clearChats()
+{
+	clearChatList();
+	clearVector(chats);
+}
+
+void MainWindow::clearChatList()
 {
 	ListView_DeleteAllItems(GetDlgItem(dialog, IDC_MAIN_CHATS));
+	selectChat(NULL);
+}
+
+void MainWindow::addChats()
+{
+	clearChatList();
 
 	for (std::vector<WhatsappChat *>::iterator it = chats.begin(); it != chats.end(); ++it)
 	{
 		addChat(**it);
 	}
 
-	selectChat(NULL);
 	sortChats();
 }
 
@@ -297,12 +308,7 @@ void MainWindow::setSortingColumn(int columnIndex)
 	sortChats();
 }
 
-void MainWindow::clearChats()
-{
-	clearVector(chats);
-}
-
-bool isUncryptedWhatsappDatabase(const std::string &filename)
+bool isPlainWhatsappDatabase(const std::string &filename)
 {
 	std::ifstream file(filename.c_str(), std::ios_base::in | std::ios_base::binary);
 	if (!file)
@@ -325,12 +331,13 @@ void MainWindow::openDatabase()
 	if (DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_OPEN_FILE), dialog, openDatabaseDialogCallback, reinterpret_cast<LPARAM>(&openDatabaseStruct)) == IDOK)
 	{
 		closeDatabase();
+		clearChatList();
 
 		try
 		{
 			const std::string *filename = &openDatabaseStruct.filename;
 
-			if (!isUncryptedWhatsappDatabase(*filename))
+			if (!isPlainWhatsappDatabase(*filename))
 			{
 				unsigned char key[24];
 				buildKey(key, openDatabaseStruct.accountName);
@@ -340,19 +347,28 @@ void MainWindow::openDatabase()
 			}
 
 			lastDatabaseOpened = openDatabaseStruct;
-			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
 			settings.write("lastOpenedAccount", lastDatabaseOpened.accountName);
 
-			database = new WhatsappDatabase(*filename);
-			database->getChats(chats);
+			openPlainDatabase(*filename);
 		}
 		catch (Exception &exception)
 		{
 			displayException(dialog, exception);
 		}
-
-		addChats();
 	}
+}
+
+void MainWindow::openPlainDatabase(const std::string &filename)
+{
+	closeDatabase();
+
+	lastDatabaseOpened.filename = filename;
+	settings.write("lastOpenedFile", lastDatabaseOpened.filename);
+
+	database = new WhatsappDatabase(filename);
+	database->getChats(chats);
+
+	addChats();
 }
 
 void MainWindow::closeDatabase()
@@ -415,6 +431,33 @@ void MainWindow::close()
 	DestroyWindow(dialog);
 }
 
+void MainWindow::onDrop(HDROP drop)
+{
+	if (DragQueryFile(drop, -1, NULL, 0) == 1)
+	{
+		WCHAR filenameW[MAX_PATH];
+		if (DragQueryFile(drop, 0, filenameW, MAX_PATH))
+		{
+			std::string filename = wstrtostr(filenameW);
+			if (isPlainWhatsappDatabase(filename))
+			{
+				openPlainDatabase(filename);
+			}
+			else
+			{
+				lastDatabaseOpened.filename = filename;
+				openDatabase();
+			}
+		}
+	}
+	else
+	{
+		MessageBox(dialog, L"You can only drop a single database file to this window.", L"Information", MB_OK | MB_ICONINFORMATION);
+	}
+
+	DragFinish(drop);
+}
+
 INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -425,6 +468,7 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 			this->dialog = dialog;
 
 			createChildWindows();
+			DragAcceptFiles(dialog, TRUE);
 		} break;
 		case WM_COMMAND:
 		{
@@ -510,6 +554,11 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 					}
 				} break;
 			}
+		} break;
+		case WM_DROPFILES:
+		{
+			HDROP drop = reinterpret_cast<HDROP>(wParam);
+			onDrop(drop);
 		} break;
 		case WM_EXITSIZEMOVE:
 		{
