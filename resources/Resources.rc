@@ -90,6 +90,7 @@ BEGIN
     LTEXT           "andreas.mausch@gmail.com",IDC_STATIC,123,127,92,8
     LTEXT           "http://andreas-mausch.github.io/whatsapp-viewer/",IDC_STATIC,123,140,166,8
     LTEXT           "v1.4",IDC_STATIC,123,50,16,8
+    LTEXT           "https://github.com/andreas-mausch/",IDC_STATIC,123,151,119,8
 END
 
 
