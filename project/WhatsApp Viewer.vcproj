@@ -291,6 +291,10 @@
 							>
 						</File>
 						<File
+							RelativePath="..\source\Platforms\Win32\GUI\Dialog.cpp"
+							>
+						</File>
+						<File
 							RelativePath="..\source\Platforms\Win32\GUI\DrawText.cpp"
 							>
 						</File>
@@ -510,6 +514,10 @@
 						</File>
 						<File
 							RelativePath="..\source\Platforms\Win32\GUI\ChatControl.h"
+							>
+						</File>
+						<File
+							RelativePath="..\source\Platforms\Win32\GUI\Dialog.h"
 							>
 						</File>
 						<File

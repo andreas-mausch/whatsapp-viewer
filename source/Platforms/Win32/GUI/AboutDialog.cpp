@@ -1,8 +1,15 @@
 #include <windows.h>
 
 #include "AboutDialog.h"
+#include "../../../Exceptions/Exception.h"
+#include "../../../../resources/resource.h"
 
-INT_PTR CALLBACK aboutDialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
+AboutDialog::AboutDialog(HWND parent)
+	: Dialog(parent, IDD_ABOUT)
+{
+}
+
+INT_PTR AboutDialog::callback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
     {
@@ -16,7 +23,7 @@ INT_PTR CALLBACK aboutDialogCallback(HWND dialog, UINT message, WPARAM wParam, L
             {
                 case IDOK:
 				{
-					EndDialog(dialog, LOWORD(wParam));
+					SendMessage(parent, WM_DIALOG, MAKEWPARAM(DIALOG_CLOSED, LOWORD(wParam)), reinterpret_cast<LPARAM>(this));
 					return TRUE;
 				} break;
             }

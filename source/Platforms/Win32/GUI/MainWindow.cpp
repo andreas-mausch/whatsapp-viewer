@@ -29,7 +29,7 @@
 
 MainWindow::MainWindow(Settings &settings)
 	: settings(settings), database(NULL), sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING),
-	maximized(false), dialog(NULL), accelerator(MAKEINTRESOURCE(IDR_ACCELERATOR))
+	maximized(false), dialog(NULL), accelerator(MAKEINTRESOURCE(IDR_ACCELERATOR)), aboutDialog(NULL)
 {
 	CoInitialize(NULL);
 
@@ -400,7 +400,11 @@ void MainWindow::displayException(HWND mainWindow, Exception &exception)
 
 void MainWindow::showAboutDialog()
 {
-	CreateDialog(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_ABOUT), dialog, aboutDialogCallback);
+	if (aboutDialog == NULL)
+	{
+		aboutDialog = new AboutDialog(dialog);
+		aboutDialog->open();
+	}
 }
 
 void MainWindow::close()
@@ -486,6 +490,21 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 				{
 					NMLISTVIEW *nmListView = reinterpret_cast<NMLISTVIEW *>(lParam);
 					setSortingColumn(nmListView->iSubItem);
+				} break;
+			}
+		} break;
+		case WM_DIALOG:
+		{
+			switch(LOWORD(wParam))
+			{
+				case DIALOG_CLOSED:
+				{
+					Dialog *dialog = reinterpret_cast<Dialog *>(lParam);
+					if (dialog == aboutDialog)
+					{
+						delete aboutDialog;
+						aboutDialog = NULL;
+					}
 				} break;
 			}
 		} break;

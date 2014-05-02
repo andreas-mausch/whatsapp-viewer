@@ -7,6 +7,7 @@
 #include "OpenDatabaseDialog.h"
 #include "../Objects/Accelerator.h"
 
+class AboutDialog;
 class Exception;
 class Settings;
 class WhatsappChat;
@@ -23,6 +24,7 @@ class MainWindow
 {
 private:
 	HWND dialog;
+	AboutDialog *aboutDialog;
 	Accelerator accelerator;
 	std::vector<WhatsappChat *> chats;
 	WhatsappDatabase *database;
