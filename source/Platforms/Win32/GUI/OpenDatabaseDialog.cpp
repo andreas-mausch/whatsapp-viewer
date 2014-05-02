@@ -5,6 +5,43 @@
 #include "../StringHelper.h"
 #include "../../../../resources/resource.h"
 
+void selectFile(HWND dialog)
+{
+	WCHAR filename[MAX_PATH];
+	memset(filename, 0, sizeof(WCHAR) * MAX_PATH);
+
+	OPENFILENAME openFilename;
+	memset(&openFilename, 0, sizeof(OPENFILENAME));
+	openFilename.lStructSize = sizeof(OPENFILENAME);
+	openFilename.hwndOwner = dialog;
+	openFilename.lpstrFile = filename;
+	openFilename.nMaxFile = MAX_PATH;
+	openFilename.lpstrFilter = L"WhatsApp Databases (*.db; *.crypt5)\0*.db;*.crypt5\0";
+	openFilename.lpstrInitialDir = NULL;
+	openFilename.lpstrDefExt = L"";
+	openFilename.Flags = OFN_EXPLORER | OFN_ENABLESIZING | OFN_HIDEREADONLY;
+	openFilename.lpstrTitle = L"Select WhatsApp database file";
+
+	if (GetOpenFileName(&openFilename))
+	{
+		SetDlgItemText(dialog, IDC_OPEN_FILE_FILENAME, filename);
+	}
+}
+
+void ok(HWND dialog, OpenDatabaseStruct *openDatabaseStruct, WPARAM wParam)
+{
+	WCHAR filename[MAX_PATH];
+	WCHAR accountName[256];
+
+	GetDlgItemText(dialog, IDC_OPEN_FILE_FILENAME, filename, MAX_PATH);
+	GetDlgItemText(dialog, IDC_OPEN_FILE_ACCOUNT_NAME, accountName, 256);
+
+	openDatabaseStruct->filename = wstrtostr(filename);
+	openDatabaseStruct->accountName = wstrtostr(accountName);
+
+	EndDialog(dialog, LOWORD(wParam));
+}
+
 INT_PTR CALLBACK openDatabaseDialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	OpenDatabaseStruct *openDatabaseStruct = reinterpret_cast<OpenDatabaseStruct *>(GetWindowLongPtr(dialog, GWLP_USERDATA));
@@ -25,38 +62,11 @@ INT_PTR CALLBACK openDatabaseDialogCallback(HWND dialog, UINT message, WPARAM wP
             {
 				case IDC_OPEN_FILE_SELECT:
 				{
-					WCHAR filename[MAX_PATH];
-					memset(filename, 0, sizeof(WCHAR) * MAX_PATH);
-
-					OPENFILENAME openFilename;
-					memset(&openFilename, 0, sizeof(OPENFILENAME));
-					openFilename.lStructSize = sizeof(OPENFILENAME);
-					openFilename.hwndOwner = dialog;
-					openFilename.lpstrFile = filename;
-					openFilename.nMaxFile = MAX_PATH;
-					openFilename.lpstrFilter = L"WhatsApp Databases (*.db; *.crypt5)\0*.db;*.crypt5\0";
-					openFilename.lpstrInitialDir = NULL;
-					openFilename.lpstrDefExt = L"";
-					openFilename.Flags = OFN_EXPLORER | OFN_ENABLESIZING | OFN_HIDEREADONLY;
-					openFilename.lpstrTitle = L"Select WhatsApp database file";
-
-					if (GetOpenFileName(&openFilename))
-					{
-						SetDlgItemText(dialog, IDC_OPEN_FILE_FILENAME, filename);
-					}
+					selectFile(dialog);
 				} break;
                 case IDOK:
 				{
-					WCHAR filename[MAX_PATH];
-					WCHAR accountName[256];
-
-					GetDlgItemText(dialog, IDC_OPEN_FILE_FILENAME, filename, MAX_PATH);
-					GetDlgItemText(dialog, IDC_OPEN_FILE_ACCOUNT_NAME, accountName, 256);
-
-					openDatabaseStruct->filename = wstrtostr(filename);
-					openDatabaseStruct->accountName = wstrtostr(accountName);
-
-					EndDialog(dialog, LOWORD(wParam));
+					ok(dialog, openDatabaseStruct, wParam);
 					return TRUE;
 				} break;
                 case IDCANCEL:
