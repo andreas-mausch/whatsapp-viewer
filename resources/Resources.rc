@@ -120,6 +120,8 @@ BEGIN
     BEGIN
         MENUITEM "Open...",                     ID_MENU_MAIN_FILE_OPEN
         MENUITEM "Decrypt...",                  ID_MENU_MAIN_FILE_DECRYPT
+        MENUITEM SEPARATOR
+        MENUITEM "Exit",                        ID_MENU_MAIN_FILE_EXIT
     END
 END
 

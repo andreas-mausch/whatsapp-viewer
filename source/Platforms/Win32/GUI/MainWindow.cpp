@@ -393,6 +393,11 @@ void MainWindow::displayException(HWND mainWindow, Exception &exception)
 	MessageBox(mainWindow, cause.c_str(), L"Error", MB_OK | MB_ICONERROR);
 }
 
+void MainWindow::close()
+{
+	DestroyWindow(dialog);
+}
+
 INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -420,6 +425,10 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 				{
 					WhatsappChat *chat = reinterpret_cast<WhatsappChat *>(GetWindowLongPtr(GetDlgItem(dialog, IDC_MAIN_EXPORT), GWLP_USERDATA));
 					exportChat(*chat);
+				} break;
+				case ID_MENU_MAIN_FILE_EXIT:
+				{
+					close();
 				} break;
 			}
 		} break;
@@ -495,7 +504,7 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 		} break;
 		case WM_CLOSE:
 		{
-			DestroyWindow(dialog);
+			close();
 			return TRUE;
 		} break;
 		case WM_DESTROY:
