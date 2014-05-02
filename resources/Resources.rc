@@ -85,7 +85,7 @@ BEGIN
     LTEXT           "WhatsApp Viewer",IDC_ABOUT_APPLICATION_NAME,123,27,189,23
     LTEXT           "Author",IDC_STATIC,20,113,23,8
     LTEXT           "Email address",IDC_STATIC,20,127,44,8
-    LTEXT           "URL",IDC_STATIC,20,140,14,8
+    LTEXT           "Web",IDC_STATIC,20,140,16,8
     LTEXT           "Andreas Mausch",IDC_STATIC,123,113,54,8
     LTEXT           "andreas.mausch@gmail.com",IDC_STATIC,123,127,92,8
     LTEXT           "http://andreas-mausch.github.io/whatsapp-viewer/",IDC_STATIC,123,140,166,8

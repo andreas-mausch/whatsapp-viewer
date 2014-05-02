@@ -49,6 +49,11 @@ void Dialog::close(int code)
 	dialog = NULL;
 }
 
+HWND Dialog::getHandle()
+{
+	return dialog;
+}
+
 INT_PTR CALLBACK Dialog::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)

@@ -30,4 +30,7 @@ public:
 
 	void close();
 	void close(int code);
+
+	HWND getHandle();
+
 };

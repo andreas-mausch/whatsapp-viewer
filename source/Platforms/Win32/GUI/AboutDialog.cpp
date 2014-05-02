@@ -22,6 +22,11 @@ void AboutDialog::onPaint()
 	EndPaint(dialog, &paint);
 }
 
+void AboutDialog::sendCloseMessage(int code)
+{
+	SendMessage(parent, WM_DIALOG, MAKEWPARAM(DIALOG_CLOSED, code), reinterpret_cast<LPARAM>(this));
+}
+
 INT_PTR AboutDialog::callback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -36,8 +41,9 @@ INT_PTR AboutDialog::callback(HWND dialog, UINT message, WPARAM wParam, LPARAM l
             switch (LOWORD(wParam))
             {
                 case IDOK:
+                case IDCANCEL:
 				{
-					SendMessage(parent, WM_DIALOG, MAKEWPARAM(DIALOG_CLOSED, LOWORD(wParam)), reinterpret_cast<LPARAM>(this));
+					sendCloseMessage(LOWORD(wParam));
 					return TRUE;
 				} break;
             }
