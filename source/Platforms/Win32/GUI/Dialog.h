@@ -1,6 +1,6 @@
 #pragma once
 
-#define WM_DIALOG (WM_USER+2)
+#define WM_DIALOG (WM_USER+1)
 
 enum DialogMessage
 {

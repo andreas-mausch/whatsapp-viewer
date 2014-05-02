@@ -31,6 +31,7 @@ ChatControl::ChatControl(HWND window)
 	this->window = window;
 	dateFont = new Font(CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New"));
 	chat = NULL;
+	shouldResizeMessages = true;
 }
 
 ChatControl::~ChatControl()
@@ -58,10 +59,10 @@ void ChatControl::registerChatControl()
 
 void ChatControl::setChat(WhatsappChat &chat)
 {
+	deleteBackbuffer();
 	this->chat = &chat;
 	SetScrollPos(window, SB_VERT, 0, TRUE);
 	buildMessages();
-	paintBackbuffer();
 	redraw();
 }
 
@@ -127,6 +128,12 @@ void ChatControl::buildMessages()
 
 void ChatControl::resizeMessages()
 {
+	resizeMessageWidths();
+	calculateScrollInfo();
+}
+
+void ChatControl::resizeMessageWidths()
+{
 	RECT clientRect;
 	GetClientRect(window, &clientRect);
 
@@ -140,8 +147,6 @@ void ChatControl::resizeMessages()
 		messageFrame.updateWidth(window, width);
 		y += 8 + messageFrame.getHeight();
 	}
-
-	calculateScrollInfo();
 }
 
 void ChatControl::clearMessages()
@@ -203,12 +208,12 @@ void ChatControl::paintBackbuffer()
 {
 	HANDLE oldFont = SelectObject(backbuffer, GetStockObject(DEFAULT_GUI_FONT));
 	SetTextColor(backbuffer, RGB(0, 0, 0));
-	SetBkColor(backbuffer, RGB(230, 230, 210));
+	SetBkColor(backbuffer, GetSysColor(COLOR_3DFACE));
 
 	RECT clientRect;
 	GetClientRect(window, &clientRect);
 
-	Brush brush(CreateSolidBrush(RGB(230, 230, 210)));
+	Brush brush(CreateSolidBrush(GetSysColor(COLOR_3DFACE)));
 	FillRect(backbuffer, &clientRect, brush.get());
 
 	int scrollPosition = GetScrollPos(window, SB_VERT);
@@ -277,6 +282,11 @@ void ChatControl::paintBackbuffer()
 
 LRESULT ChatControl::onPaint()
 {
+	if (!backbuffer)
+	{
+		createBackbuffer();
+	}
+
 	HDC deviceContext;
 	PAINTSTRUCT paint;
 
@@ -408,10 +418,6 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 
 				chatControl->createBackbuffer();
 			} break;
-			case WM_CHATCONTROL_SETCHAT:
-			{
-				chatControl->setChat(*reinterpret_cast<WhatsappChat *>(lParam));
-			} break;
 			case WM_PAINT:
 			{
 				return chatControl->onPaint();
@@ -473,14 +479,36 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 			{
 				return DLGC_WANTARROWS;
 			} break;
-			case WM_CHATCONTROL_REPAINT:
+			case WM_CHATCONTROL:
 			{
-				chatControl->resizeMessages();
-				chatControl->createBackbuffer();
-				chatControl->redraw();
+				switch (wParam)
+				{
+					case CHAT_CONTROL_SETCHAT:
+					{
+						chatControl->setChat(*reinterpret_cast<WhatsappChat *>(lParam));
+					} break;
+					case CHAT_CONTROL_START_RESIZING_MESSAGES:
+					{
+						chatControl->shouldResizeMessages = true;
+					} break;
+					case CHAT_CONTROL_STOP_RESIZING_MESSAGES:
+					{
+						chatControl->shouldResizeMessages = false;
+					} break;
+					case CHAT_CONTROL_REDRAW:
+					{
+						chatControl->resizeMessages();
+						chatControl->createBackbuffer();
+						chatControl->redraw();
+					} break;
+				}
 			} break;
 			case WM_SIZE:
 			{
+				if (chatControl->shouldResizeMessages)
+				{
+					chatControl->resizeMessages();
+				}
 				chatControl->createBackbuffer();
 				chatControl->redraw();
 			} break;

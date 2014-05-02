@@ -29,7 +29,7 @@
 
 MainWindow::MainWindow(Settings &settings)
 	: settings(settings), database(NULL), sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING),
-	maximized(false), dialog(NULL), accelerator(MAKEINTRESOURCE(IDR_ACCELERATOR)), aboutDialog(NULL)
+	dialog(NULL), accelerator(MAKEINTRESOURCE(IDR_ACCELERATOR)), aboutDialog(NULL)
 {
 	CoInitialize(NULL);
 
@@ -209,7 +209,7 @@ void MainWindow::addChat(WhatsappChat &chat)
 
 void MainWindow::selectChat(WhatsappChat *chat)
 {
-	SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL_SETCHAT, 0, reinterpret_cast<LPARAM>(chat));
+	SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL, CHAT_CONTROL_SETCHAT, reinterpret_cast<LPARAM>(chat));
 	SetWindowLongPtr(GetDlgItem(dialog, IDC_MAIN_EXPORT), GWLP_USERDATA, reinterpret_cast<LPARAM>(chat));
 	EnableWindow(GetDlgItem(dialog, IDC_MAIN_EXPORT), chat != NULL);
 }
@@ -566,28 +566,18 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 			HDROP drop = reinterpret_cast<HDROP>(wParam);
 			onDrop(drop);
 		} break;
+		case WM_ENTERSIZEMOVE:
+		{
+			SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL, CHAT_CONTROL_STOP_RESIZING_MESSAGES, 0);
+		} break;
 		case WM_EXITSIZEMOVE:
 		{
-			SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL_REPAINT, 0, 0);
+			SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL, CHAT_CONTROL_START_RESIZING_MESSAGES, 0);
+			SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL, CHAT_CONTROL_REDRAW, 0);
 		} break;
 		case WM_SIZE:
 		{
 			resizeChildWindows(LOWORD(lParam), HIWORD(lParam));
-
-			if (wParam == SIZE_RESTORED && maximized)
-			{
-				SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL_REPAINT, 0, 0);
-			}
-
-			if (wParam == SIZE_MAXIMIZED)
-			{
-				maximized = true;
-				SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL_REPAINT, 0, 0);
-			}
-			else
-			{
-				maximized = false;
-			}
 		} break;
 		case WM_GETMINMAXINFO:
 		{

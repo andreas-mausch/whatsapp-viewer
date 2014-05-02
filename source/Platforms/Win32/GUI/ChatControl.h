@@ -8,8 +8,15 @@ class ImageDecoder;
 class Smileys;
 class WhatsappChat;
 
-#define WM_CHATCONTROL_SETCHAT (WM_USER+0)
-#define WM_CHATCONTROL_REPAINT (WM_USER+1)
+#define WM_CHATCONTROL (WM_USER+0)
+
+enum ChatControlMessages
+{
+	CHAT_CONTROL_SETCHAT,
+	CHAT_CONTROL_START_RESIZING_MESSAGES,
+	CHAT_CONTROL_STOP_RESIZING_MESSAGES,
+	CHAT_CONTROL_REDRAW
+};
 
 class ChatControl
 {
@@ -23,6 +30,7 @@ private:
 	HBITMAP backbufferBitmap;
 	WhatsappChat *chat;
 	std::vector<ChatControlMessageFrame *> messages;
+	bool shouldResizeMessages;
 
 	static LRESULT CALLBACK ChatControlCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -32,6 +40,7 @@ private:
 	void clearMessages();
 	void calculateScrollInfo();
 	void resizeMessages();
+	void resizeMessageWidths();
 
 	LRESULT onPaint();
 	void drawMessage(ChatControlMessageFrame &messageFrame, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont);
