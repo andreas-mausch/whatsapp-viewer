@@ -864,6 +864,7 @@
 #define IDC_OPEN_FILE_ACCOUNT_NAME      1006
 #define IDC_BUTTON1                     1006
 #define IDC_MAIN_EXPORT                 1006
+#define IDC_ABOUT_APPLICATION_NAME      1007
 #define ID_FILE_OPEN40001               40001
 #define ID_MENU_MAIN_FILE_OPEN          40002
 #define ID_FILE_DECRYPT                 40003
@@ -884,7 +885,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        965
 #define _APS_NEXT_COMMAND_VALUE         40015
-#define _APS_NEXT_CONTROL_VALUE         1007
+#define _APS_NEXT_CONTROL_VALUE         1008
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

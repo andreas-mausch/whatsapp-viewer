@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../Handle.h"
-
 class Accelerator
 {
 private:
