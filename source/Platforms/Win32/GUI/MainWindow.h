@@ -56,6 +56,7 @@ private:
 
 	void readSettings();
 
+	void showAboutDialog();
 	void close();
 
 	static INT_PTR CALLBACK dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam);

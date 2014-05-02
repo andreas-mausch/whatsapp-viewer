@@ -854,6 +854,7 @@
 #define IDD_OPEN_FILE                   959
 #define IDI_ICON                        961
 #define IDR_ACCELERATOR                 963
+#define IDD_ABOUT                       964
 #define IDC_MAIN_CHATS                  1001
 #define IDC_MAIN_MESSAGES               1002
 #define IDC_MAIN_STATUS                 1003
@@ -873,13 +874,16 @@
 #define ID_MENU_MAIN_FILE_EXIT          40008
 #define ID_ACCELERATOR_OPEN             40009
 #define ID_ACCELERATOR_DECRYPT          40011
+#define ID_HELP_ABOUT                   40012
+#define ID_MAIN_MENU_HELP_ABOUT         40013
+#define ID_MENU_MAIN_HELP_ABOUT         40014
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        964
-#define _APS_NEXT_COMMAND_VALUE         40012
+#define _APS_NEXT_RESOURCE_VALUE        965
+#define _APS_NEXT_COMMAND_VALUE         40015
 #define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

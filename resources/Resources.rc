@@ -77,6 +77,15 @@ BEGIN
     EDITTEXT        IDC_OPEN_FILE_ACCOUNT_NAME,63,28,158,14,ES_AUTOHSCROLL
 END
 
+IDD_ABOUT DIALOGEX 0, 0, 308, 181
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CAPTION
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,129,160,50,14
+    LTEXT           "WhatsApp Viewer",IDC_STATIC,89,22,58,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -105,6 +114,14 @@ BEGIN
         HORZGUIDE, 21
         HORZGUIDE, 42
     END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 301
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 174
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -122,6 +139,10 @@ BEGIN
         MENUITEM "&Decrypt...\tCtrl+D",         ID_MENU_MAIN_FILE_DECRYPT
         MENUITEM SEPARATOR
         MENUITEM "&Exit\tAlt+F4",               ID_MENU_MAIN_FILE_EXIT
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About...",                   ID_MENU_MAIN_HELP_ABOUT
     END
 END
 

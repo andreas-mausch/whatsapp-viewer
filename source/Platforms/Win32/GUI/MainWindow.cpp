@@ -5,6 +5,7 @@
 
 #include "ChatControl.h"
 #include "MainWindow.h"
+#include "AboutDialog.h"
 #include "OpenDatabaseDialog.h"
 #include "../../../ChatExporter.h"
 #include "../../../Settings.h"
@@ -397,6 +398,11 @@ void MainWindow::displayException(HWND mainWindow, Exception &exception)
 	MessageBox(mainWindow, cause.c_str(), L"Error", MB_OK | MB_ICONERROR);
 }
 
+void MainWindow::showAboutDialog()
+{
+	CreateDialog(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_ABOUT), dialog, aboutDialogCallback);
+}
+
 void MainWindow::close()
 {
 	DestroyWindow(dialog);
@@ -435,6 +441,10 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 				case ID_MENU_MAIN_FILE_EXIT:
 				{
 					close();
+				} break;
+				case ID_MENU_MAIN_HELP_ABOUT:
+				{
+					showAboutDialog();
 				} break;
 			}
 		} break;
