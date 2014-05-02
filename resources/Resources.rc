@@ -116,12 +116,12 @@ END
 
 IDR_MENU_MAIN MENU 
 BEGIN
-    POPUP "File"
+    POPUP "&File"
     BEGIN
-        MENUITEM "Open...\tCtrl+O",             ID_MENU_MAIN_FILE_OPEN
-        MENUITEM "Decrypt...\tCtrl+D",          ID_MENU_MAIN_FILE_DECRYPT
+        MENUITEM "&Open...\tCtrl+O",            ID_MENU_MAIN_FILE_OPEN
+        MENUITEM "&Decrypt...\tCtrl+D",         ID_MENU_MAIN_FILE_DECRYPT
         MENUITEM SEPARATOR
-        MENUITEM "Exit\tAlt+F4",                ID_MENU_MAIN_FILE_EXIT
+        MENUITEM "&Exit\tAlt+F4",               ID_MENU_MAIN_FILE_EXIT
     END
 END
 
