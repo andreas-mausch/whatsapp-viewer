@@ -75,6 +75,7 @@ public:
 	~MainWindow();
 
 	bool handleMessages();
+	void openDatabase(const std::string &filename);
 
 	static void displayException(HWND mainWindow, Exception &exception);
 };

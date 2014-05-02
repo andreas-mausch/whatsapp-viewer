@@ -347,6 +347,7 @@ void MainWindow::openDatabase()
 			}
 
 			lastDatabaseOpened = openDatabaseStruct;
+			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
 			settings.write("lastOpenedAccount", lastDatabaseOpened.accountName);
 
 			openPlainDatabase(*filename);
@@ -358,12 +359,26 @@ void MainWindow::openDatabase()
 	}
 }
 
+void MainWindow::openDatabase(const std::string &filename)
+{
+	if (isPlainWhatsappDatabase(filename))
+	{
+		openPlainDatabase(filename);
+		lastDatabaseOpened.filename = filename;
+		settings.write("lastOpenedFile", filename);
+	}
+	else
+	{
+		lastDatabaseOpened.filename = filename;
+		openDatabase();
+	}
+}
+
 void MainWindow::openPlainDatabase(const std::string &filename)
 {
 	closeDatabase();
 
 	lastDatabaseOpened.filename = filename;
-	settings.write("lastOpenedFile", lastDatabaseOpened.filename);
 
 	database = new WhatsappDatabase(filename);
 	database->getChats(chats);
@@ -438,16 +453,7 @@ void MainWindow::onDrop(HDROP drop)
 		WCHAR filenameW[MAX_PATH];
 		if (DragQueryFile(drop, 0, filenameW, MAX_PATH))
 		{
-			std::string filename = wstrtostr(filenameW);
-			if (isPlainWhatsappDatabase(filename))
-			{
-				openPlainDatabase(filename);
-			}
-			else
-			{
-				lastDatabaseOpened.filename = filename;
-				openDatabase();
-			}
+			openDatabase(wstrtostr(filenameW));
 		}
 	}
 	else
