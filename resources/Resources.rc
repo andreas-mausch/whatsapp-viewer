@@ -118,10 +118,10 @@ IDR_MENU_MAIN MENU
 BEGIN
     POPUP "File"
     BEGIN
-        MENUITEM "Open...",                     ID_MENU_MAIN_FILE_OPEN
-        MENUITEM "Decrypt...",                  ID_MENU_MAIN_FILE_DECRYPT
+        MENUITEM "Open...\tCtrl+O",             ID_MENU_MAIN_FILE_OPEN
+        MENUITEM "Decrypt...\tCtrl+D",          ID_MENU_MAIN_FILE_DECRYPT
         MENUITEM SEPARATOR
-        MENUITEM "Exit",                        ID_MENU_MAIN_FILE_EXIT
+        MENUITEM "Exit\tAlt+F4",                ID_MENU_MAIN_FILE_EXIT
     END
 END
 
@@ -986,6 +986,18 @@ IDB_03030               PNG                     "smileys\\03030.PNG"
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_ICON                ICON                    "Icon.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR ACCELERATORS 
+BEGIN
+    "O",            ID_ACCELERATOR_OPEN,    VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_ACCELERATOR_DECRYPT, VIRTKEY, CONTROL, NOINVERT
+END
+
 #endif    // Deutsch (Deutschland) resources
 /////////////////////////////////////////////////////////////////////////////
 

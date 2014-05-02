@@ -27,7 +27,8 @@
   "language='*'\"")
 
 MainWindow::MainWindow(Settings &settings)
-	: settings(settings), database(NULL), sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING), maximized(false), dialog(NULL)
+	: settings(settings), database(NULL), sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING),
+	maximized(false), dialog(NULL), accelerator(MAKEINTRESOURCE(IDR_ACCELERATOR))
 {
 	CoInitialize(NULL);
 
@@ -112,10 +113,13 @@ bool MainWindow::handleMessages()
 	}
 	else
 	{
-		if (!IsDialogMessage(dialog, &message))
+		if (!TranslateAccelerator(dialog, accelerator.get(), &message))
 		{
-			TranslateMessage(&message);
-			DispatchMessage(&message);
+			if (!IsDialogMessage(dialog, &message))
+			{
+				TranslateMessage(&message);
+				DispatchMessage(&message);
+			}
 		}
 	}
 
@@ -414,10 +418,12 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 			switch(LOWORD(wParam))
 			{
 				case ID_MENU_MAIN_FILE_OPEN:
+				case ID_ACCELERATOR_OPEN:
 				{
 					openDatabase();
 				} break;
 				case ID_MENU_MAIN_FILE_DECRYPT:
+				case ID_ACCELERATOR_DECRYPT:
 				{
 					decryptDatabase();
 				} break;

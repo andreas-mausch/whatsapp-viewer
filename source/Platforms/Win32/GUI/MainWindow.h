@@ -5,6 +5,7 @@
 
 #include "ListViewSorting.h"
 #include "OpenDatabaseDialog.h"
+#include "../Objects/Accelerator.h"
 
 class Exception;
 class Settings;
@@ -22,6 +23,7 @@ class MainWindow
 {
 private:
 	HWND dialog;
+	Accelerator accelerator;
 	std::vector<WhatsappChat *> chats;
 	WhatsappDatabase *database;
 	std::string tempFilename;
