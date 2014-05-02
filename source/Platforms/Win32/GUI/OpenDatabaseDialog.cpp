@@ -5,7 +5,7 @@
 #include "../StringHelper.h"
 #include "../../../../resources/resource.h"
 
-INT_PTR CALLBACK openDatabaseCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK openDatabaseDialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	OpenDatabaseStruct *openDatabaseStruct = reinterpret_cast<OpenDatabaseStruct *>(GetWindowLongPtr(dialog, GWLP_USERDATA));
 
@@ -69,4 +69,17 @@ INT_PTR CALLBACK openDatabaseCallback(HWND dialog, UINT message, WPARAM wParam, 
     }
 
 	return 0;
+}
+
+INT_PTR CALLBACK decryptDatabaseDialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch (message)
+    {
+		case WM_INITDIALOG:
+		{
+			SetWindowText(dialog, L"Decrypt WhatsApp Database");
+		} break;
+    }
+
+	return openDatabaseDialogCallback(dialog, message, wParam, lParam);
 }
