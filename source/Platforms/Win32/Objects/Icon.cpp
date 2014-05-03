@@ -15,6 +15,7 @@ Icon::Icon(const TCHAR *iconName, int width, int height)
 
 Icon::~Icon()
 {
+	DestroyIcon(handle);
 }
 
 HICON Icon::get()
