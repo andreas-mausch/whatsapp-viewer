@@ -396,6 +396,10 @@
 			<Filter
 				Name="Synchronization"
 				>
+				<File
+					RelativePath="..\source\Synchronization\Locked.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -660,6 +664,10 @@
 				>
 				<File
 					RelativePath="..\source\Synchronization\Lock.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\Synchronization\Locked.h"
 					>
 				</File>
 			</Filter>

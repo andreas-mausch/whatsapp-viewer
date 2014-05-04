@@ -55,20 +55,23 @@ private:
 	void paintBackbuffer();
 	void deleteBackbuffer();
 
-	bool buildingMessages;
+	volatile bool buildingMessages;
 	HANDLE buildingMessagesThreadHandle;
 	static DWORD CALLBACK buildingMessagesThread(void *param);
 	void startBuildingMessages();
 	void stopBuildingMessages();
 	void buildMessages();
 
-	bool resizingMessages;
+	volatile bool resizingMessages;
 	HANDLE resizingMessagesThreadHandle;
 	static DWORD CALLBACK resizingMessagesThread(void *param);
 	void startResizingMessages();
 	void stopResizingMessages();
 	void resizeMessages();
 	void resizeMessageWidths();
+
+	volatile bool painting;
+	int totalMessagesHeight;
 
 public:
 

@@ -19,6 +19,7 @@
 #include "../Objects/Brush.h"
 #include "../Objects/Font.h"
 #include "../../../Exceptions/Exception.h"
+#include "../../../Synchronization/Locked.h"
 #include "../../../WhatsApp/Chat.h"
 #include "../../../WhatsApp/Message.h"
 #include "../../../UTF8/utf8.h"
@@ -36,6 +37,8 @@ ChatControl::ChatControl(HWND window)
 	resizingMessagesThreadHandle = NULL;
 	buildingMessages = false;
 	resizingMessages = false;
+	painting = false;
+	totalMessagesHeight = 0;
 }
 
 ChatControl::~ChatControl()
@@ -65,15 +68,17 @@ void ChatControl::setChat(WhatsappChat &chat)
 {
 	deleteBackbuffer();
 	this->chat = &chat;
-	SetScrollPos(window, SB_VERT, 0, TRUE);
 	startBuildingMessages();
+	totalMessagesHeight = 0;
+	calculateScrollInfo();
 	redraw();
 }
 
 void ChatControl::startBuildingMessages()
 {
+	painting = false;
+	stopResizingMessages();
 	stopBuildingMessages();
-	buildingMessages = true;
 	buildingMessagesThreadHandle = CreateThread(NULL, 0, buildingMessagesThread, this, 0, NULL);
 
 	redraw();
@@ -99,7 +104,12 @@ DWORD CALLBACK ChatControl::buildingMessagesThread(void *param)
 
 void ChatControl::buildMessages()
 {
-	lock.lock();
+	buildingMessages = true;
+	if (!lock.tryLockWhile(buildingMessages))
+	{
+		return;
+	}
+
 	clearMessages();
 
 	if (chat != NULL)
@@ -107,6 +117,12 @@ void ChatControl::buildMessages()
 		std::vector<WhatsappMessage *> &messages = chat->getMessages();
 		for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
 		{
+			if (!buildingMessages)
+			{
+				lock.unlock();
+				return;
+			}
+
 			WhatsappMessage &message = **it;
 			ChatControlMessageFrame *messageFrame = NULL;
 
@@ -152,16 +168,16 @@ void ChatControl::buildMessages()
 				this->messages.push_back(messageFrame);
 			}
 		}
-
 	}
 
+	buildingMessages = false;
 	lock.unlock();
 }
 
 void ChatControl::startResizingMessages()
 {
+	painting = false;
 	stopResizingMessages();
-	resizingMessages = true;
 	resizingMessagesThreadHandle = CreateThread(NULL, 0, resizingMessagesThread, this, 0, NULL);
 
 	redraw();
@@ -172,8 +188,8 @@ void ChatControl::stopResizingMessages()
 	if (buildingMessagesThreadHandle)
 	{
 		resizingMessages = false;
-		WaitForSingleObject(buildingMessagesThreadHandle, INFINITE);
-		buildingMessagesThreadHandle = NULL;
+		WaitForSingleObject(resizingMessagesThreadHandle, INFINITE);
+		resizingMessagesThreadHandle = NULL;
 	}
 }
 
@@ -188,9 +204,14 @@ DWORD CALLBACK ChatControl::resizingMessagesThread(void *param)
 
 void ChatControl::resizeMessages()
 {
-	lock.lock();
+	resizingMessages = true;
+	if (!lock.tryLockWhile(resizingMessages))
+	{
+		return;
+	}
+
 	resizeMessageWidths();
-	calculateScrollInfo();
+	resizingMessages = false;
 	lock.unlock();
 }
 
@@ -205,10 +226,17 @@ void ChatControl::resizeMessageWidths()
 
 	for (std::vector<ChatControlMessageFrame *>::iterator it = messages.begin(); it != messages.end(); ++it)
 	{
+		if (!resizingMessages)
+		{
+			return;
+		}
+
 		ChatControlMessageFrame &messageFrame = **it;
 		messageFrame.updateWidth(window, width);
 		y += 8 + messageFrame.getHeight();
 	}
+
+	totalMessagesHeight = y;
 }
 
 void ChatControl::clearMessages()
@@ -221,19 +249,12 @@ void ChatControl::calculateScrollInfo()
 	RECT clientRect;
 	GetClientRect(window, &clientRect);
 
-	int y = 40;
-	for (std::vector<ChatControlMessageFrame *>::iterator it = messages.begin(); it != messages.end(); ++it)
-	{
-		ChatControlMessageFrame &messageFrame = **it;
-		y += 8 + messageFrame.getHeight();
-	}
-
 	SCROLLINFO scrollInfo;
 	memset(&scrollInfo, 0, sizeof(SCROLLINFO));
 	scrollInfo.cbSize = sizeof(SCROLLINFO);
 	scrollInfo.fMask = SIF_PAGE | SIF_RANGE;
 	scrollInfo.nMin = 0;
-	scrollInfo.nMax = y;
+	scrollInfo.nMax = totalMessagesHeight;
 	scrollInfo.nPage = clientRect.bottom;
 
 	SetScrollInfo(window, SB_VERT, &scrollInfo, TRUE);
@@ -280,6 +301,7 @@ void ChatControl::paintBackbuffer()
 
 	if (lock.tryLock())
 	{
+		painting = true;
 		int scrollPosition = GetScrollPos(window, SB_VERT);
 
 		int y = 10;
@@ -318,6 +340,11 @@ void ChatControl::paintBackbuffer()
 		{
 			for (std::vector<ChatControlMessageFrame *>::iterator it = messages.begin(); it != messages.end(); ++it)
 			{
+				if (!painting)
+				{
+					break;
+				}
+
 				ChatControlMessageFrame &messageFrame = **it;
 
 				int x = 10;
@@ -341,6 +368,7 @@ void ChatControl::paintBackbuffer()
 			}
 		}
 
+		painting = false;
 		lock.unlock();
 	}
 	else
@@ -574,14 +602,13 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 					} break;
 					case CHAT_CONTROL_RESIZING_MESSAGES_FINISHED:
 					{
-						chatControl->resizingMessages = false;
 						chatControl->resizingMessagesThreadHandle = NULL;
+						chatControl->calculateScrollInfo();
 						chatControl->createBackbuffer();
 						chatControl->redraw();
 					} break;
 					case CHAT_CONTROL_BUILDING_MESSAGES_FINISHED:
 					{
-						chatControl->buildingMessages = false;
 						chatControl->buildingMessagesThreadHandle = NULL;
 						chatControl->startResizingMessages();
 					} break;
