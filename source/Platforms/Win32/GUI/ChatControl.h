@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "../CriticalSectionLock.h"
 
 class ChatControlMessageFrame;
 class Font;
@@ -15,12 +16,15 @@ enum ChatControlMessages
 	CHAT_CONTROL_SETCHAT,
 	CHAT_CONTROL_START_RESIZING_MESSAGES,
 	CHAT_CONTROL_STOP_RESIZING_MESSAGES,
-	CHAT_CONTROL_REDRAW
+	CHAT_CONTROL_REDRAW,
+	CHAT_CONTROL_BUILDING_MESSAGES_FINISHED,
+	CHAT_CONTROL_RESIZING_MESSAGES_FINISHED
 };
 
 class ChatControl
 {
 private:
+	CriticalSectionLock lock;
 	ImageDecoder *imageDecoder;
 	Smileys *smileys;
 
@@ -36,11 +40,8 @@ private:
 
 	void setChat(WhatsappChat &chat);
 
-	void buildMessages();
 	void clearMessages();
 	void calculateScrollInfo();
-	void resizeMessages();
-	void resizeMessageWidths();
 
 	LRESULT onPaint();
 	void drawMessage(ChatControlMessageFrame &messageFrame, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont);
@@ -53,6 +54,21 @@ private:
 	void createBackbuffer();
 	void paintBackbuffer();
 	void deleteBackbuffer();
+
+	bool buildingMessages;
+	HANDLE buildingMessagesThreadHandle;
+	static DWORD CALLBACK buildingMessagesThread(void *param);
+	void startBuildingMessages();
+	void stopBuildingMessages();
+	void buildMessages();
+
+	bool resizingMessages;
+	HANDLE resizingMessagesThreadHandle;
+	static DWORD CALLBACK resizingMessagesThread(void *param);
+	void startResizingMessages();
+	void stopResizingMessages();
+	void resizeMessages();
+	void resizeMessageWidths();
 
 public:
 

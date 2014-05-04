@@ -32,6 +32,10 @@ ChatControl::ChatControl(HWND window)
 	dateFont = new Font(CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New"));
 	chat = NULL;
 	shouldResizeMessages = true;
+	buildingMessagesThreadHandle = NULL;
+	resizingMessagesThreadHandle = NULL;
+	buildingMessages = false;
+	resizingMessages = false;
 }
 
 ChatControl::~ChatControl()
@@ -62,12 +66,40 @@ void ChatControl::setChat(WhatsappChat &chat)
 	deleteBackbuffer();
 	this->chat = &chat;
 	SetScrollPos(window, SB_VERT, 0, TRUE);
-	buildMessages();
+	startBuildingMessages();
 	redraw();
+}
+
+void ChatControl::startBuildingMessages()
+{
+	stopBuildingMessages();
+	buildingMessages = true;
+	buildingMessagesThreadHandle = CreateThread(NULL, 0, buildingMessagesThread, this, 0, NULL);
+
+	redraw();
+}
+
+void ChatControl::stopBuildingMessages()
+{
+	if (buildingMessagesThreadHandle)
+	{
+		buildingMessages = false;
+		WaitForSingleObject(buildingMessagesThreadHandle, INFINITE);
+		buildingMessagesThreadHandle = NULL;
+	}
+}
+
+DWORD CALLBACK ChatControl::buildingMessagesThread(void *param)
+{
+	ChatControl *chatControl = reinterpret_cast<ChatControl *>(param);
+	chatControl->buildMessages();
+	PostMessage(chatControl->window, WM_CHATCONTROL, CHAT_CONTROL_BUILDING_MESSAGES_FINISHED, 0);
+	return 0;
 }
 
 void ChatControl::buildMessages()
 {
+	lock.lock();
 	clearMessages();
 
 	if (chat != NULL)
@@ -123,13 +155,43 @@ void ChatControl::buildMessages()
 
 	}
 
-	resizeMessages();
+	lock.unlock();
 }
+
+void ChatControl::startResizingMessages()
+{
+	stopResizingMessages();
+	resizingMessages = true;
+	resizingMessagesThreadHandle = CreateThread(NULL, 0, resizingMessagesThread, this, 0, NULL);
+
+	redraw();
+}
+
+void ChatControl::stopResizingMessages()
+{
+	if (buildingMessagesThreadHandle)
+	{
+		resizingMessages = false;
+		WaitForSingleObject(buildingMessagesThreadHandle, INFINITE);
+		buildingMessagesThreadHandle = NULL;
+	}
+}
+
+DWORD CALLBACK ChatControl::resizingMessagesThread(void *param)
+{
+	ChatControl *chatControl = reinterpret_cast<ChatControl *>(param);
+	chatControl->resizeMessages();
+	PostMessage(chatControl->window, WM_CHATCONTROL, CHAT_CONTROL_RESIZING_MESSAGES_FINISHED, 0);
+	return 0;
+}
+
 
 void ChatControl::resizeMessages()
 {
+	lock.lock();
 	resizeMessageWidths();
 	calculateScrollInfo();
+	lock.unlock();
 }
 
 void ChatControl::resizeMessageWidths()
@@ -216,65 +278,74 @@ void ChatControl::paintBackbuffer()
 	Brush brush(CreateSolidBrush(GetSysColor(COLOR_3DFACE)));
 	FillRect(backbuffer, &clientRect, brush.get());
 
-	int scrollPosition = GetScrollPos(window, SB_VERT);
-
-	int y = 10;
-	if (y - scrollPosition > 0)
+	if (lock.tryLock())
 	{
-		std::string text = "WhatsApp Chat";
+		int scrollPosition = GetScrollPos(window, SB_VERT);
+
+		int y = 10;
+		if (y - scrollPosition > 0)
+		{
+			std::string text = "WhatsApp Chat";
+			if (chat != NULL)
+			{
+				text += " (";
+				text += chat->getKey();
+
+				if (chat->getSubject().length() > 0)
+				{
+					text += "; ";
+					text += chat->getSubject();
+				}
+
+				text += ")";
+			}
+
+			WCHAR *wcharText = buildWcharString(text);
+			drawText(backbuffer, wcharText, 10, 10, clientRect.right - 10);
+			delete[] wcharText;
+		}
+
+		y += 15;
+		if (y - scrollPosition)
+		{
+			MoveToEx(backbuffer, 10, y - scrollPosition, NULL);
+			LineTo(backbuffer, clientRect.right - 10, y - scrollPosition);
+		}
+
+		y += 15;
+
 		if (chat != NULL)
 		{
-			text += " (";
-			text += chat->getKey();
-
-			if (chat->getSubject().length() > 0)
+			for (std::vector<ChatControlMessageFrame *>::iterator it = messages.begin(); it != messages.end(); ++it)
 			{
-				text += "; ";
-				text += chat->getSubject();
-			}
+				ChatControlMessageFrame &messageFrame = **it;
 
-			text += ")";
-		}
+				int x = 10;
 
-		WCHAR *wcharText = buildWcharString(text);
-		drawText(backbuffer, wcharText, 10, 10, clientRect.right - 10);
-		delete[] wcharText;
-	}
+				if (messageFrame.getMessage()->getMessage().isFromMe())
+				{
+					x += 40;
+				}
 
-	y += 15;
-	if (y - scrollPosition)
-	{
-		MoveToEx(backbuffer, 10, y - scrollPosition, NULL);
-		LineTo(backbuffer, clientRect.right - 10, y - scrollPosition);
-	}
+				if (y + messageFrame.getHeight() - scrollPosition > 0)
+				{
+					messageFrame.render(backbuffer, x, y - scrollPosition, clientRect.bottom);
+				}
+				y += messageFrame.getHeight();
+				y += 8;
 
-	y += 15;
-
-	if (chat != NULL)
-	{
-		for (std::vector<ChatControlMessageFrame *>::iterator it = messages.begin(); it != messages.end(); ++it)
-		{
-			ChatControlMessageFrame &messageFrame = **it;
-
-			int x = 10;
-
-			if (messageFrame.getMessage()->getMessage().isFromMe())
-			{
-				x += 40;
-			}
-
-			if (y + messageFrame.getHeight() - scrollPosition > 0)
-			{
-				messageFrame.render(backbuffer, x, y - scrollPosition, clientRect.bottom);
-			}
-			y += messageFrame.getHeight();
-			y += 8;
-
-			if (y - scrollPosition > clientRect.bottom)
-			{
-				break;
+				if (y - scrollPosition > clientRect.bottom)
+				{
+					break;
+				}
 			}
 		}
+
+		lock.unlock();
+	}
+	else
+	{
+		drawText(backbuffer, L"Loading...", 10, 10, clientRect.right - 10);
 	}
 
 	SelectObject(backbuffer, oldFont);
@@ -497,9 +568,22 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 					} break;
 					case CHAT_CONTROL_REDRAW:
 					{
-						chatControl->resizeMessages();
+						chatControl->startResizingMessages();
 						chatControl->createBackbuffer();
 						chatControl->redraw();
+					} break;
+					case CHAT_CONTROL_RESIZING_MESSAGES_FINISHED:
+					{
+						chatControl->resizingMessages = false;
+						chatControl->resizingMessagesThreadHandle = NULL;
+						chatControl->createBackbuffer();
+						chatControl->redraw();
+					} break;
+					case CHAT_CONTROL_BUILDING_MESSAGES_FINISHED:
+					{
+						chatControl->buildingMessages = false;
+						chatControl->buildingMessagesThreadHandle = NULL;
+						chatControl->startResizingMessages();
 					} break;
 				}
 			} break;
@@ -507,7 +591,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 			{
 				if (chatControl->shouldResizeMessages)
 				{
-					chatControl->resizeMessages();
+					chatControl->startResizingMessages();
 				}
 				chatControl->createBackbuffer();
 				chatControl->redraw();
