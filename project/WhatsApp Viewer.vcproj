@@ -189,6 +189,10 @@
 				RelativePath="..\source\Main.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\source\WhatsAppViewer.cpp"
+				>
+			</File>
 			<Filter
 				Name="AES"
 				>
@@ -421,6 +425,10 @@
 			</File>
 			<File
 				RelativePath="..\source\VectorUtils.h"
+				>
+			</File>
+			<File
+				RelativePath="..\source\WhatsAppViewer.h"
 				>
 			</File>
 			<Filter

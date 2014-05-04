@@ -13,6 +13,7 @@ class Settings;
 class WhatsappChat;
 class WhatsappMessage;
 class WhatsappDatabase;
+class WhatsAppViewer;
 
 enum SortingDirection
 {
@@ -23,6 +24,8 @@ enum SortingDirection
 class MainWindow
 {
 private:
+	WhatsAppViewer &whatsAppViewer;
+	Settings &settings;
 	HWND dialog;
 	AboutDialog *aboutDialog;
 	Accelerator accelerator;
@@ -30,7 +33,6 @@ private:
 	WhatsappDatabase *database;
 	std::string tempFilename;
 	OpenDatabaseStruct lastDatabaseOpened;
-	Settings &settings;
 	int sortingColumn;
 	SortingDirection sortingDirection;
 
@@ -70,7 +72,7 @@ private:
 	static int CALLBACK sortingCallback(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
 public:
-	MainWindow(Settings &settings);
+	MainWindow(WhatsAppViewer &whatsAppViewer);
 	~MainWindow();
 
 	bool handleMessages();

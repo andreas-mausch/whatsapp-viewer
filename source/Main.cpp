@@ -2,29 +2,26 @@
 	#include <vld.h>
 #endif
 
-#include "Log.h"
 #include "Main.h"
+#include "WhatsAppViewer.h"
 #include "Exceptions/Exception.h"
-#include "Platforms/Win32/GUI/MainWindow.h"
-#include "Platforms/Win32/SettingsRegistry.h"
 #include "Platforms/Win32/StringHelper.h"
 
 void entryPoint(const std::vector<std::string *> arguments)
 {
 	try
 	{
-		SettingsRegistry settingsRegistry;
-		MainWindow mainWindow(settingsRegistry);
+		WhatsAppViewer whatsAppViewer;
 
 		if (arguments.size() > 1)
 		{
-			mainWindow.openDatabase(*arguments[1]);
+			whatsAppViewer.openDatabase(*arguments[1]);
 		}
 
 		bool run = true;
 		while (run)
 		{
-			if (!mainWindow.handleMessages())
+			if (!whatsAppViewer.tick())
 			{
 				run = false;
 			}

@@ -8,7 +8,7 @@
 #include "AboutDialog.h"
 #include "OpenDatabaseDialog.h"
 #include "../../../ChatExporter.h"
-#include "../../../Settings.h"
+#include "../../../WhatsAppViewer.h"
 #include "../../../../resources/resource.h"
 #include "../../../Exceptions/Exception.h"
 #include "../../../WhatsApp/Chat.h"
@@ -27,8 +27,8 @@
   "publicKeyToken='6595b64144ccf1df' "\
   "language='*'\"")
 
-MainWindow::MainWindow(Settings &settings)
-	: settings(settings), database(NULL), sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING),
+MainWindow::MainWindow(WhatsAppViewer &whatsAppViewer)
+	: whatsAppViewer(whatsAppViewer), settings(whatsAppViewer.getSettings()), database(NULL), sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING),
 	dialog(NULL), accelerator(MAKEINTRESOURCE(IDR_ACCELERATOR)), aboutDialog(NULL)
 {
 	CoInitialize(NULL);
