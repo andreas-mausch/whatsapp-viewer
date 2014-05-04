@@ -1,3 +1,11 @@
+v1.4
+	New feature: Locations, Videos (thumbnail only)
+	Drag&Drop support: drop any database file directly on the application window or on the .exe in explorer
+	Shortcut keys for open and decrypt
+	Group chats: Display sender of each message
+	BUGFIX: Single character messages were not displayed
+	Minor performance improvements
+	About dialog
 v1.3
 	BUGFIX: App doesn't crash anymore if column order differents
 	BUGFIX: Exceptions are now displayed correctly to the user
