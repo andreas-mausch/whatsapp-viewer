@@ -1021,6 +1021,10 @@ IDB_03030               PNG                     "smileys\\03030.PNG"
 // remains consistent on all systems.
 IDI_ICON                ICON                    "Icon.ico"
 
+
+
+IDR_LOADING             GIF                     "Loading.gif"
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Accelerator

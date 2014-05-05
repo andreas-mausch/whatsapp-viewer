@@ -61,3 +61,8 @@ void drawTextRight(HDC deviceContext, const WCHAR *text, int x, int y, int width
 	drawText(deviceContext, text, x, y, width, DT_WORDBREAK | DT_RIGHT);
 	SelectObject(deviceContext, oldFont);
 }
+
+void drawTextCentered(HDC deviceContext, const WCHAR *text, int x, int y, int width)
+{
+	drawText(deviceContext, text, x, y, width, DT_WORDBREAK | DT_CENTER);
+}

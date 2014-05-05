@@ -11,6 +11,7 @@
 #include "ChatControlMessages/ChatControlMessageLocation.h"
 #include "ChatControlMessages/ChatControlMessageText.h"
 #include "ChatControlMessages/ChatControlMessageVideo.h"
+#include "AnimatedGif.h"
 #include "DrawText.h"
 #include "Smileys.h"
 #include "../Counter.h"
@@ -24,27 +25,36 @@
 #include "../../../WhatsApp/Message.h"
 #include "../../../UTF8/utf8.h"
 #include "../../../VectorUtils.h"
+#include "../../../../resources/resource.h"
 
 ChatControl::ChatControl(HWND window)
 {
 	imageDecoder = new ImageDecoder();
 	smileys = new Smileys(*imageDecoder);
+	loadingAnimation = new AnimatedGif(L"IDR_LOADING", L"GIF", *imageDecoder);
 	this->window = window;
 	dateFont = new Font(CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New"));
 	chat = NULL;
 	shouldResizeMessages = true;
 	buildingMessagesThreadHandle = NULL;
 	resizingMessagesThreadHandle = NULL;
+	loadingAnimationThreadHandle = NULL;
 	buildingMessages = false;
 	resizingMessages = false;
 	painting = false;
+	renderingLoadingAnimation = false;
 	totalMessagesHeight = 0;
 }
 
 ChatControl::~ChatControl()
 {
+	stopResizingMessages();
+	stopBuildingMessages();
+	stopLoadingAnimation();
+
 	clearMessages();
 	delete dateFont;
+	delete loadingAnimation;
 	delete smileys;
 	delete imageDecoder;
 }
@@ -239,6 +249,58 @@ void ChatControl::resizeMessageWidths()
 	totalMessagesHeight = y;
 }
 
+DWORD CALLBACK ChatControl::loadingAnimationThread(void *param)
+{
+	ChatControl *chatControl = reinterpret_cast<ChatControl *>(param);
+	chatControl->loadingAnimationLoop();
+	return 0;
+}
+
+void ChatControl::loadingAnimationLoop()
+{
+	renderingLoadingAnimation = true;
+	int frameCount = loadingAnimation->getFrameCount();
+
+	while (renderingLoadingAnimation)
+	{
+		for (int frameIndex = 0; frameIndex < frameCount; frameIndex++)
+		{
+			if (!renderingLoadingAnimation)
+			{
+				break;
+			}
+
+			RECT clientRect;
+			GetClientRect(window, &clientRect);
+
+			int x = (clientRect.right - 128) / 2;
+			int y = (clientRect.bottom - 128) / 2;
+
+			HDC deviceContext = GetDC(window);
+			loadingAnimation->renderFrame(deviceContext, frameIndex, x, y);
+			ReleaseDC(window, deviceContext);
+
+			Sleep(120);
+		}
+	}
+}
+
+void ChatControl::startLoadingAnimation()
+{
+	stopLoadingAnimation();
+	loadingAnimationThreadHandle = CreateThread(NULL, 0, loadingAnimationThread, this, 0, NULL);
+}
+
+void ChatControl::stopLoadingAnimation()
+{
+	if (loadingAnimationThreadHandle)
+	{
+		renderingLoadingAnimation = false;
+		WaitForSingleObject(loadingAnimationThreadHandle, INFINITE);
+		loadingAnimationThreadHandle = NULL;
+	}
+}
+
 void ChatControl::clearMessages()
 {
 	clearVector(messages);
@@ -373,7 +435,8 @@ void ChatControl::paintBackbuffer()
 	}
 	else
 	{
-		drawText(backbuffer, L"Loading...", 10, 10, clientRect.right - 10);
+		drawTextCentered(backbuffer, L"Loading...", 10, (clientRect.bottom + 128) / 2 + 30, clientRect.right - 10);
+		startLoadingAnimation();
 	}
 
 	SelectObject(backbuffer, oldFont);
@@ -603,6 +666,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 					case CHAT_CONTROL_RESIZING_MESSAGES_FINISHED:
 					{
 						chatControl->resizingMessagesThreadHandle = NULL;
+						chatControl->stopLoadingAnimation();
 						chatControl->calculateScrollInfo();
 						chatControl->createBackbuffer();
 						chatControl->redraw();
@@ -610,6 +674,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 					case CHAT_CONTROL_BUILDING_MESSAGES_FINISHED:
 					{
 						chatControl->buildingMessagesThreadHandle = NULL;
+						chatControl->stopLoadingAnimation();
 						chatControl->startResizingMessages();
 					} break;
 				}

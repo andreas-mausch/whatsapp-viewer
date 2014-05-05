@@ -8,6 +8,7 @@ class Font;
 class ImageDecoder;
 class Smileys;
 class WhatsappChat;
+class AnimatedGif;
 
 #define WM_CHATCONTROL (WM_USER+0)
 
@@ -27,6 +28,7 @@ private:
 	CriticalSectionLock lock;
 	ImageDecoder *imageDecoder;
 	Smileys *smileys;
+	AnimatedGif *loadingAnimation;
 
 	HWND window;
 	Font *dateFont;
@@ -72,6 +74,13 @@ private:
 
 	volatile bool painting;
 	int totalMessagesHeight;
+
+	volatile bool renderingLoadingAnimation;
+	void startLoadingAnimation();
+	void stopLoadingAnimation();
+	HANDLE loadingAnimationThreadHandle;
+	static DWORD CALLBACK loadingAnimationThread(void *param);
+	void loadingAnimationLoop();
 
 public:
 
