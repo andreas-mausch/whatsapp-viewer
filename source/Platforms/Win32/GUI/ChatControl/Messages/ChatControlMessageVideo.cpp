@@ -1,9 +1,9 @@
 #include <windows.h>
 
 #include "ChatControlMessageVideo.h"
-#include "../DrawText.h"
-#include "../../../../WhatsApp/Message.h"
-#include "../../ImageDecoder.h"
+#include "../../DrawText.h"
+#include "../../../../../WhatsApp/Message.h"
+#include "../../../ImageDecoder.h"
 
 ChatControlMessageVideo::ChatControlMessageVideo(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
 	: ChatControlMessageWithPreview(message, width, imageDecoder), text(L"Video")

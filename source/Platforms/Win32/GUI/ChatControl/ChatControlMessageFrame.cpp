@@ -1,8 +1,8 @@
 #include <windows.h>
 #include <string>
 
-#include "ChatControlMessage.h"
 #include "ChatControlMessageFrame.h"
+#include "Messages/ChatControlMessage.h"
 #include "../DrawText.h"
 #include "../../Objects/Brush.h"
 #include "../../Objects/Font.h"

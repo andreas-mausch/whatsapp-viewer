@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "../CriticalSectionLock.h"
+#include "../../CriticalSectionLock.h"
 
 class ChatControlMessageFrame;
 class Font;

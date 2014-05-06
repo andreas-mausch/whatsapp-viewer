@@ -1,11 +1,11 @@
 #include <string>
 #include <windows.h>
 
-#include "ChatControlMessageElement.h"
-#include "../DrawText.h"
-#include "../Smileys.h"
-#include "../../StringHelper.h"
-#include "../../../../Exceptions/Exception.h"
+#include "ChatControlMessageTextElement.h"
+#include "../../DrawText.h"
+#include "../../Smileys.h"
+#include "../../../StringHelper.h"
+#include "../../../../../Exceptions/Exception.h"
 
 ChatControlMessageElement::ChatControlMessageElement(const std::string &text)
 {

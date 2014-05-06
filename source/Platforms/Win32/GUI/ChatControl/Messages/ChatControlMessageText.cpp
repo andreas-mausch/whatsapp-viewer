@@ -1,13 +1,13 @@
 #include <windows.h>
 
 #include "ChatControlMessageText.h"
-#include "ChatControlMessageElement.h"
-#include "../SmileyList.h"
-#include "../../../../WhatsApp/Message.h"
-#include "../../../../UTF8/utf8.h"
-#include "../../../../VectorUtils.h"
-#include "../../StringHelper.h"
-#include "../../Timestamp.h"
+#include "ChatControlMessageTextElement.h"
+#include "../../SmileyList.h"
+#include "../../../../../WhatsApp/Message.h"
+#include "../../../../../UTF8/utf8.h"
+#include "../../../../../VectorUtils.h"
+#include "../../../StringHelper.h"
+#include "../../../Timestamp.h"
 
 ChatControlMessageText::ChatControlMessageText(WhatsappMessage &message, int width, Smileys &smileys)
 	: ChatControlMessage(message, width), smileys(smileys)

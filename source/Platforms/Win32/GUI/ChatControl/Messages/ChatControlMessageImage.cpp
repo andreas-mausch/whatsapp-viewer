@@ -1,8 +1,8 @@
 #include <windows.h>
 
 #include "ChatControlMessageImage.h"
-#include "../../../../WhatsApp/Message.h"
-#include "../../ImageDecoder.h"
+#include "../../../../../WhatsApp/Message.h"
+#include "../../../ImageDecoder.h"
 
 ChatControlMessageImage::ChatControlMessageImage(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
 	: ChatControlMessageWithPreview(message, width, imageDecoder)
