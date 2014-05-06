@@ -15,5 +15,6 @@ public:
 	virtual void start();
 	virtual void interrupt();
 	virtual void join();
+	virtual bool joinFor(int milliseconds);
 
 };

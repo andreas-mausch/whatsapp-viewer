@@ -29,6 +29,18 @@ void ThreadWindows::join()
 	thread = NULL;
 }
 
+bool ThreadWindows::joinFor(int milliseconds)
+{
+	if (WaitForSingleObject(thread, milliseconds) == WAIT_OBJECT_0)
+	{
+		running = false;
+		thread = NULL;
+		return true;
+	}
+
+	return false;
+}
+
 DWORD CALLBACK ThreadWindows::threadEntry(void *param)
 {
 	ThreadWindows *threadWindows = reinterpret_cast<ThreadWindows *>(param);

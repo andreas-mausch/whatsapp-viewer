@@ -1,5 +1,6 @@
 #pragma once
 
+#include <windows.h>
 #include <string>
 #include <vector>
 
@@ -17,7 +18,7 @@ public:
 	~WhatsappDatabase();
 
 	void getChats(std::vector<WhatsappChat *> &chats);
-	void getMessages(const std::string &chatId, std::vector<WhatsappMessage *> &messages);
+	void getMessages(const std::string &chatId, std::vector<WhatsappMessage *> &messages, const volatile bool &running);
 
 	int getErrorCode();
 	std::string getErrorMessage();

@@ -236,6 +236,10 @@
 					RelativePath="..\source\WhatsApp\Message.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\source\WhatsApp\QueryMessagesThread.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="SQLite"
@@ -504,6 +508,10 @@
 				</File>
 				<File
 					RelativePath="..\source\WhatsApp\Message.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\WhatsApp\QueryMessagesThread.h"
 					>
 				</File>
 			</Filter>
