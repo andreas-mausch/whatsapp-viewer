@@ -52,7 +52,7 @@ private:
 	void drawMessage(ChatControlMessageFrame &messageFrame, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont);
 	void redraw();
 
-	void scroll(int newPosition);
+	void scroll(int newPosition, bool redraw);
 	LRESULT onScroll(WPARAM wParam);
 	LRESULT onMousewheel(int delta);
 

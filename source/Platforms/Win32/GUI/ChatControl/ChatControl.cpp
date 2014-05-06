@@ -89,6 +89,7 @@ void ChatControl::setChat(WhatsappChat *chat)
 	{
 		totalMessagesHeight = 0;
 	}
+	scroll(0, false);
 	calculateScrollInfo();
 
 	redraw();
@@ -327,7 +328,7 @@ void ChatControl::redraw()
 	UpdateWindow(window);
 }
 
-void ChatControl::scroll(int newPosition)
+void ChatControl::scroll(int newPosition, bool redraw)
 {
 	int previousPosition = GetScrollPos(window, SB_VERT);
 
@@ -337,15 +338,15 @@ void ChatControl::scroll(int newPosition)
 	scrollInfo.fMask = SIF_POS;
 	scrollInfo.nPos = newPosition;
 
-	SetScrollInfo(window, SB_VERT, &scrollInfo, TRUE);
+	SetScrollInfo(window, SB_VERT, &scrollInfo, redraw);
 	GetScrollInfo(window, SB_VERT, &scrollInfo);
 
-	if (scrollInfo.nPos != previousPosition)
+	if (redraw && scrollInfo.nPos != previousPosition)
 	{
 		// ScrollWindow(hwnd, 0, yChar * (yPos - si.nPos), NULL, NULL);
 		// UpdateWindow (hwnd);
 		paintBackbuffer();
-		redraw();
+		ChatControl::redraw();
 	}
 }
 
@@ -391,14 +392,14 @@ LRESULT ChatControl::onScroll(WPARAM wParam)
 		} break;
 	}
 
-	scroll(scrollInfo.nPos);
+	scroll(scrollInfo.nPos, true);
 	return 0;
 }
 
 LRESULT ChatControl::onMousewheel(int delta)
 {
 	int previousPosition = GetScrollPos(window, SB_VERT);
-	scroll(previousPosition - delta / WHEEL_DELTA * 60);
+	scroll(previousPosition - delta / WHEEL_DELTA * 60, true);
 
 	return 0;
 }
