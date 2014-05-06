@@ -3,10 +3,10 @@
 #include <fstream>
 #include <vector>
 
-#include "ChatControl.h"
 #include "MainWindow.h"
 #include "AboutDialog.h"
 #include "OpenDatabaseDialog.h"
+#include "ChatControl/ChatControl.h"
 #include "../../../ChatExporter.h"
 #include "../../../WhatsAppViewer.h"
 #include "../../../../resources/resource.h"

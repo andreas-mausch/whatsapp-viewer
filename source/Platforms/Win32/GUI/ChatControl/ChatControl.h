@@ -3,12 +3,13 @@
 #include <vector>
 #include "../../CriticalSectionLock.h"
 
+class AnimatedGif;
 class ChatControlMessageFrame;
 class Font;
 class ImageDecoder;
+class LoadingAnimationThread;
 class Smileys;
 class WhatsappChat;
-class AnimatedGif;
 
 #define WM_CHATCONTROL (WM_USER+0)
 
@@ -75,12 +76,9 @@ private:
 	volatile bool painting;
 	int totalMessagesHeight;
 
-	volatile bool renderingLoadingAnimation;
 	void startLoadingAnimation();
 	void stopLoadingAnimation();
-	HANDLE loadingAnimationThreadHandle;
-	static DWORD CALLBACK loadingAnimationThread(void *param);
-	void loadingAnimationLoop();
+	LoadingAnimationThread *loadingAnimationThread;
 
 public:
 

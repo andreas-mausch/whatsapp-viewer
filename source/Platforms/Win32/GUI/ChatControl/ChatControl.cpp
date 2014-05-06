@@ -6,6 +6,7 @@
 
 #include "ChatControl.h"
 #include "ChatControlMessageFrame.h"
+#include "LoadingAnimationThread.h"
 #include "Messages/ChatControlMessage.h"
 #include "Messages/ChatControlMessageImage.h"
 #include "Messages/ChatControlMessageLocation.h"
@@ -39,11 +40,10 @@ ChatControl::ChatControl(HWND window)
 	shouldResizeMessages = true;
 	buildingMessagesThreadHandle = NULL;
 	resizingMessagesThreadHandle = NULL;
-	loadingAnimationThreadHandle = NULL;
 	buildingMessages = false;
 	resizingMessages = false;
 	painting = false;
-	renderingLoadingAnimation = false;
+	loadingAnimationThread = NULL;
 	totalMessagesHeight = 0;
 }
 
@@ -244,55 +244,21 @@ void ChatControl::resizeMessageWidths()
 	totalMessagesHeight = y;
 }
 
-DWORD CALLBACK ChatControl::loadingAnimationThread(void *param)
-{
-	ChatControl *chatControl = reinterpret_cast<ChatControl *>(param);
-	chatControl->loadingAnimationLoop();
-	return 0;
-}
-
-void ChatControl::loadingAnimationLoop()
-{
-	int frameCount = loadingAnimation->getFrameCount();
-
-	while (renderingLoadingAnimation)
-	{
-		for (int frameIndex = 0; frameIndex < frameCount; frameIndex++)
-		{
-			if (!renderingLoadingAnimation)
-			{
-				break;
-			}
-
-			RECT clientRect;
-			GetClientRect(window, &clientRect);
-
-			int x = (clientRect.right - 128) / 2;
-			int y = (clientRect.bottom - 128) / 2;
-
-			HDC deviceContext = GetDC(window);
-			loadingAnimation->renderFrame(deviceContext, frameIndex, x, y);
-			ReleaseDC(window, deviceContext);
-
-			Sleep(120);
-		}
-	}
-}
-
 void ChatControl::startLoadingAnimation()
 {
 	stopLoadingAnimation();
-	renderingLoadingAnimation = true;
-	loadingAnimationThreadHandle = CreateThread(NULL, 0, loadingAnimationThread, this, 0, NULL);
+	loadingAnimationThread = new LoadingAnimationThread(window, *loadingAnimation);
 }
 
 void ChatControl::stopLoadingAnimation()
 {
-	if (loadingAnimationThreadHandle)
+	if (loadingAnimationThread)
 	{
-		renderingLoadingAnimation = false;
-		WaitForSingleObject(loadingAnimationThreadHandle, INFINITE);
-		loadingAnimationThreadHandle = NULL;
+		loadingAnimationThread->interrupt();
+		loadingAnimationThread->join();
+
+		delete loadingAnimationThread;
+		loadingAnimationThread = NULL;
 	}
 }
 
