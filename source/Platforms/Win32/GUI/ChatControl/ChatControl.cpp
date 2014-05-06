@@ -292,8 +292,6 @@ void ChatControl::paintBackbuffer()
 	}
 	else
 	{
-		drawTextCentered(backbuffer, L"Loading...", 10, (clientRect.bottom + 128) / 2 + 30, clientRect.right - 10);
-
 		if (!loadingAnimationThread)
 		{
 			startLoadingAnimation();
