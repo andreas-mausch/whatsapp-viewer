@@ -855,6 +855,7 @@
 #define IDI_ICON                        961
 #define IDR_ACCELERATOR                 963
 #define IDD_ABOUT                       964
+#define IDR_ACCELERATOR1                966
 #define IDC_MAIN_CHATS                  1001
 #define IDC_MAIN_MESSAGES               1002
 #define IDC_MAIN_STATUS                 1003
@@ -883,8 +884,8 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        966
-#define _APS_NEXT_COMMAND_VALUE         40015
+#define _APS_NEXT_RESOURCE_VALUE        967
+#define _APS_NEXT_COMMAND_VALUE         40016
 #define _APS_NEXT_CONTROL_VALUE         1008
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

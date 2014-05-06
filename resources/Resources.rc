@@ -1021,7 +1021,10 @@ IDB_03030               PNG                     "smileys\\03030.PNG"
 // remains consistent on all systems.
 IDI_ICON                ICON                    "Icon.ico"
 
-
+/////////////////////////////////////////////////////////////////////////////
+//
+// GIF
+//
 
 IDR_LOADING             GIF                     "Loading.gif"
 
@@ -1034,6 +1037,44 @@ IDR_ACCELERATOR ACCELERATORS
 BEGIN
     "O",            ID_ACCELERATOR_OPEN,    VIRTKEY, CONTROL, NOINVERT
     "D",            ID_ACCELERATOR_DECRYPT, VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,5,0,0
+ PRODUCTVERSION 1,5,0,0
+ FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x0L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "000004b0"
+        BEGIN
+            VALUE "FileDescription", "Resources"
+            VALUE "FileVersion", "1, 5, 0, 0"
+            VALUE "InternalName", "Resources"
+            VALUE "LegalCopyright", "Copyright (C) 2014"
+            VALUE "OriginalFilename", "Resources.rc"
+            VALUE "ProductName", "Resources"
+            VALUE "ProductVersion", "1, 5, 0, 0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0, 1200
+    END
 END
 
 #endif    // Deutsch (Deutschland) resources
