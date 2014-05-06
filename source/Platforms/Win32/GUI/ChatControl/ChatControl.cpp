@@ -11,6 +11,7 @@
 #include "Messages/ChatControlMessageLocation.h"
 #include "Messages/ChatControlMessageText.h"
 #include "Messages/ChatControlMessageVideo.h"
+#include "Threads/BuildMessagesThread.h"
 #include "Threads/LoadingAnimationThread.h"
 #include "Threads/ResizeMessagesThread.h"
 #include "../AnimatedGif.h"
@@ -39,9 +40,8 @@ ChatControl::ChatControl(HWND window)
 	dateFont = new Font(CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New"));
 	chat = NULL;
 	shouldResizeMessages = true;
-	buildingMessagesThreadHandle = NULL;
-	buildingMessages = false;
 	painting = false;
+	buildMessagesThread = NULL;
 	resizeMessagesThread = NULL;
 	loadingAnimationThread = NULL;
 	totalMessagesHeight = 0;
@@ -53,7 +53,7 @@ ChatControl::~ChatControl()
 	stopBuildingMessages();
 	stopLoadingAnimation();
 
-	clearMessages();
+	clearVector(messages);
 	delete dateFont;
 	delete loadingAnimation;
 	delete smileys;
@@ -90,95 +90,18 @@ void ChatControl::startBuildingMessages()
 	painting = false;
 	stopResizingMessages();
 	stopBuildingMessages();
-	buildingMessages = true;
-	buildingMessagesThreadHandle = CreateThread(NULL, 0, buildingMessagesThread, this, 0, NULL);
+	buildMessagesThread = new BuildMessagesThread(window, lock, chat, messages, *smileys, *dateFont, *imageDecoder);
+	buildMessagesThread->start();
+	redraw();
 }
 
 void ChatControl::stopBuildingMessages()
 {
-	if (buildingMessagesThreadHandle)
+	if (buildMessagesThread)
 	{
-		buildingMessages = false;
-		WaitForSingleObject(buildingMessagesThreadHandle, INFINITE);
-		buildingMessagesThreadHandle = NULL;
+		interruptJoinAndDeleteThread(*buildMessagesThread);
+		buildMessagesThread = NULL;
 	}
-}
-
-DWORD CALLBACK ChatControl::buildingMessagesThread(void *param)
-{
-	ChatControl *chatControl = reinterpret_cast<ChatControl *>(param);
-	chatControl->buildMessages();
-	PostMessage(chatControl->window, WM_CHATCONTROL, CHAT_CONTROL_BUILDING_MESSAGES_FINISHED, 0);
-	return 0;
-}
-
-void ChatControl::buildMessages()
-{
-	if (!lock.tryLockWhile(buildingMessages))
-	{
-		return;
-	}
-
-	clearMessages();
-
-	if (chat != NULL)
-	{
-		std::vector<WhatsappMessage *> &messages = chat->getMessages(buildingMessages);
-		for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
-		{
-			if (!buildingMessages)
-			{
-				break;
-			}
-
-			WhatsappMessage &message = **it;
-			ChatControlMessageFrame *messageFrame = NULL;
-
-			int color;
-
-			if (message.isFromMe())
-			{
-				color = RGB(190, 240, 150);
-			}
-			else
-			{
-				color = RGB(230, 230, 240);
-			}
-
-			switch (message.getMediaWhatsappType())
-			{
-				case MEDIA_WHATSAPP_TEXT:
-				{
-					messageFrame = new ChatControlMessageFrame(new ChatControlMessageText(message, 0, *smileys), 0, color, *dateFont);
-				} break;
-				case MEDIA_WHATSAPP_IMAGE:
-				{
-					if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
-					{
-						messageFrame = new ChatControlMessageFrame(new ChatControlMessageImage(message, 0, *imageDecoder), 0, color, *dateFont);
-					}
-				} break;
-				case MEDIA_WHATSAPP_VIDEO:
-				{
-					if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
-					{
-						messageFrame = new ChatControlMessageFrame(new ChatControlMessageVideo(message, 0, *imageDecoder), 0, color, *dateFont);
-					}
-				} break;
-				case MEDIA_WHATSAPP_LOCATION:
-				{
-					messageFrame = new ChatControlMessageFrame(new ChatControlMessageLocation(message, 0, *imageDecoder), 0, color, *dateFont);
-				} break;
-			}
-
-			if (messageFrame != NULL)
-			{
-				this->messages.push_back(messageFrame);
-			}
-		}
-	}
-
-	lock.unlock();
 }
 
 void ChatControl::startResizingMessages()
@@ -220,11 +143,6 @@ void ChatControl::interruptJoinAndDeleteThread(Thread &thread)
 	thread.interrupt();
 	thread.join();
 	delete &thread;
-}
-
-void ChatControl::clearMessages()
-{
-	clearVector(messages);
 }
 
 void ChatControl::calculateScrollInfo()
@@ -595,8 +513,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 					} break;
 					case CHAT_CONTROL_BUILDING_MESSAGES_FINISHED:
 					{
-						chatControl->buildingMessages = false;
-						chatControl->buildingMessagesThreadHandle = NULL;
+						chatControl->stopBuildingMessages();
 						chatControl->stopLoadingAnimation();
 						chatControl->startResizingMessages();
 					} break;

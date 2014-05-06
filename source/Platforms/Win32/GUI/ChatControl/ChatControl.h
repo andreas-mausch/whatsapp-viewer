@@ -4,6 +4,7 @@
 #include "../../CriticalSectionLock.h"
 
 class AnimatedGif;
+class BuildMessagesThread;
 class ChatControlMessageFrame;
 class Font;
 class ImageDecoder;
@@ -45,7 +46,6 @@ private:
 
 	void setChat(WhatsappChat &chat);
 
-	void clearMessages();
 	void calculateScrollInfo();
 
 	LRESULT onPaint();
@@ -60,12 +60,9 @@ private:
 	void paintBackbuffer();
 	void deleteBackbuffer();
 
-	volatile bool buildingMessages;
-	HANDLE buildingMessagesThreadHandle;
-	static DWORD CALLBACK buildingMessagesThread(void *param);
 	void startBuildingMessages();
 	void stopBuildingMessages();
-	void buildMessages();
+	BuildMessagesThread *buildMessagesThread;
 
 	void startResizingMessages();
 	void stopResizingMessages();
