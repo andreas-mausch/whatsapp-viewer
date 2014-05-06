@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 #include "ChatControl.h"
 #include "ChatControlMessageFrame.h"
@@ -32,6 +33,7 @@
 #include "../../../../../resources/resource.h"
 
 ChatControl::ChatControl(HWND window)
+	: buildMessagesThread(NULL), resizeMessagesThread(NULL), loadingAnimationThread(NULL)
 {
 	imageDecoder = new ImageDecoder();
 	smileys = new Smileys(*imageDecoder);
@@ -41,9 +43,6 @@ ChatControl::ChatControl(HWND window)
 	chat = NULL;
 	shouldResizeMessages = true;
 	painting = false;
-	buildMessagesThread = NULL;
-	resizeMessagesThread = NULL;
-	loadingAnimationThread = NULL;
 	totalMessagesHeight = 0;
 }
 
@@ -75,13 +74,23 @@ void ChatControl::registerChatControl()
 	RegisterClassEx(&windowClass);
 }
 
-void ChatControl::setChat(WhatsappChat &chat)
+void ChatControl::setChat(WhatsappChat *chat)
 {
 	deleteBackbuffer();
-	this->chat = &chat;
+	this->chat = chat;
 	startBuildingMessages();
-	totalMessagesHeight = 0;
+
+	if (chat)
+	{
+		// assume a value where vertical scrollbar is required
+		totalMessagesHeight = 10000;
+	}
+	else
+	{
+		totalMessagesHeight = 0;
+	}
 	calculateScrollInfo();
+
 	redraw();
 }
 
@@ -92,7 +101,6 @@ void ChatControl::startBuildingMessages()
 	stopBuildingMessages();
 	buildMessagesThread = new BuildMessagesThread(window, lock, chat, messages, *smileys, *dateFont, *imageDecoder);
 	buildMessagesThread->start();
-	redraw();
 }
 
 void ChatControl::stopBuildingMessages()
@@ -106,11 +114,14 @@ void ChatControl::stopBuildingMessages()
 
 void ChatControl::startResizingMessages()
 {
-	painting = false;
 	stopResizingMessages();
-	resizeMessagesThread = new ResizeMessagesThread(window, lock, messages);
-	resizeMessagesThread->start();
-	redraw();
+	painting = false;
+
+	if (!buildMessagesThread && chat)
+	{
+		resizeMessagesThread = new ResizeMessagesThread(window, lock, messages);
+		resizeMessagesThread->start();
+	}
 }
 
 void ChatControl::stopResizingMessages()
@@ -275,7 +286,11 @@ void ChatControl::paintBackbuffer()
 	else
 	{
 		drawTextCentered(backbuffer, L"Loading...", 10, (clientRect.bottom + 128) / 2 + 30, clientRect.right - 10);
-		startLoadingAnimation();
+
+		if (!loadingAnimationThread)
+		{
+			startLoadingAnimation();
+		}
 	}
 
 	SelectObject(backbuffer, oldFont);
@@ -304,7 +319,7 @@ LRESULT ChatControl::onPaint()
 void ChatControl::redraw()
 {
 	InvalidateRect(window, NULL, FALSE);
-	// UpdateWindow(window);
+	UpdateWindow(window);
 }
 
 void ChatControl::scroll(int newPosition)
@@ -486,7 +501,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 				{
 					case CHAT_CONTROL_SETCHAT:
 					{
-						chatControl->setChat(*reinterpret_cast<WhatsappChat *>(lParam));
+						chatControl->setChat(reinterpret_cast<WhatsappChat *>(lParam));
 					} break;
 					case CHAT_CONTROL_START_RESIZING_MESSAGES:
 					{
@@ -514,7 +529,6 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 					case CHAT_CONTROL_BUILDING_MESSAGES_FINISHED:
 					{
 						chatControl->stopBuildingMessages();
-						chatControl->stopLoadingAnimation();
 						chatControl->startResizingMessages();
 					} break;
 				}
