@@ -525,7 +525,8 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 							NMLISTVIEW *nmListView = reinterpret_cast<NMLISTVIEW *>(lParam);
 
 							if (nmListView->uChanged & LVIF_STATE &&
-								nmListView->uNewState & LVIS_SELECTED)
+								nmListView->uNewState & LVIS_SELECTED &&
+								!(nmListView->uOldState & LVIS_SELECTED))
 							{
 								LVITEM item;
 								ZeroMemory(&item, sizeof(LVITEM));

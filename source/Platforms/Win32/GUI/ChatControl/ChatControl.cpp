@@ -117,10 +117,17 @@ void ChatControl::startResizingMessages()
 	stopResizingMessages();
 	painting = false;
 
-	if (!buildMessagesThread && chat)
+	if (!buildMessagesThread)
 	{
-		resizeMessagesThread = new ResizeMessagesThread(window, lock, messages);
-		resizeMessagesThread->start();
+		if (chat)
+		{
+			resizeMessagesThread = new ResizeMessagesThread(window, lock, messages);
+			resizeMessagesThread->start();
+		}
+		else
+		{
+			PostMessage(window, WM_CHATCONTROL, CHAT_CONTROL_RESIZING_MESSAGES_FINISHED, totalMessagesHeight);
+		}
 	}
 }
 
