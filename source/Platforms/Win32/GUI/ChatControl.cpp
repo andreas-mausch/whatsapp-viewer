@@ -24,6 +24,7 @@
 #include "../../../WhatsApp/Chat.h"
 #include "../../../WhatsApp/Message.h"
 #include "../../../UTF8/utf8.h"
+#include "../../../Log.h"
 #include "../../../VectorUtils.h"
 #include "../../../../resources/resource.h"
 
@@ -89,9 +90,8 @@ void ChatControl::startBuildingMessages()
 	painting = false;
 	stopResizingMessages();
 	stopBuildingMessages();
+	buildingMessages = true;
 	buildingMessagesThreadHandle = CreateThread(NULL, 0, buildingMessagesThread, this, 0, NULL);
-
-	redraw();
 }
 
 void ChatControl::stopBuildingMessages()
@@ -114,7 +114,6 @@ DWORD CALLBACK ChatControl::buildingMessagesThread(void *param)
 
 void ChatControl::buildMessages()
 {
-	buildingMessages = true;
 	if (!lock.tryLockWhile(buildingMessages))
 	{
 		return;
@@ -124,13 +123,12 @@ void ChatControl::buildMessages()
 
 	if (chat != NULL)
 	{
-		std::vector<WhatsappMessage *> &messages = chat->getMessages();
+		std::vector<WhatsappMessage *> &messages = chat->getMessages(buildingMessages);
 		for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
 		{
 			if (!buildingMessages)
 			{
-				lock.unlock();
-				return;
+				break;
 			}
 
 			WhatsappMessage &message = **it;
@@ -180,7 +178,6 @@ void ChatControl::buildMessages()
 		}
 	}
 
-	buildingMessages = false;
 	lock.unlock();
 }
 
@@ -188,6 +185,7 @@ void ChatControl::startResizingMessages()
 {
 	painting = false;
 	stopResizingMessages();
+	resizingMessages = true;
 	resizingMessagesThreadHandle = CreateThread(NULL, 0, resizingMessagesThread, this, 0, NULL);
 
 	redraw();
@@ -211,17 +209,14 @@ DWORD CALLBACK ChatControl::resizingMessagesThread(void *param)
 	return 0;
 }
 
-
 void ChatControl::resizeMessages()
 {
-	resizingMessages = true;
 	if (!lock.tryLockWhile(resizingMessages))
 	{
 		return;
 	}
 
 	resizeMessageWidths();
-	resizingMessages = false;
 	lock.unlock();
 }
 
@@ -258,7 +253,6 @@ DWORD CALLBACK ChatControl::loadingAnimationThread(void *param)
 
 void ChatControl::loadingAnimationLoop()
 {
-	renderingLoadingAnimation = true;
 	int frameCount = loadingAnimation->getFrameCount();
 
 	while (renderingLoadingAnimation)
@@ -288,6 +282,7 @@ void ChatControl::loadingAnimationLoop()
 void ChatControl::startLoadingAnimation()
 {
 	stopLoadingAnimation();
+	renderingLoadingAnimation = true;
 	loadingAnimationThreadHandle = CreateThread(NULL, 0, loadingAnimationThread, this, 0, NULL);
 }
 
@@ -465,7 +460,7 @@ LRESULT ChatControl::onPaint()
 void ChatControl::redraw()
 {
 	InvalidateRect(window, NULL, FALSE);
-	UpdateWindow(window);
+	// UpdateWindow(window);
 }
 
 void ChatControl::scroll(int newPosition)
@@ -665,6 +660,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 					} break;
 					case CHAT_CONTROL_RESIZING_MESSAGES_FINISHED:
 					{
+						chatControl->resizingMessages = false;
 						chatControl->resizingMessagesThreadHandle = NULL;
 						chatControl->stopLoadingAnimation();
 						chatControl->calculateScrollInfo();
@@ -673,6 +669,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 					} break;
 					case CHAT_CONTROL_BUILDING_MESSAGES_FINISHED:
 					{
+						chatControl->buildingMessages = false;
 						chatControl->buildingMessagesThreadHandle = NULL;
 						chatControl->stopLoadingAnimation();
 						chatControl->startResizingMessages();

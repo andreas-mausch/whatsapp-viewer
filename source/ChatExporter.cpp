@@ -34,7 +34,7 @@ void ChatExporter::exportChat(const std::string &filename)
 
 	file << std::endl << std::endl;
 
-	std::vector<WhatsappMessage *> &messages = chat.getMessages();
+	std::vector<WhatsappMessage *> &messages = chat.getMessages(true);
 	for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
 	{
 		WhatsappMessage &message = **it;
