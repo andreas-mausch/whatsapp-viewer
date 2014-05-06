@@ -1,7 +1,7 @@
 #include <windows.h>
 
 #include "LoadingAnimationThread.h"
-#include "../AnimatedGif.h"
+#include "../../AnimatedGif.h"
 
 LoadingAnimationThread::LoadingAnimationThread(HWND window, AnimatedGif &loadingAnimation)
 	: window(window), loadingAnimation(loadingAnimation)

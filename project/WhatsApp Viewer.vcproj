@@ -345,10 +345,6 @@
 								RelativePath="..\source\Platforms\Win32\GUI\ChatControl\ChatControlMessageFrame.cpp"
 								>
 							</File>
-							<File
-								RelativePath="..\source\Platforms\Win32\GUI\ChatControl\LoadingAnimationThread.cpp"
-								>
-							</File>
 							<Filter
 								Name="Messages"
 								>
@@ -378,6 +374,22 @@
 								</File>
 								<File
 									RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Messages\ChatControlMessageWithPreview.cpp"
+									>
+								</File>
+							</Filter>
+							<Filter
+								Name="Threads"
+								>
+								<File
+									RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Threads\BuildMessagesThread.cpp"
+									>
+								</File>
+								<File
+									RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Threads\LoadingAnimationThread.cpp"
+									>
+								</File>
+								<File
+									RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Threads\ResizeMessagesThread.cpp"
 									>
 								</File>
 							</Filter>
@@ -611,10 +623,6 @@
 								RelativePath="..\source\Platforms\Win32\GUI\ChatControl\ChatControlMessageFrame.h"
 								>
 							</File>
-							<File
-								RelativePath="..\source\Platforms\Win32\GUI\ChatControl\LoadingAnimationThread.h"
-								>
-							</File>
 							<Filter
 								Name="Messages"
 								>
@@ -644,6 +652,22 @@
 								</File>
 								<File
 									RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Messages\ChatControlMessageWithPreview.h"
+									>
+								</File>
+							</Filter>
+							<Filter
+								Name="Threads"
+								>
+								<File
+									RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Threads\BuildMessagesThread.h"
+									>
+								</File>
+								<File
+									RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Threads\LoadingAnimationThread.h"
+									>
+								</File>
+								<File
+									RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Threads\ResizeMessagesThread.h"
 									>
 								</File>
 							</Filter>

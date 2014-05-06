@@ -6,12 +6,12 @@
 
 #include "ChatControl.h"
 #include "ChatControlMessageFrame.h"
-#include "LoadingAnimationThread.h"
 #include "Messages/ChatControlMessage.h"
 #include "Messages/ChatControlMessageImage.h"
 #include "Messages/ChatControlMessageLocation.h"
 #include "Messages/ChatControlMessageText.h"
 #include "Messages/ChatControlMessageVideo.h"
+#include "Threads/LoadingAnimationThread.h"
 #include "../AnimatedGif.h"
 #include "../DrawText.h"
 #include "../Smileys.h"

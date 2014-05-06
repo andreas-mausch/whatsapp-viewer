@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../ThreadWindows.h"
+#include "../../../ThreadWindows.h"
 
 class AnimatedGif;
 
