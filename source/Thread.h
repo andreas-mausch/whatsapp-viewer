@@ -10,6 +10,7 @@ public:
 	Thread() { }
 	virtual ~Thread() { }
 
+	virtual void start() = 0;
 	virtual void interrupt() = 0;
 	virtual void join() = 0;
 

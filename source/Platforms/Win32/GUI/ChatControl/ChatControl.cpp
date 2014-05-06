@@ -12,6 +12,7 @@
 #include "Messages/ChatControlMessageText.h"
 #include "Messages/ChatControlMessageVideo.h"
 #include "Threads/LoadingAnimationThread.h"
+#include "Threads/ResizeMessagesThread.h"
 #include "../AnimatedGif.h"
 #include "../DrawText.h"
 #include "../Smileys.h"
@@ -39,10 +40,9 @@ ChatControl::ChatControl(HWND window)
 	chat = NULL;
 	shouldResizeMessages = true;
 	buildingMessagesThreadHandle = NULL;
-	resizingMessagesThreadHandle = NULL;
 	buildingMessages = false;
-	resizingMessages = false;
 	painting = false;
+	resizeMessagesThread = NULL;
 	loadingAnimationThread = NULL;
 	totalMessagesHeight = 0;
 }
@@ -185,81 +185,41 @@ void ChatControl::startResizingMessages()
 {
 	painting = false;
 	stopResizingMessages();
-	resizingMessages = true;
-	resizingMessagesThreadHandle = CreateThread(NULL, 0, resizingMessagesThread, this, 0, NULL);
-
+	resizeMessagesThread = new ResizeMessagesThread(window, lock, messages);
+	resizeMessagesThread->start();
 	redraw();
 }
 
 void ChatControl::stopResizingMessages()
 {
-	if (buildingMessagesThreadHandle)
+	if (resizeMessagesThread)
 	{
-		resizingMessages = false;
-		WaitForSingleObject(resizingMessagesThreadHandle, INFINITE);
-		resizingMessagesThreadHandle = NULL;
+		interruptJoinAndDeleteThread(*resizeMessagesThread);
+		resizeMessagesThread = NULL;
 	}
-}
-
-DWORD CALLBACK ChatControl::resizingMessagesThread(void *param)
-{
-	ChatControl *chatControl = reinterpret_cast<ChatControl *>(param);
-	chatControl->resizeMessages();
-	PostMessage(chatControl->window, WM_CHATCONTROL, CHAT_CONTROL_RESIZING_MESSAGES_FINISHED, 0);
-	return 0;
-}
-
-void ChatControl::resizeMessages()
-{
-	if (!lock.tryLockWhile(resizingMessages))
-	{
-		return;
-	}
-
-	resizeMessageWidths();
-	lock.unlock();
-}
-
-void ChatControl::resizeMessageWidths()
-{
-	RECT clientRect;
-	GetClientRect(window, &clientRect);
-
-	int y = 40;
-	int gap = 40;
-	int width = clientRect.right - clientRect.left - 20 - gap;
-
-	for (std::vector<ChatControlMessageFrame *>::iterator it = messages.begin(); it != messages.end(); ++it)
-	{
-		if (!resizingMessages)
-		{
-			return;
-		}
-
-		ChatControlMessageFrame &messageFrame = **it;
-		messageFrame.updateWidth(window, width);
-		y += 8 + messageFrame.getHeight();
-	}
-
-	totalMessagesHeight = y;
 }
 
 void ChatControl::startLoadingAnimation()
 {
 	stopLoadingAnimation();
 	loadingAnimationThread = new LoadingAnimationThread(window, *loadingAnimation);
+	loadingAnimationThread->start();
 }
 
 void ChatControl::stopLoadingAnimation()
 {
 	if (loadingAnimationThread)
 	{
-		loadingAnimationThread->interrupt();
-		loadingAnimationThread->join();
-
-		delete loadingAnimationThread;
+		interruptJoinAndDeleteThread(*loadingAnimationThread);
 		loadingAnimationThread = NULL;
 	}
+}
+
+void ChatControl::interruptJoinAndDeleteThread(Thread &thread)
+{
+	thread.interrupt();
+	thread.join();
+	delete &thread;
 }
 
 void ChatControl::clearMessages()
@@ -626,8 +586,8 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 					} break;
 					case CHAT_CONTROL_RESIZING_MESSAGES_FINISHED:
 					{
-						chatControl->resizingMessages = false;
-						chatControl->resizingMessagesThreadHandle = NULL;
+						chatControl->stopResizingMessages();
+						chatControl->totalMessagesHeight = lParam;
 						chatControl->stopLoadingAnimation();
 						chatControl->calculateScrollInfo();
 						chatControl->createBackbuffer();

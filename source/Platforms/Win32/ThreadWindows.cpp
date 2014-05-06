@@ -4,13 +4,17 @@
 
 ThreadWindows::ThreadWindows()
 {
-	running = true;
-	thread = CreateThread(NULL, 0, threadEntry, this, 0, NULL);
 }
 
 ThreadWindows::~ThreadWindows()
 {
 	CloseHandle(thread);
+}
+
+void ThreadWindows::start()
+{
+	running = true;
+	thread = CreateThread(NULL, 0, threadEntry, this, 0, NULL);
 }
 
 void ThreadWindows::interrupt()
@@ -21,6 +25,8 @@ void ThreadWindows::interrupt()
 void ThreadWindows::join()
 {
 	WaitForSingleObject(thread, INFINITE);
+	running = false;
+	thread = NULL;
 }
 
 DWORD CALLBACK ThreadWindows::threadEntry(void *param)

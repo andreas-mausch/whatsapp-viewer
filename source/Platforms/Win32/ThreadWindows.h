@@ -12,6 +12,7 @@ public:
 	ThreadWindows();
 	virtual ~ThreadWindows();
 
+	virtual void start();
 	virtual void interrupt();
 	virtual void join();
 

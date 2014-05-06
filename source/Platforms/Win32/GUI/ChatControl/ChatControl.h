@@ -8,7 +8,9 @@ class ChatControlMessageFrame;
 class Font;
 class ImageDecoder;
 class LoadingAnimationThread;
+class ResizeMessagesThread;
 class Smileys;
+class Thread;
 class WhatsappChat;
 
 #define WM_CHATCONTROL (WM_USER+0)
@@ -65,13 +67,9 @@ private:
 	void stopBuildingMessages();
 	void buildMessages();
 
-	volatile bool resizingMessages;
-	HANDLE resizingMessagesThreadHandle;
-	static DWORD CALLBACK resizingMessagesThread(void *param);
 	void startResizingMessages();
 	void stopResizingMessages();
-	void resizeMessages();
-	void resizeMessageWidths();
+	ResizeMessagesThread *resizeMessagesThread;
 
 	volatile bool painting;
 	int totalMessagesHeight;
@@ -79,6 +77,8 @@ private:
 	void startLoadingAnimation();
 	void stopLoadingAnimation();
 	LoadingAnimationThread *loadingAnimationThread;
+
+	void interruptJoinAndDeleteThread(Thread &thread);
 
 public:
 
