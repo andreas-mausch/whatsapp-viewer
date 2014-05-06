@@ -89,7 +89,7 @@ BEGIN
     LTEXT           "Andreas Mausch",IDC_STATIC,123,113,54,8
     LTEXT           "andreas.mausch@gmail.com",IDC_STATIC,123,127,92,8
     LTEXT           "http://andreas-mausch.github.io/whatsapp-viewer/",IDC_STATIC,123,140,166,8
-    LTEXT           "v1.4",IDC_STATIC,123,50,16,8
+    LTEXT           "v1.4",IDC_ABOUT_APPLICATION_VERSION,123,50,189,8
     LTEXT           "https://github.com/andreas-mausch/",IDC_STATIC,123,151,119,8
 END
 
@@ -1062,13 +1062,14 @@ BEGIN
     BEGIN
         BLOCK "000004b0"
         BEGIN
-            VALUE "FileDescription", "Resources"
+            VALUE "Comments", "http://andreas-mausch.github.io/whatsapp-viewer/"
+            VALUE "FileDescription", "WhatsApp Viewer"
             VALUE "FileVersion", "1, 5, 0, 0"
-            VALUE "InternalName", "Resources"
-            VALUE "LegalCopyright", "Copyright (C) 2014"
-            VALUE "OriginalFilename", "Resources.rc"
-            VALUE "ProductName", "Resources"
-            VALUE "ProductVersion", "1, 5, 0, 0"
+            VALUE "InternalName", "WhatsApp Viewer"
+            VALUE "LegalCopyright", "Copyright (C) 2014 Andreas Mausch"
+            VALUE "OriginalFilename", "WhatsApp Viewer.exe"
+            VALUE "ProductName", "WhatsApp Viewer"
+            VALUE "ProductVersion", "v1.5"
         END
     END
     BLOCK "VarFileInfo"
