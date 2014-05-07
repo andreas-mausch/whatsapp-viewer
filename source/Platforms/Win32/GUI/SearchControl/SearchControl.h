@@ -4,7 +4,12 @@ class Bitmap;
 class ImageDecoder;
 class HoverButton;
 
-LRESULT CALLBACK clearButtonCallback(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+#define WM_SEARCHCONTROL (WM_USER+2)
+
+enum SearchControlMessage
+{
+	SEARCHCONTROL_SETTEXT
+};
 
 class SearchControl
 {

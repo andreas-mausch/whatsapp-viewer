@@ -184,6 +184,18 @@ LRESULT CALLBACK SearchControl::callback(HWND window, UINT message, WPARAM wPara
 					} break;
 				}
 			} break;
+			case WM_SEARCHCONTROL:
+			{
+				switch (wParam)
+				{
+					case SEARCHCONTROL_SETTEXT:
+					{
+						WCHAR *text = reinterpret_cast<WCHAR *>(lParam);
+						SetWindowText(window, text);
+						SetWindowText(control->editControl, text);
+					} break;
+				}
+			}
 		}
 	}
 	catch (Exception &exception)

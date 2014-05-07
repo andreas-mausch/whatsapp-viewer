@@ -385,7 +385,7 @@ void MainWindow::openDatabase(const std::string &filename)
 void MainWindow::openPlainDatabase(const std::string &filename)
 {
 	closeDatabase();
-	SetDlgItemText(dialog, IDC_MAIN_SEARCH_CHATS, L"");
+	SendDlgItemMessage(dialog, IDC_MAIN_SEARCH_CHATS, WM_SEARCHCONTROL, SEARCHCONTROL_SETTEXT, reinterpret_cast<LPARAM>(L""));
 
 	lastDatabaseOpened.filename = filename;
 
@@ -512,17 +512,29 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 		{
 			switch (HIWORD(wParam))
 			{
+				case 1: // Accelerator
+				{
+					switch(LOWORD(wParam))
+					{
+						case ID_ACCELERATOR_OPEN:
+						{
+							openDatabase();
+						} break;
+						case ID_ACCELERATOR_DECRYPT:
+						{
+							decryptDatabase();
+						} break;
+					}
+				} break;
 				case BN_CLICKED:
 				{
 					switch(LOWORD(wParam))
 					{
 						case ID_MENU_MAIN_FILE_OPEN:
-						case ID_ACCELERATOR_OPEN:
 						{
 							openDatabase();
 						} break;
 						case ID_MENU_MAIN_FILE_DECRYPT:
-						case ID_ACCELERATOR_DECRYPT:
 						{
 							decryptDatabase();
 						} break;
