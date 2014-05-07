@@ -61,8 +61,7 @@ BEGIN
     CONTROL         "",IDC_MAIN_CHATS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,28,175,355
     CONTROL         "Messages",IDC_MAIN_MESSAGES,"ChatControl",WS_VSCROLL | WS_TABSTOP,190,7,425,354,WS_EX_CLIENTEDGE
     PUSHBUTTON      "Export..",IDC_MAIN_EXPORT,190,369,50,14,WS_DISABLED
-    EDITTEXT        IDC_MAIN_SEARCH_CHATS,33,7,149,14,ES_AUTOHSCROLL
-    CONTROL         "",IDC_MAIN_SEARCH_CHATS_ICON,"Static",SS_BITMAP,7,7,20,20
+    CONTROL         "Benutzerdefiniert1",IDC_MAIN_SEARCH_CHATS,"SearchControl",WS_TABSTOP,7,8,175,14,WS_EX_CLIENTEDGE
 END
 
 IDD_OPEN_FILE DIALOGEX 0, 0, 325, 175
@@ -112,6 +111,7 @@ BEGIN
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 615
+        VERTGUIDE, 182
         VERTGUIDE, 190
         TOPMARGIN, 7
         BOTTOMMARGIN, 383
@@ -1019,6 +1019,7 @@ IDB_02934               PNG                     "smileys\\02934.PNG"
 IDB_02935               PNG                     "smileys\\02935.PNG"
 IDB_03030               PNG                     "smileys\\03030.PNG"
 IDB_SEARCH              PNG                     "Search.png"
+IDB_CLEAR               PNG                     "Clear.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //

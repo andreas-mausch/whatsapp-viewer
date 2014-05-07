@@ -8,7 +8,6 @@
 #include "../Objects/Accelerator.h"
 
 class AboutDialog;
-class Bitmap;
 class Exception;
 class ImageDecoder;
 class Settings;
@@ -28,7 +27,6 @@ class MainWindow
 private:
 	WhatsAppViewer &whatsAppViewer;
 	ImageDecoder &imageDecoder;
-	Bitmap *searchIcon;
 	Settings &settings;
 	HWND dialog;
 	AboutDialog *aboutDialog;

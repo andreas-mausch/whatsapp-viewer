@@ -7,6 +7,7 @@
 #include "AboutDialog.h"
 #include "OpenDatabaseDialog.h"
 #include "ChatControl/ChatControl.h"
+#include "SearchControl/SearchControl.h"
 #include "../Objects/Bitmap.h"
 #include "../../../ChatExporter.h"
 #include "../../../WhatsAppViewer.h"
@@ -41,12 +42,11 @@ MainWindow::MainWindow(WhatsAppViewer &whatsAppViewer, ImageDecoder &imageDecode
     InitCommonControlsEx(&icex);
 
 	ChatControl::registerControl();
+	SearchControl::registerControl();
 
 	getTempFilename();
 
 	readSettings();
-
-	searchIcon = new Bitmap(imageDecoder.loadImageFromResource(MAKEINTRESOURCE(IDB_SEARCH), L"PNG"));
 
 	if (!CreateDialogParam(GetModuleHandle(NULL),
 						   MAKEINTRESOURCE(IDD_MAIN),
@@ -62,7 +62,6 @@ MainWindow::MainWindow(WhatsAppViewer &whatsAppViewer, ImageDecoder &imageDecode
 
 MainWindow::~MainWindow()
 {
-	delete searchIcon;
 	closeDatabase();
 
 	if (fileExists(tempFilename))
@@ -162,8 +161,6 @@ void MainWindow::createChildWindows()
 
 	// set the image list for the list view, tree view and combo box
 	// ListView_SetImageList(GetDlgItem(dialog, IDC_MAIN_CHATS), windowFilemanager->m_imageList, LVSIL_SMALL);
-
-	SendDlgItemMessage(dialog, IDC_MAIN_SEARCH_CHATS_ICON, STM_SETIMAGE, IMAGE_BITMAP, reinterpret_cast<LPARAM>(searchIcon->get()));
 }
 
 void MainWindow::setIcon()
@@ -224,12 +221,11 @@ void MainWindow::selectChat(WhatsappChat *chat)
 void MainWindow::resizeChildWindows(int width, int height)
 {
 	int border = 15;
-	int searchBoxHeight = 20;
+	int searchBoxHeight = 22;
 	int chatsWidth = 400;
 	int buttonRowHeight = 25;
 
-	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_SEARCH_CHATS), NULL, border + 20, border, chatsWidth - 20, searchBoxHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
-	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_SEARCH_CHATS_ICON), NULL, border, border + 2, 16, 16, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_SEARCH_CHATS), NULL, border, border, chatsWidth, searchBoxHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_CHATS), NULL, border, border + searchBoxHeight + 5, chatsWidth, height - border * 2 - searchBoxHeight - 5, SWP_NOZORDER | SWP_SHOWWINDOW);
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_MESSAGES), NULL, chatsWidth + border * 2, border, width - chatsWidth - border * 3, height - border * 3 - buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT), NULL, chatsWidth + border * 2, height - border - buttonRowHeight, 150, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);

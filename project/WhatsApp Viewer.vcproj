@@ -398,6 +398,14 @@
 								</File>
 							</Filter>
 						</Filter>
+						<Filter
+							Name="SearchControl"
+							>
+							<File
+								RelativePath="..\source\Platforms\Win32\GUI\SearchControl\SearchControl.cpp"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Objects"
@@ -679,6 +687,14 @@
 									>
 								</File>
 							</Filter>
+						</Filter>
+						<Filter
+							Name="SearchControl"
+							>
+							<File
+								RelativePath="..\source\Platforms\Win32\GUI\SearchControl\SearchControl.h"
+								>
+							</File>
 						</Filter>
 					</Filter>
 					<Filter
@@ -5306,19 +5322,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F369.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F369.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F36A.PNG"
+				RelativePath="..\resources\smileys\1F369.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F36A.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F36A.PNG"
 				>
 			</File>
 			<File
@@ -5330,19 +5346,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F36C.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F36C.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F36D.PNG"
+				RelativePath="..\resources\smileys\1F36C.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F36D.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F36D.PNG"
 				>
 			</File>
 			<File
@@ -5362,19 +5378,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F377.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F377.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F379.PNG"
+				RelativePath="..\resources\smileys\1F377.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F379.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F379.PNG"
 				>
 			</File>
 			<File
@@ -5386,19 +5402,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F38A.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F38A.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F38B.PNG"
+				RelativePath=".\smileys\1F38A.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F38B.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F38B.PNG"
 				>
 			</File>
 			<File
@@ -5410,19 +5426,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F3A3.png"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F3A3.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F3AA.PNG"
+				RelativePath=".\smileys\1F3A3.png"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F3AA.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F3AA.PNG"
 				>
 			</File>
 			<File
@@ -5434,19 +5450,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F3AE.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F3AE.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F3B2.PNG"
+				RelativePath=".\smileys\1F3AE.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F3B2.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F3B2.PNG"
 				>
 			</File>
 			<File
@@ -5466,19 +5482,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F3B9.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F3B9.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F3BB.PNG"
+				RelativePath=".\smileys\1F3B9.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F3BB.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F3BB.PNG"
 				>
 			</File>
 			<File
@@ -5490,19 +5506,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F3BD.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F3BD.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F3C2.PNG"
+				RelativePath=".\smileys\1F3BD.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F3C2.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F3C2.PNG"
 				>
 			</File>
 			<File
@@ -5522,19 +5538,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F3E1.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F3E1.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F3E4.PNG"
+				RelativePath="..\resources\smileys\1F3E1.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F3E4.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F3E4.PNG"
 				>
 			</File>
 			<File
@@ -5546,19 +5562,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F400.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F400.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F401.PNG"
+				RelativePath="..\resources\smileys\1F400.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F401.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F401.PNG"
 				>
 			</File>
 			<File
@@ -5578,19 +5594,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F404.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F404.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F405.PNG"
+				RelativePath="..\resources\smileys\1F404.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F405.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F405.PNG"
 				>
 			</File>
 			<File
@@ -5602,19 +5618,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F407.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F407.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F408.PNG"
+				RelativePath="..\resources\smileys\1F407.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F408.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F408.PNG"
 				>
 			</File>
 			<File
@@ -5626,19 +5642,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F40A.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F40A.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F40B.PNG"
+				RelativePath=".\smileys\1F40A.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F40B.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F40B.PNG"
 				>
 			</File>
 			<File
@@ -5650,19 +5666,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F40F.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F40F.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F410.PNG"
+				RelativePath=".\smileys\1F40F.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F410.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F410.PNG"
 				>
 			</File>
 			<File
@@ -5682,19 +5698,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F416.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F416.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F41C.PNG"
+				RelativePath=".\smileys\1F416.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F41C.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F41C.PNG"
 				>
 			</File>
 			<File
@@ -5706,19 +5722,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F41E.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F41E.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F421.PNG"
+				RelativePath="..\resources\smileys\1F41E.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F421.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F421.PNG"
 				>
 			</File>
 			<File
@@ -5730,19 +5746,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F423.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F423.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F425.PNG"
+				RelativePath="..\resources\smileys\1F423.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F425.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F425.PNG"
 				>
 			</File>
 			<File
@@ -5754,19 +5770,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F42A.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F42A.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F432.PNG"
+				RelativePath="..\resources\smileys\1F42A.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F432.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F432.PNG"
 				>
 			</File>
 			<File
@@ -5786,19 +5802,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F43E.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F43E.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F445.PNG"
+				RelativePath="..\resources\smileys\1F43E.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F445.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F445.PNG"
 				>
 			</File>
 			<File
@@ -5810,19 +5826,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F456.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F456.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F45A.PNG"
+				RelativePath=".\smileys\1F456.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F45A.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F45A.PNG"
 				>
 			</File>
 			<File
@@ -5834,19 +5850,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F45D.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F45D.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F45E.PNG"
+				RelativePath="..\resources\smileys\1F45D.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F45E.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F45E.PNG"
 				>
 			</File>
 			<File
@@ -5858,19 +5874,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F465.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F465.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F46A.PNG"
+				RelativePath=".\smileys\1F465.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F46A.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F46A.PNG"
 				>
 			</File>
 			<File
@@ -5890,19 +5906,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F470.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F470.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F479.PNG"
+				RelativePath="..\resources\smileys\1F470.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F479.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F479.PNG"
 				>
 			</File>
 			<File
@@ -5914,19 +5930,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F48C.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F48C.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F495.PNG"
+				RelativePath=".\smileys\1F48C.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F495.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F495.PNG"
 				>
 			</File>
 			<File
@@ -5946,19 +5962,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4A0.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F4A0.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4A5.PNG"
+				RelativePath="..\resources\smileys\1F4A0.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F4A5.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F4A5.PNG"
 				>
 			</File>
 			<File
@@ -5970,19 +5986,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4AB.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F4AB.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4AC.PNG"
+				RelativePath="..\resources\smileys\1F4AB.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F4AC.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F4AC.PNG"
 				>
 			</File>
 			<File
@@ -6002,19 +6018,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4AF.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F4AF.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4B2.PNG"
+				RelativePath="..\resources\smileys\1F4AF.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F4B2.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F4B2.PNG"
 				>
 			</File>
 			<File
@@ -6026,19 +6042,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F4B4.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F4B4.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F4B5.PNG"
+				RelativePath=".\smileys\1F4B4.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F4B5.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F4B5.PNG"
 				>
 			</File>
 			<File
@@ -6050,19 +6066,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4B7.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F4B7.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F4B8.PNG"
+				RelativePath="..\resources\smileys\1F4B7.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F4B8.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F4B8.PNG"
 				>
 			</File>
 			<File
@@ -6074,19 +6090,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4C1.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F4C1.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F4C2.PNG"
+				RelativePath="..\resources\smileys\1F4C1.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F4C2.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F4C2.PNG"
 				>
 			</File>
 			<File
@@ -6106,19 +6122,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F4C5.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F4C5.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4C6.PNG"
+				RelativePath=".\smileys\1F4C5.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F4C6.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F4C6.PNG"
 				>
 			</File>
 			<File
@@ -6130,19 +6146,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F4C8.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F4C8.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4C9.PNG"
+				RelativePath=".\smileys\1F4C8.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F4C9.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F4C9.PNG"
 				>
 			</File>
 			<File
@@ -6162,19 +6178,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4CC.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F4CC.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4CD.PNG"
+				RelativePath="..\resources\smileys\1F4CC.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F4CD.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F4CD.PNG"
 				>
 			</File>
 			<File
@@ -6186,19 +6202,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4CF.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F4CF.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F4D0.PNG"
+				RelativePath="..\resources\smileys\1F4CF.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F4D0.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F4D0.PNG"
 				>
 			</File>
 			<File
@@ -6218,19 +6234,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F4D3.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F4D3.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4D4.PNG"
+				RelativePath=".\smileys\1F4D3.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F4D4.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F4D4.PNG"
 				>
 			</File>
 			<File
@@ -6242,19 +6258,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F4D7.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F4D7.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4D8.PNG"
+				RelativePath=".\smileys\1F4D7.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F4D8.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F4D8.PNG"
 				>
 			</File>
 			<File
@@ -6266,19 +6282,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F4DA.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F4DA.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F4DB.PNG"
+				RelativePath=".\smileys\1F4DA.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F4DB.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F4DB.PNG"
 				>
 			</File>
 			<File
@@ -6290,19 +6306,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4DE.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F4DE.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F4DF.PNG"
+				RelativePath="..\resources\smileys\1F4DE.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F4DF.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F4DF.PNG"
 				>
 			</File>
 			<File
@@ -6322,19 +6338,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4E6.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F4E6.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4E7.PNG"
+				RelativePath="..\resources\smileys\1F4E6.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F4E7.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F4E7.PNG"
 				>
 			</File>
 			<File
@@ -6346,19 +6362,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F4EA.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F4EA.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4EC.PNG"
+				RelativePath=".\smileys\1F4EA.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F4EC.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F4EC.PNG"
 				>
 			</File>
 			<File
@@ -6378,19 +6394,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4F0.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F4F0.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F4F5.PNG"
+				RelativePath="..\resources\smileys\1F4F0.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F4F5.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F4F5.PNG"
 				>
 			</File>
 			<File
@@ -6402,19 +6418,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F500.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F500.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F501.PNG"
+				RelativePath=".\smileys\1F500.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F501.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F501.PNG"
 				>
 			</File>
 			<File
@@ -6434,19 +6450,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F504.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F504.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F505.PNG"
+				RelativePath="..\resources\smileys\1F504.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F505.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F505.PNG"
 				>
 			</File>
 			<File
@@ -6458,19 +6474,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F507.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F507.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F508.PNG"
+				RelativePath=".\smileys\1F507.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F508.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F508.PNG"
 				>
 			</File>
 			<File
@@ -6482,19 +6498,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F50B.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F50B.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F50C.PNG"
+				RelativePath=".\smileys\1F50B.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F50C.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F50C.PNG"
 				>
 			</File>
 			<File
@@ -6506,19 +6522,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F50F.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F50F.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F510.PNG"
+				RelativePath="..\resources\smileys\1F50F.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F510.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F510.PNG"
 				>
 			</File>
 			<File
@@ -6538,19 +6554,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F517.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F517.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F518.PNG"
+				RelativePath=".\smileys\1F517.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F518.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F518.PNG"
 				>
 			</File>
 			<File
@@ -6562,19 +6578,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F51A.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F51A.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F51B.PNG"
+				RelativePath="..\resources\smileys\1F51A.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F51B.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F51B.PNG"
 				>
 			</File>
 			<File
@@ -6586,19 +6602,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F51F.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F51F.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F520.PNG"
+				RelativePath="..\resources\smileys\1F51F.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F520.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F520.PNG"
 				>
 			</File>
 			<File
@@ -6610,19 +6626,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F522.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F522.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F523.PNG"
+				RelativePath="..\resources\smileys\1F522.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F523.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F523.PNG"
 				>
 			</File>
 			<File
@@ -6642,19 +6658,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F527.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F527.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F529.PNG"
+				RelativePath=".\smileys\1F527.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F529.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F529.PNG"
 				>
 			</File>
 			<File
@@ -6666,19 +6682,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F52C.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F52C.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F52D.PNG"
+				RelativePath="..\resources\smileys\1F52C.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F52D.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F52D.PNG"
 				>
 			</File>
 			<File
@@ -6690,19 +6706,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F535.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F535.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F536.PNG"
+				RelativePath="..\resources\smileys\1F535.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F536.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F536.PNG"
 				>
 			</File>
 			<File
@@ -6714,19 +6730,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F538.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F538.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F539.PNG"
+				RelativePath=".\smileys\1F538.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F539.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F539.PNG"
 				>
 			</File>
 			<File
@@ -6746,19 +6762,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F53C.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F53C.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F53D.PNG"
+				RelativePath=".\smileys\1F53C.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F53D.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F53D.PNG"
 				>
 			</File>
 			<File
@@ -6770,19 +6786,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F55D.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F55D.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F55E.PNG"
+				RelativePath=".\smileys\1F55D.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F55E.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F55E.PNG"
 				>
 			</File>
 			<File
@@ -6802,19 +6818,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F561.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F561.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F562.PNG"
+				RelativePath=".\smileys\1F561.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F562.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F562.PNG"
 				>
 			</File>
 			<File
@@ -6826,19 +6842,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F564.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F564.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F565.PNG"
+				RelativePath="..\resources\smileys\1F564.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F565.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F565.PNG"
 				>
 			</File>
 			<File
@@ -6858,19 +6874,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F5FE.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F5FE.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F5FF.PNG"
+				RelativePath=".\smileys\1F5FE.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F5FF.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F5FF.PNG"
 				>
 			</File>
 			<File
@@ -6882,19 +6898,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F605.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F605.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F606.PNG"
+				RelativePath=".\smileys\1F605.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F606.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F606.PNG"
 				>
 			</File>
 			<File
@@ -6906,19 +6922,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F608.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F608.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F60B.PNG"
+				RelativePath="..\resources\smileys\1F608.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F60B.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F60B.PNG"
 				>
 			</File>
 			<File
@@ -6930,19 +6946,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F610.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F610.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F611.PNG"
+				RelativePath="..\resources\smileys\1F610.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F611.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F611.PNG"
 				>
 			</File>
 			<File
@@ -6962,19 +6978,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F619.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F619.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F61B.PNG"
+				RelativePath="..\resources\smileys\1F619.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F61B.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F61B.PNG"
 				>
 			</File>
 			<File
@@ -6986,19 +7002,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F624.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F624.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F626.PNG"
+				RelativePath="..\resources\smileys\1F624.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F626.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F626.PNG"
 				>
 			</File>
 			<File
@@ -7010,19 +7026,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F629.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F629.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F62B.PNG"
+				RelativePath="..\resources\smileys\1F629.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F62B.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F62B.PNG"
 				>
 			</File>
 			<File
@@ -7034,19 +7050,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F62E.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F62E.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F62F.PNG"
+				RelativePath=".\smileys\1F62E.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F62F.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F62F.PNG"
 				>
 			</File>
 			<File
@@ -7066,19 +7082,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F636.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F636.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F638.PNG"
+				RelativePath="..\resources\smileys\1F636.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F638.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F638.PNG"
 				>
 			</File>
 			<File
@@ -7090,19 +7106,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F63A.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F63A.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F63B.PNG"
+				RelativePath=".\smileys\1F63A.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F63B.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F63B.PNG"
 				>
 			</File>
 			<File
@@ -7114,19 +7130,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F63D.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F63D.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F63E.PNG"
+				RelativePath="..\resources\smileys\1F63D.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F63E.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F63E.PNG"
 				>
 			</File>
 			<File
@@ -7138,19 +7154,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F640.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F640.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F648.PNG"
+				RelativePath=".\smileys\1F640.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F648.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F648.PNG"
 				>
 			</File>
 			<File
@@ -7170,19 +7186,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F64B.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F64B.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F64D.PNG"
+				RelativePath="..\resources\smileys\1F64B.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F64D.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F64D.PNG"
 				>
 			</File>
 			<File
@@ -7194,19 +7210,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F681.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F681.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F682.PNG"
+				RelativePath="..\resources\smileys\1F681.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F682.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F682.PNG"
 				>
 			</File>
 			<File
@@ -7226,19 +7242,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F68A.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F68A.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F68B.PNG"
+				RelativePath="..\resources\smileys\1F68A.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F68B.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F68B.PNG"
 				>
 			</File>
 			<File
@@ -7250,19 +7266,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F68E.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F68E.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F690.PNG"
+				RelativePath=".\smileys\1F68E.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F690.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F690.PNG"
 				>
 			</File>
 			<File
@@ -7282,19 +7298,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F698.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F698.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F69B.PNG"
+				RelativePath="..\resources\smileys\1F698.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F69B.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F69B.PNG"
 				>
 			</File>
 			<File
@@ -7306,19 +7322,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F69D.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F69D.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F69E.PNG"
+				RelativePath=".\smileys\1F69D.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F69E.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F69E.PNG"
 				>
 			</File>
 			<File
@@ -7330,19 +7346,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F6A0.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F6A0.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F6A1.PNG"
+				RelativePath=".\smileys\1F6A0.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F6A1.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F6A1.PNG"
 				>
 			</File>
 			<File
@@ -7354,19 +7370,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F6A6.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F6A6.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F6A8.PNG"
+				RelativePath=".\smileys\1F6A6.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F6A8.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F6A8.PNG"
 				>
 			</File>
 			<File
@@ -7386,19 +7402,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F6AB.PNG"
-				>
-			</File>
-			<File
 				RelativePath=".\smileys\1F6AB.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F6AE.PNG"
+				RelativePath="..\resources\smileys\1F6AB.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F6AE.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F6AE.PNG"
 				>
 			</File>
 			<File
@@ -7410,19 +7426,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F6B0.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F6B0.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F6B1.PNG"
+				RelativePath=".\smileys\1F6B0.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F6B1.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F6B1.PNG"
 				>
 			</File>
 			<File
@@ -7434,19 +7450,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F6B4.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F6B4.PNG"
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F6B5.PNG"
+				RelativePath=".\smileys\1F6B4.PNG"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\smileys\1F6B5.PNG"
+				>
+			</File>
+			<File
+				RelativePath=".\smileys\1F6B5.PNG"
 				>
 			</File>
 			<File
@@ -7458,19 +7474,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\smileys\1F6B8.PNG"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\smileys\1F6B8.PNG"
 				>
 			</File>
 			<File
-				RelativePath="..\resources\smileys\1F6BF.PNG"
+				RelativePath=".\smileys\1F6B8.PNG"
 				>
 			</File>
 			<File
 				RelativePath=".\smileys\1F6BF.PNG"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\smileys\1F6BF.PNG"
 				>
 			</File>
 			<File
@@ -7514,6 +7530,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Clear.png"
+				>
+			</File>
+			<File
+				RelativePath="..\resources\Clear.png"
+				>
+			</File>
+			<File
 				RelativePath="..\resources\smileys\e418.png"
 				>
 			</File>
@@ -7538,19 +7562,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Search.ico"
-				>
-			</File>
-			<File
 				RelativePath="..\resources\Search.ico"
 				>
 			</File>
 			<File
-				RelativePath=".\Search.png"
+				RelativePath=".\Search.ico"
 				>
 			</File>
 			<File
 				RelativePath="..\resources\Search.png"
+				>
+			</File>
+			<File
+				RelativePath=".\Search.png"
 				>
 			</File>
 			<File
