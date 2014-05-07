@@ -1,7 +1,8 @@
 #pragma once
 
-class ImageDecoder;
 class Bitmap;
+class ImageDecoder;
+class HoverButton;
 
 LRESULT CALLBACK clearButtonCallback(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -14,14 +15,15 @@ private:
 
 	HWND window;
 	HWND editControl;
-	HWND clearButton;
+	HoverButton *clearButton;
 
 	void onCreate();
 	void onPaint();
-	void onPaintClearButton(HDC deviceContext);
 
-	void show(bool visible);
+	void showClearButton(const WCHAR *textW);
 	void resizeChildWindows();
+	void onTextChange();
+	void onClear();
 
 	static LRESULT CALLBACK callback(HWND window, UINT message, WPARAM wParam, LPARAM lParam);
 

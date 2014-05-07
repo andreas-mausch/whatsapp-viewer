@@ -2,27 +2,18 @@
 #include <commctrl.h>
 
 #include "SearchControl.h"
+#include "HoverButton.h"
 #include "../../../../Exceptions/Exception.h"
 #include "../../StringHelper.h"
 #include "../../ImageDecoder.h"
 #include "../../Objects/Bitmap.h"
 #include "../../../../../resources/resource.h"
 
-WNDPROC buttonProc;
-enum ButtonState
-{
-	BUTTON_NORMAL,
-	BUTTON_OVER
-};
-
-bool mouseTracking = false;
-ButtonState buttonState = BUTTON_NORMAL;
-
 // TODO: merge with ChatControl.cpp
 void renderBitmap2(HDC deviceContext, HBITMAP bitmapHandle, int x, int y);
 
 SearchControl::SearchControl(HWND window)
-	: window(window)
+	: window(window), clearButton(NULL)
 {
 	ImageDecoder imageDecoder;
 	searchIcon = new Bitmap(imageDecoder.loadImageFromResource(MAKEINTRESOURCE(IDB_SEARCH), L"PNG"));
@@ -32,7 +23,9 @@ SearchControl::SearchControl(HWND window)
 
 SearchControl::~SearchControl()
 {
+	delete clearButton;
 	delete clearIcon;
+	delete clearIconHover;
 	delete searchIcon;
 }
 
@@ -59,8 +52,8 @@ void SearchControl::onCreate()
 	editControl = CreateWindowEx(0, L"EDIT", NULL, WS_VISIBLE | WS_CHILD | ES_LEFT, 24, 2, clientRect.right - 48, clientRect.bottom - 2, window, NULL, GetModuleHandle(NULL), NULL);
 	SendMessage(editControl, WM_SETFONT, reinterpret_cast<WPARAM>(GetStockObject(DEFAULT_GUI_FONT)), 0);
 
-	clearButton = CreateWindowEx(0, L"BUTTON", NULL, WS_VISIBLE | WS_CHILD | BS_OWNERDRAW, clientRect.right - 21, (clientRect.bottom - 16) / 2, 16, 16, window, NULL, GetModuleHandle(NULL), NULL);
-	buttonProc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(clearButton, GWL_WNDPROC, reinterpret_cast<LONG_PTR>(clearButtonCallback))); 
+	HWND clearButtonHandle = CreateWindowEx(0, L"BUTTON", NULL, WS_CHILD | BS_OWNERDRAW, clientRect.right - 21, (clientRect.bottom - 16) / 2, 16, 16, window, NULL, GetModuleHandle(NULL), NULL);
+	clearButton = new HoverButton(clearButtonHandle, *clearIcon, *clearIconHover);
 }
 
 void SearchControl::resizeChildWindows()
@@ -68,14 +61,20 @@ void SearchControl::resizeChildWindows()
 	RECT clientRect;
 	GetClientRect(window, &clientRect);
 
-	SetWindowPos(editControl, NULL, 24, 2, clientRect.right - 48, clientRect.bottom - 2, SWP_NOZORDER | SWP_SHOWWINDOW);
-	SetWindowPos(clearButton, NULL, clientRect.right - 24, 0, 24, clientRect.bottom, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(editControl, NULL, 24, 2, clientRect.right - 48, clientRect.bottom - 2, SWP_NOZORDER);
+	SetWindowPos(clearButton->getHandle(), NULL, clientRect.right - 24, 0, 24, clientRect.bottom, SWP_NOZORDER);
 }
 
-void SearchControl::show(bool visible)
+void SearchControl::showClearButton(const WCHAR *textW)
 {
-	int code = (visible) ? SW_SHOW : SW_HIDE;
-	ShowWindow(window, code);
+	std::string text = wstrtostr(textW);
+	bool show = false;
+	if (text.size() > 0)
+	{
+		show = true;
+	}
+
+	clearButton->show(show);
 }
 
 void SearchControl::onPaint()
@@ -89,18 +88,23 @@ void SearchControl::onPaint()
 	EndPaint(window, &paint);
 }
 
-void SearchControl::onPaintClearButton(HDC deviceContext)
+void SearchControl::onTextChange()
 {
-	RECT clientRect;
-	GetClientRect(clearButton, &clientRect);
+	int id = GetWindowLong(window, GWL_ID);
+	HWND parent = GetParent(window);
 
-	Bitmap *bitmap = clearIcon;
-	if (buttonState == BUTTON_OVER)
-	{
-		bitmap = clearIconHover;
-	}
+	WCHAR text[256];
+	GetWindowText(editControl, text, 256);
+	SetWindowText(window, text);
 
-	renderBitmap2(deviceContext, bitmap->get(), (clientRect.right - 16) / 2, (clientRect.bottom - 16) / 2);
+	showClearButton(text);
+	SendMessage(parent, WM_COMMAND, MAKEWPARAM(id, EN_CHANGE), reinterpret_cast<LPARAM>(window));
+}
+
+void SearchControl::onClear()
+{
+	SetWindowText(window, L"");
+	SetWindowText(editControl, L"");
 }
 
 LRESULT CALLBACK SearchControl::callback(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
@@ -152,10 +156,32 @@ LRESULT CALLBACK SearchControl::callback(HWND window, UINT message, WPARAM wPara
 			case WM_DRAWITEM:
 			{
 				DRAWITEMSTRUCT *drawItemStruct = reinterpret_cast<DRAWITEMSTRUCT *>(lParam);
-				if (drawItemStruct->hwndItem == control->clearButton)
+				if (drawItemStruct->hwndItem == control->clearButton->getHandle())
 				{
-					control->onPaintClearButton(drawItemStruct->hDC);
+					control->clearButton->onPaint(drawItemStruct->hDC);
 					return TRUE;
+				}
+			} break;
+			case WM_COMMAND:
+			{
+				switch (HIWORD(wParam))
+				{
+					case BN_CLICKED:
+					{
+						HWND button = reinterpret_cast<HWND>(lParam);
+						if (button == control->clearButton->getHandle())
+						{
+							control->onClear();
+						}
+					} break;
+					case EN_CHANGE:
+					{
+						HWND editControl = reinterpret_cast<HWND>(lParam);
+						if (editControl == control->editControl)
+						{
+							control->onTextChange();
+						}
+					} break;
 				}
 			} break;
 		}
@@ -168,64 +194,4 @@ LRESULT CALLBACK SearchControl::callback(HWND window, UINT message, WPARAM wPara
 	}
 
 	return DefWindowProc(window, message, wParam, lParam);
-}
-
-void onMouseEnter(HWND window)
-{
-	mouseTracking = true;
-	buttonState = BUTTON_OVER;
-
-	SetCapture(window);
-	InvalidateRect(window, NULL, TRUE);
-	UpdateWindow(window);
-}
-
-void onMouseLeave(HWND window)
-{
-	buttonState = BUTTON_NORMAL;
-	mouseTracking = false;
-
-	InvalidateRect(window, NULL, TRUE);
-	UpdateWindow(window);
-	ReleaseCapture();
-}
-
-LRESULT CALLBACK clearButtonCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	switch(message)
-	{
-		case WM_MOUSEMOVE:
-		{
-			POINT point;
-			point.x = LOWORD(lParam);
-			point.y = HIWORD(lParam);
-
-			if (!mouseTracking || GetCapture() != window)
-			{
-				onMouseEnter(window);
-			}
-			else
-			{
-				if (buttonState == BUTTON_OVER)
-				{
-					RECT clientRect;
-					GetClientRect(window, &clientRect);
-					if (!PtInRect(&clientRect, point))
-					{
-						onMouseLeave(window);
-					}
-				}
-			}
-		} break;
-		case WM_LBUTTONUP:
-		{
-			buttonState = BUTTON_OVER;
-		} break;
-		case WM_CAPTURECHANGED:
-		{
-			mouseTracking = false;
-		} break;
-	}
-
-	return CallWindowProc(buttonProc, window, message, wParam, lParam);
 }
