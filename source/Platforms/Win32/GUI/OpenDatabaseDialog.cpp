@@ -9,7 +9,18 @@
 #include "../../../../resources/resource.h"
 #include "../Objects/Brush.h"
 
-void selectFile(HWND dialog)
+OpenDatabaseDialog::OpenDatabaseDialog(HWND parent, OpenDatabaseStruct &openDatabaseStruct)
+	: openDatabaseStruct(openDatabaseStruct),
+	tooltipBrush(CreateSolidBrush(GetSysColor(COLOR_INFOBK))), currentTooltip(NULL),
+	Dialog(parent, IDD_OPEN_FILE)
+{
+}
+
+OpenDatabaseDialog::~OpenDatabaseDialog()
+{
+}
+
+void OpenDatabaseDialog::selectFile()
 {
 	WCHAR filename[MAX_PATH];
 	memset(filename, 0, sizeof(WCHAR) * MAX_PATH);
@@ -32,7 +43,7 @@ void selectFile(HWND dialog)
 	}
 }
 
-void ok(HWND dialog, OpenDatabaseStruct *openDatabaseStruct, WPARAM wParam)
+void OpenDatabaseDialog::clickOk(WPARAM wParam)
 {
 	WCHAR filename[MAX_PATH];
 	WCHAR accountName[256];
@@ -40,16 +51,13 @@ void ok(HWND dialog, OpenDatabaseStruct *openDatabaseStruct, WPARAM wParam)
 	GetDlgItemText(dialog, IDC_OPEN_FILE_FILENAME, filename, MAX_PATH);
 	GetDlgItemText(dialog, IDC_OPEN_FILE_ACCOUNT_NAME, accountName, 256);
 
-	openDatabaseStruct->filename = wstrtostr(filename);
-	openDatabaseStruct->accountName = wstrtostr(accountName);
+	openDatabaseStruct.filename = wstrtostr(filename);
+	openDatabaseStruct.accountName = wstrtostr(accountName);
 
-	EndDialog(dialog, LOWORD(wParam));
+	close(LOWORD(wParam));
 }
 
-Brush brush(CreateSolidBrush(GetSysColor(COLOR_INFOBK)));
-HWND currentTooltip = NULL;
-
-void hideTooltips(HWND dialog)
+void OpenDatabaseDialog::hideTooltips()
 {
 	if (currentTooltip)
 	{
@@ -59,12 +67,12 @@ void hideTooltips(HWND dialog)
 	}
 }
 
-void showTooltip(HWND dialog, int id)
+void OpenDatabaseDialog::showTooltip(int id)
 {
 	HWND previousTooltip = currentTooltip;
 	HWND tooltipToShow = GetDlgItem(dialog, id);
 
-	hideTooltips(dialog);
+	hideTooltips();
 
 	if (previousTooltip != tooltipToShow)
 	{
@@ -85,19 +93,14 @@ void showTooltip(HWND dialog, int id)
 	}
 }
 
-INT_PTR CALLBACK openDatabaseDialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR OpenDatabaseDialog::callback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	OpenDatabaseStruct *openDatabaseStruct = reinterpret_cast<OpenDatabaseStruct *>(GetWindowLongPtr(dialog, GWLP_USERDATA));
-
 	switch (message)
     {
 		case WM_INITDIALOG:
 		{
-			openDatabaseStruct = reinterpret_cast<OpenDatabaseStruct *>(lParam);
-			SetWindowLongPtr(dialog, GWLP_USERDATA, lParam);
-
-			SetDlgItemText(dialog, IDC_OPEN_FILE_FILENAME, strtowstr(openDatabaseStruct->filename).c_str());
-			SetDlgItemText(dialog, IDC_OPEN_FILE_ACCOUNT_NAME, strtowstr(openDatabaseStruct->accountName).c_str());
+			SetDlgItemText(dialog, IDC_OPEN_FILE_FILENAME, strtowstr(openDatabaseStruct.filename).c_str());
+			SetDlgItemText(dialog, IDC_OPEN_FILE_ACCOUNT_NAME, strtowstr(openDatabaseStruct.accountName).c_str());
 
 			SetWindowPos(dialog, NULL, 0, 0, 500, 180, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 		} break;
@@ -112,7 +115,7 @@ INT_PTR CALLBACK openDatabaseDialogCallback(HWND dialog, UINT message, WPARAM wP
 				SetTextColor(hdcStatic, GetSysColor(COLOR_INFOTEXT));
 				SetBkColor(hdcStatic, GetSysColor(COLOR_INFOBK));
 
-				return reinterpret_cast<INT_PTR>(brush.get());
+				return reinterpret_cast<INT_PTR>(tooltipBrush.get());
 			}
 		} break;
         case WM_COMMAND:
@@ -125,24 +128,24 @@ INT_PTR CALLBACK openDatabaseDialogCallback(HWND dialog, UINT message, WPARAM wP
 					{
 						case IDC_OPEN_FILE_SELECT:
 						{
-							selectFile(dialog);
+							selectFile();
 						} break;
 						case IDC_OPEN_FILE_FILENAME_TOOLTIP_BUTTON:
 						{
-							showTooltip(dialog, IDC_OPEN_FILE_FILENAME_TOOLTIP);
+							showTooltip(IDC_OPEN_FILE_FILENAME_TOOLTIP);
 						} break;
 						case IDC_OPEN_FILE_ACCOUNT_NAME_TOOLTIP_BUTTON:
 						{
-							showTooltip(dialog, IDC_OPEN_FILE_ACCOUNT_NAME_TOOLTIP);
+							showTooltip(IDC_OPEN_FILE_ACCOUNT_NAME_TOOLTIP);
 						} break;
 						case IDOK:
 						{
-							ok(dialog, openDatabaseStruct, wParam);
+							clickOk(wParam);
 							return TRUE;
 						} break;
 						case IDCANCEL:
 						{
-							EndDialog(dialog, LOWORD(wParam));
+							close(LOWORD(wParam));
 							return TRUE;
 						} break;
 					}
@@ -162,7 +165,16 @@ INT_PTR CALLBACK openDatabaseDialogCallback(HWND dialog, UINT message, WPARAM wP
 	return 0;
 }
 
-INT_PTR CALLBACK decryptDatabaseDialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
+DecryptDatabaseDialog::DecryptDatabaseDialog(HWND parent, OpenDatabaseStruct &openDatabaseStruct)
+	: OpenDatabaseDialog(parent, openDatabaseStruct)
+{
+}
+
+DecryptDatabaseDialog::~DecryptDatabaseDialog()
+{
+}
+
+INT_PTR DecryptDatabaseDialog::callback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
     {
@@ -172,5 +184,5 @@ INT_PTR CALLBACK decryptDatabaseDialogCallback(HWND dialog, UINT message, WPARAM
 		} break;
     }
 
-	return openDatabaseDialogCallback(dialog, message, wParam, lParam);
+	return OpenDatabaseDialog::callback(dialog, message, wParam, lParam);
 }

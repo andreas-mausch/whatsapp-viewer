@@ -328,7 +328,9 @@ bool isPlainWhatsappDatabase(const std::string &filename)
 void MainWindow::openDatabase()
 {
 	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
-	if (DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_OPEN_FILE), dialog, openDatabaseDialogCallback, reinterpret_cast<LPARAM>(&openDatabaseStruct)) == IDOK)
+	OpenDatabaseDialog dialog(MainWindow::dialog, openDatabaseStruct);
+
+	if (dialog.openModal() == IDOK)
 	{
 		closeDatabase();
 		clearChatList();
@@ -354,7 +356,7 @@ void MainWindow::openDatabase()
 		}
 		catch (Exception &exception)
 		{
-			displayException(dialog, exception);
+			displayException(MainWindow::dialog, exception);
 		}
 	}
 }
@@ -404,7 +406,9 @@ void MainWindow::exportChat(WhatsappChat &chat)
 void MainWindow::decryptDatabase()
 {
 	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
-	if (DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_OPEN_FILE), dialog, decryptDatabaseDialogCallback, reinterpret_cast<LPARAM>(&openDatabaseStruct)) == IDOK)
+	DecryptDatabaseDialog dialog(MainWindow::dialog, openDatabaseStruct);
+
+	if (dialog.openModal() == IDOK)
 	{
 		try
 		{
@@ -417,11 +421,11 @@ void MainWindow::decryptDatabase()
 			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
 			settings.write("lastOpenedAccount", lastDatabaseOpened.accountName);
 
-			MessageBox(dialog, L"Database decrypted to file msgstore.decrypted.db", L"Success", MB_OK | MB_ICONINFORMATION);
+			MessageBox(MainWindow::dialog, L"Database decrypted to file msgstore.decrypted.db", L"Success", MB_OK | MB_ICONINFORMATION);
 		}
 		catch (Exception &exception)
 		{
-			displayException(dialog, exception);
+			displayException(MainWindow::dialog, exception);
 		}
 	}
 }
