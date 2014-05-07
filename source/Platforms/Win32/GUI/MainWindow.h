@@ -70,6 +70,8 @@ private:
 
 	void onDrop(HDROP drop);
 
+	void searchChats();
+
 	static INT_PTR CALLBACK dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam);
 	INT_PTR handleMessage(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam);
 

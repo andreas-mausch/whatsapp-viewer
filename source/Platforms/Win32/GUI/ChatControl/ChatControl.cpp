@@ -33,7 +33,8 @@
 #include "../../../../../resources/resource.h"
 
 ChatControl::ChatControl(HWND window)
-	: imageDecoder(imageDecoder), buildMessagesThread(NULL), resizeMessagesThread(NULL), loadingAnimationThread(NULL)
+	: imageDecoder(imageDecoder), buildMessagesThread(NULL),
+	resizeMessagesThread(NULL), loadingAnimationThread(NULL)
 {
 	imageDecoder = new ImageDecoder();
 	smileys = new Smileys(*imageDecoder);
@@ -59,7 +60,7 @@ ChatControl::~ChatControl()
 	delete imageDecoder;
 }
 
-void ChatControl::registerChatControl()
+void ChatControl::registerControl()
 {
 	WNDCLASSEX windowClass;
 	memset(&windowClass, 0, sizeof(WNDCLASSEX));
@@ -68,7 +69,7 @@ void ChatControl::registerChatControl()
 	windowClass.lpszClassName = L"ChatControl";
 	windowClass.hbrBackground = reinterpret_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
 	windowClass.style = 0;
-	windowClass.lpfnWndProc = ChatControlCallback;
+	windowClass.lpfnWndProc = callback;
 	windowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	windowClass.cbWndExtra = sizeof(ChatControl *);
 	RegisterClassEx(&windowClass);
@@ -404,9 +405,9 @@ LRESULT ChatControl::onMousewheel(int delta)
 	return 0;
 }
 
-LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK ChatControl::callback(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	ChatControl *chatControl = reinterpret_cast<ChatControl *>(GetWindowLongPtr(window, 0));
+	ChatControl *control = reinterpret_cast<ChatControl *>(GetWindowLongPtr(window, 0));
 
 	try
 	{
@@ -414,12 +415,9 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 		{
 			case WM_NCCREATE:
 			{
-				RECT rect;
-				GetClientRect(window, &rect);
-
 				try
 				{
-					chatControl = new ChatControl(window);
+					control = new ChatControl(window);
 				}
 				catch (Exception &exception)
 				{
@@ -428,21 +426,25 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 					return FALSE;
 				}
 
-				SetWindowLongPtr(window, 0, reinterpret_cast<LONG>(chatControl));
+				SetWindowLongPtr(window, 0, reinterpret_cast<LONG>(control));
 				ShowScrollBar(window, SB_VERT, FALSE);
+			} break;
+			case WM_NCDESTROY:
+			{
+				delete control;
 			} break;
 			case WM_CREATE:
 			{
-				if (!chatControl)
+				if (!control)
 				{
 					return -1;
 				}
 
-				chatControl->createBackbuffer();
+				control->createBackbuffer();
 			} break;
 			case WM_PAINT:
 			{
-				return chatControl->onPaint();
+				return control->onPaint();
 			} break;
 			case WM_ERASEBKGND:
 			{
@@ -450,7 +452,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 			} break;
 			case WM_VSCROLL:
 			{
-				return chatControl->onScroll(wParam);
+				return control->onScroll(wParam);
 			} break;
 			case WM_MOUSEACTIVATE:
 			{
@@ -459,7 +461,7 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 			} break;
 			case WM_MOUSEWHEEL:
 			{
-				return chatControl->onMousewheel(GET_WHEEL_DELTA_WPARAM(wParam));
+				return control->onMousewheel(GET_WHEEL_DELTA_WPARAM(wParam));
 			} break;
 			case WM_KEYDOWN:
 			{
@@ -507,50 +509,46 @@ LRESULT CALLBACK ChatControl::ChatControlCallback(HWND window, UINT message, WPA
 				{
 					case CHAT_CONTROL_SETCHAT:
 					{
-						chatControl->setChat(reinterpret_cast<WhatsappChat *>(lParam));
+						control->setChat(reinterpret_cast<WhatsappChat *>(lParam));
 					} break;
 					case CHAT_CONTROL_START_RESIZING_MESSAGES:
 					{
-						chatControl->shouldResizeMessages = true;
+						control->shouldResizeMessages = true;
 					} break;
 					case CHAT_CONTROL_STOP_RESIZING_MESSAGES:
 					{
-						chatControl->shouldResizeMessages = false;
+						control->shouldResizeMessages = false;
 					} break;
 					case CHAT_CONTROL_REDRAW:
 					{
-						chatControl->startResizingMessages();
-						chatControl->createBackbuffer();
-						chatControl->redraw();
+						control->startResizingMessages();
+						control->createBackbuffer();
+						control->redraw();
 					} break;
 					case CHAT_CONTROL_RESIZING_MESSAGES_FINISHED:
 					{
-						chatControl->stopResizingMessages();
-						chatControl->totalMessagesHeight = lParam;
-						chatControl->stopLoadingAnimation();
-						chatControl->calculateScrollInfo();
-						chatControl->createBackbuffer();
-						chatControl->redraw();
+						control->stopResizingMessages();
+						control->totalMessagesHeight = lParam;
+						control->stopLoadingAnimation();
+						control->calculateScrollInfo();
+						control->createBackbuffer();
+						control->redraw();
 					} break;
 					case CHAT_CONTROL_BUILDING_MESSAGES_FINISHED:
 					{
-						chatControl->stopBuildingMessages();
-						chatControl->startResizingMessages();
+						control->stopBuildingMessages();
+						control->startResizingMessages();
 					} break;
 				}
 			} break;
 			case WM_SIZE:
 			{
-				if (chatControl->shouldResizeMessages)
+				if (control->shouldResizeMessages)
 				{
-					chatControl->startResizingMessages();
+					control->startResizingMessages();
 				}
-				chatControl->createBackbuffer();
-				chatControl->redraw();
-			} break;
-			case WM_NCDESTROY:
-			{
-				delete chatControl;
+				control->createBackbuffer();
+				control->redraw();
 			} break;
 		}
 	}

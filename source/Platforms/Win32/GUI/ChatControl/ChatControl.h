@@ -42,7 +42,7 @@ private:
 	std::vector<ChatControlMessageFrame *> messages;
 	bool shouldResizeMessages;
 
-	static LRESULT CALLBACK ChatControlCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam);
+	static LRESULT CALLBACK callback(HWND window, UINT message, WPARAM wParam, LPARAM lParam);
 
 	void setChat(WhatsappChat *chat);
 
@@ -82,6 +82,6 @@ public:
 	ChatControl(HWND window);
 	~ChatControl();
 
-	static void registerChatControl();
+	static void registerControl();
 
 };

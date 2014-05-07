@@ -40,7 +40,7 @@ MainWindow::MainWindow(WhatsAppViewer &whatsAppViewer, ImageDecoder &imageDecode
 	icex.dwICC  = ICC_LISTVIEW_CLASSES | ICC_BAR_CLASSES | ICC_PROGRESS_CLASS | ICC_STANDARD_CLASSES | ICC_TAB_CLASSES | ICC_WIN95_CLASSES;
     InitCommonControlsEx(&icex);
 
-	ChatControl::registerChatControl();
+	ChatControl::registerControl();
 
 	getTempFilename();
 
@@ -389,6 +389,7 @@ void MainWindow::openDatabase(const std::string &filename)
 void MainWindow::openPlainDatabase(const std::string &filename)
 {
 	closeDatabase();
+	SetDlgItemText(dialog, IDC_MAIN_SEARCH_CHATS, L"");
 
 	lastDatabaseOpened.filename = filename;
 
@@ -478,6 +479,27 @@ void MainWindow::onDrop(HDROP drop)
 	DragFinish(drop);
 }
 
+void MainWindow::searchChats()
+{
+	WCHAR searchPatternW[256];
+	GetDlgItemText(dialog, IDC_MAIN_SEARCH_CHATS, searchPatternW, 256);
+	std::string searchPattern = wstrtostr(searchPatternW);
+
+	clearChatList();
+
+	for (std::vector<WhatsappChat *>::iterator it = chats.begin(); it != chats.end(); ++it)
+	{
+		WhatsappChat *chat = *it;
+
+		if (chat->getKey().find(searchPattern) != std::string::npos)
+		{
+			addChat(*chat);
+		}
+	}
+
+	sortChats();
+}
+
 INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -492,30 +514,46 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 		} break;
 		case WM_COMMAND:
 		{
-			switch(LOWORD(wParam))
+			switch (HIWORD(wParam))
 			{
-				case ID_MENU_MAIN_FILE_OPEN:
-				case ID_ACCELERATOR_OPEN:
+				case BN_CLICKED:
 				{
-					openDatabase();
+					switch(LOWORD(wParam))
+					{
+						case ID_MENU_MAIN_FILE_OPEN:
+						case ID_ACCELERATOR_OPEN:
+						{
+							openDatabase();
+						} break;
+						case ID_MENU_MAIN_FILE_DECRYPT:
+						case ID_ACCELERATOR_DECRYPT:
+						{
+							decryptDatabase();
+						} break;
+						case IDC_MAIN_EXPORT:
+						{
+							WhatsappChat *chat = reinterpret_cast<WhatsappChat *>(GetWindowLongPtr(GetDlgItem(dialog, IDC_MAIN_EXPORT), GWLP_USERDATA));
+							exportChat(*chat);
+						} break;
+						case ID_MENU_MAIN_FILE_EXIT:
+						{
+							close();
+						} break;
+						case ID_MENU_MAIN_HELP_ABOUT:
+						{
+							showAboutDialog();
+						} break;
+					}
 				} break;
-				case ID_MENU_MAIN_FILE_DECRYPT:
-				case ID_ACCELERATOR_DECRYPT:
+				case EN_CHANGE:
 				{
-					decryptDatabase();
-				} break;
-				case IDC_MAIN_EXPORT:
-				{
-					WhatsappChat *chat = reinterpret_cast<WhatsappChat *>(GetWindowLongPtr(GetDlgItem(dialog, IDC_MAIN_EXPORT), GWLP_USERDATA));
-					exportChat(*chat);
-				} break;
-				case ID_MENU_MAIN_FILE_EXIT:
-				{
-					close();
-				} break;
-				case ID_MENU_MAIN_HELP_ABOUT:
-				{
-					showAboutDialog();
+					switch(LOWORD(wParam))
+					{
+						case IDC_MAIN_SEARCH_CHATS:
+						{
+							searchChats();
+						} break;
+					}
 				} break;
 			}
 		} break;
