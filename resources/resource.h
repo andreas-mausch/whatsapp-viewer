@@ -856,11 +856,13 @@
 #define IDR_ACCELERATOR                 963
 #define IDD_ABOUT                       964
 #define IDR_ACCELERATOR1                966
+#define IDB_SEARCH                      969
 #define IDC_MAIN_CHATS                  1001
 #define IDC_MAIN_MESSAGES               1002
 #define IDC_MAIN_STATUS                 1003
 #define IDC_EDIT1                       1004
 #define IDC_OPEN_FILE_FILENAME          1004
+#define IDC_MAIN_SEARCH_CHATS           1004
 #define IDC_OPEN_FILE_SELECT            1005
 #define IDC_OPEN_FILE_ACCOUNT_NAME      1006
 #define IDC_BUTTON1                     1006
@@ -872,6 +874,7 @@
 #define IDC_OPEN_FILE_FILENAME_TOOLTIP  1011
 #define IDC_OPEN_FILE_ACCOUNT_NAME_TOOLTIP 1012
 #define IDC_EDIT2                       1013
+#define IDC_MAIN_SEARCH_CHATS_ICON      1014
 #define ID_FILE_OPEN40001               40001
 #define ID_MENU_MAIN_FILE_OPEN          40002
 #define ID_FILE_DECRYPT                 40003
@@ -890,9 +893,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        967
+#define _APS_NEXT_RESOURCE_VALUE        970
 #define _APS_NEXT_COMMAND_VALUE         40016
-#define _APS_NEXT_CONTROL_VALUE         1014
+#define _APS_NEXT_CONTROL_VALUE         1015
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

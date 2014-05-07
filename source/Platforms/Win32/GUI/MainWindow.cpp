@@ -7,6 +7,7 @@
 #include "AboutDialog.h"
 #include "OpenDatabaseDialog.h"
 #include "ChatControl/ChatControl.h"
+#include "../Objects/Bitmap.h"
 #include "../../../ChatExporter.h"
 #include "../../../WhatsAppViewer.h"
 #include "../../../../resources/resource.h"
@@ -16,6 +17,7 @@
 #include "../../../WhatsApp/Database.h"
 #include "../../../WhatsApp/Message.h"
 #include "../../../VectorUtils.h"
+#include "../ImageDecoder.h"
 #include "../StringHelper.h"
 #include "../Timestamp.h"
 
@@ -27,12 +29,12 @@
   "publicKeyToken='6595b64144ccf1df' "\
   "language='*'\"")
 
-MainWindow::MainWindow(WhatsAppViewer &whatsAppViewer)
-	: whatsAppViewer(whatsAppViewer), settings(whatsAppViewer.getSettings()), database(NULL), sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING),
+MainWindow::MainWindow(WhatsAppViewer &whatsAppViewer, ImageDecoder &imageDecoder)
+	: whatsAppViewer(whatsAppViewer), imageDecoder(imageDecoder),
+	settings(whatsAppViewer.getSettings()), database(NULL),
+	sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING),
 	dialog(NULL), accelerator(MAKEINTRESOURCE(IDR_ACCELERATOR)), aboutDialog(NULL)
 {
-	CoInitialize(NULL);
-
 	INITCOMMONCONTROLSEX icex;
     icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
 	icex.dwICC  = ICC_LISTVIEW_CLASSES | ICC_BAR_CLASSES | ICC_PROGRESS_CLASS | ICC_STANDARD_CLASSES | ICC_TAB_CLASSES | ICC_WIN95_CLASSES;
@@ -43,6 +45,8 @@ MainWindow::MainWindow(WhatsAppViewer &whatsAppViewer)
 	getTempFilename();
 
 	readSettings();
+
+	searchIcon = new Bitmap(imageDecoder.loadImageFromResource(MAKEINTRESOURCE(IDB_SEARCH), L"PNG"));
 
 	if (!CreateDialogParam(GetModuleHandle(NULL),
 						   MAKEINTRESOURCE(IDD_MAIN),
@@ -58,6 +62,7 @@ MainWindow::MainWindow(WhatsAppViewer &whatsAppViewer)
 
 MainWindow::~MainWindow()
 {
+	delete searchIcon;
 	closeDatabase();
 
 	if (fileExists(tempFilename))
@@ -157,6 +162,8 @@ void MainWindow::createChildWindows()
 
 	// set the image list for the list view, tree view and combo box
 	// ListView_SetImageList(GetDlgItem(dialog, IDC_MAIN_CHATS), windowFilemanager->m_imageList, LVSIL_SMALL);
+
+	SendDlgItemMessage(dialog, IDC_MAIN_SEARCH_CHATS_ICON, STM_SETIMAGE, IMAGE_BITMAP, reinterpret_cast<LPARAM>(searchIcon->get()));
 }
 
 void MainWindow::setIcon()
@@ -217,10 +224,13 @@ void MainWindow::selectChat(WhatsappChat *chat)
 void MainWindow::resizeChildWindows(int width, int height)
 {
 	int border = 15;
+	int searchBoxHeight = 20;
 	int chatsWidth = 400;
 	int buttonRowHeight = 25;
 
-	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_CHATS), NULL, border, border, chatsWidth, height - border * 2, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_SEARCH_CHATS), NULL, border + 20, border, chatsWidth - 20, searchBoxHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_SEARCH_CHATS_ICON), NULL, border, border + 2, 16, 16, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_CHATS), NULL, border, border + searchBoxHeight + 5, chatsWidth, height - border * 2 - searchBoxHeight - 5, SWP_NOZORDER | SWP_SHOWWINDOW);
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_MESSAGES), NULL, chatsWidth + border * 2, border, width - chatsWidth - border * 3, height - border * 3 - buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT), NULL, chatsWidth + border * 2, height - border - buttonRowHeight, 150, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
 }

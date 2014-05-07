@@ -8,7 +8,9 @@
 #include "../Objects/Accelerator.h"
 
 class AboutDialog;
+class Bitmap;
 class Exception;
+class ImageDecoder;
 class Settings;
 class WhatsappChat;
 class WhatsappMessage;
@@ -25,6 +27,8 @@ class MainWindow
 {
 private:
 	WhatsAppViewer &whatsAppViewer;
+	ImageDecoder &imageDecoder;
+	Bitmap *searchIcon;
 	Settings &settings;
 	HWND dialog;
 	AboutDialog *aboutDialog;
@@ -72,7 +76,7 @@ private:
 	static int CALLBACK sortingCallback(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
 public:
-	MainWindow(WhatsAppViewer &whatsAppViewer);
+	MainWindow(WhatsAppViewer &whatsAppViewer, ImageDecoder &imageDecoder);
 	~MainWindow();
 
 	bool handleMessages();

@@ -30,9 +30,9 @@ class ChatControl
 {
 private:
 	CriticalSectionLock lock;
-	ImageDecoder *imageDecoder;
 	Smileys *smileys;
 	AnimatedGif *loadingAnimation;
+	ImageDecoder *imageDecoder;
 
 	HWND window;
 	Font *dateFont;

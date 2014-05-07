@@ -58,9 +58,11 @@ CAPTION "WhatsApp Viewer"
 MENU IDR_MENU_MAIN
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_MAIN_CHATS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,175,376
+    CONTROL         "",IDC_MAIN_CHATS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,28,175,355
     CONTROL         "Messages",IDC_MAIN_MESSAGES,"ChatControl",WS_VSCROLL | WS_TABSTOP,190,7,425,354,WS_EX_CLIENTEDGE
     PUSHBUTTON      "Export..",IDC_MAIN_EXPORT,190,369,50,14,WS_DISABLED
+    EDITTEXT        IDC_MAIN_SEARCH_CHATS,33,7,149,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_MAIN_SEARCH_CHATS_ICON,"Static",SS_BITMAP,7,7,20,20
 END
 
 IDD_OPEN_FILE DIALOGEX 0, 0, 325, 175
@@ -1016,6 +1018,7 @@ IDB_02797               PNG                     "smileys\\02797.PNG"
 IDB_02934               PNG                     "smileys\\02934.PNG"
 IDB_02935               PNG                     "smileys\\02935.PNG"
 IDB_03030               PNG                     "smileys\\03030.PNG"
+IDB_SEARCH              PNG                     "Search.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //

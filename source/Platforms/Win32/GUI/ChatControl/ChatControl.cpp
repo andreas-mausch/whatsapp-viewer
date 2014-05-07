@@ -33,7 +33,7 @@
 #include "../../../../../resources/resource.h"
 
 ChatControl::ChatControl(HWND window)
-	: buildMessagesThread(NULL), resizeMessagesThread(NULL), loadingAnimationThread(NULL)
+	: imageDecoder(imageDecoder), buildMessagesThread(NULL), resizeMessagesThread(NULL), loadingAnimationThread(NULL)
 {
 	imageDecoder = new ImageDecoder();
 	smileys = new Smileys(*imageDecoder);
