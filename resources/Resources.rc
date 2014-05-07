@@ -1020,6 +1020,7 @@ IDB_02935               PNG                     "smileys\\02935.PNG"
 IDB_03030               PNG                     "smileys\\03030.PNG"
 IDB_SEARCH              PNG                     "Search.png"
 IDB_CLEAR               PNG                     "Clear.png"
+IDB_CLEAR_HOVER         PNG                     "ClearHover.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //

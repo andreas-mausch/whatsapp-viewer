@@ -857,8 +857,9 @@
 #define IDD_ABOUT                       964
 #define IDR_ACCELERATOR1                966
 #define IDB_SEARCH                      969
-#define IDB_PNG1                        970
 #define IDB_CLEAR                       970
+#define IDB_PNG1                        971
+#define IDB_CLEAR_HOVER                 971
 #define IDC_MAIN_CHATS                  1001
 #define IDC_MAIN_MESSAGES               1002
 #define IDC_MAIN_STATUS                 1003
@@ -894,7 +895,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        971
+#define _APS_NEXT_RESOURCE_VALUE        972
 #define _APS_NEXT_COMMAND_VALUE         40016
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           101

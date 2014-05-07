@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <commctrl.h>
 
 #include "SearchControl.h"
 #include "../../../../Exceptions/Exception.h"
@@ -6,6 +7,16 @@
 #include "../../ImageDecoder.h"
 #include "../../Objects/Bitmap.h"
 #include "../../../../../resources/resource.h"
+
+WNDPROC buttonProc;
+enum ButtonState
+{
+	BUTTON_NORMAL,
+	BUTTON_OVER
+};
+
+bool mouseTracking = false;
+ButtonState buttonState = BUTTON_NORMAL;
 
 // TODO: merge with ChatControl.cpp
 void renderBitmap2(HDC deviceContext, HBITMAP bitmapHandle, int x, int y);
@@ -16,6 +27,7 @@ SearchControl::SearchControl(HWND window)
 	ImageDecoder imageDecoder;
 	searchIcon = new Bitmap(imageDecoder.loadImageFromResource(MAKEINTRESOURCE(IDB_SEARCH), L"PNG"));
 	clearIcon = new Bitmap(imageDecoder.loadImageFromResource(MAKEINTRESOURCE(IDB_CLEAR), L"PNG"));
+	clearIconHover = new Bitmap(imageDecoder.loadImageFromResource(MAKEINTRESOURCE(IDB_CLEAR_HOVER), L"PNG"));
 }
 
 SearchControl::~SearchControl()
@@ -46,6 +58,9 @@ void SearchControl::onCreate()
 
 	editControl = CreateWindowEx(0, L"EDIT", NULL, WS_VISIBLE | WS_CHILD | ES_LEFT, 24, 2, clientRect.right - 48, clientRect.bottom - 2, window, NULL, GetModuleHandle(NULL), NULL);
 	SendMessage(editControl, WM_SETFONT, reinterpret_cast<WPARAM>(GetStockObject(DEFAULT_GUI_FONT)), 0);
+
+	clearButton = CreateWindowEx(0, L"BUTTON", NULL, WS_VISIBLE | WS_CHILD | BS_OWNERDRAW, clientRect.right - 21, (clientRect.bottom - 16) / 2, 16, 16, window, NULL, GetModuleHandle(NULL), NULL);
+	buttonProc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(clearButton, GWL_WNDPROC, reinterpret_cast<LONG_PTR>(clearButtonCallback))); 
 }
 
 void SearchControl::resizeChildWindows()
@@ -54,6 +69,7 @@ void SearchControl::resizeChildWindows()
 	GetClientRect(window, &clientRect);
 
 	SetWindowPos(editControl, NULL, 24, 2, clientRect.right - 48, clientRect.bottom - 2, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(clearButton, NULL, clientRect.right - 24, 0, 24, clientRect.bottom, SWP_NOZORDER | SWP_SHOWWINDOW);
 }
 
 void SearchControl::show(bool visible)
@@ -70,8 +86,21 @@ void SearchControl::onPaint()
 	PAINTSTRUCT paint;
 	HDC deviceContext = BeginPaint(window, &paint);
 	renderBitmap2(deviceContext, searchIcon->get(), 3, (clientRect.bottom - 16) / 2);
-	renderBitmap2(deviceContext, clearIcon->get(), clientRect.right - 21, (clientRect.bottom - 16) / 2);
 	EndPaint(window, &paint);
+}
+
+void SearchControl::onPaintClearButton(HDC deviceContext)
+{
+	RECT clientRect;
+	GetClientRect(clearButton, &clientRect);
+
+	Bitmap *bitmap = clearIcon;
+	if (buttonState == BUTTON_OVER)
+	{
+		bitmap = clearIconHover;
+	}
+
+	renderBitmap2(deviceContext, bitmap->get(), (clientRect.right - 16) / 2, (clientRect.bottom - 16) / 2);
 }
 
 LRESULT CALLBACK SearchControl::callback(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
@@ -115,6 +144,20 @@ LRESULT CALLBACK SearchControl::callback(HWND window, UINT message, WPARAM wPara
 			{
 				control->resizeChildWindows();
 			} break;
+			case WM_CTLCOLORBTN:
+			{
+				HWND button = reinterpret_cast<HWND>(lParam);
+				return reinterpret_cast<LRESULT>(GetStockObject(NULL_BRUSH));
+			} break;
+			case WM_DRAWITEM:
+			{
+				DRAWITEMSTRUCT *drawItemStruct = reinterpret_cast<DRAWITEMSTRUCT *>(lParam);
+				if (drawItemStruct->hwndItem == control->clearButton)
+				{
+					control->onPaintClearButton(drawItemStruct->hDC);
+					return TRUE;
+				}
+			} break;
 		}
 	}
 	catch (Exception &exception)
@@ -125,4 +168,64 @@ LRESULT CALLBACK SearchControl::callback(HWND window, UINT message, WPARAM wPara
 	}
 
 	return DefWindowProc(window, message, wParam, lParam);
+}
+
+void onMouseEnter(HWND window)
+{
+	mouseTracking = true;
+	buttonState = BUTTON_OVER;
+
+	SetCapture(window);
+	InvalidateRect(window, NULL, TRUE);
+	UpdateWindow(window);
+}
+
+void onMouseLeave(HWND window)
+{
+	buttonState = BUTTON_NORMAL;
+	mouseTracking = false;
+
+	InvalidateRect(window, NULL, TRUE);
+	UpdateWindow(window);
+	ReleaseCapture();
+}
+
+LRESULT CALLBACK clearButtonCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch(message)
+	{
+		case WM_MOUSEMOVE:
+		{
+			POINT point;
+			point.x = LOWORD(lParam);
+			point.y = HIWORD(lParam);
+
+			if (!mouseTracking || GetCapture() != window)
+			{
+				onMouseEnter(window);
+			}
+			else
+			{
+				if (buttonState == BUTTON_OVER)
+				{
+					RECT clientRect;
+					GetClientRect(window, &clientRect);
+					if (!PtInRect(&clientRect, point))
+					{
+						onMouseLeave(window);
+					}
+				}
+			}
+		} break;
+		case WM_LBUTTONUP:
+		{
+			buttonState = BUTTON_OVER;
+		} break;
+		case WM_CAPTURECHANGED:
+		{
+			mouseTracking = false;
+		} break;
+	}
+
+	return CallWindowProc(buttonProc, window, message, wParam, lParam);
 }
