@@ -24,6 +24,7 @@ public:
 	virtual ~Dialog();
 
 	void open();
+	int openModal();
 
 	void show();
 	void hide();

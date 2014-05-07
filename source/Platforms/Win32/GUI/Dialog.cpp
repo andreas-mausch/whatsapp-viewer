@@ -23,6 +23,11 @@ void Dialog::open()
 	}
 }
 
+int Dialog::openModal()
+{
+	return DialogBoxParam(GetModuleHandle(NULL), MAKEINTRESOURCE(resourceId), parent, dialogCallback, reinterpret_cast<LPARAM>(this));
+}
+
 void Dialog::show()
 {
 	ShowWindow(dialog, SW_SHOW);
