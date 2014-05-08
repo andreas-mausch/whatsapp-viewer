@@ -14,8 +14,8 @@ void renderBitmap2(HDC deviceContext, HBITMAP bitmapHandle, int x, int y)
 	BLENDFUNCTION blend;
 	memset(&blend, 0, sizeof(BLENDFUNCTION));
 	blend.BlendOp = AC_SRC_OVER;
-    blend.SourceConstantAlpha = 255;
-    blend.AlphaFormat = AC_SRC_ALPHA;
+	blend.SourceConstantAlpha = 255;
+	blend.AlphaFormat = AC_SRC_ALPHA;
 
 	AlphaBlend(deviceContext, x, y, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, bitmap.bmWidth, bitmap.bmHeight, blend);
 

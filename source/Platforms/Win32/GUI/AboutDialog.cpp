@@ -48,7 +48,7 @@ void AboutDialog::sendCloseMessage(int code)
 INT_PTR AboutDialog::callback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
-    {
+	{
 		case WM_INITDIALOG:
 		{
 			SendDlgItemMessage(dialog, IDC_ABOUT_APPLICATION_NAME, WM_SETFONT, reinterpret_cast<WPARAM>(headingFont.get()), TRUE);
@@ -58,23 +58,23 @@ INT_PTR AboutDialog::callback(HWND dialog, UINT message, WPARAM wParam, LPARAM l
 
 			ShowWindow(dialog, SW_SHOW);
 		} break;
-        case WM_COMMAND:
+		case WM_COMMAND:
 		{
-            switch (LOWORD(wParam))
-            {
-                case IDOK:
-                case IDCANCEL:
+			switch (LOWORD(wParam))
+			{
+				case IDOK:
+				case IDCANCEL:
 				{
 					sendCloseMessage(LOWORD(wParam));
 					return TRUE;
 				} break;
-            }
+			}
 		} break;
 		case WM_PAINT:
 		{
 			onPaint();
 		} break;
-    }
+	}
 
 	return 0;
 }

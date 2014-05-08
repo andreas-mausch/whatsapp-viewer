@@ -130,14 +130,14 @@ HBITMAP ImageDecoder::convertFrameToBitmap(IWICBitmapFrameDecode *frame)
 	}
 
 	UINT width = 0;
-    UINT height = 0;
-    if (FAILED(bitmapSource->GetSize(&width, &height)) || width == 0 || height == 0)
+	UINT height = 0;
+	if (FAILED(bitmapSource->GetSize(&width, &height)) || width == 0 || height == 0)
 	{
 		throw Exception("could not get image size");
 	}
 
 	std::vector<BYTE> buffer(width * height * 4);
-    if (FAILED(bitmapSource->CopyPixels(NULL, width * 4, buffer.size(), &buffer[0])))
+	if (FAILED(bitmapSource->CopyPixels(NULL, width * 4, buffer.size(), &buffer[0])))
 	{
 		throw Exception("could not get image size");
 	}

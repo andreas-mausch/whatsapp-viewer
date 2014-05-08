@@ -96,7 +96,7 @@ void OpenDatabaseDialog::showTooltip(int id)
 INT_PTR OpenDatabaseDialog::callback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
-    {
+	{
 		case WM_INITDIALOG:
 		{
 			SetDlgItemText(dialog, IDC_OPEN_FILE_FILENAME, strtowstr(openDatabaseStruct.filename).c_str());
@@ -118,7 +118,7 @@ INT_PTR OpenDatabaseDialog::callback(HWND dialog, UINT message, WPARAM wParam, L
 				return reinterpret_cast<INT_PTR>(tooltipBrush.get());
 			}
 		} break;
-        case WM_COMMAND:
+		case WM_COMMAND:
 		{
 			switch (HIWORD(wParam))
 			{
@@ -160,7 +160,7 @@ INT_PTR OpenDatabaseDialog::callback(HWND dialog, UINT message, WPARAM wParam, L
 			SetWindowPos(GetDlgItem(dialog, IDOK), NULL, 320, clientRect.bottom - 40, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 			SetWindowPos(GetDlgItem(dialog, IDCANCEL), NULL, 405, clientRect.bottom - 40, 0, 0, SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 		} break;
-    }
+	}
 
 	return 0;
 }
@@ -177,12 +177,12 @@ DecryptDatabaseDialog::~DecryptDatabaseDialog()
 INT_PTR DecryptDatabaseDialog::callback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
-    {
+	{
 		case WM_INITDIALOG:
 		{
 			SetWindowText(dialog, L"Decrypt WhatsApp Database");
 		} break;
-    }
+	}
 
 	return OpenDatabaseDialog::callback(dialog, message, wParam, lParam);
 }

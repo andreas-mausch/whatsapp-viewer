@@ -23,12 +23,12 @@
 #include "../Timestamp.h"
 
 #pragma comment(linker, \
-  "\"/manifestdependency:type='Win32' "\
-  "name='Microsoft.Windows.Common-Controls' "\
-  "version='6.0.0.0' "\
-  "processorArchitecture='*' "\
-  "publicKeyToken='6595b64144ccf1df' "\
-  "language='*'\"")
+ "\"/manifestdependency:type='Win32' "\
+ "name='Microsoft.Windows.Common-Controls' "\
+ "version='6.0.0.0' "\
+ "processorArchitecture='*' "\
+ "publicKeyToken='6595b64144ccf1df' "\
+ "language='*'\"")
 
 MainWindow::MainWindow(WhatsAppViewer &whatsAppViewer, ImageDecoder &imageDecoder)
 	: whatsAppViewer(whatsAppViewer), imageDecoder(imageDecoder),
@@ -37,9 +37,9 @@ MainWindow::MainWindow(WhatsAppViewer &whatsAppViewer, ImageDecoder &imageDecode
 	dialog(NULL), accelerator(MAKEINTRESOURCE(IDR_ACCELERATOR)), aboutDialog(NULL)
 {
 	INITCOMMONCONTROLSEX icex;
-    icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
-	icex.dwICC  = ICC_LISTVIEW_CLASSES | ICC_BAR_CLASSES | ICC_PROGRESS_CLASS | ICC_STANDARD_CLASSES | ICC_TAB_CLASSES | ICC_WIN95_CLASSES;
-    InitCommonControlsEx(&icex);
+	icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
+	icex.dwICC = ICC_LISTVIEW_CLASSES | ICC_BAR_CLASSES | ICC_PROGRESS_CLASS | ICC_STANDARD_CLASSES | ICC_TAB_CLASSES | ICC_WIN95_CLASSES;
+	InitCommonControlsEx(&icex);
 
 	ChatControl::registerControl();
 	SearchControl::registerControl();

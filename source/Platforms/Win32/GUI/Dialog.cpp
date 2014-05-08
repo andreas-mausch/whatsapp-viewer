@@ -62,7 +62,7 @@ HWND Dialog::getHandle()
 INT_PTR CALLBACK Dialog::dialogCallback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
-    {
+	{
 		case WM_INITDIALOG:
 		{
 			Dialog *dialogObject = reinterpret_cast<Dialog *>(lParam);
@@ -70,7 +70,7 @@ INT_PTR CALLBACK Dialog::dialogCallback(HWND dialog, UINT message, WPARAM wParam
 
 			SetWindowLongPtr(dialog, DWLP_USER, lParam);
 		} break;
-    }
+	}
 
 	Dialog *dialogObject = reinterpret_cast<Dialog *>(GetWindowLongPtr(dialog, DWLP_USER));
 

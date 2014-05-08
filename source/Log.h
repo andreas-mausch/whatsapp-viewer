@@ -13,7 +13,7 @@ public:
 	Log();
 	~Log();
 
-	template<class T>   Log& operator<<(const T& value)
+	template<class T> Log& operator<<(const T& value)
 	{
 		output << value;
 		return *this;
