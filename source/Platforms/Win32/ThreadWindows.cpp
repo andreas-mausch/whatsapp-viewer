@@ -1,6 +1,8 @@
 #include <windows.h>
 
 #include "ThreadWindows.h"
+#include "StringHelper.h"
+#include "../../Exceptions/Exception.h"
 
 ThreadWindows::ThreadWindows()
 {
@@ -44,6 +46,15 @@ bool ThreadWindows::joinFor(int milliseconds)
 DWORD CALLBACK ThreadWindows::threadEntry(void *param)
 {
 	ThreadWindows *threadWindows = reinterpret_cast<ThreadWindows *>(param);
-	threadWindows->run();
+	try
+	{
+		threadWindows->run();
+	}
+	catch (Exception &exception)
+	{
+		std::wstring cause = strtowstr(exception.getCause());
+		MessageBox(NULL, cause.c_str(), L"Error", MB_OK | MB_ICONERROR);
+	}
+
 	return 0;
 }
