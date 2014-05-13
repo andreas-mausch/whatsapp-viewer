@@ -24,3 +24,15 @@ void decrypt_aes_cbc_192(const unsigned char *input, unsigned char *output, int 
 		throw Exception("Could not decrypt block");
 	}
 }
+
+void decrypt_aes_cbc_256(const unsigned char *input, unsigned char *output, int length, const unsigned char *key, unsigned char *initVector)
+{
+	aes_context ctx;
+
+	aes_setkey_dec(&ctx, key, 256);
+	int result = aes_crypt_cbc(&ctx, AES_DECRYPT, length, initVector, input, output);
+	if (result != 0)
+	{
+		throw Exception("Could not decrypt block");
+	}
+}

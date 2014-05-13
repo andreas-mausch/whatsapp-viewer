@@ -15,6 +15,7 @@
 #include "../../../Exceptions/Exception.h"
 #include "../../../WhatsApp/Chat.h"
 #include "../../../WhatsApp/Crypt5.h"
+#include "../../../WhatsApp/Crypt7.h"
 #include "../../../WhatsApp/Database.h"
 #include "../../../WhatsApp/Message.h"
 #include "../../../VectorUtils.h"
@@ -350,7 +351,7 @@ void MainWindow::openDatabase()
 				unsigned char key[24];
 				buildKey(key, openDatabaseStruct.accountName);
 
-				decryptWhatsappDatabase(*filename, tempFilename, key);
+				decryptWhatsappDatabase5(*filename, tempFilename, key);
 				filename = &tempFilename;
 			}
 
@@ -422,7 +423,7 @@ void MainWindow::decryptDatabase()
 			unsigned char key[24];
 			buildKey(key, openDatabaseStruct.accountName);
 
-			decryptWhatsappDatabase(openDatabaseStruct.filename, "msgstore.decrypted.db", key);
+			decryptWhatsappDatabase5(openDatabaseStruct.filename, "msgstore.decrypted.db", key);
 
 			lastDatabaseOpened = openDatabaseStruct;
 			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
