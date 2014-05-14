@@ -25,6 +25,7 @@ bool WhatsAppViewer::tick()
 
 void WhatsAppViewer::openDatabase(const std::string &filename)
 {
+	mainWindow->openDatabase(filename);
 }
 
 Settings &WhatsAppViewer::getSettings()
