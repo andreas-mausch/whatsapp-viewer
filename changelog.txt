@@ -1,4 +1,9 @@
-v1.4
+v1.5 (2014-05-14)
+	Support for .crypt7 (root only)
+	Loading spinner to avoid GUI freezes on big chats
+	Tooltips in open database dialog
+	Filter phone numbers
+v1.4 (2014-05-03)
 	New feature: Locations, Videos (thumbnail only)
 	Drag&Drop support: drop any database file directly on the application window or on the .exe in explorer
 	Shortcut keys for open and decrypt
@@ -6,19 +11,20 @@ v1.4
 	BUGFIX: Single character messages were not displayed
 	Minor performance improvements
 	About dialog
-v1.3
+v1.3 (2014-04-16)
 	BUGFIX: App doesn't crash anymore if column order differents
 	BUGFIX: Exceptions are now displayed correctly to the user
 	BUGFIX: Smilies caused messages to be displayed incorrectly
 	Smoother scrolling: Improved rendering speed of very long chat messages (clipping)
 	Show chats ordered by last message timestamp
 	Chat list can be sorted now by clicking the column header
-v1.2
+v1.2 (2014-04-13)
 	Improved SQLite error handling
 	Bugfix: Memory Leak (68b842157a7bcf11985ff778476cabdebf112648)
-v1.1
+v1.1 (2014-04-11)
 	Decrypt database (crypt5 only) to disk
 	Open database: support for plain databases in addition to crypt5
 	Improved scrolling: Arrow keys, PgUp/PgDown, Home/End can now be used in chat window
 	Last opened database will be remembered
 	Export to .TXT
+v1.0 (2014-03-24)
