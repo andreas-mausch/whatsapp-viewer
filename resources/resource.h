@@ -851,10 +851,12 @@
 #define IDB_02934                       957
 #define IDB_02935                       958
 #define IDB_03030                       959
-#define IDD_OPEN_FILE                   959
+#define IDD_DECRYPT_CRYPT7              959
 #define IDI_ICON                        961
 #define IDR_ACCELERATOR                 963
 #define IDD_ABOUT                       964
+#define IDD_DECRYPT_CRYPT7_             965
+#define IDD_OPEN_FILE                   965
 #define IDR_ACCELERATOR1                966
 #define IDB_SEARCH                      969
 #define IDB_CLEAR                       970
@@ -877,27 +879,34 @@
 #define IDC_OPEN_FILE_FILENAME_TOOLTIP  1011
 #define IDC_OPEN_FILE_ACCOUNT_NAME_TOOLTIP 1012
 #define IDC_EDIT2                       1013
+#define IDC_DECRYPT_CRYPT7_DATABASE     1016
+#define IDC_DECRYPT_CRYPT7_SELECT_DATABASE 1017
+#define IDC_DECRYPT_CRYPT7_KEYFILE      1018
+#define IDC_DECRYPT_CRYPT7_SELECT_KEY   1019
 #define ID_FILE_OPEN40001               40001
 #define ID_MENU_MAIN_FILE_OPEN          40002
 #define ID_FILE_DECRYPT                 40003
-#define ID_MENU_MAIN_FILE_DECRYPT       40004
 #define ID_MENU_MAIN_FILE               40005
 #define ID_MENU_MAIN_DECRYPT            40006
 #define ID_FILE_EXIT                    40007
 #define ID_MENU_MAIN_FILE_EXIT          40008
 #define ID_ACCELERATOR_OPEN             40009
-#define ID_ACCELERATOR_DECRYPT          40011
+#define ID_ACCELERATOR_DECRYPT_CRYPT5   40011
 #define ID_HELP_ABOUT                   40012
 #define ID_MAIN_MENU_HELP_ABOUT         40013
 #define ID_MENU_MAIN_HELP_ABOUT         40014
+#define ID_FILE_DECRYPT40016            40016
+#define ID_MENU_MAIN_FILE_DECRYPT_CRYPT5 40017
+#define ID_MENU_MAIN_FILE_DECRYPT_CRYPT7 40018
+#define ID_ACCELERATOR_DECRYPT_CRYPT7   40019
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        972
-#define _APS_NEXT_COMMAND_VALUE         40016
-#define _APS_NEXT_CONTROL_VALUE         1016
+#define _APS_NEXT_COMMAND_VALUE         40020
+#define _APS_NEXT_CONTROL_VALUE         1019
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -79,6 +79,7 @@ void MainWindow::readSettings()
 	{
 		lastDatabaseOpened.filename = settings.read("lastOpenedFile");
 		lastDatabaseOpened.accountName = settings.read("lastOpenedAccount");
+		lastDatabaseOpened.keyFilename = settings.read("lastOpenedKeyfile");
 	}
 	catch (Exception &)
 	{
@@ -411,7 +412,7 @@ void MainWindow::exportChat(WhatsappChat &chat)
 	MessageBox(dialog, L"Chat exported to file chat.txt", L"Success", MB_OK | MB_ICONINFORMATION);
 }
 
-void MainWindow::decryptDatabase()
+void MainWindow::decryptDatabaseCrypt5()
 {
 	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
 	DecryptDatabaseDialog dialog(MainWindow::dialog, openDatabaseStruct);
@@ -428,6 +429,30 @@ void MainWindow::decryptDatabase()
 			lastDatabaseOpened = openDatabaseStruct;
 			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
 			settings.write("lastOpenedAccount", lastDatabaseOpened.accountName);
+
+			MessageBox(MainWindow::dialog, L"Database decrypted to file msgstore.decrypted.db", L"Success", MB_OK | MB_ICONINFORMATION);
+		}
+		catch (Exception &exception)
+		{
+			displayException(MainWindow::dialog, exception);
+		}
+	}
+}
+
+void MainWindow::decryptDatabaseCrypt7()
+{
+	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
+	DecryptDatabaseDialogCrypt7 dialog(MainWindow::dialog, openDatabaseStruct);
+
+	if (dialog.openModal() == IDOK)
+	{
+		try
+		{
+			decryptWhatsappDatabase7(openDatabaseStruct.filename, "msgstore.decrypted.db", openDatabaseStruct.keyFilename);
+
+			lastDatabaseOpened = openDatabaseStruct;
+			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
+			settings.write("lastOpenedKeyfile", lastDatabaseOpened.keyFilename);
 
 			MessageBox(MainWindow::dialog, L"Database decrypted to file msgstore.decrypted.db", L"Success", MB_OK | MB_ICONINFORMATION);
 		}
@@ -521,9 +546,13 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 						{
 							openDatabase();
 						} break;
-						case ID_ACCELERATOR_DECRYPT:
+						case ID_ACCELERATOR_DECRYPT_CRYPT5:
 						{
-							decryptDatabase();
+							decryptDatabaseCrypt5();
+						} break;
+						case ID_ACCELERATOR_DECRYPT_CRYPT7:
+						{
+							decryptDatabaseCrypt7();
 						} break;
 					}
 				} break;
@@ -535,9 +564,13 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 						{
 							openDatabase();
 						} break;
-						case ID_MENU_MAIN_FILE_DECRYPT:
+						case ID_MENU_MAIN_FILE_DECRYPT_CRYPT5:
 						{
-							decryptDatabase();
+							decryptDatabaseCrypt5();
+						} break;
+						case ID_MENU_MAIN_FILE_DECRYPT_CRYPT7:
+						{
+							decryptDatabaseCrypt7();
 						} break;
 						case IDC_MAIN_EXPORT:
 						{

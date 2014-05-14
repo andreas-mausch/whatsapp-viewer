@@ -64,22 +64,20 @@ BEGIN
     CONTROL         "Benutzerdefiniert1",IDC_MAIN_SEARCH_CHATS,"SearchControl",WS_TABSTOP,7,8,175,14,WS_EX_CLIENTEDGE
 END
 
-IDD_OPEN_FILE DIALOGEX 0, 0, 325, 175
+IDD_DECRYPT_CRYPT7 DIALOGEX 0, 0, 325, 135
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Open WhatsApp Database"
+CAPTION "Decrypt WhatsApp .crypt7 Database"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_OPEN_FILE_FILENAME,63,7,184,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDC_OPEN_FILE_SELECT,255,7,31,14
-    EDITTEXT        IDC_OPEN_FILE_ACCOUNT_NAME,63,28,184,14,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "OK",IDOK,209,154,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,268,154,50,14
-    LTEXT           "File",IDC_STATIC,7,13,12,8
-    LTEXT           "Account name",IDC_STATIC,7,34,46,8
-    PUSHBUTTON      "?",IDC_OPEN_FILE_FILENAME_TOOLTIP_BUTTON,300,7,18,14,BS_BITMAP | BS_FLAT
-    PUSHBUTTON      "?",IDC_OPEN_FILE_ACCOUNT_NAME_TOOLTIP_BUTTON,300,28,18,14,BS_BITMAP | BS_FLAT
-    LTEXT           "You need to download the database file from your phone. Ensure WhatsApp backup is enabled, plug it into your computer (USB) and copy the file:\r\n/sdcard/WhatsApp/Databases/msgstore.db.crypt5\r\nPlease note only plain .db files and .crypt5 are supported!",IDC_OPEN_FILE_FILENAME_TOOLTIP,7,95,311,37,SS_NOTIFY | NOT WS_VISIBLE
-    LTEXT           "The account name is the primary email address on your phone, the Google Mail account. If you are in doubt go to Settings->Accounts on your cell phone and try all.\r\n\r\nLeaving the account name blank is also known to work sometimes.",IDC_OPEN_FILE_ACCOUNT_NAME_TOOLTIP,7,51,311,37,SS_NOTIFY | NOT WS_VISIBLE
+    EDITTEXT        IDC_DECRYPT_CRYPT7_DATABASE,63,7,184,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_DECRYPT_CRYPT7_SELECT_DATABASE,255,7,31,14
+    EDITTEXT        IDC_DECRYPT_CRYPT7_KEYFILE,63,28,184,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,209,114,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,268,114,50,14
+    LTEXT           "Database file",IDC_STATIC,7,13,43,8
+    LTEXT           "Key file",IDC_STATIC,7,34,24,8
+    PUSHBUTTON      "...",IDC_DECRYPT_CRYPT7_SELECT_KEY,255,28,31,14
+    LTEXT           "Download database file from:\r\n/sdcard/WhatsApp/Databases/msgstore.db.crypt7\r\n\r\nand key file from:\r\n/data/data/com.whatsapp/files/key\r\nYou need root access to your phone to download the file!",IDC_STATIC,7,51,311,56
 END
 
 IDD_ABOUT DIALOGEX 0, 0, 332, 204
@@ -96,6 +94,24 @@ BEGIN
     LTEXT           "http://andreas-mausch.github.io/whatsapp-viewer/",IDC_STATIC,123,140,166,8
     LTEXT           "v1.4",IDC_ABOUT_APPLICATION_VERSION,123,50,189,8
     LTEXT           "https://github.com/andreas-mausch/",IDC_STATIC,123,151,119,8
+END
+
+IDD_OPEN_FILE DIALOGEX 0, 0, 325, 175
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Open WhatsApp Database"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_OPEN_FILE_FILENAME,63,7,184,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_OPEN_FILE_SELECT,255,7,31,14
+    EDITTEXT        IDC_OPEN_FILE_ACCOUNT_NAME,63,28,184,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,209,154,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,268,154,50,14
+    LTEXT           "File",IDC_STATIC,7,13,12,8
+    LTEXT           "Account name",IDC_STATIC,7,34,46,8
+    PUSHBUTTON      "?",IDC_OPEN_FILE_FILENAME_TOOLTIP_BUTTON,300,7,18,14,BS_BITMAP | BS_FLAT
+    PUSHBUTTON      "?",IDC_OPEN_FILE_ACCOUNT_NAME_TOOLTIP_BUTTON,300,28,18,14,BS_BITMAP | BS_FLAT
+    LTEXT           "You need to download the database file from your phone. Ensure WhatsApp backup is enabled, plug it into your computer (USB) and copy the file:\r\n/sdcard/WhatsApp/Databases/msgstore.db.crypt5\r\nPlease note only plain .db files and .crypt5 are supported!",IDC_OPEN_FILE_FILENAME_TOOLTIP,7,95,311,37,SS_NOTIFY | NOT WS_VISIBLE
+    LTEXT           "The account name is the primary email address on your phone, the Google Mail account. If you are in doubt go to Settings->Accounts on your cell phone and try all.\r\n\r\nLeaving the account name blank is also known to work sometimes.",IDC_OPEN_FILE_ACCOUNT_NAME_TOOLTIP,7,51,311,37,SS_NOTIFY | NOT WS_VISIBLE
 END
 
 
@@ -117,14 +133,14 @@ BEGIN
         BOTTOMMARGIN, 383
     END
 
-    IDD_OPEN_FILE, DIALOG
+    IDD_DECRYPT_CRYPT7, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 318
         VERTGUIDE, 63
         VERTGUIDE, 247
         TOPMARGIN, 7
-        BOTTOMMARGIN, 168
+        BOTTOMMARGIN, 128
         HORZGUIDE, 21
         HORZGUIDE, 42
     END
@@ -142,6 +158,18 @@ BEGIN
         HORZGUIDE, 127
         HORZGUIDE, 140
     END
+
+    IDD_OPEN_FILE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 318
+        VERTGUIDE, 63
+        VERTGUIDE, 247
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 168
+        HORZGUIDE, 21
+        HORZGUIDE, 42
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -156,7 +184,8 @@ BEGIN
     POPUP "&File"
     BEGIN
         MENUITEM "&Open...\tCtrl+O",            ID_MENU_MAIN_FILE_OPEN
-        MENUITEM "&Decrypt...\tCtrl+D",         ID_MENU_MAIN_FILE_DECRYPT
+        MENUITEM "Decrypt .crypt&5...\tCtrl+5", ID_MENU_MAIN_FILE_DECRYPT_CRYPT5
+        MENUITEM "Decrypt .crypt&7...\tCtrl+7", ID_MENU_MAIN_FILE_DECRYPT_CRYPT7
         MENUITEM SEPARATOR
         MENUITEM "&Exit\tAlt+F4",               ID_MENU_MAIN_FILE_EXIT
     END
@@ -1045,8 +1074,9 @@ IDR_LOADING             GIF                     "Loading.gif"
 
 IDR_ACCELERATOR ACCELERATORS 
 BEGIN
+    "5",            ID_ACCELERATOR_DECRYPT_CRYPT5, VIRTKEY, CONTROL, NOINVERT
     "O",            ID_ACCELERATOR_OPEN,    VIRTKEY, CONTROL, NOINVERT
-    "D",            ID_ACCELERATOR_DECRYPT, VIRTKEY, CONTROL, NOINVERT
+    "7",            ID_ACCELERATOR_DECRYPT_CRYPT7, VIRTKEY, CONTROL, NOINVERT
 END
 
 

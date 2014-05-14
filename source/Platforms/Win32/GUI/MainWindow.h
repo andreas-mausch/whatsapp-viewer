@@ -42,7 +42,8 @@ private:
 	void openPlainDatabase(const std::string &filename);
 	void closeDatabase();
 
-	void decryptDatabase();
+	void decryptDatabaseCrypt5();
+	void decryptDatabaseCrypt7();
 	void clearChats();
 	void clearChatList();
 
