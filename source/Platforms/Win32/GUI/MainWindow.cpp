@@ -6,6 +6,8 @@
 #include "MainWindow.h"
 #include "AboutDialog.h"
 #include "OpenDatabaseDialog.h"
+#include "DecryptDatabaseDialog5.h"
+#include "DecryptDatabaseDialog7.h"
 #include "ChatControl/ChatControl.h"
 #include "SearchControl/SearchControl.h"
 #include "../Objects/Bitmap.h"
@@ -415,7 +417,7 @@ void MainWindow::exportChat(WhatsappChat &chat)
 void MainWindow::decryptDatabaseCrypt5()
 {
 	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
-	DecryptDatabaseDialog dialog(MainWindow::dialog, openDatabaseStruct);
+	DecryptDatabaseDialog5 dialog(MainWindow::dialog, openDatabaseStruct);
 
 	if (dialog.openModal() == IDOK)
 	{
@@ -442,7 +444,7 @@ void MainWindow::decryptDatabaseCrypt5()
 void MainWindow::decryptDatabaseCrypt7()
 {
 	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
-	DecryptDatabaseDialogCrypt7 dialog(MainWindow::dialog, openDatabaseStruct);
+	DecryptDatabaseDialog7 dialog(MainWindow::dialog, openDatabaseStruct);
 
 	if (dialog.openModal() == IDOK)
 	{
