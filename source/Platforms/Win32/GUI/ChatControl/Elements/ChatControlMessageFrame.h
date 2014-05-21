@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ChatControlElement.h"
+#include "../ChatControlElement.h"
 
 class ChatControlMessage;
 class Font;

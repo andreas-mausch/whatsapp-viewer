@@ -1,9 +1,9 @@
 #include <windows.h>
 
 #include "ChatControlMessageWithPreview.h"
-#include "../../../../../WhatsApp/Message.h"
-#include "../../../ImageDecoder.h"
-#include "../../../Objects/Bitmap.h"
+#include "../../../../../../WhatsApp/Message.h"
+#include "../../../../ImageDecoder.h"
+#include "../../../../Objects/Bitmap.h"
 
 ChatControlMessageWithPreview::ChatControlMessageWithPreview(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
 	: ChatControlMessage(message, width), bitmap(NULL), bitmapWidth(0), bitmapHeight(0)

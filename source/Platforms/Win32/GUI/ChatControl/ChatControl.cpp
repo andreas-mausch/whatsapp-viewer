@@ -6,12 +6,7 @@
 #include <sstream>
 
 #include "ChatControl.h"
-#include "ChatControlMessageFrame.h"
-#include "Messages/ChatControlMessage.h"
-#include "Messages/ChatControlMessageImage.h"
-#include "Messages/ChatControlMessageLocation.h"
-#include "Messages/ChatControlMessageText.h"
-#include "Messages/ChatControlMessageVideo.h"
+#include "ChatControlElement.h"
 #include "Threads/BuildMessagesThread.h"
 #include "Threads/LoadingAnimationThread.h"
 #include "Threads/ResizeMessagesThread.h"

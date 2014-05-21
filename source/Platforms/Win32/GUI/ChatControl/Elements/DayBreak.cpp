@@ -2,10 +2,10 @@
 #include <string>
 
 #include "DayBreak.h"
-#include "../DrawText.h"
-#include "../../Objects/Brush.h"
-#include "../../Objects/Font.h"
-#include "../../StringHelper.h"
+#include "../../DrawText.h"
+#include "../../../Objects/Brush.h"
+#include "../../../Objects/Font.h"
+#include "../../../StringHelper.h"
 
 DayBreak::DayBreak(const std::string &dayString, int width, Font &font)
 	: width(width), font(font)

@@ -3,12 +3,12 @@
 
 #include "ChatControlMessageFrame.h"
 #include "Messages/ChatControlMessage.h"
-#include "../DrawText.h"
-#include "../../Objects/Brush.h"
-#include "../../Objects/Font.h"
-#include "../../StringHelper.h"
-#include "../../Timestamp.h"
-#include "../../../../WhatsApp/Message.h"
+#include "../../DrawText.h"
+#include "../../../Objects/Brush.h"
+#include "../../../Objects/Font.h"
+#include "../../../StringHelper.h"
+#include "../../../Timestamp.h"
+#include "../../../../../WhatsApp/Message.h"
 
 ChatControlMessageFrame::ChatControlMessageFrame(ChatControlMessage *message, int width, int color, Font &dateFont)
 	: message(message), width(width), color(color), height(0), dateFont(dateFont)

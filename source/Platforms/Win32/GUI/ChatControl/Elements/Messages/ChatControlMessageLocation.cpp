@@ -1,9 +1,9 @@
 #include <windows.h>
 
 #include "ChatControlMessageLocation.h"
-#include "../../DrawText.h"
-#include "../../../../../WhatsApp/Message.h"
-#include "../../../ImageDecoder.h"
+#include "../../../DrawText.h"
+#include "../../../../../../WhatsApp/Message.h"
+#include "../../../../ImageDecoder.h"
 
 ChatControlMessageLocation::ChatControlMessageLocation(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
 	: ChatControlMessageWithPreview(message, width, imageDecoder)

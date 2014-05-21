@@ -1,10 +1,10 @@
 #include <windows.h>
 
 #include "ChatControlMessage.h"
-#include "../../DrawText.h"
-#include "../../../StringHelper.h"
-#include "../../../Timestamp.h"
-#include "../../../../../WhatsApp/Message.h"
+#include "../../../DrawText.h"
+#include "../../../../StringHelper.h"
+#include "../../../../Timestamp.h"
+#include "../../../../../../WhatsApp/Message.h"
 
 ChatControlMessage::ChatControlMessage(WhatsappMessage &message, int width)
 	: message(message), width(width)
