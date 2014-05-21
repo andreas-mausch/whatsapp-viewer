@@ -1,9 +1,11 @@
 #pragma once
 
+#include "ChatControlElement.h"
+
 class ChatControlMessage;
 class Font;
 
-class ChatControlMessageFrame
+class ChatControlMessageFrame : public ChatControlElement
 {
 private:
 	ChatControlMessage *message;
