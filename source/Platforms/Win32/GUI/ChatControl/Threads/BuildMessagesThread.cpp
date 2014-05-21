@@ -10,6 +10,7 @@
 #include "../Elements/Messages/ChatControlMessageLocation.h"
 #include "../Elements/Messages/ChatControlMessageText.h"
 #include "../Elements/Messages/ChatControlMessageVideo.h"
+#include "../../../Timestamp.h"
 #include "../../../../../VectorUtils.h"
 #include "../../../../../Synchronization/Lock.h"
 #include "../../../../../WhatsApp/Chat.h"
@@ -35,7 +36,7 @@ void BuildMessagesThread::run()
 
 	if (chat != NULL)
 	{
-		this->elements.push_back(new DayBreak("test", 0, dateFont));
+		long long lastTimestamp = -1;
 
 		std::vector<WhatsappMessage *> &messages = chat->getMessages(running);
 		for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
@@ -47,6 +48,12 @@ void BuildMessagesThread::run()
 
 			WhatsappMessage &message = **it;
 			ChatControlMessageFrame *messageFrame = NULL;
+
+			if (!isSameDay(lastTimestamp, message.getTimestamp()))
+			{
+				this->elements.push_back(new DayBreak(formatDate(message.getTimestamp()), 0, dateFont));
+				lastTimestamp = message.getTimestamp();
+			}
 
 			int color;
 
