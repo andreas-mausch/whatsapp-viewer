@@ -2,6 +2,7 @@
 
 #include "BuildMessagesThread.h"
 #include "../ChatControl.h"
+#include "../ChatControlElement.h"
 #include "../ChatControlMessageFrame.h"
 #include "../Messages/ChatControlMessage.h"
 #include "../Messages/ChatControlMessageImage.h"
@@ -13,8 +14,8 @@
 #include "../../../../../WhatsApp/Chat.h"
 #include "../../../../../WhatsApp/Message.h"
 
-BuildMessagesThread::BuildMessagesThread(HWND window, Lock &lock, WhatsappChat *chat, std::vector<ChatControlMessageFrame *> &messages, Smileys &smileys, Font &dateFont, ImageDecoder &imageDecoder)
-	: window(window), lock(lock), chat(chat), messages(messages), smileys(smileys), dateFont(dateFont), imageDecoder(imageDecoder)
+BuildMessagesThread::BuildMessagesThread(HWND window, Lock &lock, WhatsappChat *chat, std::vector<ChatControlElement *> &elements, Smileys &smileys, Font &dateFont, ImageDecoder &imageDecoder)
+	: window(window), lock(lock), chat(chat), elements(elements), smileys(smileys), dateFont(dateFont), imageDecoder(imageDecoder)
 {
 }
 
@@ -29,7 +30,7 @@ void BuildMessagesThread::run()
 		return;
 	}
 
-	clearVector(messages);
+	clearVector(elements);
 
 	if (chat != NULL)
 	{
@@ -83,7 +84,7 @@ void BuildMessagesThread::run()
 
 			if (messageFrame != NULL)
 			{
-				this->messages.push_back(messageFrame);
+				this->elements.push_back(messageFrame);
 			}
 		}
 	}

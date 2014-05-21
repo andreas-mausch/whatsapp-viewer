@@ -5,7 +5,7 @@
 
 class AnimatedGif;
 class BuildMessagesThread;
-class ChatControlMessageFrame;
+class ChatControlElement;
 class Font;
 class ImageDecoder;
 class LoadingAnimationThread;
@@ -39,7 +39,7 @@ private:
 	HDC backbuffer;
 	HBITMAP backbufferBitmap;
 	WhatsappChat *chat;
-	std::vector<ChatControlMessageFrame *> messages;
+	std::vector<ChatControlElement *> elements;
 	bool shouldResizeMessages;
 
 	static LRESULT CALLBACK callback(HWND window, UINT message, WPARAM wParam, LPARAM lParam);
@@ -49,7 +49,7 @@ private:
 	void calculateScrollInfo();
 
 	LRESULT onPaint();
-	void drawMessage(ChatControlMessageFrame &messageFrame, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont);
+	void drawElement(ChatControlElement &element, HDC deviceContext, int y, int clientRectWidth, HGDIOBJ dateFont);
 	void redraw();
 
 	void scroll(int newPosition, bool redraw);

@@ -51,6 +51,11 @@ int ChatControlMessageFrame::getHeight()
 
 void ChatControlMessageFrame::render(HDC deviceContext, int x, int y, int clientHeight)
 {
+	if (message->getMessage().isFromMe())
+	{
+		x += 40;
+	}
+
 	renderFrame(deviceContext, x, y);
 	message->render(deviceContext, x, y, clientHeight);
 }

@@ -2,11 +2,11 @@
 
 #include "ResizeMessagesThread.h"
 #include "../ChatControl.h"
-#include "../ChatControlMessageFrame.h"
+#include "../ChatControlElement.h"
 #include "../../../../../Synchronization/Lock.h"
 
-ResizeMessagesThread::ResizeMessagesThread(HWND window, Lock &lock, std::vector<ChatControlMessageFrame *> &messages)
-	: window(window), lock(lock), messages(messages), totalMessagesHeight(-1)
+ResizeMessagesThread::ResizeMessagesThread(HWND window, Lock &lock, std::vector<ChatControlElement *> &elements)
+	: window(window), lock(lock), elements(elements), totalMessagesHeight(-1)
 {
 }
 
@@ -40,16 +40,16 @@ void ResizeMessagesThread::resizeMessageWidths()
 	int gap = 40;
 	int width = clientRect.right - clientRect.left - 20 - gap;
 
-	for (std::vector<ChatControlMessageFrame *>::iterator it = messages.begin(); it != messages.end(); ++it)
+	for (std::vector<ChatControlElement *>::iterator it = elements.begin(); it != elements.end(); ++it)
 	{
 		if (!running)
 		{
 			return;
 		}
 
-		ChatControlMessageFrame &messageFrame = **it;
-		messageFrame.updateWidth(window, width);
-		y += 8 + messageFrame.getHeight();
+		ChatControlElement &element = **it;
+		element.updateWidth(window, width);
+		y += 8 + element.getHeight();
 	}
 
 	totalMessagesHeight = y;

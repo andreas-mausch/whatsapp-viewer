@@ -3,7 +3,7 @@
 #include <vector>
 #include "../../../ThreadWindows.h"
 
-class ChatControlMessageFrame;
+class ChatControlElement;
 class Font;
 class ImageDecoder;
 class Lock;
@@ -16,13 +16,13 @@ private:
 	HWND window;
 	Lock &lock;
 	WhatsappChat *chat;
-	std::vector<ChatControlMessageFrame *> &messages;
+	std::vector<ChatControlElement *> &elements;
 	Smileys &smileys;
 	Font &dateFont;
 	ImageDecoder &imageDecoder;
 
 public:
-	BuildMessagesThread(HWND window, Lock &lock, WhatsappChat *chat, std::vector<ChatControlMessageFrame *> &messages, Smileys &smileys, Font &dateFont, ImageDecoder &imageDecoder);
+	BuildMessagesThread(HWND window, Lock &lock, WhatsappChat *chat, std::vector<ChatControlElement *> &messages, Smileys &smileys, Font &dateFont, ImageDecoder &imageDecoder);
 	virtual ~BuildMessagesThread();
 
 	virtual void run();

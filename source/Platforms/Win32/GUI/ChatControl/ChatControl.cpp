@@ -53,7 +53,7 @@ ChatControl::~ChatControl()
 	stopBuildingMessages();
 	stopLoadingAnimation();
 
-	clearVector(messages);
+	clearVector(elements);
 	delete dateFont;
 	delete loadingAnimation;
 	delete smileys;
@@ -101,7 +101,7 @@ void ChatControl::startBuildingMessages()
 	painting = false;
 	stopResizingMessages();
 	stopBuildingMessages();
-	buildMessagesThread = new BuildMessagesThread(window, lock, chat, messages, *smileys, *dateFont, *imageDecoder);
+	buildMessagesThread = new BuildMessagesThread(window, lock, chat, elements, *smileys, *dateFont, *imageDecoder);
 	buildMessagesThread->start();
 }
 
@@ -123,7 +123,7 @@ void ChatControl::startResizingMessages()
 	{
 		if (chat)
 		{
-			resizeMessagesThread = new ResizeMessagesThread(window, lock, messages);
+			resizeMessagesThread = new ResizeMessagesThread(window, lock, elements);
 			resizeMessagesThread->start();
 		}
 		else
@@ -259,27 +259,22 @@ void ChatControl::paintBackbuffer()
 
 		if (chat != NULL)
 		{
-			for (std::vector<ChatControlMessageFrame *>::iterator it = messages.begin(); it != messages.end(); ++it)
+			for (std::vector<ChatControlElement *>::iterator it = elements.begin(); it != elements.end(); ++it)
 			{
 				if (!painting)
 				{
 					break;
 				}
 
-				ChatControlMessageFrame &messageFrame = **it;
+				ChatControlElement &element = **it;
 
 				int x = 10;
 
-				if (messageFrame.getMessage()->getMessage().isFromMe())
+				if (y + element.getHeight() - scrollPosition > 0)
 				{
-					x += 40;
+					element.render(backbuffer, x, y - scrollPosition, clientRect.bottom);
 				}
-
-				if (y + messageFrame.getHeight() - scrollPosition > 0)
-				{
-					messageFrame.render(backbuffer, x, y - scrollPosition, clientRect.bottom);
-				}
-				y += messageFrame.getHeight();
+				y += element.getHeight();
 				y += 8;
 
 				if (y - scrollPosition > clientRect.bottom)
