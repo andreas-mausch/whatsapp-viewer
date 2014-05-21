@@ -24,7 +24,10 @@ ChatControlMessageFrame::~ChatControlMessageFrame()
 void ChatControlMessageFrame::updateWidth(HWND window, int width)
 {
 	this->width = width;
-	message->updateWidth(window, width);
+
+	int gap = 40;
+	int messageWidth = width - gap - 20;
+	message->updateWidth(window, messageWidth);
 	calculateHeight();
 }
 
@@ -49,8 +52,9 @@ int ChatControlMessageFrame::getHeight()
 	return height;
 }
 
-void ChatControlMessageFrame::render(HDC deviceContext, int x, int y, int clientHeight)
+void ChatControlMessageFrame::render(HDC deviceContext, int y, int clientHeight)
 {
+	int x = 10;
 	if (message->getMessage().isFromMe())
 	{
 		x += 40;
@@ -62,21 +66,24 @@ void ChatControlMessageFrame::render(HDC deviceContext, int x, int y, int client
 
 void ChatControlMessageFrame::renderFrame(HDC deviceContext, int x, int y)
 {
+	int gap = 40;
+	int messageWidth = width - gap - 20;
+
 	SetBkColor(deviceContext, color);
 
-	RECT completeRect = { x, y, x + width, y + getHeight() };
+	RECT completeRect = { x, y, x + messageWidth, y + getHeight() };
 	Brush brush(CreateSolidBrush(color));
 	FillRect(deviceContext, &completeRect, brush.get());
 
 	SetTextColor(deviceContext, RGB(110, 110, 110));
-	int dateHeight = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), width, dateFont.get());
-	drawTextRight(deviceContext, wcharDate.c_str(), x, y + getHeight() - dateHeight, width, dateFont.get());
+	int dateHeight = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), messageWidth, dateFont.get());
+	drawTextRight(deviceContext, wcharDate.c_str(), x, y + getHeight() - dateHeight, messageWidth, dateFont.get());
 
 	if (message->getMessage().getRemoteResource().size() > 0)
 	{
 		std::wstring remoteResource = strtowstr(message->getMessage().getRemoteResource());
-		int remoteResourceHeight = calculateDrawTextHeight(deviceContext, remoteResource.c_str(), width, dateFont.get());
-		drawTextRight(deviceContext, remoteResource.c_str(), x, y + getHeight() - dateHeight - remoteResourceHeight, width, dateFont.get());
+		int remoteResourceHeight = calculateDrawTextHeight(deviceContext, remoteResource.c_str(), messageWidth, dateFont.get());
+		drawTextRight(deviceContext, remoteResource.c_str(), x, y + getHeight() - dateHeight - remoteResourceHeight, messageWidth, dateFont.get());
 	}
 }
 

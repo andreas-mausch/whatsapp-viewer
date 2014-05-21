@@ -21,6 +21,6 @@ public:
 
 	int getHeight();
 
-	void render(HDC deviceContext, int x, int y, int clientHeight);
+	void render(HDC deviceContext, int y, int clientHeight);
 
 };

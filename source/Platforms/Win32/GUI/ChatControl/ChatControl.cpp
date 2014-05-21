@@ -263,11 +263,9 @@ void ChatControl::paintBackbuffer()
 
 				ChatControlElement &element = **it;
 
-				int x = 10;
-
 				if (y + element.getHeight() - scrollPosition > 0)
 				{
-					element.render(backbuffer, x, y - scrollPosition, clientRect.bottom);
+					element.render(backbuffer, y - scrollPosition, clientRect.bottom);
 				}
 				y += element.getHeight();
 				y += 8;

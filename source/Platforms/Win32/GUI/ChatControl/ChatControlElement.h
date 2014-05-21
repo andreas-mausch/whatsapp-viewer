@@ -11,6 +11,6 @@ public:
 
 	virtual int getHeight() = 0;
 
-	virtual void render(HDC deviceContext, int x, int y, int clientHeight) = 0;
+	virtual void render(HDC deviceContext, int y, int clientHeight) = 0;
 
 };

@@ -4,6 +4,7 @@
 #include "../ChatControl.h"
 #include "../ChatControlElement.h"
 #include "../Elements/ChatControlMessageFrame.h"
+#include "../Elements/DayBreak.h"
 #include "../Elements/Messages/ChatControlMessage.h"
 #include "../Elements/Messages/ChatControlMessageImage.h"
 #include "../Elements/Messages/ChatControlMessageLocation.h"
@@ -34,6 +35,8 @@ void BuildMessagesThread::run()
 
 	if (chat != NULL)
 	{
+		this->elements.push_back(new DayBreak("test", 0, dateFont));
+
 		std::vector<WhatsappMessage *> &messages = chat->getMessages(running);
 		for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
 		{

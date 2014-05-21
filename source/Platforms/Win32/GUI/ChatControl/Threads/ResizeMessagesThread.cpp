@@ -37,8 +37,7 @@ void ResizeMessagesThread::resizeMessageWidths()
 	GetClientRect(window, &clientRect);
 
 	int y = 40;
-	int gap = 40;
-	int width = clientRect.right - clientRect.left - 20 - gap;
+	int width = clientRect.right - clientRect.left;
 
 	for (std::vector<ChatControlElement *>::iterator it = elements.begin(); it != elements.end(); ++it)
 	{
