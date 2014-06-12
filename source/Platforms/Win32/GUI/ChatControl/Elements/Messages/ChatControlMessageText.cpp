@@ -24,9 +24,9 @@ int ChatControlMessageText::calculateHeight()
 {
 	int height = 0;
 
-	for (std::vector<ChatControlMessageElement *>::iterator it = elements.begin(); it != elements.end(); it++)
+	for (std::vector<ChatControlMessageTextElement *>::iterator it = elements.begin(); it != elements.end(); it++)
 	{
-		ChatControlMessageElement &element = **it;
+		ChatControlMessageTextElement &element = **it;
 		element.calculateHeight(getWidth());
 		height += element.getHeight();
 	}
@@ -64,10 +64,10 @@ void ChatControlMessageText::splitMessage(WhatsappMessage &message)
 				int start = lastSplit;
 				int end = before - messageString.begin();
 				std::string leftPart = messageString.substr(start, end - start);
-				elements.push_back(new ChatControlMessageElement(leftPart));
+				elements.push_back(new ChatControlMessageTextElement(leftPart));
 			}
 
-			elements.push_back(new ChatControlMessageElement(character));
+			elements.push_back(new ChatControlMessageTextElement(character));
 
 			lastSplit = (it - messageString.begin());
 		}
@@ -77,7 +77,7 @@ void ChatControlMessageText::splitMessage(WhatsappMessage &message)
 	if (lastSplit < length)
 	{
 		std::string part = messageString.substr(lastSplit, length);
-		elements.push_back(new ChatControlMessageElement(part));
+		elements.push_back(new ChatControlMessageTextElement(part));
 	}
 }
 
@@ -85,9 +85,9 @@ void ChatControlMessageText::render(HDC deviceContext, int x, int y, int clientH
 {
 	SetTextColor(deviceContext, RGB(0, 0, 0));
 
-	for (std::vector<ChatControlMessageElement *>::iterator it = elements.begin(); it != elements.end(); it++)
+	for (std::vector<ChatControlMessageTextElement *>::iterator it = elements.begin(); it != elements.end(); it++)
 	{
-		ChatControlMessageElement &element = **it;
+		ChatControlMessageTextElement &element = **it;
 
 		if (y + element.getHeight() > 0)
 		{

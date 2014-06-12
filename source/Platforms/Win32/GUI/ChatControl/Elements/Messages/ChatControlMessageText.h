@@ -3,14 +3,14 @@
 #include <vector>
 #include "ChatControlMessage.h"
 
-class ChatControlMessageElement;
+class ChatControlMessageTextElement;
 class Smileys;
 class WhatsappMessage;
 
 class ChatControlMessageText : public ChatControlMessage
 {
 private:
-	std::vector<ChatControlMessageElement *> elements;
+	std::vector<ChatControlMessageTextElement *> elements;
 	Smileys &smileys;
 
 	void splitMessage(WhatsappMessage &message);

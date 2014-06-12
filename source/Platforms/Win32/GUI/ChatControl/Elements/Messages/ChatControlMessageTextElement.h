@@ -5,13 +5,13 @@
 
 class Smileys;
 
-enum ChatControlMessageElementType
+enum ChatControlMessageTextElementType
 {
 	CHAT_CONTROL_MESSAGE_ELEMENT_TEXT,
 	CHAT_CONTROL_MESSAGE_ELEMENT_SMILEY
 };
 
-class ChatControlMessageElement
+class ChatControlMessageTextElement
 {
 private:
 	int type;
@@ -21,9 +21,9 @@ private:
 	int height;
 
 public:
-	ChatControlMessageElement(const std::string &text);
-	ChatControlMessageElement(int smiley);
-	~ChatControlMessageElement();
+	ChatControlMessageTextElement(const std::string &text);
+	ChatControlMessageTextElement(int smiley);
+	~ChatControlMessageTextElement();
 
 	void calculateHeight(int width);
 	void render(HDC deviceContext, int x, int y, int width, Smileys &smileys);

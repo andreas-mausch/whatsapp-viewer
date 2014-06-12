@@ -7,7 +7,7 @@
 #include "../../../../StringHelper.h"
 #include "../../../../../../Exceptions/Exception.h"
 
-ChatControlMessageElement::ChatControlMessageElement(const std::string &text)
+ChatControlMessageTextElement::ChatControlMessageTextElement(const std::string &text)
 {
 	type = CHAT_CONTROL_MESSAGE_ELEMENT_TEXT;
 	this->text = text;
@@ -15,7 +15,7 @@ ChatControlMessageElement::ChatControlMessageElement(const std::string &text)
 	height = 0;
 }
 
-ChatControlMessageElement::ChatControlMessageElement(int smiley)
+ChatControlMessageTextElement::ChatControlMessageTextElement(int smiley)
 {
 	type = CHAT_CONTROL_MESSAGE_ELEMENT_SMILEY;
 	this->smiley = smiley;
@@ -23,12 +23,12 @@ ChatControlMessageElement::ChatControlMessageElement(int smiley)
 	height = 0;
 }
 
-ChatControlMessageElement::~ChatControlMessageElement()
+ChatControlMessageTextElement::~ChatControlMessageTextElement()
 {
 	delete[] wcharText;
 }
 
-void ChatControlMessageElement::calculateHeight(int width)
+void ChatControlMessageTextElement::calculateHeight(int width)
 {
 	if (type == CHAT_CONTROL_MESSAGE_ELEMENT_TEXT)
 	{
@@ -41,7 +41,7 @@ void ChatControlMessageElement::calculateHeight(int width)
 	}
 }
 
-void ChatControlMessageElement::render(HDC deviceContext, int x, int y, int width, Smileys &smileys)
+void ChatControlMessageTextElement::render(HDC deviceContext, int x, int y, int width, Smileys &smileys)
 {
 	if (type == CHAT_CONTROL_MESSAGE_ELEMENT_TEXT)
 	{
@@ -52,7 +52,7 @@ void ChatControlMessageElement::render(HDC deviceContext, int x, int y, int widt
 	}
 }
 
-int ChatControlMessageElement::getHeight() const
+int ChatControlMessageTextElement::getHeight() const
 {
 	return height;
 }
