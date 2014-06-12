@@ -5,7 +5,7 @@
 void calculateDrawTextRect(HDC deviceContext, const WCHAR *text, RECT &rect, int flags)
 {
 	int right = rect.right;
-	DrawText(deviceContext, text, -1, &rect, DT_CALCRECT | flags);
+	DrawText(deviceContext, text, -1, &rect, DT_CALCRECT | DT_NOPREFIX | flags);
 	rect.right = right;
 }
 
@@ -27,7 +27,7 @@ int calculateDrawTextWidth(HDC deviceContext, const WCHAR *text, HFONT font)
 {
 	RECT rect = { 0, 0, 0, 0 };
 	HGDIOBJ oldFont = SelectObject(deviceContext, font);
-	DrawText(deviceContext, text, -1, &rect, DT_CALCRECT);
+	DrawText(deviceContext, text, -1, &rect, DT_CALCRECT | DT_NOPREFIX);
 	SelectObject(deviceContext, oldFont);
 	return rect.right - rect.left;
 }
@@ -40,7 +40,7 @@ void drawText(HDC deviceContext, const WCHAR *text, const RECT &rect, int flags)
 
 void drawText(HDC deviceContext, const WCHAR *text, const RECT &rect)
 {
-	drawText(deviceContext, text, rect, DT_WORDBREAK);
+	drawText(deviceContext, text, rect, DT_WORDBREAK | DT_NOPREFIX);
 }
 
 void drawText(HDC deviceContext, const WCHAR *text, int x, int y, int width)
