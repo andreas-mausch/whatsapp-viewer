@@ -1,3 +1,4 @@
+#include <sstream>
 #include <windows.h>
 
 #include "ChatControlMessageText.h"
@@ -50,34 +51,44 @@ bool ChatControlMessageText::isSmiley(int character)
 void ChatControlMessageText::splitMessage(WhatsappMessage &message)
 {
 	std::string messageString = message.getData();
-	int lastSplit = 0;
-	for (std::string::iterator it = messageString.begin(); it != messageString.end();)
+
+	try
 	{
-		bool begin = (it - messageString.begin()) == lastSplit;
-		std::string::iterator before = it;
-		int character = utf8::next(it, messageString.end());
-
-		if (isSmiley(character))
+		int lastSplit = 0;
+		for (std::string::iterator it = messageString.begin(); it != messageString.end();)
 		{
-			if (!begin)
+			bool begin = (it - messageString.begin()) == lastSplit;
+			std::string::iterator before = it;
+			int character = utf8::next(it, messageString.end());
+
+			if (isSmiley(character))
 			{
-				int start = lastSplit;
-				int end = before - messageString.begin();
-				std::string leftPart = messageString.substr(start, end - start);
-				elements.push_back(new ChatControlMessageTextElement(leftPart));
+				if (!begin)
+				{
+					int start = lastSplit;
+					int end = before - messageString.begin();
+					std::string leftPart = messageString.substr(start, end - start);
+					elements.push_back(new ChatControlMessageTextElement(leftPart));
+				}
+
+				elements.push_back(new ChatControlMessageTextElement(character));
+
+				lastSplit = (it - messageString.begin());
 			}
+		}
 
-			elements.push_back(new ChatControlMessageTextElement(character));
-
-			lastSplit = (it - messageString.begin());
+		int length = messageString.length();
+		if (lastSplit < length)
+		{
+			std::string part = messageString.substr(lastSplit, length);
+			elements.push_back(new ChatControlMessageTextElement(part));
 		}
 	}
-
-	int length = messageString.length();
-	if (lastSplit < length)
+	catch (utf8::exception &exception)
 	{
-		std::string part = messageString.substr(lastSplit, length);
-		elements.push_back(new ChatControlMessageTextElement(part));
+		std::stringstream invalidDataString;
+		invalidDataString << "[INVALID DATA: " << messageString << "]";
+		elements.push_back(new ChatControlMessageTextElement(invalidDataString.str()));
 	}
 }
 
