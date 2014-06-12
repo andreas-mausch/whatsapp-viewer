@@ -37,6 +37,7 @@ int DayBreak::getHeight()
 
 void DayBreak::render(HDC deviceContext, int y, int clientHeight)
 {
+	SetTextColor(deviceContext, RGB(0, 0, 0));
 	SetBkMode(deviceContext, TRANSPARENT);
 
 	int textWidth = calculateDrawTextWidth(deviceContext, dayStringW.c_str(), font.get());
