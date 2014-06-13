@@ -14,6 +14,8 @@ class WhatsappDatabase
 private:
 	sqlite3* sqLiteDatabase;
 
+	std::string findDisplayName(Settings &settings, const std::string &key);
+
 public:
 	WhatsappDatabase(const std::string &filename);
 	~WhatsappDatabase();
