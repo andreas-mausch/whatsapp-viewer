@@ -1,3 +1,7 @@
+v1.6 (2014-06-12)
+	BUGFIX: No crash on invalid UTF-8 data in messages
+	BUGFIX: Messages containing an Ampersand (&) are now displayed correctly
+	Visible break between conversations of different days
 v1.5 (2014-05-14)
 	Support for .crypt7 (root only)
 	Loading spinner to avoid GUI freezes on big chats
