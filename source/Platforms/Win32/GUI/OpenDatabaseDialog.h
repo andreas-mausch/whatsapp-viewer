@@ -10,6 +10,7 @@ struct OpenDatabaseStruct
 	std::string filename;
 	std::string accountName;
 	std::string keyFilename;
+	std::string wadbFilename;
 };
 
 class OpenDatabaseDialog : public Dialog
@@ -20,6 +21,7 @@ private:
 	HWND currentTooltip;
 
 	void selectFile();
+	void selectWadbFile();
 	void clickOk(WPARAM wParam);
 	void hideTooltips();
 	void showTooltip(int id);

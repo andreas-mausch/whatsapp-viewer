@@ -96,22 +96,27 @@ BEGIN
     LTEXT           "https://github.com/andreas-mausch/",IDC_STATIC,123,151,119,8
 END
 
-IDD_OPEN_FILE DIALOGEX 0, 0, 325, 175
+IDD_OPEN_FILE DIALOGEX 0, 0, 388, 260
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Open WhatsApp Database"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_OPEN_FILE_FILENAME,63,7,184,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDC_OPEN_FILE_SELECT,255,7,31,14
-    EDITTEXT        IDC_OPEN_FILE_ACCOUNT_NAME,63,28,184,14,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "OK",IDOK,209,154,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,268,154,50,14
+    EDITTEXT        IDC_OPEN_FILE_FILENAME,72,7,231,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_OPEN_FILE_SELECT,319,7,31,14
+    EDITTEXT        IDC_OPEN_FILE_ACCOUNT_NAME,72,28,231,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,267,239,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,331,239,50,14
     LTEXT           "File",IDC_STATIC,7,13,12,8
     LTEXT           "Account name",IDC_STATIC,7,34,46,8
-    PUSHBUTTON      "?",IDC_OPEN_FILE_FILENAME_TOOLTIP_BUTTON,300,7,18,14,BS_BITMAP | BS_FLAT
-    PUSHBUTTON      "?",IDC_OPEN_FILE_ACCOUNT_NAME_TOOLTIP_BUTTON,300,28,18,14,BS_BITMAP | BS_FLAT
-    LTEXT           "You need to download the database file from your phone. Ensure WhatsApp backup is enabled, plug it into your computer (USB) and copy the file:\r\n/sdcard/WhatsApp/Databases/msgstore.db.crypt5\r\nPlease note only plain .db files and .crypt5 are supported!",IDC_OPEN_FILE_FILENAME_TOOLTIP,7,95,311,37,SS_NOTIFY | NOT WS_VISIBLE
-    LTEXT           "The account name is the primary email address on your phone, the Google Mail account. If you are in doubt go to Settings->Accounts on your cell phone and try all.\r\n\r\nLeaving the account name blank is also known to work sometimes.",IDC_OPEN_FILE_ACCOUNT_NAME_TOOLTIP,7,51,311,37,SS_NOTIFY | NOT WS_VISIBLE
+    PUSHBUTTON      "?",IDC_OPEN_FILE_FILENAME_TOOLTIP_BUTTON,363,7,18,14,BS_BITMAP | BS_FLAT
+    PUSHBUTTON      "?",IDC_OPEN_FILE_ACCOUNT_NAME_TOOLTIP_BUTTON,363,28,18,14,BS_BITMAP | BS_FLAT
+    LTEXT           "You need to download the database file from your phone. Ensure WhatsApp backup is enabled, plug it into your computer (USB) and copy the file:\r\n/sdcard/WhatsApp/Databases/msgstore.db.crypt5\r\nPlease note only plain .db files and .crypt5 are supported!",IDC_OPEN_FILE_FILENAME_TOOLTIP,7,152,374,37,SS_NOTIFY | NOT WS_VISIBLE
+    LTEXT           "The account name is the primary email address on your phone, the Google Mail account. If you are in doubt go to Settings->Accounts on your cell phone and try all.\r\n\r\nLeaving the account name blank is also known to work sometimes.",IDC_OPEN_FILE_ACCOUNT_NAME_TOOLTIP,7,108,374,37,SS_NOTIFY | NOT WS_VISIBLE
+    LTEXT           "If you have root access to your phone and downloaded the file\r\n/data/data/com.whatsapp/databases/wa.db\r\nyou can use it to resolve contact names",IDC_OPEN_FILE_WADB_TOOLTIP,7,197,374,29,SS_NOTIFY | NOT WS_VISIBLE
+    EDITTEXT        IDC_OPEN_FILE_WADB,72,50,231,14,ES_AUTOHSCROLL
+    LTEXT           "wa.db (optional)",IDC_STATIC,7,56,54,8
+    PUSHBUTTON      "?",IDC_OPEN_FILE_WADB_TOOLTIP_BUTTON,363,50,18,14,BS_BITMAP | BS_FLAT
+    PUSHBUTTON      "...",IDC_OPEN_FILE_WADB_SELECT,319,50,31,14
 END
 
 
@@ -162,13 +167,15 @@ BEGIN
     IDD_OPEN_FILE, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 318
-        VERTGUIDE, 63
-        VERTGUIDE, 247
+        RIGHTMARGIN, 381
+        VERTGUIDE, 72
+        VERTGUIDE, 303
+        VERTGUIDE, 319
         TOPMARGIN, 7
-        BOTTOMMARGIN, 168
+        BOTTOMMARGIN, 253
         HORZGUIDE, 21
         HORZGUIDE, 42
+        HORZGUIDE, 64
     END
 END
 #endif    // APSTUDIO_INVOKED
