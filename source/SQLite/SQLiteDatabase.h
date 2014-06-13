@@ -3,6 +3,7 @@
 #include <string>
 
 struct sqlite3;
+struct sqlite3_stmt;
 
 class SQLiteDatabase
 {
@@ -17,5 +18,7 @@ public:
 	std::string getErrorMessage();
 
 	sqlite3* getHandle();
+
+	static std::string readString(sqlite3_stmt *res, int column);
 
 };

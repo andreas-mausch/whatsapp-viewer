@@ -127,6 +127,7 @@ INT_PTR OpenDatabaseDialog::callback(HWND dialog, UINT message, WPARAM wParam, L
 		{
 			SetDlgItemText(dialog, IDC_OPEN_FILE_FILENAME, strtowstr(openDatabaseStruct.filename).c_str());
 			SetDlgItemText(dialog, IDC_OPEN_FILE_ACCOUNT_NAME, strtowstr(openDatabaseStruct.accountName).c_str());
+			SetDlgItemText(dialog, IDC_OPEN_FILE_WADB, strtowstr(openDatabaseStruct.wadbFilename).c_str());
 
 			SetWindowPos(dialog, NULL, 0, 0, 600, 210, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 		} break;

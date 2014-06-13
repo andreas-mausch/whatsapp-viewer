@@ -11,17 +11,6 @@
 #include "Database.h"
 #include "QueryMessagesThread.h"
 
-std::string readString(sqlite3_stmt *res, int column)
-{
-	const unsigned char *text = sqlite3_column_text(res, column);
-	if (text == NULL)
-	{
-		return "";
-	}
-
-	return reinterpret_cast<const char *>(text);
-}
-
 WhatsappDatabase::WhatsappDatabase(const std::string &filename)
 	: database(filename)
 {
@@ -47,8 +36,8 @@ void WhatsappDatabase::getChats(Settings &settings, std::vector<WhatsappChat*> &
 
 	while (sqlite3_step(res) == SQLITE_ROW)
 	{
-		std::string key = readString(res, 0);
-		std::string subject = readString(res, 1);
+		std::string key = database.readString(res, 0);
+		std::string subject = database.readString(res, 1);
 		long long creation = sqlite3_column_int64(res, 2);
 		long long lastMessage = sqlite3_column_int64(res, 3);
 		std::string displayName = findDisplayName(settings, key);

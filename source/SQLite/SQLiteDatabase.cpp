@@ -29,3 +29,14 @@ std::string SQLiteDatabase::getErrorMessage()
 {
 	return sqlite3_errmsg(database);
 }
+
+std::string SQLiteDatabase::readString(sqlite3_stmt *res, int column)
+{
+	const unsigned char *text = sqlite3_column_text(res, column);
+	if (text == NULL)
+	{
+		return "";
+	}
+
+	return reinterpret_cast<const char *>(text);
+}
