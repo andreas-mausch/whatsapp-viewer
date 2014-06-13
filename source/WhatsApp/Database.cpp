@@ -54,7 +54,7 @@ void WhatsappDatabase::getChats(std::vector<WhatsappChat*> &chats)
 		long long creation = sqlite3_column_int64(res, 2);
 		long long lastMessage = sqlite3_column_int64(res, 3);
 
-		WhatsappChat *chat = new WhatsappChat(*this, key, subject, creation, lastMessage);
+		WhatsappChat *chat = new WhatsappChat(*this, key, key, subject, creation, lastMessage);
 		chats.push_back(chat);
 	}
 

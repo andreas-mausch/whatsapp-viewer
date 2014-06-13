@@ -200,7 +200,7 @@ void MainWindow::addChats()
 
 void MainWindow::addChat(WhatsappChat &chat)
 {
-	std::wstring text = strtowstr(chat.getKey());
+	std::wstring text = strtowstr(chat.getDisplayName());
 	std::wstring lastMessageText = strtowstr(formatTimestamp(chat.getLastMessage()));
 
 	LVITEM item;

@@ -3,14 +3,19 @@
 #include "Message.h"
 #include "../VectorUtils.h"
 
-WhatsappChat::WhatsappChat(WhatsappDatabase &database, const std::string &key, const std::string &subject, long long creation, long long lastMessage)
-	: database(database), key(key), subject(subject), creation(creation), lastMessage(lastMessage), messagesLoaded(false)
+WhatsappChat::WhatsappChat(WhatsappDatabase &database, const std::string &displayName, const std::string &key, const std::string &subject, long long creation, long long lastMessage)
+	: database(database), displayName(displayName), key(key), subject(subject), creation(creation), lastMessage(lastMessage), messagesLoaded(false)
 {
 }
 
 WhatsappChat::~WhatsappChat()
 {
 	clearVector(messages);
+}
+
+const std::string& WhatsappChat::getDisplayName() const
+{
+	return displayName;
 }
 
 const std::string& WhatsappChat::getKey() const
