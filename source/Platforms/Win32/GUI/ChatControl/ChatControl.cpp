@@ -221,34 +221,38 @@ void ChatControl::paintBackbuffer()
 		int scrollPosition = GetScrollPos(window, SB_VERT);
 
 		int y = 10;
-		if (y - scrollPosition > 0)
+
+		std::stringstream text;
+		text << "WhatsApp Chat";
+
+		if (chat != NULL)
 		{
-			std::stringstream text;
-			text << "WhatsApp Chat";
+			text << " (" << chat->getDisplayName();
 
-			if (chat != NULL)
+			if (chat->getKey() != chat->getDisplayName())
 			{
-				text << " (" << chat->getDisplayName();
-
-				if (chat->getKey() != chat->getDisplayName())
-				{
-					text << "; " << chat->getKey();
-				}
-
-				if (chat->getSubject().length() > 0)
-				{
-					text << "; " << chat->getSubject();
-				}
-
-				text << ")";
+				text << "; " << chat->getKey();
 			}
 
-			WCHAR *wcharText = buildWcharString(text.str());
-			drawText(backbuffer, wcharText, 10, 10, clientRect.right - 10);
-			delete[] wcharText;
+			if (chat->getSubject().length() > 0)
+			{
+				text << "; " << chat->getSubject();
+			}
+
+			text << ")";
 		}
 
-		y += 15;
+		WCHAR *wcharText = buildWcharString(text.str());
+		int height = calculateDrawTextHeight(backbuffer, wcharText, clientRect.right - 20, static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
+
+		if (y - scrollPosition > 0)
+		{
+			drawText(backbuffer, wcharText, 10, 10, clientRect.right - 20);
+		}
+
+		delete[] wcharText;
+
+		y += height;
 		if (y - scrollPosition)
 		{
 			MoveToEx(backbuffer, 10, y - scrollPosition, NULL);
