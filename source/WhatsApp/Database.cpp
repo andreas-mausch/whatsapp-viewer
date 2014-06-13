@@ -23,16 +23,12 @@ std::string readString(sqlite3_stmt *res, int column)
 }
 
 WhatsappDatabase::WhatsappDatabase(const std::string &filename)
+	: database(filename)
 {
-	if(sqlite3_open(filename.c_str(), &sqLiteDatabase) != SQLITE_OK)
-	{
-		throw SQLiteException("Could not open SQLite database", *this);
-	}
 }
 
 WhatsappDatabase::~WhatsappDatabase()
 {
-	sqlite3_close(sqLiteDatabase);
 }
 
 void WhatsappDatabase::getChats(Settings &settings, std::vector<WhatsappChat*> &chats)
@@ -44,9 +40,9 @@ void WhatsappDatabase::getChats(Settings &settings, std::vector<WhatsappChat*> &
 						"ORDER BY max(messages.timestamp) desc";
 
 	sqlite3_stmt *res;
-	if (sqlite3_prepare_v2(sqLiteDatabase, query, -1, &res, NULL) != SQLITE_OK)
+	if (sqlite3_prepare_v2(database.getHandle(), query, -1, &res, NULL) != SQLITE_OK)
 	{
-		throw SQLiteException("Could not load chat list", *this);
+		throw SQLiteException("Could not load chat list", database);
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW)
@@ -78,7 +74,7 @@ std::string WhatsappDatabase::findDisplayName(Settings &settings, const std::str
 
 void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<WhatsappMessage*> &messages, const volatile bool &running)
 {
-	QueryMessagesThread queryMessagesThread(*this, sqLiteDatabase, chatId, messages);
+	QueryMessagesThread queryMessagesThread(*this, database, chatId, messages);
 	queryMessagesThread.start();
 
 	while (!queryMessagesThread.joinFor(10))
@@ -92,12 +88,3 @@ void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<Whatsa
 	}
 }
 
-int WhatsappDatabase::getErrorCode()
-{
-	return sqlite3_errcode(sqLiteDatabase);
-}
-
-std::string WhatsappDatabase::getErrorMessage()
-{
-	return sqlite3_errmsg(sqLiteDatabase);
-}

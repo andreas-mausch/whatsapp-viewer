@@ -1,14 +1,14 @@
 #include<sstream>
 
 #include "SQLiteException.h"
-#include "../WhatsApp/Database.h"
+#include "../SQLite/SQLiteDatabase.h"
 
-SQLiteException::SQLiteException(const std::string &reason, WhatsappDatabase &database)
+SQLiteException::SQLiteException(const std::string &reason, SQLiteDatabase &database)
 	: Exception(buildCause(reason, database))
 {
 }
 
-std::string SQLiteException::buildCause(const std::string &reason, WhatsappDatabase &database)
+std::string SQLiteException::buildCause(const std::string &reason, SQLiteDatabase &database)
 {
 	int errorCode = database.getErrorCode();
 	std::string errorMessage = database.getErrorMessage();

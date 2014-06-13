@@ -2,12 +2,12 @@
 
 #include "Exception.h"
 
-class WhatsappDatabase;
+class SQLiteDatabase;
 
 class SQLiteException : public Exception
 {
 private:
-	static std::string buildCause(const std::string &reason, WhatsappDatabase &database);
+	static std::string buildCause(const std::string &reason, SQLiteDatabase &database);
 public:
-	SQLiteException(const std::string &reason, WhatsappDatabase &database);
+	SQLiteException(const std::string &reason, SQLiteDatabase &database);
 };

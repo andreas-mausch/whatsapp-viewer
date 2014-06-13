@@ -229,6 +229,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\source\WhatsApp\Contacts.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\source\WhatsApp\Crypt5.cpp"
 					>
 				</File>
@@ -258,6 +262,10 @@
 				</File>
 				<File
 					RelativePath="..\source\SQLite\sqlite3.c"
+					>
+				</File>
+				<File
+					RelativePath="..\source\SQLite\SQLiteDatabase.cpp"
 					>
 				</File>
 			</Filter>
@@ -539,6 +547,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\source\WhatsApp\Contacts.h"
+					>
+				</File>
+				<File
 					RelativePath="..\source\WhatsApp\Crypt5.h"
 					>
 				</File>
@@ -568,6 +580,10 @@
 				</File>
 				<File
 					RelativePath="..\source\SQLite\sqlite3ext.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\SQLite\SQLiteDatabase.h"
 					>
 				</File>
 			</Filter>

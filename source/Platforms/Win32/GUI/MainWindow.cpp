@@ -17,6 +17,7 @@
 #include "../../../../resources/resource.h"
 #include "../../../Exceptions/Exception.h"
 #include "../../../WhatsApp/Chat.h"
+#include "../../../WhatsApp/Contacts.h"
 #include "../../../WhatsApp/Crypt5.h"
 #include "../../../WhatsApp/Crypt7.h"
 #include "../../../WhatsApp/Database.h"
@@ -83,6 +84,7 @@ void MainWindow::readSettings()
 		lastDatabaseOpened.filename = settings.read("lastOpenedFile");
 		lastDatabaseOpened.accountName = settings.read("lastOpenedAccount");
 		lastDatabaseOpened.keyFilename = settings.read("lastOpenedKeyfile");
+		lastDatabaseOpened.wadbFilename = settings.read("lastOpenedWadbfile");
 	}
 	catch (Exception &)
 	{
@@ -348,6 +350,11 @@ void MainWindow::openDatabase()
 
 		try
 		{
+			if (openDatabaseStruct.wadbFilename.length() > 0)
+			{
+				importContacts(settings, openDatabaseStruct.wadbFilename);
+			}
+
 			const std::string *filename = &openDatabaseStruct.filename;
 
 			if (!isPlainWhatsappDatabase(*filename))
@@ -362,6 +369,7 @@ void MainWindow::openDatabase()
 			lastDatabaseOpened = openDatabaseStruct;
 			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
 			settings.write("lastOpenedAccount", lastDatabaseOpened.accountName);
+			settings.write("lastOpenedWadbfile", lastDatabaseOpened.wadbFilename);
 
 			openPlainDatabase(*filename);
 		}

@@ -3,12 +3,13 @@
 #include "QueryMessagesThread.h"
 #include "Message.h"
 #include "../Exceptions/SQLiteException.h"
+#include "../SQLite/SQLiteDatabase.h"
 #include "../SQLite/sqlite3.h"
 
 // todo: remove (see Database.cpp)
 std::string readString(sqlite3_stmt *res, int column);
 
-QueryMessagesThread::QueryMessagesThread(WhatsappDatabase &database, sqlite3 *sqLiteDatabase, const std::string &chatId, std::vector<WhatsappMessage *> &messages)
+QueryMessagesThread::QueryMessagesThread(WhatsappDatabase &database, SQLiteDatabase &sqLiteDatabase, const std::string &chatId, std::vector<WhatsappMessage *> &messages)
 	: database(database), sqLiteDatabase(sqLiteDatabase), chatId(chatId), messages(messages)
 {
 }
@@ -20,7 +21,7 @@ QueryMessagesThread::~QueryMessagesThread()
 void QueryMessagesThread::interrupt()
 {
 	ThreadWindows::interrupt();
-	sqlite3_interrupt(sqLiteDatabase);
+	sqlite3_interrupt(sqLiteDatabase.getHandle());
 }
 
 void QueryMessagesThread::run()
@@ -31,14 +32,14 @@ void QueryMessagesThread::run()
 						"ORDER BY timestamp asc";
 
 	sqlite3_stmt *res;
-	if (sqlite3_prepare_v2(sqLiteDatabase, query, -1, &res, NULL) != SQLITE_OK)
+	if (sqlite3_prepare_v2(sqLiteDatabase.getHandle(), query, -1, &res, NULL) != SQLITE_OK)
 	{
-		throw SQLiteException("Could not load messages", database);
+		throw SQLiteException("Could not load messages", sqLiteDatabase);
 	}
 
 	if (sqlite3_bind_text(res, 1, chatId.c_str(), -1, SQLITE_STATIC) != SQLITE_OK)
 	{
-		throw SQLiteException("Could not bind sql parameter", database);
+		throw SQLiteException("Could not bind sql parameter", sqLiteDatabase);
 	}
 
 	while (sqlite3_step(res) == SQLITE_ROW)
