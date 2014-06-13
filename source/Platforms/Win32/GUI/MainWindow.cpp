@@ -394,7 +394,7 @@ void MainWindow::openPlainDatabase(const std::string &filename)
 	lastDatabaseOpened.filename = filename;
 
 	database = new WhatsappDatabase(filename);
-	database->getChats(chats);
+	database->getChats(settings, chats);
 
 	addChats();
 }

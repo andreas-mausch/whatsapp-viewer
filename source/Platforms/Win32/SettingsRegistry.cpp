@@ -1,6 +1,7 @@
 #include "SettingsRegistry.h"
 #include "StringHelper.h"
 #include "../../Exceptions/Exception.h"
+#include "../../Exceptions/KeyNotFoundException.h"
 
 #include <windows.h>
 
@@ -26,7 +27,7 @@ std::string SettingsRegistry::read(const std::string &key)
 	if (RegQueryValueEx(keyHandle, keyW.c_str(), NULL, &type, NULL, &size) != ERROR_SUCCESS)
 	{
 		RegCloseKey(keyHandle);
-		throw Exception("Could not read registry value");
+		throw KeyNotFoundException("Could not read registry value");
 	}
 
 	if (type != REG_SZ)
