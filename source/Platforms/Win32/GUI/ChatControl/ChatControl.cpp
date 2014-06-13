@@ -223,22 +223,27 @@ void ChatControl::paintBackbuffer()
 		int y = 10;
 		if (y - scrollPosition > 0)
 		{
-			std::string text = "WhatsApp Chat";
+			std::stringstream text;
+			text << "WhatsApp Chat";
+
 			if (chat != NULL)
 			{
-				text += " (";
-				text += chat->getKey();
+				text << " (" << chat->getDisplayName();
+
+				if (chat->getKey() != chat->getDisplayName())
+				{
+					text << "; " << chat->getKey();
+				}
 
 				if (chat->getSubject().length() > 0)
 				{
-					text += "; ";
-					text += chat->getSubject();
+					text << "; " << chat->getSubject();
 				}
 
-				text += ")";
+				text << ")";
 			}
 
-			WCHAR *wcharText = buildWcharString(text);
+			WCHAR *wcharText = buildWcharString(text.str());
 			drawText(backbuffer, wcharText, 10, 10, clientRect.right - 10);
 			delete[] wcharText;
 		}
