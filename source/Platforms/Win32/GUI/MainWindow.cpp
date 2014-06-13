@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <commctrl.h>
+#include <algorithm>
 #include <fstream>
 #include <vector>
 
@@ -508,6 +509,7 @@ void MainWindow::searchChats()
 	WCHAR searchPatternW[256];
 	GetDlgItemText(dialog, IDC_MAIN_SEARCH_CHATS, searchPatternW, 256);
 	std::string searchPattern = wstrtostr(searchPatternW);
+	std::transform(searchPattern.begin(), searchPattern.end(), searchPattern.begin(), tolower);
 
 	clearChatList();
 
@@ -515,7 +517,11 @@ void MainWindow::searchChats()
 	{
 		WhatsappChat *chat = *it;
 
-		if (chat->getKey().find(searchPattern) != std::string::npos)
+		std::string displayName = chat->getDisplayName();
+		std::transform(displayName.begin(), displayName.end(), displayName.begin(), tolower);
+
+		if ((chat->getKey().find(searchPattern) != std::string::npos) ||
+			(displayName.find(searchPattern) != std::string::npos))
 		{
 			addChat(*chat);
 		}
