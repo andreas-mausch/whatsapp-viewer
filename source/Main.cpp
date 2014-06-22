@@ -2,6 +2,10 @@
 	#include <vld.h>
 #endif
 
+#include <string>
+#include <vector>
+
+#include "CLI.h"
 #include "Main.h"
 #include "WhatsAppViewer.h"
 #include "Exceptions/Exception.h"
@@ -11,6 +15,11 @@ void entryPoint(const std::vector<std::string *> arguments)
 {
 	try
 	{
+		if (handleCommandLineArguments(arguments))
+		{
+			return;
+		}
+
 		WhatsAppViewer whatsAppViewer;
 
 		if (arguments.size() > 1)
