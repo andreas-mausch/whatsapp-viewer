@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Exported Chat XXX</title>
+		<style type="text/css">
+			.chat {
+				width: 600px;
+				background-color: #C0C0A0;
+				font-family: "Verdana", sans-serif;
+			}
+			
+			.chat_header {
+				text-align: center;
+				font-weight: bold;
+				margin-bottom: 20px;
+				padding: 10px;
+			}
+			
+			.heading {
+				font-size: 140%;
+			}
+			
+			.contact {
+			}
+			
+			.day {
+				text-align: center;
+				margin: 30px 10px 10px 10px;
+			}
+			
+			.day > span {
+				background-color: #B0D0F0;
+			}
+			
+			.message {
+				margin: 10px 10px;
+				max-width: 80%;
+			}
+			
+			.message > span {
+				max-width: 50px;
+				word-wrap: break-word;
+			}
+			
+			.incoming_message {
+				text-align: left;
+			}
+			
+			.incoming_message > span {
+				background-color: #C0C0C0;
+			}
+
+			.outgoing_message {
+				text-align: right;
+				margin-left: auto;
+			}
+
+			.outgoing_message > span {
+				background-color: #C0F0C0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="chat">
+			<div class="chat_header">
+				<div>
+					<span class="heading">Chat from 12.5.2011</span>
+				</div>
+				<div>
+					<span class="contact">Horst Meier</span>
+				</div>
+			</div>
+			%MESSAGES%
+		</div>
+	</body>
+</html>

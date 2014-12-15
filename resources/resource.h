@@ -872,8 +872,11 @@
 #define IDC_OPEN_FILE_ACCOUNT_NAME      1006
 #define IDC_BUTTON1                     1006
 #define IDC_MAIN_EXPORT                 1006
+#define IDC_MAIN_EXPORT_TXT             1006
 #define IDC_ABOUT_APPLICATION_NAME      1007
 #define IDC_OPEN_FILE_WADB              1007
+#define IDC_MAIN_EXPORT2                1007
+#define IDC_MAIN_EXPORT_HTML            1007
 #define IDC_ABOUT_APPLICATION_VERSION   1008
 #define IDC_OPEN_FILE_SELECT2           1008
 #define IDC_OPEN_FILE_WADB_SELECT       1008
@@ -888,6 +891,7 @@
 #define IDC_DECRYPT_CRYPT7_SELECT_DATABASE 1017
 #define IDC_DECRYPT_CRYPT7_KEYFILE      1018
 #define IDC_DECRYPT_CRYPT7_SELECT_KEY   1019
+#define IDR_CHAT_EXPORT_HTML_TEMPLATE   1020
 #define ID_FILE_OPEN40001               40001
 #define ID_MENU_MAIN_FILE_OPEN          40002
 #define ID_FILE_DECRYPT                 40003

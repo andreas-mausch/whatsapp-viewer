@@ -13,6 +13,7 @@
 #include "SearchControl/SearchControl.h"
 #include "../Objects/Bitmap.h"
 #include "../../../ChatExporter.h"
+#include "../../../ChatExporterHtml.h"
 #include "../../../WhatsAppViewer.h"
 #include "../../../../resources/resource.h"
 #include "../../../Exceptions/Exception.h"
@@ -221,8 +222,12 @@ void MainWindow::addChat(WhatsappChat &chat)
 void MainWindow::selectChat(WhatsappChat *chat)
 {
 	SendDlgItemMessage(dialog, IDC_MAIN_MESSAGES, WM_CHATCONTROL, CHAT_CONTROL_SETCHAT, reinterpret_cast<LPARAM>(chat));
-	SetWindowLongPtr(GetDlgItem(dialog, IDC_MAIN_EXPORT), GWLP_USERDATA, reinterpret_cast<LPARAM>(chat));
-	EnableWindow(GetDlgItem(dialog, IDC_MAIN_EXPORT), chat != NULL);
+
+	SetWindowLongPtr(GetDlgItem(dialog, IDC_MAIN_EXPORT_TXT), GWLP_USERDATA, reinterpret_cast<LPARAM>(chat));
+	SetWindowLongPtr(GetDlgItem(dialog, IDC_MAIN_EXPORT_HTML), GWLP_USERDATA, reinterpret_cast<LPARAM>(chat));
+
+	EnableWindow(GetDlgItem(dialog, IDC_MAIN_EXPORT_TXT), chat != NULL);
+	EnableWindow(GetDlgItem(dialog, IDC_MAIN_EXPORT_HTML), chat != NULL);
 }
 
 void MainWindow::resizeChildWindows(int width, int height)
@@ -235,7 +240,8 @@ void MainWindow::resizeChildWindows(int width, int height)
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_SEARCH_CHATS), NULL, border, border, chatsWidth, searchBoxHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_CHATS), NULL, border, border + searchBoxHeight + 5, chatsWidth, height - border * 2 - searchBoxHeight - 5, SWP_NOZORDER | SWP_SHOWWINDOW);
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_MESSAGES), NULL, chatsWidth + border * 2, border, width - chatsWidth - border * 3, height - border * 3 - buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
-	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT), NULL, chatsWidth + border * 2, height - border - buttonRowHeight, 150, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT_TXT), NULL, chatsWidth + border * 2, height - border - buttonRowHeight, 150, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT_HTML), NULL, chatsWidth + border * 2 + 180, height - border - buttonRowHeight, 150, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
 }
 
 void MainWindow::sortChats()
@@ -413,11 +419,19 @@ void MainWindow::closeDatabase()
 	database = NULL;
 }
 
-void MainWindow::exportChat(WhatsappChat &chat)
+void MainWindow::exportChatToTxt(WhatsappChat &chat)
 {
 	ChatExporter exporter(chat);
 	exporter.exportChat("chat.txt");
 	MessageBox(dialog, L"Chat exported to file chat.txt", L"Success", MB_OK | MB_ICONINFORMATION);
+}
+
+void MainWindow::exportChatToHtml(WhatsappChat &chat)
+{
+	std::string templateHtml = imageDecoder.loadString(MAKEINTRESOURCE(IDR_CHAT_EXPORT_HTML_TEMPLATE), RT_HTML);
+	ChatExporterHtml exporter(templateHtml, chat);
+	exporter.exportChat("chat.html");
+	MessageBox(dialog, L"Chat exported to file chat.html", L"Success", MB_OK | MB_ICONINFORMATION);
 }
 
 void MainWindow::decryptDatabaseCrypt5()
@@ -582,10 +596,15 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 						{
 							decryptDatabaseCrypt7();
 						} break;
-						case IDC_MAIN_EXPORT:
+						case IDC_MAIN_EXPORT_TXT:
 						{
-							WhatsappChat *chat = reinterpret_cast<WhatsappChat *>(GetWindowLongPtr(GetDlgItem(dialog, IDC_MAIN_EXPORT), GWLP_USERDATA));
-							exportChat(*chat);
+							WhatsappChat *chat = reinterpret_cast<WhatsappChat *>(GetWindowLongPtr(GetDlgItem(dialog, IDC_MAIN_EXPORT_TXT), GWLP_USERDATA));
+							exportChatToTxt(*chat);
+						} break;
+						case IDC_MAIN_EXPORT_HTML:
+						{
+							WhatsappChat *chat = reinterpret_cast<WhatsappChat *>(GetWindowLongPtr(GetDlgItem(dialog, IDC_MAIN_EXPORT_HTML), GWLP_USERDATA));
+							exportChatToHtml(*chat);
 						} break;
 						case ID_MENU_MAIN_FILE_EXIT:
 						{

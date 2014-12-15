@@ -57,7 +57,8 @@ private:
 	void setSortingColumn(int columnIndex);
 	void updateSortingArrow();
 
-	void exportChat(WhatsappChat &chat);
+	void exportChatToTxt(WhatsappChat &chat);
+	void exportChatToHtml(WhatsappChat &chat);
 
 	void getTempFilename();
 	bool fileExists(const std::string &filename);

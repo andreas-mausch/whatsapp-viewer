@@ -28,5 +28,6 @@ public:
 	HBITMAP loadImageFromResource(const WCHAR *name, const WCHAR *type);
 	HBITMAP loadImage(unsigned char *bytes, int size);
 	void loadGifFromResource(const WCHAR *name, const WCHAR *type, std::vector<AnimatedGifFrame *> &frames);
+	std::string loadString(const WCHAR *name, const WCHAR *type);
 
 };

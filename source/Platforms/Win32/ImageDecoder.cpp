@@ -72,6 +72,16 @@ void ImageDecoder::loadResource(const WCHAR *name, const WCHAR *type, unsigned c
 	}
 }
 
+std::string ImageDecoder::loadString(const WCHAR *name, const WCHAR *type)
+{
+	unsigned char *bytes = NULL;
+	DWORD size = 0;
+	loadResource(name, type, bytes, size);
+
+	std::string text(reinterpret_cast<const char *>(bytes), size);
+	return text;
+}
+
 HBITMAP ImageDecoder::loadImageFromResource(const WCHAR *name, const WCHAR *type)
 {
 	unsigned char *bytes = NULL;
