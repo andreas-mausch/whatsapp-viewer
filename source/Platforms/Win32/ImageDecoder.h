@@ -8,12 +8,13 @@ struct IWICBitmapDecoder;
 struct IWICBitmapFrameDecode;
 struct AnimatedGifFrame;
 
+void loadResource(const WCHAR *name, const WCHAR *type, unsigned char *&bytes, DWORD &size);
+
 class ImageDecoder
 {
 private:
 	IWICImagingFactory *factory;
 
-	void loadResource(const WCHAR *name, const WCHAR *type, unsigned char *&bytes, DWORD &size);
 	HBITMAP loadImage(IWICBitmapDecoder *decoder);
 
 	IWICStream *createStreamFromBytes(unsigned char *bytes, int size);

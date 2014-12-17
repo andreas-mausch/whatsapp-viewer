@@ -859,6 +859,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Base64"
+				>
+				<File
+					RelativePath="..\source\Base64\Base64.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Ressourcendateien"

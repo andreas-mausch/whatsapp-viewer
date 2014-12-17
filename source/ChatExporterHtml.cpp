@@ -4,12 +4,16 @@
 #include <windows.h>
 
 #include "ChatExporterHtml.h"
+#include "Base64/Base64.h"
 #include "Exceptions/Exception.h"
 #include "Platforms/Win32/Timestamp.h"
+#include "Platforms/Win32/ImageDecoder.h"
+#include "Platforms/Win32/GUI/SmileyList.h"
 #include "UTF8/utf8.h"
 #include "WhatsApp/Chat.h"
 #include "WhatsApp/Emoticons.h"
 #include "WhatsApp/Message.h"
+#include "../resources/resource.h"
 
 ChatExporterHtml::ChatExporterHtml(const std::string &templateHtml, WhatsappChat &chat)
 	: chat(chat), templateHtml(templateHtml)
@@ -114,6 +118,27 @@ std::string ChatExporterHtml::convertMessageToHtml(WhatsappMessage &message)
 	return output.str();
 }
 
+std::string ChatExporterHtml::buildEmoticonStyles()
+{
+	std::stringstream css;
+	for (int i = 0; i < smileyCount; i++)
+	{
+		unsigned char *bytes = NULL;
+		DWORD size = 0;
+		loadResource(MAKEINTRESOURCE(smileyList[i].resource), L"PNG", bytes, size);
+		std::string base64Emoticon = base64_encode(bytes, size);
+
+		css << ".emoticon_" << std::hex << smileyList[i].character << " {" << std::endl;
+		css << "display: inline-block;" << std::endl;
+		css << "width: 20px;" << std::endl;
+		css << "height: 20px;" << std::endl;
+		css << "background-image: url(data:image/png;base64," << base64Emoticon << ")" << std::endl;
+		css << "}" << std::endl;
+	}
+
+	return css.str();
+}
+
 void ChatExporterHtml::exportChat(const std::string &filename)
 {
 	std::string messages = buildMessages();
@@ -134,7 +159,7 @@ void ChatExporterHtml::exportChat(const std::string &filename)
 	replacePlaceholder(html, "%HEADING%", "WhatsApp Chat");
 	replacePlaceholder(html, "%CONTACT%", contact);
 	replacePlaceholder(html, "%MESSAGES%", messages);
-	replacePlaceholder(html, "%EMOTICON_STYLES%", "");
+	replacePlaceholder(html, "%EMOTICON_STYLES%", buildEmoticonStyles());
 
 	file << html;
 }
