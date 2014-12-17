@@ -39,8 +39,6 @@
 			}
 			
 			.message > span {
-				max-width: 50px;
-				word-wrap: break-word;
 			}
 			
 			.incoming_message {
@@ -59,6 +57,8 @@
 			.outgoing_message > span {
 				background-color: #C0F0C0;
 			}
+			
+			%EMOTICON_STYLES%
 		</style>
 	</head>
 
@@ -66,10 +66,10 @@
 		<div class="chat">
 			<div class="chat_header">
 				<div>
-					<span class="heading">Chat from 12.5.2011</span>
+					<span class="heading">%HEADING%</span>
 				</div>
 				<div>
-					<span class="contact">Horst Meier</span>
+					<span class="contact">%CONTACT%</span>
 				</div>
 			</div>
 			%MESSAGES%

@@ -14,7 +14,6 @@ private:
 	Smileys &smileys;
 
 	void splitMessage(WhatsappMessage &message);
-	bool isSmiley(int character);
 
 public:
 	ChatControlMessageText(WhatsappMessage &message, int width, Smileys &smileys);

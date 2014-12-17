@@ -4,6 +4,7 @@
 #include "ChatControlMessageText.h"
 #include "ChatControlMessageTextElement.h"
 #include "../../../SmileyList.h"
+#include "../../../../../../WhatsApp/Emoticons.h"
 #include "../../../../../../WhatsApp/Message.h"
 #include "../../../../../../UTF8/utf8.h"
 #include "../../../../../../VectorUtils.h"
@@ -33,19 +34,6 @@ int ChatControlMessageText::calculateHeight()
 	}
 
 	return height;
-}
-
-bool ChatControlMessageText::isSmiley(int character)
-{
-	for (int i = 0; i < smileyCount; i++)
-	{
-		if (smileyList[i].character == character)
-		{
-			return true;
-		}
-	}
-
-	return false;
 }
 
 void ChatControlMessageText::splitMessage(WhatsappMessage &message)
