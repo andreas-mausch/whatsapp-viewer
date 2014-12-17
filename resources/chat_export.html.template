@@ -8,6 +8,7 @@
 				width: 600px;
 				background-color: #D4D1D1;
 				font-family: "Verdana", sans-serif;
+				padding: 10px;
 			}
 			
 			.chat_header {
@@ -34,7 +35,7 @@
 			}
 			
 			.message {
-				margin: 10px 10px;
+				margin: 2px 10px;
 				max-width: 80%;
 			}
 			
