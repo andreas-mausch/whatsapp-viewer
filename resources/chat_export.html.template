@@ -6,7 +6,7 @@
 		<style type="text/css">
 			.chat {
 				width: 600px;
-				background-color: #C0C0A0;
+				background-color: #D4D1D1;
 				font-family: "Verdana", sans-serif;
 			}
 			
@@ -46,7 +46,7 @@
 			}
 			
 			.incoming_message > span {
-				background-color: #C0C0C0;
+				background-color: #F7F6F4;
 			}
 
 			.outgoing_message {
@@ -55,7 +55,7 @@
 			}
 
 			.outgoing_message > span {
-				background-color: #C0F0C0;
+				background-color: #F1FAE7;
 			}
 			
 			%EMOTICON_STYLES%
