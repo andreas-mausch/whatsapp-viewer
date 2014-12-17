@@ -44,13 +44,13 @@ std::string ChatExporterHtml::buildMessages(std::set<int> &usedEmoticons)
 			output << "incoming_message";
 		}
 
-		output << "\"><span>";
+		output << "\">";
 
 		switch (message.getMediaWhatsappType())
 		{
 			case MEDIA_WHATSAPP_TEXT:
 			{
-				output << convertMessageToHtml(message, usedEmoticons);
+				output << "<span>" << convertMessageToHtml(message, usedEmoticons) << "</span>";
 			} break;
 			case MEDIA_WHATSAPP_IMAGE:
 			{
@@ -61,25 +61,23 @@ std::string ChatExporterHtml::buildMessages(std::set<int> &usedEmoticons)
 			} break;
 			case MEDIA_WHATSAPP_AUDIO:
 			{
-				output << "[ Audio ]";
+				output << "<span>[ Audio ]</span>";
 			} break;
 			case MEDIA_WHATSAPP_VIDEO:
 			{
-				output << "[ Video ]";
+				output << "<span>[ Video ]</span>";
 			} break;
 			case MEDIA_WHATSAPP_CONTACT:
 			{
-				output << "[ Contact ]";
+				output << "<span>[ Contact ]</span>";
 			} break;
 			case MEDIA_WHATSAPP_LOCATION:
 			{
-				output << "[ Location: " << message.getLatitude() << "; " << message.getLongitude() << " ]";
+				output << "<span>[ Location: " << message.getLatitude() << "; " << message.getLongitude() << " ]</span>";
 			} break;
 		}
 
-		output << "</span></div>";
-
-		output << std::endl;
+		output << "</div>" << std::endl;
 	}
 
 	return output.str();
