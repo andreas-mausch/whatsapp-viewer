@@ -24,7 +24,7 @@ ChatExporterHtml::~ChatExporterHtml()
 {
 }
 
-std::string ChatExporterHtml::buildMessages()
+std::string ChatExporterHtml::buildMessages(std::set<int> &usedEmoticons)
 {
 	std::stringstream output;
 
@@ -50,7 +50,7 @@ std::string ChatExporterHtml::buildMessages()
 		{
 			case MEDIA_WHATSAPP_TEXT:
 			{
-				output << convertMessageToHtml(message);
+				output << convertMessageToHtml(message, usedEmoticons);
 			} break;
 			case MEDIA_WHATSAPP_IMAGE:
 			{
@@ -88,7 +88,7 @@ void ChatExporterHtml::replacePlaceholder(std::string &html, const std::string &
 	html.replace(start, placeholder.length(), text);
 }
 
-std::string ChatExporterHtml::convertMessageToHtml(WhatsappMessage &message)
+std::string ChatExporterHtml::convertMessageToHtml(WhatsappMessage &message, std::set<int> &usedEmoticons)
 {
 	std::string messageString = message.getData();
 	std::stringstream output;
@@ -102,6 +102,7 @@ std::string ChatExporterHtml::convertMessageToHtml(WhatsappMessage &message)
 
 			if (isSmiley(character))
 			{
+				usedEmoticons.insert(character);
 				output << "<span class=\"emoticon_" << std::hex << character << "\"></span>";
 			}
 			else
@@ -118,22 +119,37 @@ std::string ChatExporterHtml::convertMessageToHtml(WhatsappMessage &message)
 	return output.str();
 }
 
-std::string ChatExporterHtml::buildEmoticonStyles()
+std::string ChatExporterHtml::buildEmoticonStyles(const std::set<int> &usedEmoticons)
 {
 	std::stringstream css;
-	for (int i = 0; i < smileyCount; i++)
+	for(std::set<int>::const_iterator it = usedEmoticons.begin(); it != usedEmoticons.end(); ++it)
 	{
-		unsigned char *bytes = NULL;
-		DWORD size = 0;
-		loadResource(MAKEINTRESOURCE(smileyList[i].resource), L"PNG", bytes, size);
-		std::string base64Emoticon = base64_encode(bytes, size);
+		int character = *it;
+		int smileyIndex = -1;
 
-		css << ".emoticon_" << std::hex << smileyList[i].character << " {" << std::endl;
-		css << "display: inline-block;" << std::endl;
-		css << "width: 20px;" << std::endl;
-		css << "height: 20px;" << std::endl;
-		css << "background-image: url(data:image/png;base64," << base64Emoticon << ")" << std::endl;
-		css << "}" << std::endl;
+		for (int i = 0; i < smileyCount; i++)
+		{
+			if (smileyList[i].character == character)
+			{
+				smileyIndex = i;
+				break;
+			}
+		}
+
+		if (smileyIndex >= 0)
+		{
+			unsigned char *bytes = NULL;
+			DWORD size = 0;
+			loadResource(MAKEINTRESOURCE(smileyList[smileyIndex].resource), L"PNG", bytes, size);
+			std::string base64Emoticon = base64_encode(bytes, size);
+
+			css << ".emoticon_" << std::hex << character << " {" << std::endl;
+			css << "display: inline-block;" << std::endl;
+			css << "width: 20px;" << std::endl;
+			css << "height: 20px;" << std::endl;
+			css << "background-image: url(data:image/png;base64," << base64Emoticon << ")" << std::endl;
+			css << "}" << std::endl;
+		}
 	}
 
 	return css.str();
@@ -141,7 +157,8 @@ std::string ChatExporterHtml::buildEmoticonStyles()
 
 void ChatExporterHtml::exportChat(const std::string &filename)
 {
-	std::string messages = buildMessages();
+	std::set<int> usedEmoticons;
+	std::string messages = buildMessages(usedEmoticons);
 
 	std::string contact = chat.getKey();
 	if (chat.getSubject().length() > 0)
@@ -159,7 +176,7 @@ void ChatExporterHtml::exportChat(const std::string &filename)
 	replacePlaceholder(html, "%HEADING%", "WhatsApp Chat");
 	replacePlaceholder(html, "%CONTACT%", contact);
 	replacePlaceholder(html, "%MESSAGES%", messages);
-	replacePlaceholder(html, "%EMOTICON_STYLES%", buildEmoticonStyles());
+	replacePlaceholder(html, "%EMOTICON_STYLES%", buildEmoticonStyles(usedEmoticons));
 
 	file << html;
 }
