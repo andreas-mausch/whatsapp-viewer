@@ -54,7 +54,10 @@ std::string ChatExporterHtml::buildMessages(std::set<int> &usedEmoticons)
 			} break;
 			case MEDIA_WHATSAPP_IMAGE:
 			{
-				output << "[ Image ]";
+				if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
+				{
+					output << "<img src=\"data:image/jpeg;base64," << base64_encode(message.getRawData(), message.getRawDataSize()) << "\">" << std::endl;
+				}
 			} break;
 			case MEDIA_WHATSAPP_AUDIO:
 			{
