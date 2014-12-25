@@ -45,7 +45,7 @@ void uncompressGzipBuffer(unsigned char *compressedBytes, int size, std::vector<
 	int ret = inflateInit2(&stream, 16 + MAX_WBITS);
 	if (ret != Z_OK)
 	{
-		throw Exception("Decryption failed. Error during unzipping (inflateInit).");
+		throw Exception("Decryption failed. Error during unzipping (inflateInit). Invalid key?");
 	}
 
 	unsigned char *currentPosition = compressedBytes;
