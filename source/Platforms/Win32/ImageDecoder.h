@@ -8,8 +8,6 @@ struct IWICBitmapDecoder;
 struct IWICBitmapFrameDecode;
 struct AnimatedGifFrame;
 
-void loadResource(const WCHAR *name, const WCHAR *type, unsigned char *&bytes, DWORD &size);
-
 class ImageDecoder
 {
 private:
