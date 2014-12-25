@@ -4,7 +4,7 @@
 #include "../Exceptions/Exception.h"
 #include "../Exceptions/KeyNotFoundException.h"
 #include "../Exceptions/SQLiteException.h"
-#include "../SQLite/sqlite3.h"
+#include "../Libraries/SQLite/sqlite3.h"
 #include "../Settings.h"
 #include "Chat.h"
 #include "Message.h"

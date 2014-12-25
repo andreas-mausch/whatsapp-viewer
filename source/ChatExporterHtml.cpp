@@ -4,12 +4,12 @@
 #include <windows.h>
 
 #include "ChatExporterHtml.h"
-#include "Base64/Base64.h"
 #include "Exceptions/Exception.h"
+#include "Libraries/Base64/Base64.h"
+#include "Libraries/UTF8/utf8.h"
 #include "Platforms/Win32/Timestamp.h"
 #include "Platforms/Win32/ImageDecoder.h"
 #include "Platforms/Win32/GUI/SmileyList.h"
-#include "UTF8/utf8.h"
 #include "WhatsApp/Chat.h"
 #include "WhatsApp/Emoticons.h"
 #include "WhatsApp/Message.h"

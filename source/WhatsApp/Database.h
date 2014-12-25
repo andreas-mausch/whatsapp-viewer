@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../SQLite/SQLiteDatabase.h"
+#include "../Libraries/SQLite/SQLiteDatabase.h"
 
 class Settings;
 class WhatsappChat;

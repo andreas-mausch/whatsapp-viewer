@@ -1,7 +1,7 @@
 #include<sstream>
 
 #include "SQLiteException.h"
-#include "../SQLite/SQLiteDatabase.h"
+#include "../Libraries/SQLite/SQLiteDatabase.h"
 
 SQLiteException::SQLiteException(const std::string &reason, SQLiteDatabase &database)
 	: Exception(buildCause(reason, database))

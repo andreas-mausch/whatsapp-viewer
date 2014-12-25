@@ -3,8 +3,8 @@
 #include "Contacts.h"
 #include "../Settings.h"
 #include "../Exceptions/SQLiteException.h"
-#include "../SQLite/SQLiteDatabase.h"
-#include "../SQLite/sqlite3.h"
+#include "../Libraries/SQLite/SQLiteDatabase.h"
+#include "../Libraries/SQLite/sqlite3.h"
 
 void importContacts(Settings &settings, const std::string &wadbFilename)
 {

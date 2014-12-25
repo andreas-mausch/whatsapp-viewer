@@ -1,6 +1,6 @@
 #include "SQLiteDatabase.h"
 #include "sqlite3.h"
-#include "../Exceptions/SQLiteException.h"
+#include "../../Exceptions/SQLiteException.h"
 
 SQLiteDatabase::SQLiteDatabase(const std::string &filename)
 {

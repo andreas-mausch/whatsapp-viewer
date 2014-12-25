@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
 
-#include "../AES/AES.h"
+#include "../Libraries/AES/AES.h"
 #include "../Exceptions/Exception.h"
-#include "../MD5/MD5.h"
+#include "../Libraries/MD5/MD5.h"
 #include "Crypt5.h"
 
 const unsigned char baseKey[] = { 141, 75, 21, 92, 201, 255, 129, 229, 203, 246, 250, 120, 25, 54, 106, 62, 198, 33, 166, 86, 65, 108, 215, 147 };

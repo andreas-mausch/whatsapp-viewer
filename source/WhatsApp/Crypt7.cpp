@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
 
-#include "../AES/AES.h"
+#include "../Libraries/AES/AES.h"
 #include "../Exceptions/Exception.h"
-#include "../MD5/MD5.h"
+#include "../Libraries/MD5/MD5.h"
 #include "Crypt5.h"
 #include "Crypt7.h"
 

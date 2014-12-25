@@ -3,8 +3,8 @@
 #include "QueryMessagesThread.h"
 #include "Message.h"
 #include "../Exceptions/SQLiteException.h"
-#include "../SQLite/SQLiteDatabase.h"
-#include "../SQLite/sqlite3.h"
+#include "../Libraries/SQLite/SQLiteDatabase.h"
+#include "../Libraries/SQLite/sqlite3.h"
 
 QueryMessagesThread::QueryMessagesThread(WhatsappDatabase &database, SQLiteDatabase &sqLiteDatabase, const std::string &chatId, std::vector<WhatsappMessage *> &messages)
 	: database(database), sqLiteDatabase(sqLiteDatabase), chatId(chatId), messages(messages)
