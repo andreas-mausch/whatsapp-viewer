@@ -1,8 +1,9 @@
-WhatsApp Viewer
+# WhatsApp Viewer
 
 Small tool to display chats from the Android msgstore.db.crypt5 database.
 
 How to use:
+
 1. Download msgstore.db.crypt5 from your Android phone (located at /sdcard/WhatsApp/Databases)
 2. Open WhatsApp Viewer
 3. File -> Open -> Select file
@@ -16,10 +17,12 @@ You see cryptic phone numbers because account names or details are not stored in
 This release is not stable and known to crash sometimes. Sorry.
 
 Credits:
-	Whatsapp Xtract
-	pwncrypt5.py https://github.com/aramosf/pwncrypt5/blob/master/pwncrypt5.py
-	SQLite
-	MD5 http://bobobobo.wordpress.com/2010/10/17/md5-c-implementation/
-	UTF8 http://utfcpp.sourceforge.net/
-	AES https://polarssl.org/aes-source-code
-	Base64 http://www.adp-gmbh.ch/cpp/common/base64.html
+
+* Whatsapp Xtract
+* pwncrypt5.py https://github.com/aramosf/pwncrypt5/blob/master/pwncrypt5.py
+* SQLite
+* MD5 http://bobobobo.wordpress.com/2010/10/17/md5-c-implementation/
+* UTF8 http://utfcpp.sourceforge.net/
+* AES https://polarssl.org/aes-source-code
+* Base64 http://www.adp-gmbh.ch/cpp/common/base64.html
+* Zlib http://www.zlib.net/
