@@ -22,3 +22,4 @@ Credits:
 	MD5 http://bobobobo.wordpress.com/2010/10/17/md5-c-implementation/
 	UTF8 http://utfcpp.sourceforge.net/
 	AES https://polarssl.org/aes-source-code
+	Base64 http://www.adp-gmbh.ch/cpp/common/base64.html
