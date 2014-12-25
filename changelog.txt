@@ -1,3 +1,8 @@
+v1.7 (2014-12-25)
+	Support for .crypt8 (you still need the key file)
+	HTML exporter
+	Command line interface: -decrypt5, -decrypt7 and -decrypt8 parameters for batch processing
+	Basic wa.db support to display names instead of numbers
 v1.6 (2014-06-12)
 	BUGFIX: No crash on invalid UTF-8 data in messages
 	BUGFIX: Messages containing an Ampersand (&) are now displayed correctly
