@@ -60,6 +60,15 @@ void buildKey(unsigned char *key, const std::string &accountName)
 	}
 }
 
+void validateOutput(unsigned char *databaseBytes)
+{
+	const char expectedBytes[] = "SQLite format 3";
+	if (memcmp(databaseBytes, expectedBytes, sizeof(expectedBytes)) != 0)
+	{
+		throw Exception("Decryption failed. Invalid key file or account name?");
+	}
+}
+
 void decryptWhatsappDatabase5(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key)
 {
 	unsigned char *databaseBytes;
@@ -69,12 +78,7 @@ void decryptWhatsappDatabase5(const std::string &filename, const std::string &fi
 	memcpy(iv, initVector, 16);
 
 	decrypt_aes_cbc_192(databaseBytes, databaseBytes, filesize, key, iv);
-
-	const char expectedBytes[] = "SQLite format 3";
-	if (memcmp(databaseBytes, expectedBytes, sizeof(expectedBytes)) != 0)
-	{
-		throw Exception("Decryption failed. Wrong account name?");
-	}
+	validateOutput(databaseBytes);
 
 	std::ofstream output(filenameDecrypted.c_str(), std::ios::binary);
 	if (!output)

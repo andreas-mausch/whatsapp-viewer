@@ -88,11 +88,7 @@ void decryptWhatsappDatabase8(const std::string &filename, const std::string &fi
 	std::vector<unsigned char> uncompressed;
 	uncompressGzipBuffer(databaseBytes, databaseSize, uncompressed);
 
-	const char expectedBytes[] = "SQLite format 3";
-	if (memcmp(&uncompressed[0], expectedBytes, sizeof(expectedBytes)) != 0)
-	{
-		throw Exception("Decryption failed. Invalid key?");
-	}
+	validateOutput(&uncompressed[0]);
 
 	std::ofstream output(filenameDecrypted.c_str(), std::ios::binary);
 	if (!output)

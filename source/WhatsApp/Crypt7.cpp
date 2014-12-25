@@ -41,12 +41,7 @@ void decryptWhatsappDatabase7(const std::string &filename, const std::string &fi
 	unsigned char *databaseBytes = &fileBytes[skipBytesCrypt7];
 
 	decryptAes(databaseBytes, databaseBytes, key, initVector, databaseSize);
-
-	const char expectedBytes[] = "SQLite format 3";
-	if (memcmp(databaseBytes, expectedBytes, sizeof(expectedBytes)) != 0)
-	{
-		throw Exception("Decryption failed. Invalid key?");
-	}
+	validateOutput(databaseBytes);
 
 	std::ofstream output(filenameDecrypted.c_str(), std::ios::binary);
 	if (!output)
