@@ -1,22 +1,22 @@
 #include <fstream>
 #include <windows.h>
 
-#include "ChatExporter.h"
+#include "ChatExporterTxt.h"
 #include "../Exceptions/Exception.h"
 #include "../WhatsApp/Chat.h"
 #include "../WhatsApp/Message.h"
 #include "../Platforms/Win32/Timestamp.h"
 
-ChatExporter::ChatExporter(WhatsappChat &chat)
+ChatExporterTxt::ChatExporterTxt(WhatsappChat &chat)
 	: chat(chat)
 {
 }
 
-ChatExporter::~ChatExporter()
+ChatExporterTxt::~ChatExporterTxt()
 {
 }
 
-void ChatExporter::exportChat(const std::string &filename)
+void ChatExporterTxt::exportChat(const std::string &filename)
 {
 	std::ofstream file(filename.c_str());
 

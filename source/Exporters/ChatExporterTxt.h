@@ -4,14 +4,14 @@
 
 class WhatsappChat;
 
-class ChatExporter
+class ChatExporterTxt
 {
 private:
 	WhatsappChat &chat;
 
 public:
-	ChatExporter(WhatsappChat &chat);
-	~ChatExporter();
+	ChatExporterTxt(WhatsappChat &chat);
+	~ChatExporterTxt();
 
 	void exportChat(const std::string &filename);
 };

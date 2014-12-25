@@ -12,7 +12,7 @@
 #include "ChatControl/ChatControl.h"
 #include "SearchControl/SearchControl.h"
 #include "../Objects/Bitmap.h"
-#include "../../../Exporters/ChatExporter.h"
+#include "../../../Exporters/ChatExporterTxt.h"
 #include "../../../Exporters/ChatExporterHtml.h"
 #include "../../../WhatsAppViewer.h"
 #include "../../../../resources/resource.h"
@@ -421,7 +421,7 @@ void MainWindow::closeDatabase()
 
 void MainWindow::exportChatToTxt(WhatsappChat &chat)
 {
-	ChatExporter exporter(chat);
+	ChatExporterTxt exporter(chat);
 	exporter.exportChat("chat.txt");
 	MessageBox(dialog, L"Chat exported to file chat.txt", L"Success", MB_OK | MB_ICONINFORMATION);
 }
