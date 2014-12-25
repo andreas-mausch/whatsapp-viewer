@@ -21,6 +21,7 @@
 #include "../../../WhatsApp/Contacts.h"
 #include "../../../WhatsApp/Crypt5.h"
 #include "../../../WhatsApp/Crypt7.h"
+#include "../../../WhatsApp/Crypt8.h"
 #include "../../../WhatsApp/Database.h"
 #include "../../../WhatsApp/Message.h"
 #include "../../../VectorUtils.h"
@@ -482,6 +483,30 @@ void MainWindow::decryptDatabaseCrypt7()
 	}
 }
 
+void MainWindow::decryptDatabaseCrypt8()
+{
+	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
+	DecryptDatabaseDialog7 dialog(MainWindow::dialog, openDatabaseStruct);
+
+	if (dialog.openModal() == IDOK)
+	{
+		try
+		{
+			decryptWhatsappDatabase8(openDatabaseStruct.filename, "msgstore.decrypted.db", openDatabaseStruct.keyFilename);
+
+			lastDatabaseOpened = openDatabaseStruct;
+			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
+			settings.write("lastOpenedKeyfile", lastDatabaseOpened.keyFilename);
+
+			MessageBox(MainWindow::dialog, L"Database decrypted to file msgstore.decrypted.db", L"Success", MB_OK | MB_ICONINFORMATION);
+		}
+		catch (Exception &exception)
+		{
+			displayException(MainWindow::dialog, exception);
+		}
+	}
+}
+
 void MainWindow::displayException(HWND mainWindow, Exception &exception)
 {
 	std::wstring cause = strtowstr(exception.getCause());
@@ -595,6 +620,10 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 						case ID_MENU_MAIN_FILE_DECRYPT_CRYPT7:
 						{
 							decryptDatabaseCrypt7();
+						} break;
+						case ID_MENU_MAIN_FILE_DECRYPT_CRYPT8:
+						{
+							decryptDatabaseCrypt8();
 						} break;
 						case IDC_MAIN_EXPORT_TXT:
 						{

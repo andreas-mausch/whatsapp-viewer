@@ -24,7 +24,7 @@ void DecryptDatabaseDialog7::selectDatabaseFile()
 	openFilename.hwndOwner = dialog;
 	openFilename.lpstrFile = filename;
 	openFilename.nMaxFile = MAX_PATH;
-	openFilename.lpstrFilter = L"WhatsApp Databases (*.crypt7)\0*.crypt7\0";
+	openFilename.lpstrFilter = L"WhatsApp Databases (*.crypt7, *.crypt8)\0*.crypt7;*.crypt8\0";
 	openFilename.lpstrInitialDir = NULL;
 	openFilename.lpstrDefExt = L"";
 	openFilename.Flags = OFN_EXPLORER | OFN_ENABLESIZING | OFN_HIDEREADONLY;
