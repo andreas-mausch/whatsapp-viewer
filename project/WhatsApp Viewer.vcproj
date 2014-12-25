@@ -178,14 +178,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\source\ChatExporter.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\source\ChatExporterHtml.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\source\CLI.cpp"
 				>
 			</File>
@@ -505,20 +497,24 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Exporters"
+				>
+				<File
+					RelativePath="..\source\Exporters\ChatExporter.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\source\Exporters\ChatExporterHtml.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Headerdateien"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath="..\source\ChatExporter.h"
-				>
-			</File>
-			<File
-				RelativePath="..\source\ChatExporterHtml.h"
-				>
-			</File>
 			<File
 				RelativePath="..\source\CLI.h"
 				>
@@ -880,6 +876,18 @@
 				</File>
 				<File
 					RelativePath="..\source\Synchronization\Locked.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Exporters"
+				>
+				<File
+					RelativePath="..\source\Exporters\ChatExporter.h"
+					>
+				</File>
+				<File
+					RelativePath="..\source\Exporters\ChatExporterHtml.h"
 					>
 				</File>
 			</Filter>

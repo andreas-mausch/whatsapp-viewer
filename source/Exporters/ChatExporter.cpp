@@ -2,10 +2,10 @@
 #include <windows.h>
 
 #include "ChatExporter.h"
-#include "Exceptions/Exception.h"
-#include "WhatsApp/Chat.h"
-#include "WhatsApp/Message.h"
-#include "Platforms/Win32/Timestamp.h"
+#include "../Exceptions/Exception.h"
+#include "../WhatsApp/Chat.h"
+#include "../WhatsApp/Message.h"
+#include "../Platforms/Win32/Timestamp.h"
 
 ChatExporter::ChatExporter(WhatsappChat &chat)
 	: chat(chat)

@@ -4,16 +4,16 @@
 #include <windows.h>
 
 #include "ChatExporterHtml.h"
-#include "Exceptions/Exception.h"
-#include "Libraries/Base64/Base64.h"
-#include "Libraries/UTF8/utf8.h"
-#include "Platforms/Win32/Timestamp.h"
-#include "Platforms/Win32/ImageDecoder.h"
-#include "Platforms/Win32/GUI/SmileyList.h"
-#include "WhatsApp/Chat.h"
-#include "WhatsApp/Emoticons.h"
-#include "WhatsApp/Message.h"
-#include "../resources/resource.h"
+#include "../Exceptions/Exception.h"
+#include "../Libraries/Base64/Base64.h"
+#include "../Libraries/UTF8/utf8.h"
+#include "../Platforms/Win32/Timestamp.h"
+#include "../Platforms/Win32/ImageDecoder.h"
+#include "../Platforms/Win32/GUI/SmileyList.h"
+#include "../WhatsApp/Chat.h"
+#include "../WhatsApp/Emoticons.h"
+#include "../WhatsApp/Message.h"
+#include "../../resources/resource.h"
 
 ChatExporterHtml::ChatExporterHtml(const std::string &templateHtml, WhatsappChat &chat)
 	: chat(chat), templateHtml(templateHtml)
