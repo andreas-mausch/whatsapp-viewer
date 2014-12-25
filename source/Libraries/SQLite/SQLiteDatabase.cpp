@@ -4,7 +4,7 @@
 
 SQLiteDatabase::SQLiteDatabase(const std::string &filename)
 {
-	if(sqlite3_open(filename.c_str(), &database) != SQLITE_OK)
+	if (sqlite3_open(filename.c_str(), &database) != SQLITE_OK)
 	{
 		throw SQLiteException("Could not open SQLite database", *this);
 	}

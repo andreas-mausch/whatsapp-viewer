@@ -175,7 +175,9 @@ void ChatExporterHtml::exportChat(const std::string &filename)
 	}
 
 	std::string html = templateHtml;
-	replacePlaceholder(html, "%HEADING%", "WhatsApp Chat");
+	std::string heading = "WhatsApp Chat";
+	replacePlaceholder(html, "%HEADING%", heading);
+	replacePlaceholder(html, "%TITLE%", heading + " " + contact);
 	replacePlaceholder(html, "%CONTACT%", contact);
 	replacePlaceholder(html, "%MESSAGES%", messages);
 	replacePlaceholder(html, "%EMOTICON_STYLES%", buildEmoticonStyles(usedEmoticons));

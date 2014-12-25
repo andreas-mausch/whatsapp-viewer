@@ -2,13 +2,15 @@
 <html>
 	<head>
 		<meta charset="utf-8"/>
-		<title>Exported Chat XXX</title>
+		<title>%TITLE%</title>
 		<style type="text/css">
 			.chat {
 				width: 600px;
 				background-color: #D4D1D1;
 				font-family: "Verdana", sans-serif;
 				padding: 10px;
+				margin-left: auto;
+				margin-right: auto;
 			}
 			
 			.chat_header {
