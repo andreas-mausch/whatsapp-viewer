@@ -80,18 +80,13 @@ void decryptWhatsappDatabase8(const std::string &filename, const std::string &fi
 {
 	unsigned char *fileBytes;
 	int filesize = loadFileUnsigned(filename, &fileBytes);
+	int databaseSize = filesize - skipBytesCrypt7;
+	unsigned char *databaseBytes = &fileBytes[skipBytesCrypt7];
 
-	unsigned char iv[16];
-	memcpy(iv, initVector, 16);
-
-	const int skipBytes = 67;
-	filesize -= skipBytes;
-	unsigned char *databaseBytes = &fileBytes[skipBytes];
-
-	decrypt_aes_cbc_256(databaseBytes, databaseBytes, filesize, key, iv);
+	decryptAes(databaseBytes, databaseBytes, key, initVector, databaseSize);
 
 	std::vector<unsigned char> uncompressed;
-	uncompressGzipBuffer(databaseBytes, filesize, uncompressed);
+	uncompressGzipBuffer(databaseBytes, databaseSize, uncompressed);
 
 	const char expectedBytes[] = "SQLite format 3";
 	if (memcmp(&uncompressed[0], expectedBytes, sizeof(expectedBytes)) != 0)
@@ -116,6 +111,5 @@ void decryptWhatsappDatabase8(const std::string &filename, const std::string &fi
 	unsigned char iv[16];
 
 	extractKey(keyFilename, key, iv);
-
 	decryptWhatsappDatabase8(filename, filenameDecrypted, key, iv);
 }
