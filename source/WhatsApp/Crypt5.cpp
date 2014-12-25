@@ -69,6 +69,17 @@ void validateOutput(unsigned char *databaseBytes)
 	}
 }
 
+void saveOutputToFile(unsigned char *databaseBytes, int size, const std::string &filename)
+{
+	std::ofstream output(filename.c_str(), std::ios::binary);
+	if (!output)
+	{
+		throw Exception("Could not save decrypted WhatsApp database. Permissions needed?");
+	}
+
+	output.write(reinterpret_cast<char *>(databaseBytes), size);
+}
+
 void decryptWhatsappDatabase5(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key)
 {
 	unsigned char *databaseBytes;
@@ -79,14 +90,7 @@ void decryptWhatsappDatabase5(const std::string &filename, const std::string &fi
 
 	decrypt_aes_cbc_192(databaseBytes, databaseBytes, filesize, key, iv);
 	validateOutput(databaseBytes);
-
-	std::ofstream output(filenameDecrypted.c_str(), std::ios::binary);
-	if (!output)
-	{
-		throw Exception("Could not save decrypted WhatsApp database. Permissions needed?");
-	}
-
-	output.write(reinterpret_cast<char *>(databaseBytes), filesize);
+	saveOutputToFile(databaseBytes, filesize, filenameDecrypted);
 
 	delete[] databaseBytes;
 }

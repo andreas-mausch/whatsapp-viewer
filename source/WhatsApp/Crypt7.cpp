@@ -42,14 +42,7 @@ void decryptWhatsappDatabase7(const std::string &filename, const std::string &fi
 
 	decryptAes(databaseBytes, databaseBytes, key, initVector, databaseSize);
 	validateOutput(databaseBytes);
-
-	std::ofstream output(filenameDecrypted.c_str(), std::ios::binary);
-	if (!output)
-	{
-		throw Exception("Could not save decrypted WhatsApp database. Permissions needed?");
-	}
-
-	output.write(reinterpret_cast<char *>(databaseBytes), databaseSize);
+	saveOutputToFile(databaseBytes, databaseSize, filenameDecrypted);
 
 	delete[] fileBytes;
 }

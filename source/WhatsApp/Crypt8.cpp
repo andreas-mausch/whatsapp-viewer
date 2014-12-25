@@ -89,14 +89,7 @@ void decryptWhatsappDatabase8(const std::string &filename, const std::string &fi
 	uncompressGzipBuffer(databaseBytes, databaseSize, uncompressed);
 
 	validateOutput(&uncompressed[0]);
-
-	std::ofstream output(filenameDecrypted.c_str(), std::ios::binary);
-	if (!output)
-	{
-		throw Exception("Could not save decrypted WhatsApp database. Permissions needed?");
-	}
-
-	output.write(reinterpret_cast<char *>(&uncompressed[0]), uncompressed.size());
+	saveOutputToFile(&uncompressed[0], uncompressed.size(), filenameDecrypted);
 
 	delete[] fileBytes;
 }
