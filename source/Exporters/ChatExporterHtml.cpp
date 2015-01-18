@@ -45,7 +45,7 @@ std::string ChatExporterHtml::buildMessages(std::set<int> &usedEmoticons)
 			output << "incoming_message";
 		}
 
-		output << "\">";
+		output << "\"><div class=\"text\">";
 
 		switch (message.getMediaWhatsappType())
 		{
@@ -78,7 +78,7 @@ std::string ChatExporterHtml::buildMessages(std::set<int> &usedEmoticons)
 			} break;
 		}
 
-		output << "</div>" << std::endl;
+		output << "</div><div class=\"timestamp\"><span>" << formatTimestamp(message.getTimestamp()) << "</span></div></div>" << std::endl;
 	}
 
 	return output.str();
@@ -168,6 +168,13 @@ void ChatExporterHtml::exportChat(const std::string &filename)
 		contact += "; " + chat.getSubject();
 	}
 
+	std::string contactName = chat.getDisplayName();
+
+	if (contactName == contact)
+	{
+		contactName = "";
+	}
+
 	std::ofstream file(filename.c_str());
 	if (!file)
 	{
@@ -179,6 +186,7 @@ void ChatExporterHtml::exportChat(const std::string &filename)
 	replacePlaceholder(html, "%HEADING%", heading);
 	replacePlaceholder(html, "%TITLE%", heading + " " + contact);
 	replacePlaceholder(html, "%CONTACT%", contact);
+	replacePlaceholder(html, "%CONTACT_NAME%", contactName);
 	replacePlaceholder(html, "%MESSAGES%", messages);
 	replacePlaceholder(html, "%EMOTICON_STYLES%", buildEmoticonStyles(usedEmoticons));
 

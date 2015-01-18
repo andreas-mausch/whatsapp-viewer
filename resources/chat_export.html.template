@@ -6,8 +6,9 @@
 		<style type="text/css">
 			.chat {
 				width: 600px;
-				background-color: #D4D1D1;
+				background-color: #DFD9D9;
 				font-family: "Verdana", sans-serif;
+				font-size: 10pt;
 				padding: 10px;
 				margin-left: auto;
 				margin-right: auto;
@@ -17,7 +18,10 @@
 				text-align: center;
 				font-weight: bold;
 				margin-bottom: 20px;
-				padding: 10px;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				background-color: #F1F1F1;
+				border: 1px solid #009000;
 			}
 			
 			.heading {
@@ -36,20 +40,31 @@
 				background-color: #B0D0F0;
 			}
 			
+			.messages {
+				background-color: #F1F1F1;
+				border: 1px solid #009000;
+				padding: 2px 4px;
+			}
+			
 			.message {
-				margin: 2px 10px;
+				margin: 2px 0px;
 				max-width: 80%;
 			}
 			
-			.message > span {
+			.message > .timestamp {
+				font-family: "Courier New", monospace;
+				font-size: 8pt;
+			}
+			
+			.message > .text > span {
 			}
 			
 			.incoming_message {
 				text-align: left;
 			}
 			
-			.incoming_message > span {
-				background-color: #F7F6F4;
+			.incoming_message > .text > span {
+				background-color: #CCDDFF;
 			}
 
 			.outgoing_message {
@@ -57,8 +72,8 @@
 				margin-left: auto;
 			}
 
-			.outgoing_message > span {
-				background-color: #F1FAE7;
+			.outgoing_message > .text > span {
+				background-color: #DDFFBB;
 			}
 			
 			%EMOTICON_STYLES%
@@ -74,8 +89,13 @@
 				<div>
 					<span class="contact">%CONTACT%</span>
 				</div>
+				<div>
+					<span class="contact">%CONTACT_NAME%</span>
+				</div>
 			</div>
-			%MESSAGES%
+			<div class="messages">
+				%MESSAGES%
+			</div>
 		</div>
 	</body>
 </html>
