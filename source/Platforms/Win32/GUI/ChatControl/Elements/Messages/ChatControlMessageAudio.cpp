@@ -1,3 +1,4 @@
+#include <sstream>
 #include <windows.h>
 
 #include "ChatControlMessageAudio.h"
@@ -8,8 +9,15 @@
 ChatControlMessageAudio::ChatControlMessageAudio(WhatsappMessage &message, int width, Smileys &smileys)
 	: ChatControlMessage(message, width), smileys(smileys)
 {
-	message.getMediaName();
-	textElement = new ChatControlMessageTextElement("Audio");
+	std::stringstream text;
+	text << "Audio (" << message.getMediaDuration() << "s)";
+
+	if (message.getMediaName().length() > 0)
+	{
+		text << " : " << message.getMediaName();
+	}
+
+	textElement = new ChatControlMessageTextElement(text.str());
 }
 
 ChatControlMessageAudio::~ChatControlMessageAudio()
