@@ -60,10 +60,10 @@ void QueryMessagesThread::run()
 		double latitude = sqlite3_column_double(res, 11);
 		double longitude = sqlite3_column_double(res, 12);
 		const void *thumbImage = sqlite3_column_blob(res, 13);
-		int thumbImageSize = sqlite3_column_bytes(res, 14);
-		std::string remoteResource = sqLiteDatabase.readString(res, 15);
-		const void *rawData = sqlite3_column_blob(res, 16);
-		int rawDataSize = sqlite3_column_bytes(res, 17);
+		int thumbImageSize = sqlite3_column_bytes(res, 13);
+		std::string remoteResource = sqLiteDatabase.readString(res, 14);
+		const void *rawData = sqlite3_column_blob(res, 15);
+		int rawDataSize = sqlite3_column_bytes(res, 15);
 
 		WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, mediaName, mediaDuration, latitude, longitude, thumbImage, thumbImageSize, remoteResource, rawData, rawDataSize);
 		messages.push_back(message);

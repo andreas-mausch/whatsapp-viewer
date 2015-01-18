@@ -86,10 +86,7 @@ void BuildMessagesThread::run()
 				} break;
 				case MEDIA_WHATSAPP_VIDEO:
 				{
-					if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
-					{
-						messageFrame = new ChatControlMessageFrame(new ChatControlMessageVideo(message, 0, imageDecoder), 0, color, dateFont);
-					}
+					messageFrame = new ChatControlMessageFrame(new ChatControlMessageVideo(message, 0, imageDecoder), 0, color, dateFont);
 				} break;
 				case MEDIA_WHATSAPP_LOCATION:
 				{

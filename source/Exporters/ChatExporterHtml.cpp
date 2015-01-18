@@ -57,7 +57,7 @@ std::string ChatExporterHtml::buildMessages(std::set<int> &usedEmoticons)
 			{
 				if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
 				{
-					output << "<img src=\"data:image/jpeg;base64," << base64_encode(message.getRawData(), message.getRawDataSize()) << "\">" << std::endl;
+					output << "<div><img src=\"data:image/jpeg;base64," << base64_encode(message.getRawData(), message.getRawDataSize()) << "\"></div>" << std::endl;
 				}
 			} break;
 			case MEDIA_WHATSAPP_AUDIO:
@@ -66,6 +66,10 @@ std::string ChatExporterHtml::buildMessages(std::set<int> &usedEmoticons)
 			} break;
 			case MEDIA_WHATSAPP_VIDEO:
 			{
+				if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
+				{
+					output << "<div><img src=\"data:image/jpeg;base64," << base64_encode(message.getRawData(), message.getRawDataSize()) << "\"></div>" << std::endl;
+				}
 				output << "<span>[ Video ]</span>";
 			} break;
 			case MEDIA_WHATSAPP_CONTACT:
