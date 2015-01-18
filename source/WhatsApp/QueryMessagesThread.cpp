@@ -23,7 +23,7 @@ void QueryMessagesThread::interrupt()
 
 void QueryMessagesThread::run()
 {
-	const char *query = "SELECT key_remote_jid, key_from_me, status, data, timestamp, media_url, media_mime_type, media_wa_type, media_size, latitude, longitude, thumb_image, remote_resource, raw_data " \
+	const char *query = "SELECT key_remote_jid, key_from_me, status, data, timestamp, media_url, media_mime_type, media_wa_type, media_size, media_name, media_duration, latitude, longitude, thumb_image, remote_resource, raw_data " \
 						"FROM messages " \
 						"WHERE key_remote_jid = ? " \
 						"ORDER BY timestamp asc";
@@ -55,15 +55,17 @@ void QueryMessagesThread::run()
 		std::string mediaMimeType = sqLiteDatabase.readString(res, 6);
 		int mediaWhatsappType = sqlite3_column_int(res, 7);
 		int mediaSize = sqlite3_column_int(res, 8);
-		double latitude = sqlite3_column_double(res, 9);
-		double longitude = sqlite3_column_double(res, 10);
-		const void *thumbImage = sqlite3_column_blob(res, 11);
-		int thumbImageSize = sqlite3_column_bytes(res, 11);
-		std::string remoteResource = sqLiteDatabase.readString(res, 12);
-		const void *rawData = sqlite3_column_blob(res, 13);
-		int rawDataSize = sqlite3_column_bytes(res, 13);
+		std::string mediaName = sqLiteDatabase.readString(res, 9);
+		int mediaDuration = sqlite3_column_int(res, 10);
+		double latitude = sqlite3_column_double(res, 11);
+		double longitude = sqlite3_column_double(res, 12);
+		const void *thumbImage = sqlite3_column_blob(res, 13);
+		int thumbImageSize = sqlite3_column_bytes(res, 14);
+		std::string remoteResource = sqLiteDatabase.readString(res, 15);
+		const void *rawData = sqlite3_column_blob(res, 16);
+		int rawDataSize = sqlite3_column_bytes(res, 17);
 
-		WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, latitude, longitude, thumbImage, thumbImageSize, remoteResource, rawData, rawDataSize);
+		WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, mediaName, mediaDuration, latitude, longitude, thumbImage, thumbImageSize, remoteResource, rawData, rawDataSize);
 		messages.push_back(message);
 	}
 

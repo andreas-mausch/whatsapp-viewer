@@ -1,9 +1,10 @@
 #include "Message.h"
 
-WhatsappMessage::WhatsappMessage(std::string chatId, bool fromMe, int status, std::string data, long long timestamp, long long receivedTimestamp, long long sendTimestamp, std::string mediaUrl, std::string mediaMimeType, int mediaWhatsappType, int mediaSize, double latitude, double longitude, const void *thumbImage, int thumbImageSize, const std::string &remoteResource, const void *rawData, int rawDataSize) :
+WhatsappMessage::WhatsappMessage(std::string chatId, bool fromMe, int status, std::string data, long long timestamp, long long receivedTimestamp, long long sendTimestamp, std::string mediaUrl, std::string mediaMimeType, int mediaWhatsappType, int mediaSize, std::string mediaName, int mediaDuration, double latitude, double longitude, const void *thumbImage, int thumbImageSize, const std::string &remoteResource, const void *rawData, int rawDataSize) :
 	chatId(chatId), fromMe(fromMe), status(status), data(data), timestamp(timestamp),
 	receivedTimestamp(receivedTimestamp), sendTimestamp(sendTimestamp), mediaUrl(mediaUrl),
 	mediaMimeType(mediaMimeType), mediaWhatsappType(mediaWhatsappType), mediaSize(mediaSize),
+	mediaName(mediaName), mediaDuration(mediaDuration),
 	latitude(latitude), longitude(longitude),
 	thumbImage(NULL), thumbImageSize(thumbImageSize),
 	remoteResource(remoteResource),
@@ -67,7 +68,17 @@ double WhatsappMessage::getLongitude() const
 	return longitude;
 }
 
-const std::string &WhatsappMessage::getRemoteResource()
+const std::string &WhatsappMessage::getRemoteResource() const
 {
 	return remoteResource;
+}
+
+const std::string &WhatsappMessage::getMediaName() const
+{
+	return mediaName;
+}
+
+int WhatsappMessage::getMediaDuration() const
+{
+	return mediaDuration;
 }

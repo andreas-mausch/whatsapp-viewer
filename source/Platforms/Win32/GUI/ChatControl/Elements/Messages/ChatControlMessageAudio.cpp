@@ -8,6 +8,7 @@
 ChatControlMessageAudio::ChatControlMessageAudio(WhatsappMessage &message, int width, Smileys &smileys)
 	: ChatControlMessage(message, width), smileys(smileys)
 {
+	message.getMediaName();
 	textElement = new ChatControlMessageTextElement("Audio");
 }
 
