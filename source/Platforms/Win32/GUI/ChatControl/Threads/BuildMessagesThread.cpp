@@ -6,6 +6,7 @@
 #include "../Elements/ChatControlMessageFrame.h"
 #include "../Elements/DayBreak.h"
 #include "../Elements/Messages/ChatControlMessage.h"
+#include "../Elements/Messages/ChatControlMessageAudio.h"
 #include "../Elements/Messages/ChatControlMessageImage.h"
 #include "../Elements/Messages/ChatControlMessageLocation.h"
 #include "../Elements/Messages/ChatControlMessageText.h"
@@ -78,6 +79,10 @@ void BuildMessagesThread::run()
 					{
 						messageFrame = new ChatControlMessageFrame(new ChatControlMessageImage(message, 0, imageDecoder), 0, color, dateFont);
 					}
+				} break;
+				case MEDIA_WHATSAPP_AUDIO:
+				{
+					messageFrame = new ChatControlMessageFrame(new ChatControlMessageAudio(message, 0, smileys), 0, color, dateFont);
 				} break;
 				case MEDIA_WHATSAPP_VIDEO:
 				{
