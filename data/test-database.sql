@@ -62,6 +62,7 @@ INSERT INTO messages VALUES(900,'TestCase&Ampersand',0,'keyId-000900',0,0,'Test 
 
 INSERT INTO messages VALUES(1000,'TestCaseInvalidUTF8',0,'keyId-001000',0,0,X'48616861EDA0BD',1395999200000,NULL,NULL,0,0,NULL,NULL,0,1,0.0,0.0,NULL,'',1395999200000,-1,-1,-1,NULL,NULL);
 
-INSERT INTO messages VALUES(1100,'TestCaseAudio',0,'keyId-001100',0,0,'Audio blabla',1395999100000,'https://mmi226.whatsapp.net/d/XXXX/YYYY.aac','audio/aac',2,30000,'YYYY.aac','hash32987402375759357',5,1,0.0,0.0,NULL,'',1395999100000,-1,-1,-1,NULL,NULL);
+INSERT INTO messages VALUES(1100,'TestCaseAudio',0,'keyId-001100',0,0,'Audio',1395999100000,'https://mmi226.whatsapp.net/d/XXXX/YYYY.aac','audio/aac',2,30000,'YYYY.aac','hash32987402375759357',5,1,0.0,0.0,NULL,'',1395999100000,-1,-1,-1,NULL,NULL);
+INSERT INTO messages VALUES(1101,'TestCaseAudio',0,'keyId-001101',0,0,'Audio without Media Name',1395999110000,'https://mmi226.whatsapp.net/d/XXXX/YYYY2.aac','audio/aac',2,30000,NULL,'hash32987402375759358',12,1,0.0,0.0,NULL,'',1395999110000,-1,-1,-1,NULL,NULL);
 
 COMMIT;
