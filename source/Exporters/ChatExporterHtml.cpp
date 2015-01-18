@@ -11,6 +11,7 @@
 #include "../Platforms/Win32/Resource.h"
 #include "../Platforms/Win32/Timestamp.h"
 #include "../Platforms/Win32/GUI/SmileyList.h"
+#include "../Platforms/Win32/GUI/ChatControl/Elements/Messages/ChatControlMessageAudio.h"
 #include "../WhatsApp/Chat.h"
 #include "../WhatsApp/Emoticons.h"
 #include "../WhatsApp/Message.h"
@@ -62,7 +63,7 @@ std::string ChatExporterHtml::buildMessages(std::set<int> &usedEmoticons)
 			} break;
 			case MEDIA_WHATSAPP_AUDIO:
 			{
-				output << "<span>[ Audio ]</span>";
+				output << "<span>[ " << formatAudio(message) << " ]</span>";
 			} break;
 			case MEDIA_WHATSAPP_VIDEO:
 			{

@@ -6,8 +6,7 @@
 #include "../../../DrawText.h"
 #include "../../../../../../WhatsApp/Message.h"
 
-ChatControlMessageAudio::ChatControlMessageAudio(WhatsappMessage &message, int width, Smileys &smileys)
-	: ChatControlMessage(message, width), smileys(smileys)
+std::string formatAudio(WhatsappMessage &message)
 {
 	std::stringstream text;
 	text << "Audio (" << message.getMediaDuration() << "s)";
@@ -17,7 +16,13 @@ ChatControlMessageAudio::ChatControlMessageAudio(WhatsappMessage &message, int w
 		text << " : " << message.getMediaName();
 	}
 
-	textElement = new ChatControlMessageTextElement(text.str());
+	return text.str();
+}
+
+ChatControlMessageAudio::ChatControlMessageAudio(WhatsappMessage &message, int width, Smileys &smileys)
+	: ChatControlMessage(message, width), smileys(smileys)
+{
+	textElement = new ChatControlMessageTextElement(formatAudio(message));
 }
 
 ChatControlMessageAudio::~ChatControlMessageAudio()

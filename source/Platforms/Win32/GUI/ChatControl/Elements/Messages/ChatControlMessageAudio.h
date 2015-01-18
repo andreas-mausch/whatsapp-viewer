@@ -6,6 +6,8 @@ class ChatControlMessageTextElement;
 class Smileys;
 class WhatsappMessage;
 
+std::string formatAudio(WhatsappMessage &message);
+
 class ChatControlMessageAudio : public ChatControlMessage
 {
 private:
