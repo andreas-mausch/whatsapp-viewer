@@ -460,7 +460,7 @@ void MainWindow::exportChat(WhatsappChat &chat, ChatExporter &exporter, const st
 
 	if (saveFileDialog(filename, suggestion.str(), extension))
 	{
-		exporter.exportChat(filename);
+		exporter.exportChat(chat, filename);
 
 		std::stringstream message;
 		message << "Chat exported to file " << filename;
@@ -470,14 +470,14 @@ void MainWindow::exportChat(WhatsappChat &chat, ChatExporter &exporter, const st
 
 void MainWindow::exportChatToTxt(WhatsappChat &chat)
 {
-	ChatExporterTxt exporter(chat);
+	ChatExporterTxt exporter;
 	exportChat(chat, exporter, "txt");
 }
 
 void MainWindow::exportChatToHtml(WhatsappChat &chat)
 {
 	std::string templateHtml = imageDecoder.loadString(MAKEINTRESOURCE(IDR_CHAT_EXPORT_HTML_TEMPLATE), RT_HTML);
-	ChatExporterHtml exporter(templateHtml, chat);
+	ChatExporterHtml exporter(templateHtml);
 	exportChat(chat, exporter, "html");
 }
 

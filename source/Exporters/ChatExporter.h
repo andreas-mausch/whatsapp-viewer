@@ -2,11 +2,13 @@
 
 #include <string>
 
+class WhatsappChat;
+
 class ChatExporter
 {
 public:
 	ChatExporter() {}
 	virtual ~ChatExporter() {}
 
-	virtual void exportChat(const std::string &filename) = 0;
+	virtual void exportChat(WhatsappChat &chat, const std::string &filename) = 0;
 };

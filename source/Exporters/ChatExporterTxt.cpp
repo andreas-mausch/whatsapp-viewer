@@ -7,8 +7,7 @@
 #include "../WhatsApp/Message.h"
 #include "../Platforms/Win32/Timestamp.h"
 
-ChatExporterTxt::ChatExporterTxt(WhatsappChat &chat)
-	: chat(chat)
+ChatExporterTxt::ChatExporterTxt()
 {
 }
 
@@ -16,7 +15,7 @@ ChatExporterTxt::~ChatExporterTxt()
 {
 }
 
-void ChatExporterTxt::exportChat(const std::string &filename)
+void ChatExporterTxt::exportChat(WhatsappChat &chat, const std::string &filename)
 {
 	std::ofstream file(filename.c_str());
 

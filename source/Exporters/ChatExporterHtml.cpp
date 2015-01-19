@@ -17,8 +17,8 @@
 #include "../WhatsApp/Message.h"
 #include "../../resources/resource.h"
 
-ChatExporterHtml::ChatExporterHtml(const std::string &templateHtml, WhatsappChat &chat)
-	: chat(chat), templateHtml(templateHtml)
+ChatExporterHtml::ChatExporterHtml(const std::string &templateHtml)
+	: templateHtml(templateHtml)
 {
 }
 
@@ -26,7 +26,7 @@ ChatExporterHtml::~ChatExporterHtml()
 {
 }
 
-std::string ChatExporterHtml::buildMessages(std::set<int> &usedEmoticons)
+std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &usedEmoticons)
 {
 	std::stringstream output;
 
@@ -162,10 +162,10 @@ std::string ChatExporterHtml::buildEmoticonStyles(const std::set<int> &usedEmoti
 	return css.str();
 }
 
-void ChatExporterHtml::exportChat(const std::string &filename)
+void ChatExporterHtml::exportChat(WhatsappChat &chat, const std::string &filename)
 {
 	std::set<int> usedEmoticons;
-	std::string messages = buildMessages(usedEmoticons);
+	std::string messages = buildMessages(chat, usedEmoticons);
 
 	std::string contact = chat.getKey();
 	if (chat.getSubject().length() > 0)

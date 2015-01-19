@@ -8,12 +8,9 @@ class WhatsappChat;
 
 class ChatExporterTxt : public ChatExporter
 {
-private:
-	WhatsappChat &chat;
-
 public:
-	ChatExporterTxt(WhatsappChat &chat);
+	ChatExporterTxt();
 	~ChatExporterTxt();
 
-	void exportChat(const std::string &filename);
+	void exportChat(WhatsappChat &chat, const std::string &filename);
 };
