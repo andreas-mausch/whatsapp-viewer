@@ -2,6 +2,7 @@
 #include <commctrl.h>
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 #include <vector>
 
 #include "MainWindow.h"
@@ -420,19 +421,70 @@ void MainWindow::closeDatabase()
 	database = NULL;
 }
 
+bool MainWindow::saveFileDialog(std::string &filename, const std::string &suggestion, const std::string &filter)
+{
+	WCHAR filenameW[MAX_PATH];
+	memset(filenameW, 0, sizeof(WCHAR) * MAX_PATH);
+	wcsncpy_s(filenameW, strtowstr(suggestion).c_str(), suggestion.length());
+
+	std::stringstream filterText;
+	filterText << "*." << filter << '\0' << "*." << filter << '\0' << '\0';
+	std::wstring filterTextW = strtowstr(filterText.str());
+
+	OPENFILENAME openFilename;
+	memset(&openFilename, 0, sizeof(OPENFILENAME));
+	openFilename.lStructSize = sizeof(OPENFILENAME);
+	openFilename.hwndOwner = dialog;
+	openFilename.lpstrFile = filenameW;
+	openFilename.nMaxFile = MAX_PATH;
+	openFilename.lpstrFilter = filterTextW.c_str();
+	openFilename.lpstrInitialDir = NULL;
+	openFilename.lpstrDefExt = L"";
+	openFilename.Flags = OFN_EXPLORER | OFN_ENABLESIZING | OFN_HIDEREADONLY;
+	openFilename.lpstrTitle = L"Select WhatsApp export target";
+
+	if (GetSaveFileName(&openFilename))
+	{
+		filename = wstrtostr(filenameW);
+		return true;
+	}
+
+	return false;
+}
+
 void MainWindow::exportChatToTxt(WhatsappChat &chat)
 {
-	ChatExporterTxt exporter(chat);
-	exporter.exportChat("chat.txt");
-	MessageBox(dialog, L"Chat exported to file chat.txt", L"Success", MB_OK | MB_ICONINFORMATION);
+	std::string filename;
+	std::stringstream suggestion;
+	suggestion << "WhatsApp Chat - " << chat.getDisplayName() << " - " << formatDate(chat.getLastMessage()) << ".txt";
+
+	if (saveFileDialog(filename, suggestion.str(), "txt"))
+	{
+		ChatExporterTxt exporter(chat);
+		exporter.exportChat(filename);
+
+		std::stringstream message;
+		message << "Chat exported to file " << filename;
+		MessageBox(dialog, strtowstr(message.str()).c_str(), L"Success", MB_OK | MB_ICONINFORMATION);
+	}
 }
 
 void MainWindow::exportChatToHtml(WhatsappChat &chat)
 {
-	std::string templateHtml = imageDecoder.loadString(MAKEINTRESOURCE(IDR_CHAT_EXPORT_HTML_TEMPLATE), RT_HTML);
-	ChatExporterHtml exporter(templateHtml, chat);
-	exporter.exportChat("chat.html");
-	MessageBox(dialog, L"Chat exported to file chat.html", L"Success", MB_OK | MB_ICONINFORMATION);
+	std::string filename;
+	std::stringstream suggestion;
+	suggestion << "WhatsApp Chat - " << chat.getDisplayName() << " - " << formatDate(chat.getLastMessage()) << ".html";
+
+	if (saveFileDialog(filename, suggestion.str(), "html"))
+	{
+		std::string templateHtml = imageDecoder.loadString(MAKEINTRESOURCE(IDR_CHAT_EXPORT_HTML_TEMPLATE), RT_HTML);
+		ChatExporterHtml exporter(templateHtml, chat);
+		exporter.exportChat(filename.c_str());
+
+		std::stringstream message;
+		message << "Chat exported to file " << filename;
+		MessageBox(dialog, strtowstr(message.str()).c_str(), L"Success", MB_OK | MB_ICONINFORMATION);
+	}
 }
 
 void MainWindow::decryptDatabaseCrypt5()
