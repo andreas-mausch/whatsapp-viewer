@@ -3,10 +3,12 @@
 #include <string>
 #include <set>
 
+#include "ChatExporter.h"
+
 class WhatsappChat;
 class WhatsappMessage;
 
-class ChatExporterHtml
+class ChatExporterHtml : public ChatExporter
 {
 private:
 	WhatsappChat &chat;

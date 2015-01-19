@@ -2,9 +2,11 @@
 
 #include <string>
 
+#include "ChatExporter.h"
+
 class WhatsappChat;
 
-class ChatExporterTxt
+class ChatExporterTxt : public ChatExporter
 {
 private:
 	WhatsappChat &chat;
