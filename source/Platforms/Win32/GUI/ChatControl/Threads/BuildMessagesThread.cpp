@@ -60,11 +60,11 @@ void BuildMessagesThread::run()
 
 			if (message.isFromMe())
 			{
-				color = RGB(190, 240, 150);
+				color = RGB(186, 230, 145);
 			}
 			else
 			{
-				color = RGB(230, 230, 240);
+				color = RGB(204, 217, 255);
 			}
 
 			switch (message.getMediaWhatsappType())

@@ -205,14 +205,16 @@ void ChatControl::createBackbuffer()
 
 void ChatControl::paintBackbuffer()
 {
+	COLORREF backgroundColor = RGB(228, 228, 228);
+
 	HANDLE oldFont = SelectObject(backbuffer, GetStockObject(DEFAULT_GUI_FONT));
 	SetTextColor(backbuffer, RGB(0, 0, 0));
-	SetBkColor(backbuffer, GetSysColor(COLOR_3DFACE));
+	SetBkColor(backbuffer, backgroundColor);
 
 	RECT clientRect;
 	GetClientRect(window, &clientRect);
 
-	Brush brush(CreateSolidBrush(GetSysColor(COLOR_3DFACE)));
+	Brush brush(CreateSolidBrush(backgroundColor));
 	FillRect(backbuffer, &clientRect, brush.get());
 
 	if (lock.tryLock())

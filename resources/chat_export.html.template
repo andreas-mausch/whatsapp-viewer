@@ -64,7 +64,7 @@
 			}
 			
 			.incoming_message > .text > span {
-				background-color: #CCDDFF;
+				background-color: #CCD9FF;
 			}
 
 			.outgoing_message {
@@ -73,7 +73,7 @@
 			}
 
 			.outgoing_message > .text > span {
-				background-color: #DDFFBB;
+				background-color: #BAE691;
 			}
 			
 			%EMOTICON_STYLES%
