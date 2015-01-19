@@ -8,6 +8,7 @@
 #include "../Objects/Accelerator.h"
 
 class AboutDialog;
+class ChatExporter;
 class Exception;
 class ImageDecoder;
 class Settings;
@@ -59,6 +60,7 @@ private:
 	void updateSortingArrow();
 
 	bool saveFileDialog(std::string &filename, const std::string &suggestion, const std::string &filter);
+	void exportChat(WhatsappChat &chat, ChatExporter &exporter, const std::string &extension);
 	void exportChatToTxt(WhatsappChat &chat);
 	void exportChatToHtml(WhatsappChat &chat);
 

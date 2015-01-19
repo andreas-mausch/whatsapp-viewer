@@ -452,15 +452,14 @@ bool MainWindow::saveFileDialog(std::string &filename, const std::string &sugges
 	return false;
 }
 
-void MainWindow::exportChatToTxt(WhatsappChat &chat)
+void MainWindow::exportChat(WhatsappChat &chat, ChatExporter &exporter, const std::string &extension)
 {
 	std::string filename;
 	std::stringstream suggestion;
-	suggestion << "WhatsApp Chat - " << chat.getDisplayName() << " - " << formatDate(chat.getLastMessage()) << ".txt";
+	suggestion << "WhatsApp Chat - " << chat.getDisplayName() << " - " << formatDate(chat.getLastMessage()) << "." << extension;
 
-	if (saveFileDialog(filename, suggestion.str(), "txt"))
+	if (saveFileDialog(filename, suggestion.str(), extension))
 	{
-		ChatExporterTxt exporter(chat);
 		exporter.exportChat(filename);
 
 		std::stringstream message;
@@ -469,22 +468,17 @@ void MainWindow::exportChatToTxt(WhatsappChat &chat)
 	}
 }
 
+void MainWindow::exportChatToTxt(WhatsappChat &chat)
+{
+	ChatExporterTxt exporter(chat);
+	exportChat(chat, exporter, "txt");
+}
+
 void MainWindow::exportChatToHtml(WhatsappChat &chat)
 {
-	std::string filename;
-	std::stringstream suggestion;
-	suggestion << "WhatsApp Chat - " << chat.getDisplayName() << " - " << formatDate(chat.getLastMessage()) << ".html";
-
-	if (saveFileDialog(filename, suggestion.str(), "html"))
-	{
-		std::string templateHtml = imageDecoder.loadString(MAKEINTRESOURCE(IDR_CHAT_EXPORT_HTML_TEMPLATE), RT_HTML);
-		ChatExporterHtml exporter(templateHtml, chat);
-		exporter.exportChat(filename.c_str());
-
-		std::stringstream message;
-		message << "Chat exported to file " << filename;
-		MessageBox(dialog, strtowstr(message.str()).c_str(), L"Success", MB_OK | MB_ICONINFORMATION);
-	}
+	std::string templateHtml = imageDecoder.loadString(MAKEINTRESOURCE(IDR_CHAT_EXPORT_HTML_TEMPLATE), RT_HTML);
+	ChatExporterHtml exporter(templateHtml, chat);
+	exportChat(chat, exporter, "html");
 }
 
 void MainWindow::decryptDatabaseCrypt5()
