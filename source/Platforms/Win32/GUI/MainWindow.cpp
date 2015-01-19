@@ -427,9 +427,13 @@ bool MainWindow::saveFileDialog(std::string &filename, const std::string &sugges
 	memset(filenameW, 0, sizeof(WCHAR) * MAX_PATH);
 	wcsncpy_s(filenameW, strtowstr(suggestion).c_str(), suggestion.length());
 
-	std::stringstream filterText;
-	filterText << "*." << filter << '\0' << "*." << filter << '\0' << '\0';
-	std::wstring filterTextW = strtowstr(filterText.str());
+	WCHAR filterTextW[MAX_PATH];
+	memset(filterTextW, 0, sizeof(WCHAR) * MAX_PATH);
+	std::wstring filterW = strtowstr(filter);
+	wcsncpy_s(filterTextW, MAX_PATH, filterW.c_str(), filterW.length());
+	int position = filterW.length() + 1;
+	wcsncpy_s(&filterTextW[position], MAX_PATH - position, filterW.c_str(), filterW.length());
+	filterTextW[position * 2] = '\0';
 
 	OPENFILENAME openFilename;
 	memset(&openFilename, 0, sizeof(OPENFILENAME));
@@ -437,7 +441,7 @@ bool MainWindow::saveFileDialog(std::string &filename, const std::string &sugges
 	openFilename.hwndOwner = dialog;
 	openFilename.lpstrFile = filenameW;
 	openFilename.nMaxFile = MAX_PATH;
-	openFilename.lpstrFilter = filterTextW.c_str();
+	openFilename.lpstrFilter = filterTextW;
 	openFilename.lpstrInitialDir = NULL;
 	openFilename.lpstrDefExt = L"";
 	openFilename.Flags = OFN_EXPLORER | OFN_ENABLESIZING | OFN_HIDEREADONLY;
@@ -456,9 +460,11 @@ void MainWindow::exportChat(WhatsappChat &chat, ChatExporter &exporter, const st
 {
 	std::string filename;
 	std::stringstream suggestion;
+	std::stringstream filter;
 	suggestion << "WhatsApp Chat - " << chat.getDisplayName() << " - " << formatDate(chat.getLastMessage()) << "." << extension;
+	filter << "*." << extension;
 
-	if (saveFileDialog(filename, suggestion.str(), extension))
+	if (saveFileDialog(filename, suggestion.str(), filter.str()))
 	{
 		exporter.exportChat(chat, filename);
 
