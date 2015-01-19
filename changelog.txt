@@ -1,3 +1,8 @@
+v1.8 (2015-01-20)
+	Show "[ Audio ]" tag
+	HTML export: Show video thumbnails
+	HTML export: Show timestamp
+	Export: Let the user choose a filename and target directory
 v1.7 (2014-12-25)
 	Support for .crypt8 (you still need the key file)
 	HTML exporter

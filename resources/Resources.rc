@@ -1102,8 +1102,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,7,0,0
- PRODUCTVERSION 1,7,0,0
+ FILEVERSION 1,8,0,0
+ PRODUCTVERSION 1,8,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1120,12 +1120,12 @@ BEGIN
         BEGIN
             VALUE "Comments", "http://andreas-mausch.github.io/whatsapp-viewer/"
             VALUE "FileDescription", "WhatsApp Viewer"
-            VALUE "FileVersion", "1, 7, 0, 0"
+            VALUE "FileVersion", "1, 8, 0, 0"
             VALUE "InternalName", "WhatsApp Viewer"
             VALUE "LegalCopyright", "Copyright (C) 2014 Andreas Mausch"
             VALUE "OriginalFilename", "WhatsApp Viewer.exe"
             VALUE "ProductName", "WhatsApp Viewer"
-            VALUE "ProductVersion", "v1.7"
+            VALUE "ProductVersion", "v1.8"
         END
     END
     BLOCK "VarFileInfo"
