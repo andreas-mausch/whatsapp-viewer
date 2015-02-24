@@ -10,7 +10,7 @@ HoverButton::HoverButton(HWND window, Bitmap &normal, Bitmap &hover)
 	: window(window), normal(normal), hover(hover),
 	mouseTracking(false), state(BUTTON_NORMAL)
 {
-	buttonProc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(window, GWL_WNDPROC, reinterpret_cast<LONG_PTR>(callback))); 
+	buttonProc = reinterpret_cast<WNDPROC>(SetWindowLongPtr(window, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(callback)));
 	SetProp(window, L"HOVER_BUTTON_POINTER", this);
 }
 

@@ -26,3 +26,4 @@ Credits:
 * AES https://polarssl.org/aes-source-code
 * Base64 http://www.adp-gmbh.ch/cpp/common/base64.html
 * Zlib http://www.zlib.net/
+* Visual Leak Detector https://vld.codeplex.com/
