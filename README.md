@@ -18,6 +18,7 @@ This release is not stable and known to crash sometimes. Sorry.
 
 Credits:
 
+* TripCode for crypt12 support https://github.com/EliteAndroidApps/WhatsApp-Crypt12-Decrypter
 * Whatsapp Xtract
 * pwncrypt5.py https://github.com/aramosf/pwncrypt5/blob/master/pwncrypt5.py
 * SQLite
@@ -26,3 +27,4 @@ Credits:
 * AES https://polarssl.org/aes-source-code
 * Base64 http://www.adp-gmbh.ch/cpp/common/base64.html
 * Zlib http://www.zlib.net/
+* RapidJSON http://rapidjson.org/
