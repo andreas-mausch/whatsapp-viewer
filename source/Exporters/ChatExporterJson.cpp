@@ -11,24 +11,13 @@
 #include "../Libraries/Base64/Base64.h"
 #include "../Settings.h"
 
-ChatExporterJson::ChatExporterJson(Settings &settings) : settings(settings)
+ChatExporterJson::ChatExporterJson(Settings &settings)
+	: settings(settings)
 {
 }
 
 ChatExporterJson::~ChatExporterJson()
 {
-}
-
-std::string ChatExporterJson::findDisplayName(const std::string &key)
-{
-	try
-	{
-		return settings.read("Contacts/" + key);
-	}
-	catch (KeyNotFoundException &exception)
-	{
-		return key;
-	}
 }
 
 void ChatExporterJson::addImageParameter(WhatsappMessage &message, rapidjson::Value &messageJson, rapidjson::Document &json)
@@ -67,7 +56,7 @@ void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filenam
 		if (message.getRemoteResource().size() > 0)
 		{
 			messageJson.AddMember("remoteResource", message.getRemoteResource(), json.GetAllocator());
-			messageJson.AddMember("remoteResourceDisplayName", findDisplayName(message.getRemoteResource()), json.GetAllocator());
+			messageJson.AddMember("remoteResourceDisplayName", settings.findDisplayName(message.getRemoteResource()), json.GetAllocator());
 		}
 
 		switch (message.getMediaWhatsappType())

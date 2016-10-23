@@ -15,10 +15,11 @@
 #include "../WhatsApp/Chat.h"
 #include "../WhatsApp/Emoticons.h"
 #include "../WhatsApp/Message.h"
+#include "../Settings.h"
 #include "../../resources/resource.h"
 
-ChatExporterHtml::ChatExporterHtml(const std::string &templateHtml)
-	: templateHtml(templateHtml)
+ChatExporterHtml::ChatExporterHtml(Settings &settings, const std::string &templateHtml)
+	: settings(settings), templateHtml(templateHtml)
 {
 }
 
@@ -83,7 +84,14 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 			} break;
 		}
 
-		output << "</div><div class=\"timestamp\"><span>" << formatTimestamp(message.getTimestamp()) << "</span></div></div>" << std::endl;
+		output << "</div>";
+
+		if (message.getRemoteResource().size() > 0)
+		{
+			output << "<div class=\"remote-resource\"><span>" << settings.findDisplayName(message.getRemoteResource()) << "</span> (<span>" << message.getRemoteResource() << "</span>)</div>";
+		}
+
+		output << "<div class=\"timestamp\"><span>" << formatTimestamp(message.getTimestamp()) << "</span></div></div>" << std::endl;
 	}
 
 	return output.str();

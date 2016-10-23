@@ -56,6 +56,11 @@
 				font-size: 8pt;
 			}
 			
+			.message > .remote-resource {
+				font-family: "Courier New", monospace;
+				font-size: 8pt;
+			}
+			
 			.message > .text > span {
 			}
 			

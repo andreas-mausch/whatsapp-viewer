@@ -192,6 +192,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\source\Settings.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\source\WhatsAppViewer.cpp"
 				>
 			</File>
