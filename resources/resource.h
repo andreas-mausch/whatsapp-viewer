@@ -851,11 +851,10 @@
 #define IDB_02934                       957
 #define IDB_02935                       958
 #define IDB_03030                       959
-#define IDD_DECRYPT_CRYPT7              959
+#define IDD_DECRYPT                     959
 #define IDI_ICON                        961
 #define IDR_ACCELERATOR                 963
 #define IDD_ABOUT                       964
-#define IDD_DECRYPT_CRYPT7_             965
 #define IDD_OPEN_FILE                   965
 #define IDR_ACCELERATOR1                966
 #define IDB_SEARCH                      969

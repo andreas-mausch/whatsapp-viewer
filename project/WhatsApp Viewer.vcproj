@@ -137,7 +137,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib windowscodecs.lib msimg32.lib version.lib libsslMT.lib libcryptoMT.lib"
+				AdditionalDependencies="comctl32.lib windowscodecs.lib msimg32.lib version.lib"
 				OutputFile="$(SolutionDir)\target\$(ProjectName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;C:\Users\neonew\Documents\Programmieren\WhatsApp Viewer\libraries&quot;"

@@ -65,9 +65,9 @@ BEGIN
     PUSHBUTTON      "Export .html ..",IDC_MAIN_EXPORT_HTML,245,369,50,14,WS_DISABLED
 END
 
-IDD_DECRYPT_CRYPT7 DIALOGEX 0, 0, 325, 135
+IDD_DECRYPT DIALOGEX 0, 0, 325, 135
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Decrypt WhatsApp .crypt7 Database"
+CAPTION "Decrypt WhatsApp Database"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     EDITTEXT        IDC_DECRYPT_CRYPT7_DATABASE,63,7,184,14,ES_AUTOHSCROLL
@@ -81,20 +81,23 @@ BEGIN
     LTEXT           "Download database file from:\r\n/sdcard/WhatsApp/Databases/msgstore.db.crypt7\r\n\r\nand key file from:\r\n/data/data/com.whatsapp/files/key\r\nYou need root access to your phone to download the file!",IDC_STATIC,7,51,311,56
 END
 
-IDD_ABOUT DIALOGEX 0, 0, 332, 204
+IDD_ABOUT DIALOGEX 0, 0, 364, 232
 STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_BORDER
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,140,180,50,14
-    LTEXT           "WhatsApp Viewer",IDC_ABOUT_APPLICATION_NAME,123,27,189,23
+    DEFPUSHBUTTON   "OK",IDOK,140,208,50,14
+    LTEXT           "WhatsApp Viewer",IDC_ABOUT_APPLICATION_NAME,123,27,221,23
     LTEXT           "Author",IDC_STATIC,20,113,23,8
     LTEXT           "Email address",IDC_STATIC,20,127,44,8
     LTEXT           "Web",IDC_STATIC,20,140,16,8
     LTEXT           "Andreas Mausch",IDC_STATIC,123,113,54,8
     LTEXT           "andreas.mausch@gmail.com",IDC_STATIC,123,127,92,8
     LTEXT           "http://andreas-mausch.github.io/whatsapp-viewer/",IDC_STATIC,123,140,166,8
-    LTEXT           "v1.4",IDC_ABOUT_APPLICATION_VERSION,123,50,189,8
+    LTEXT           "v1.9",IDC_ABOUT_APPLICATION_VERSION,123,50,221,8
     LTEXT           "https://github.com/andreas-mausch/",IDC_STATIC,123,151,119,8
+    LTEXT           "Thanks",IDC_STATIC,20,171,24,8
+    LTEXT           "TripCode for his crypt12 implementation",IDC_STATIC,123,171,128,8
+    LTEXT           "https://github.com/EliteAndroidApps/WhatsApp-Crypt12-Decrypter",IDC_STATIC,123,182,221,8
 END
 
 IDD_OPEN_FILE DIALOGEX 0, 0, 388, 260
@@ -139,7 +142,7 @@ BEGIN
         BOTTOMMARGIN, 383
     END
 
-    IDD_DECRYPT_CRYPT7, DIALOG
+    IDD_DECRYPT, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 318
@@ -154,15 +157,16 @@ BEGIN
     IDD_ABOUT, DIALOG
     BEGIN
         LEFTMARGIN, 20
-        RIGHTMARGIN, 312
+        RIGHTMARGIN, 344
         VERTGUIDE, 123
         TOPMARGIN, 10
-        BOTTOMMARGIN, 194
+        BOTTOMMARGIN, 222
         HORZGUIDE, 27
         HORZGUIDE, 50
         HORZGUIDE, 113
         HORZGUIDE, 127
         HORZGUIDE, 140
+        HORZGUIDE, 171
     END
 
     IDD_OPEN_FILE, DIALOG
@@ -1103,8 +1107,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,8,0,0
- PRODUCTVERSION 1,8,0,0
+ FILEVERSION 1,9,0,0
+ PRODUCTVERSION 1,9,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1121,12 +1125,12 @@ BEGIN
         BEGIN
             VALUE "Comments", "http://andreas-mausch.github.io/whatsapp-viewer/"
             VALUE "FileDescription", "WhatsApp Viewer"
-            VALUE "FileVersion", "1, 8, 0, 0"
+            VALUE "FileVersion", "1, 9, 0, 0"
             VALUE "InternalName", "WhatsApp Viewer"
             VALUE "LegalCopyright", "Copyright (C) 2014 Andreas Mausch"
             VALUE "OriginalFilename", "WhatsApp Viewer.exe"
             VALUE "ProductName", "WhatsApp Viewer"
-            VALUE "ProductVersion", "v1.8"
+            VALUE "ProductVersion", "v1.9"
         END
     END
     BLOCK "VarFileInfo"

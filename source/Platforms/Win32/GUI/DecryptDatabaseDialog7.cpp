@@ -5,7 +5,7 @@
 #include "../../../../resources/resource.h"
 
 DecryptDatabaseDialog7::DecryptDatabaseDialog7(HWND parent, OpenDatabaseStruct &openDatabaseStruct)
-	: openDatabaseStruct(openDatabaseStruct), Dialog(parent, IDD_DECRYPT_CRYPT7)
+	: openDatabaseStruct(openDatabaseStruct), Dialog(parent, IDD_DECRYPT)
 {
 }
 
