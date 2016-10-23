@@ -64,6 +64,7 @@ private:
 	void exportChat(WhatsappChat &chat, ChatExporter &exporter, const std::string &extension);
 	void exportChatToTxt(WhatsappChat &chat);
 	void exportChatToHtml(WhatsappChat &chat);
+	void exportChatToJson(WhatsappChat &chat);
 
 	void getTempFilename();
 	bool fileExists(const std::string &filename);

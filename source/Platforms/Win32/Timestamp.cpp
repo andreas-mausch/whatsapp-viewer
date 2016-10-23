@@ -25,6 +25,20 @@ std::string formatTimestamp(long long timestamp)
 	return buffer;
 }
 
+std::string formatTimestampIso(long long timestamp)
+{
+	long long todayTimestamp = time(NULL);
+
+	char buffer[256];
+	tm date;
+	long long timestamp1000 = timestamp / 1000;
+	gmtime_s(&date, &timestamp1000);
+
+	const char *formatString = "%Y-%m-%dT%H:%M:%SZ";
+	strftime(buffer, 256, formatString, &date);
+	return buffer;
+}
+
 std::string formatDate(long long timestamp)
 {
 	char buffer[256];

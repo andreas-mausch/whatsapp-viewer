@@ -1,0 +1,111 @@
+#include <fstream>
+#include <sstream>
+#include <windows.h>
+
+#define RAPIDJSON_HAS_STDSTRING 1
+
+#include "ChatExporterJson.h"
+#include "../Exceptions/Exception.h"
+#include "../WhatsApp/Chat.h"
+#include "../WhatsApp/Message.h"
+#include "../Platforms/Win32/Timestamp.h"
+#include "../Libraries/Base64/Base64.h"
+#include "../Libraries/Json/rapidjson/document.h"
+#include "../Libraries/Json/rapidjson/prettywriter.h"
+#include "../Libraries/Json/rapidjson/stringbuffer.h"
+
+ChatExporterJson::ChatExporterJson()
+{
+}
+
+ChatExporterJson::~ChatExporterJson()
+{
+}
+
+void addImageParameter(WhatsappMessage &message, rapidjson::Value &messageJson, rapidjson::Document &json)
+{
+	if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
+	{
+		messageJson.AddMember("image", base64_encode(message.getRawData(), message.getRawDataSize()), json.GetAllocator());
+	}
+}
+
+void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filename)
+{
+	rapidjson::Document json;
+	json.SetObject();
+
+	json.AddMember("key", chat.getKey(), json.GetAllocator());
+
+	if (chat.getSubject().length() > 0)
+	{
+		json.AddMember("subject", chat.getSubject(), json.GetAllocator());
+	}
+
+	json.AddMember("contactName", chat.getDisplayName(), json.GetAllocator());
+
+	rapidjson::Value messagesJson(rapidjson::kArrayType);
+
+	std::vector<WhatsappMessage *> &messages = chat.getMessages(true);
+	for (std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
+	{
+		WhatsappMessage &message = **it;
+		rapidjson::Value messageJson(rapidjson::kObjectType);
+
+		messageJson.AddMember("timestamp", formatTimestampIso(message.getTimestamp()), json.GetAllocator());
+		messageJson.AddMember("fromMe", message.isFromMe(), json.GetAllocator());
+
+		switch (message.getMediaWhatsappType())
+		{
+			case MEDIA_WHATSAPP_TEXT:
+			{
+				messageJson.AddMember("type", "text", json.GetAllocator());
+				messageJson.AddMember("text", message.getData(), json.GetAllocator());
+			} break;
+			case MEDIA_WHATSAPP_IMAGE:
+			{
+				messageJson.AddMember("type", "image", json.GetAllocator());
+				addImageParameter(message, messageJson, json);
+			} break;
+			case MEDIA_WHATSAPP_AUDIO:
+			{
+				messageJson.AddMember("type", "audio", json.GetAllocator());
+			} break;
+			case MEDIA_WHATSAPP_VIDEO:
+			{
+				messageJson.AddMember("type", "video", json.GetAllocator());
+				addImageParameter(message, messageJson, json);
+			} break;
+			case MEDIA_WHATSAPP_CONTACT:
+			{
+				messageJson.AddMember("type", "contact", json.GetAllocator());
+			} break;
+			case MEDIA_WHATSAPP_LOCATION:
+			{
+				messageJson.AddMember("type", "location", json.GetAllocator());
+
+				std::stringstream location;
+				location << message.getLatitude() << "," << message.getLongitude();
+				messageJson.AddMember("location", location.str(), json.GetAllocator());
+
+				addImageParameter(message, messageJson, json);
+			} break;
+		}
+
+		messagesJson.PushBack(messageJson, json.GetAllocator());
+	}
+
+	json.AddMember("messages", messagesJson, json.GetAllocator());
+
+	rapidjson::StringBuffer buffer;
+    rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+    json.Accept(writer);
+
+	std::ofstream file(filename.c_str());
+	if (!file)
+	{
+		throw Exception("could not open chat export file");
+	}
+
+	file << buffer.GetString();
+}
