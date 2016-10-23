@@ -1,5 +1,5 @@
 #include "Log.h"
-#include "Libraries/AES/AES.h"
+#include "Libraries/AES/MyAES.h"
 #include "Exceptions/Exception.h"
 
 Log::Log()

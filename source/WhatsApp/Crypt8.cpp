@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "../Exceptions/Exception.h"
-#include "../Libraries/AES/AES.h"
+#include "../Libraries/AES/MyAES.h"
 #include "../Libraries/Zip/zlib.h"
 #include "Crypt5.h"
 #include "Crypt7.h"
@@ -67,7 +67,7 @@ void uncompressGzipBuffer(unsigned char *compressedBytes, int size, std::vector<
 	z_stream stream;
 	memset(&stream, 0, sizeof(z_stream));
 
-	int ret = inflateInit2(&stream, 16 + MAX_WBITS);
+	int ret = inflateInit2(&stream, 15 | 32);
 	if (ret != Z_OK)
 	{
 		throw Exception("Decryption failed. Error during unzipping (inflateInit). Invalid key?");

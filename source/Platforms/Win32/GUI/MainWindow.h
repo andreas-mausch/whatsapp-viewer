@@ -46,6 +46,7 @@ private:
 	void decryptDatabaseCrypt5();
 	void decryptDatabaseCrypt7();
 	void decryptDatabaseCrypt8();
+	void decryptDatabaseCrypt12();
 	void clearChats();
 	void clearChatList();
 

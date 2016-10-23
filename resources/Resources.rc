@@ -195,6 +195,7 @@ BEGIN
         MENUITEM "Decrypt .crypt&5...\tCtrl+5", ID_MENU_MAIN_FILE_DECRYPT_CRYPT5
         MENUITEM "Decrypt .crypt&7...\tCtrl+7", ID_MENU_MAIN_FILE_DECRYPT_CRYPT7
         MENUITEM "Decrypt .crypt&8...\tCtrl+8", ID_MENU_MAIN_FILE_DECRYPT_CRYPT8
+        MENUITEM "Decrypt .crypt&12...",        ID_MENU_MAIN_FILE_DECRYPT_CRYPT12
         MENUITEM SEPARATOR
         MENUITEM "&Exit\tAlt+F4",               ID_MENU_MAIN_FILE_EXIT
     END
