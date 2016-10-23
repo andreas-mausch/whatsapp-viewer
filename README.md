@@ -28,3 +28,4 @@ Credits:
 * Base64 http://www.adp-gmbh.ch/cpp/common/base64.html
 * Zlib http://www.zlib.net/
 * RapidJSON http://rapidjson.org/
+* mbedtls https://github.com/ARMmbed/mbedtls
