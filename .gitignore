@@ -17,6 +17,8 @@ resources/Resources.aps
 
 whatsapp-viewer.bundle
 
+.gradle/
+build/
 bugs/
 releases/
 target/

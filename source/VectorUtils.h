@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 template<class T>
 void clearVector(std::vector<T*> &v)
 {

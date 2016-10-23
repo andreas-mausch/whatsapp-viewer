@@ -10,6 +10,31 @@
 
 const int chunk = 16384;
 
+void extractKey8(const std::string &keyFilename, const std::string &dbFilename, unsigned char *key, unsigned char *iv)
+{
+	unsigned char *keyBytes;
+	int filesize = loadFileUnsigned(keyFilename, &keyBytes);
+
+	if (filesize != 158)
+	{
+		throw Exception("Expected key filesize of 158 bytes does not match.");
+	}
+
+	unsigned char *dbBytes;
+	int filesizeDB = loadFileUnsigned(dbFilename, &dbBytes);
+
+	// Initialisation vector is stored in the msgstore after v2-12-38
+	// hexdump -n 67 -e '2/1 "%02x"' msgstore.db.crypt8 | cut -b 103-134 > iv.txt
+	// last 16 bytes from the db store starting at byte 51
+	// see http://forum.xda-developers.com/android/apps-games/decrypting-whatsapp-crypt8-v2-12-38-t3083847
+
+	memcpy(iv, &dbBytes[51], 16);
+	memcpy(key, &keyBytes[126], 32);
+
+	delete[] dbBytes;
+	delete[] keyBytes;
+}
+
 void uncompressBlock(z_stream &stream, std::vector<unsigned char> &uncompressed)
 {
 	unsigned char out[chunk];
@@ -99,6 +124,6 @@ void decryptWhatsappDatabase8(const std::string &filename, const std::string &fi
 	unsigned char key[32];
 	unsigned char iv[16];
 
-	extractKey(keyFilename, key, iv);
+	extractKey8(keyFilename, filename, key, iv);
 	decryptWhatsappDatabase8(filename, filenameDecrypted, key, iv);
 }
