@@ -1,20 +1,23 @@
 # WhatsApp Viewer
 
-Small tool to display chats from the Android msgstore.db.crypt5 database.
+Small tool to display chats from the Android msgstore.db database.
 
-How to use:
+## How to use
 
-1. Download msgstore.db.crypt5 from your Android phone (located at /sdcard/WhatsApp/Databases)
+1. Download your WhatsApp database and key files using this method: http://forum.xda-developers.com/showthread.php?t=2770982
 2. Open WhatsApp Viewer
 3. File -> Open -> Select file
-4. Enter account name. This must be the same Google account name used on your phone. If you have more than one account, try the first one. Make sure you enter the whole email address as account name. If you have trouble, sometimes leaving the account name empty is known to work.
-5. Click on a chat to show the messages.
+4. Select msgstore.db in the folder "extracted"
+5. Leave account name empty, is was used for older versions of WhatsApp (crypt5)
+6. Optional: If you want, you can import contact names from the wa.db file
 
-Currently only text and image messages are supported (no audio, gps).
+## Command line support
+
+```
+"WhatsApp Viewer.exe" -decrypt12 msgstore-2016-10-22.1.db.crypt12 whatsapp.cryptkey12 decrypted.db
+```
+
 You cannot see bigger images because only thumbnails are stored in the database.
-You see cryptic phone numbers because account names or details are not stored in the database (no support for wa.db yet).
-
-This release is not stable and known to crash sometimes. Sorry.
 
 Credits:
 
