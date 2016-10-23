@@ -37,7 +37,6 @@ void decryptWhatsappDatabase12(const std::string &filename, const std::string &f
 	unsigned char *decryptedDatabaseBytes = new unsigned char[databaseSize];
 
 	decryptAesGcm(cryptedDatabaseBytes, decryptedDatabaseBytes, key, initVector, databaseSize);
-	saveOutputToFile(decryptedDatabaseBytes, databaseSize, "test.out");
 
 	std::vector<unsigned char> uncompressed;
 	uncompressGzipBuffer(decryptedDatabaseBytes, databaseSize, uncompressed);
