@@ -494,7 +494,7 @@ void MainWindow::exportChatToHtml(WhatsappChat &chat)
 
 void MainWindow::exportChatToJson(WhatsappChat &chat)
 {
-	ChatExporterJson exporter;
+	ChatExporterJson exporter(settings);
 	exportChat(chat, exporter, "json");
 }
 

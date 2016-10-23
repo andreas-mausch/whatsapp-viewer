@@ -2,19 +2,16 @@
 #include <sstream>
 #include <windows.h>
 
-#define RAPIDJSON_HAS_STDSTRING 1
-
 #include "ChatExporterJson.h"
 #include "../Exceptions/Exception.h"
+#include "../Exceptions/KeyNotFoundException.h"
 #include "../WhatsApp/Chat.h"
 #include "../WhatsApp/Message.h"
 #include "../Platforms/Win32/Timestamp.h"
 #include "../Libraries/Base64/Base64.h"
-#include "../Libraries/Json/rapidjson/document.h"
-#include "../Libraries/Json/rapidjson/prettywriter.h"
-#include "../Libraries/Json/rapidjson/stringbuffer.h"
+#include "../Settings.h"
 
-ChatExporterJson::ChatExporterJson()
+ChatExporterJson::ChatExporterJson(Settings &settings) : settings(settings)
 {
 }
 
@@ -22,7 +19,19 @@ ChatExporterJson::~ChatExporterJson()
 {
 }
 
-void addImageParameter(WhatsappMessage &message, rapidjson::Value &messageJson, rapidjson::Document &json)
+std::string ChatExporterJson::findDisplayName(const std::string &key)
+{
+	try
+	{
+		return settings.read("Contacts/" + key);
+	}
+	catch (KeyNotFoundException &exception)
+	{
+		return key;
+	}
+}
+
+void ChatExporterJson::addImageParameter(WhatsappMessage &message, rapidjson::Value &messageJson, rapidjson::Document &json)
 {
 	if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
 	{
@@ -54,6 +63,12 @@ void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filenam
 
 		messageJson.AddMember("timestamp", formatTimestampIso(message.getTimestamp()), json.GetAllocator());
 		messageJson.AddMember("fromMe", message.isFromMe(), json.GetAllocator());
+
+		if (message.getRemoteResource().size() > 0)
+		{
+			messageJson.AddMember("remoteResource", message.getRemoteResource(), json.GetAllocator());
+			messageJson.AddMember("remoteResourceDisplayName", findDisplayName(message.getRemoteResource()), json.GetAllocator());
+		}
 
 		switch (message.getMediaWhatsappType())
 		{
