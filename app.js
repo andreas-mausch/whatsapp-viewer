@@ -23,7 +23,8 @@ var loadChat = function(key) {
 
     database.each(`SELECT *
         FROM messages
-        WHERE key_remote_jid = ?`,
+        WHERE key_remote_jid = ?
+        ORDER BY timestamp ASC`,
         key,
         function(error, row) {
             var div = document.createElement('div');
