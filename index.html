@@ -4,18 +4,38 @@
 <head>
     <title>WhatsApp Viewer</title>
 
+    <link rel="stylesheet" href="./bulma/bulma.css">
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
     <h1>WhatsApp Viewer</h1>
 
-    <button id="load-database">Load msgstore.db</button>
+    <div class="container">
+        <a id="load-database" class="button">Load msgstore.db</a>
+    </div>
 
-    <div id="chats" class="chats">
-        <div class="chat">
-            <span class="chat-caption">+123456789</span>
-            <span class="chat-last-message">01.01.1999</span>
+    <div class="columns">
+        <div id="chats" class="column whatsapp-chats">
+            <div class="whatsapp-chat">
+                <span class="whatsapp-chat-caption">+123456789</span>
+                <span class="whatsapp-chat-last-message">01.01.1999</span>
+            </div>
+        </div>
+
+        <div id="messages" class="column whatsapp-messages">
+            <div class="whatsapp-message">
+                <span class="whatsapp-message-text">Bla bla 1</span>
+                <span class="whatsapp-message-timestamp">01.01.1999</span>
+            </div>
+            <div class="whatsapp-message">
+                <span class="whatsapp-message-text">Bla bla 2</span>
+                <span class="whatsapp-message-timestamp">01.01.1999</span>
+            </div>
+            <div class="whatsapp-message">
+                <span class="whatsapp-message-text">Bla bla 3</span>
+                <span class="whatsapp-message-timestamp">01.01.1999</span>
+            </div>
         </div>
     </div>
 

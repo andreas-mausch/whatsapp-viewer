@@ -1,8 +1,14 @@
-.chats {
-  background-color: rgb(220, 220, 220);
-  padding: 5px;
+.whatsapp-chats {
+    background-color: rgb(220, 220, 220);
+    padding: 5px;
 }
 
-.chat {
-  background-color: rgb(220, 240, 255);
+.whatsapp-chat {
+    background-color: rgb(220, 240, 255);
 }
+
+.whatsapp-messages {
+    padding: 10px;
+}
+
+.whatsapp-message {}

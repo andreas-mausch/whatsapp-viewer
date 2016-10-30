@@ -15,14 +15,14 @@ loadDatabase.addEventListener('click', function() {
 
     database.each("SELECT * FROM chat_list", function(error, row) {
         var div = document.createElement('div');
-        div.className = 'chat';
+        div.className = 'whatsapp-chat';
 
         var caption = document.createElement('span');
-        caption.className = 'chat-caption';
+        caption.className = 'whatsapp-chat-caption';
         caption.innerText = row.key_remote_jid;
 
         var lastMessage = document.createElement('span');
-        lastMessage.className = 'chat-last-message';
+        lastMessage.className = 'whatsapp-chat-last-message';
         lastMessage.innerText = '';
 
         div.appendChild(caption);
