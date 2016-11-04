@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "bulma": "^0.2.3",
+    "ractive": "^0.8.3",
     "sqlite3": "^3.1.8"
   }
 }

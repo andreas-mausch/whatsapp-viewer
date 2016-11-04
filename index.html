@@ -2,30 +2,44 @@
 <html>
 
 <head>
-    <title>WhatsApp Viewer</title>
+  <title>WhatsApp Viewer</title>
 
-    <link rel="stylesheet" href="./bulma/bulma.css">
-    <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./bulma/bulma.css">
+  <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-    <h1>WhatsApp Viewer</h1>
+  <h1 class="title">WhatsApp Viewer</h1>
 
+  <div id="container">
+  </div>
+  <script id='template' type='text/ractive'>
     <div class="container">
-        <a id="load-database" class="button">Load msgstore.db</a>
+      <a class="button" on-click="load-database">Load msgstore.db</a>
     </div>
 
     <div class="columns">
-        <div id="chats" class="column whatsapp-chats">
+      <div class="column whatsapp-chats">
+        {{#each chats}}
+        <div class="whatsapp-chat">
+          <span class="whatsapp-chat-caption"><a on-click='load-chat:{{key}}'>{{key}}</a></span>
         </div>
+        {{/each}}
+      </div>
 
-        <div id="messages" class="column whatsapp-messages">
+      <div class="column whatsapp-messages">
+        {{#each messages}}
+        <div class="whatsapp-message">
+          {{this}}
         </div>
+        {{/each}}
+      </div>
     </div>
+  </script>
 
-    <script>
-        require('./app.js');
-    </script>
+  <script>
+    require('./app.js');
+  </script>
 </body>
 
 </html>
