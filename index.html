@@ -12,33 +12,27 @@
   <h1 class="title">WhatsApp Viewer</h1>
 
   <div id="container">
-  </div>
-  <script id='template' type='text/ractive'>
     <div class="container">
-      <a class="button" on-click="load-database">Load msgstore.db</a>
+      <a class="button" v-on:click="loadDatabase">Load msgstore.db</a>
     </div>
 
     <div class="columns">
       <div class="column whatsapp-chats">
-        {{#each chats}}
-        <div class="whatsapp-chat">
-          <span class="whatsapp-chat-caption"><a on-click='load-chat:{{key}}'>{{key}}</a></span>
+        <div class="whatsapp-chat" v-for="chat in chats">
+          <span class="whatsapp-chat-caption"><a v-on:click="loadChat(chat.key)">{{chat.key}}</a></span>
         </div>
-        {{/each}}
       </div>
 
       <div class="column whatsapp-messages">
-        {{#each messages}}
-        <div class="whatsapp-message">
-          {{this}}
+        <div class="whatsapp-message" v-for="message in messages">
+          {{message}}
         </div>
-        {{/each}}
       </div>
     </div>
-  </script>
+  </div>
 
   <script>
-    require('./app.js');
+    require("./app.js");
   </script>
 </body>
 
