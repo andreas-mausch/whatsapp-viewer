@@ -25,7 +25,7 @@
 
       <div class="column whatsapp-messages">
         <div class="whatsapp-message" v-for="message in messages">
-          {{message}}
+          <img v-if="message.rawData != null && message.rawData.length > 0" :src="toBase64(message.rawData)">
         </div>
       </div>
     </div>

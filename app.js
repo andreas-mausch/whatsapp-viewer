@@ -4,6 +4,7 @@ var sqlite3 = require('sqlite3').verbose();
 // https://vuejs.org/guide/installation.html
 var Vue = require('vue/dist/vue.js');
 var moment = require('moment');
+var base64 = require('base64-js');
 
 var database = null;
 
@@ -66,6 +67,9 @@ var app = new Vue({
 
           messages.push(message);
         });
+    },
+    toBase64: function(image) {
+      return 'data:image/jpeg;base64,' + base64.fromByteArray(image);
     }
   }
 });
