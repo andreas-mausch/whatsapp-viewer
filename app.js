@@ -30,14 +30,20 @@ var thumbnailMixin = {
 
 Vue.component('message', {
   props: ['value'],
-  template: `<div>
-               <message-text v-if="value.type == messageTypes.TEXT" :value="value"/>
-               <message-image v-if="value.type == messageTypes.IMAGE" :value="value"/>
-               <message-audio v-if="value.type == messageTypes.AUDIO" :value="value"/>
-               <message-video v-if="value.type == messageTypes.VIDEO" :value="value"/>
-               <message-contact v-if="value.type == messageTypes.CONTACT" :value="value"/>
-               <message-location v-if="value.type == messageTypes.LOCATION" :value="value"/>
-             </div>`,
+  template: `<li class="whatsapp-message" :class="{ sent: value.fromMe, received: !value.fromMe }">
+               <div class="message-content">
+                 <message-text v-if="value.type == messageTypes.TEXT" :value="value"/>
+                 <message-image v-if="value.type == messageTypes.IMAGE" :value="value"/>
+                 <message-audio v-if="value.type == messageTypes.AUDIO" :value="value"/>
+                 <message-video v-if="value.type == messageTypes.VIDEO" :value="value"/>
+                 <message-contact v-if="value.type == messageTypes.CONTACT" :value="value"/>
+                 <message-location v-if="value.type == messageTypes.LOCATION" :value="value"/>
+               </div>
+               <div class="message-footer">
+                 <div class="remote-resource" v-if="value.remoteResource">{{value.remoteResource}}</div>
+                 <div class="timestamp">{{value.timestamp.format('YYYY-MM-DD HH:mm:ss')}}</div>
+               </div>
+             </li>`,
   data: function() {
     return {
       messageTypes: messageTypes
@@ -143,6 +149,7 @@ var app = new Vue({
 
           messages.push(message);
         });
+      window.scrollTo(0, 0);
     }
   }
 });

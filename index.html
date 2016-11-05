@@ -23,11 +23,9 @@
         </div>
       </div>
 
-      <div class="column whatsapp-messages">
-        <div class="whatsapp-message" v-for="message in messages">
-          <message :value="message" />
-        </div>
-      </div>
+      <ul class="column whatsapp-messages">
+        <message :value="message" v-for="message in messages" />
+      </ul>
     </div>
   </div>
 

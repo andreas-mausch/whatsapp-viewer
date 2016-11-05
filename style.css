@@ -1,18 +1,46 @@
+body {
+  padding: 15px;
+}
+
 .whatsapp-chats {
-    background-color: rgb(220, 220, 220);
-    padding: 5px;
+  background-color: rgb(220, 220, 220);
+  padding: 5px;
 }
 
 .whatsapp-chat {
-    background-color: rgb(220, 240, 255);
+  background-color: rgb(220, 240, 255);
 }
 
 .whatsapp-messages {
-    padding: 10px;
+  padding: 10px;
 }
 
-.whatsapp-message {}
+.whatsapp-message {
+  width: 75%;
+  padding: 3px 10px;
+  border-radius: 5px;
+  margin-bottom: 3px;
+}
+
+.whatsapp-message.sent {
+  background-color: rgb(236, 229, 221);
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.whatsapp-message.received {
+  background-color: rgb(220, 248, 198);
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.whatsapp-message .message-footer {
+  font-family: monospace;
+  color: rgb(156, 156, 156);
+  text-align: right;
+  font-size: 75%;
+}
 
 .columns {
-    margin: 0;
+  margin: 0;
 }
