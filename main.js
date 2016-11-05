@@ -1,15 +1,26 @@
 const {
-    app,
-    BrowserWindow
+  app,
+  BrowserWindow,
+  Menu
 } = require('electron');
 
 let mainWindow;
 
 app.on('ready', () => {
-    mainWindow = new BrowserWindow({
-        height: 720,
-        width: 1024
-    });
+  const template = [{
+    label: 'File',
+    submenu: [{
+      label: 'Open',
+      click() {}
+    }]
+  }];
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
 
-    mainWindow.loadURL('file://' + __dirname + '/index.html');
+  mainWindow = new BrowserWindow({
+    height: 720,
+    width: 1024
+  });
+
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
 });
