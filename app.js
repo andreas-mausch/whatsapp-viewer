@@ -8,6 +8,50 @@ var base64 = require('base64-js');
 
 var database = null;
 
+var messageTypes = {
+  TEXT: 0,
+  IMAGE: 1,
+  AUDIO: 2,
+  VIDEO: 3,
+  CONTACT: 4,
+  LOCATION: 5
+};
+
+var thumbnailMixin = {
+  methods: {
+    containsImage: function(message) {
+      return message.rawData != null && message.rawData.length > 0;
+    },
+    toBase64: function(image) {
+      return 'data:image/jpeg;base64,' + base64.fromByteArray(image);
+    }
+  }
+};
+
+Vue.component('message', {
+  props: ['value'],
+  template: `<div>
+               <message-text v-if="value.type == messageTypes.TEXT" :value="value"/>
+               <message-image v-if="value.type == messageTypes.IMAGE" :value="value"/>
+             </div>`,
+  data: function() {
+    return {
+      messageTypes: messageTypes
+    }
+  }
+});
+
+Vue.component('message-text', {
+  props: ['value'],
+  template: `<span>{{value.data}}</span>`
+});
+
+Vue.component('message-image', {
+  mixins: [thumbnailMixin],
+  props: ['value'],
+  template: `<img v-if="containsImage(value)" :src="toBase64(value.rawData)">`
+});
+
 var app = new Vue({
   el: '#container',
   data: {
@@ -40,6 +84,7 @@ var app = new Vue({
             fromMe: row.key_from_me,
             status: row.status,
             timestamp: moment(row.timestamp),
+            type: row.media_wa_type,
             remoteResource: row.remote_resource,
             rawData: row.raw_data
           };
@@ -56,7 +101,6 @@ var app = new Vue({
             message.media = {
               url: row.media_url,
               mimeType: row.media_mime_type,
-              whatsappType: row.media_wa_type,
               size: row.media_size,
               name: row.media_name,
               duration: row.media_duration,
@@ -67,9 +111,6 @@ var app = new Vue({
 
           messages.push(message);
         });
-    },
-    toBase64: function(image) {
-      return 'data:image/jpeg;base64,' + base64.fromByteArray(image);
     }
   }
 });
