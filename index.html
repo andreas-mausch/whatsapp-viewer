@@ -9,19 +9,18 @@
 </head>
 
 <body>
-  <h1 class="title">WhatsApp Viewer</h1>
-
   <div id="container">
-    <div class="container">
-      <a class="button" v-on:click="loadDatabase">Load msgstore.db</a>
-    </div>
+    <h1 class="title">
+    WhatsApp Viewer
+    <a class="button" v-on:click="loadDatabase">Load msgstore.db</a>
+  </h1>
 
     <div class="columns">
-      <div class="column whatsapp-chats">
-        <div class="whatsapp-chat" v-for="chat in chats">
+      <ul class="column whatsapp-chats">
+        <li class="whatsapp-chat" v-for="chat in chats">
           <span class="whatsapp-chat-caption"><a v-on:click="loadChat(chat.key)">{{chat.key}}</a></span>
-        </div>
-      </div>
+        </li>
+      </ul>
 
       <ul class="column whatsapp-messages">
         <message :value="message" v-for="message in messages" />

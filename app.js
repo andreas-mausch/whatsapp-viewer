@@ -146,7 +146,6 @@ var app = new Vue({
             };
           }
 
-
           messages.push(message);
         });
       window.scrollTo(0, 0);
