@@ -33,6 +33,10 @@ Vue.component('message', {
   template: `<div>
                <message-text v-if="value.type == messageTypes.TEXT" :value="value"/>
                <message-image v-if="value.type == messageTypes.IMAGE" :value="value"/>
+               <message-audio v-if="value.type == messageTypes.AUDIO" :value="value"/>
+               <message-video v-if="value.type == messageTypes.VIDEO" :value="value"/>
+               <message-contact v-if="value.type == messageTypes.CONTACT" :value="value"/>
+               <message-location v-if="value.type == messageTypes.LOCATION" :value="value"/>
              </div>`,
   data: function() {
     return {
@@ -49,7 +53,35 @@ Vue.component('message-text', {
 Vue.component('message-image', {
   mixins: [thumbnailMixin],
   props: ['value'],
-  template: `<img v-if="containsImage(value)" :src="toBase64(value.rawData)">`
+  template: `<div><img v-if="containsImage(value)" :src="toBase64(value.rawData)"></div>`
+});
+
+Vue.component('message-audio', {
+  props: ['value'],
+  template: `<span>
+               Audio {{value.media.duration}}s
+               <span v-if="value.media.name">: {{value.media.name}}</span>
+             </span>`
+});
+
+Vue.component('message-video', {
+  mixins: [thumbnailMixin],
+  props: ['value'],
+  template: `<div><img v-if="containsImage(value)" :src="toBase64(value.rawData)"></div>`
+});
+
+Vue.component('message-contact', {
+  props: ['value'],
+  template: `<span>Contact</span>`
+});
+
+Vue.component('message-location', {
+  mixins: [thumbnailMixin],
+  props: ['value'],
+  template: `<div>
+               <div><img v-if="containsImage(value)" :src="toBase64(value.rawData)"></div>
+               <div>{{value.location.latitude}},{{value.location.longitude}}</div>
+             </div>`
 });
 
 var app = new Vue({
@@ -60,8 +92,8 @@ var app = new Vue({
   },
   methods: {
     loadDatabase: function() {
+      this.chats = [];
       var chats = this.chats;
-      chats.length = 0;
       database = new sqlite3.Database('./database/msgstore.db', sqlite3.OPEN_READONLY);
 
       database.each('SELECT * FROM chat_list', function(error, row) {
@@ -71,8 +103,8 @@ var app = new Vue({
       });
     },
     loadChat: function(key) {
+      this.messages = [];
       var messages = this.messages;
-      messages.length = 0;
       database.each(`SELECT *
             FROM messages
             WHERE key_remote_jid = ?
