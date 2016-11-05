@@ -5,6 +5,7 @@ var sqlite3 = require('sqlite3').verbose();
 var Vue = require('vue/dist/vue.js');
 var moment = require('moment');
 var base64 = require('base64-js');
+var shell = require('electron').shell;
 
 var database = null;
 
@@ -84,9 +85,19 @@ Vue.component('message-contact', {
 Vue.component('message-location', {
   mixins: [thumbnailMixin],
   props: ['value'],
+  methods: {
+    openLinkInMaps: function() {
+      shell.openExternal('http://www.google.com/maps?q=' + this.value.location.latitude + ',' + this.value.location.longitude);
+    }
+  },
+  data: function() {
+    return {
+      shell: shell
+    }
+  },
   template: `<div>
                <div><img v-if="containsImage(value)" :src="toBase64(value.rawData)"></div>
-               <div>{{value.location.latitude}},{{value.location.longitude}}</div>
+               <div><a v-on:click="openLinkInMaps()">{{value.location.latitude}},{{value.location.longitude}}</a></div>
              </div>`
 });
 
