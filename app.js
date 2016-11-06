@@ -109,19 +109,19 @@ var app = new Vue({
   },
   methods: {
     loadDatabase: function() {
-      this.chats = [];
-      var chats = this.chats;
+      var self = this;
+      self.chats = [];
       database = new sqlite3.Database('./database/msgstore.db', sqlite3.OPEN_READONLY);
 
       database.each('SELECT * FROM chat_list', function(error, row) {
-        chats.push({
+        self.chats.push({
           key: row.key_remote_jid
         });
       });
     },
     loadChat: function(key) {
-      this.messages = [];
-      var messages = this.messages;
+      var self = this;
+      self.messages = [];
       database.each(`SELECT *
             FROM messages
             WHERE key_remote_jid = ?
@@ -157,7 +157,7 @@ var app = new Vue({
             };
           }
 
-          messages.push(message);
+          self.messages.push(message);
         });
       window.scrollTo(0, 0);
     }
