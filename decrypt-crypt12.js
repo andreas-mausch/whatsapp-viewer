@@ -33,6 +33,6 @@ console.log('decrypted: ', decrypted);
 fs.writeFile(outputFilename, decrypted, { flag: 'wx' }, function (err) {
     if (err) throw err;
     console.log();
-    console.log('written to msgstore.db');
+    console.log('written to ', outputFilename);
 });
 
