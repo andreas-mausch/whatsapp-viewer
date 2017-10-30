@@ -75,7 +75,7 @@ void BuildMessagesThread::run()
 				} break;
 				case MEDIA_WHATSAPP_IMAGE:
 				{
-					if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
+					if (message.hasThumbnail())
 					{
 						messageFrame = new ChatControlMessageFrame(new ChatControlMessageImage(message, 0, imageDecoder), 0, color, dateFont);
 					}

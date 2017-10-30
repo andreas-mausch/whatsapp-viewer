@@ -1,6 +1,6 @@
 #include "Message.h"
 
-WhatsappMessage::WhatsappMessage(std::string chatId, bool fromMe, int status, std::string data, long long timestamp, long long receivedTimestamp, long long sendTimestamp, std::string mediaUrl, std::string mediaMimeType, int mediaWhatsappType, int mediaSize, std::string mediaName, int mediaDuration, double latitude, double longitude, const void *thumbImage, int thumbImageSize, const std::string &remoteResource, const void *rawData, int rawDataSize) :
+WhatsappMessage::WhatsappMessage(std::string chatId, bool fromMe, int status, std::string data, long long timestamp, long long receivedTimestamp, long long sendTimestamp, std::string mediaUrl, std::string mediaMimeType, int mediaWhatsappType, int mediaSize, std::string mediaName, int mediaDuration, double latitude, double longitude, const void *thumbImage, int thumbImageSize, const std::string &remoteResource, const void *rawData, int rawDataSize, const void *thumbnailData, int thumbnailDataSize) :
 	chatId(chatId), fromMe(fromMe), status(status), data(data), timestamp(timestamp),
 	receivedTimestamp(receivedTimestamp), sendTimestamp(sendTimestamp), mediaUrl(mediaUrl),
 	mediaMimeType(mediaMimeType), mediaWhatsappType(mediaWhatsappType), mediaSize(mediaSize),
@@ -8,7 +8,8 @@ WhatsappMessage::WhatsappMessage(std::string chatId, bool fromMe, int status, st
 	latitude(latitude), longitude(longitude),
 	thumbImage(NULL), thumbImageSize(thumbImageSize),
 	remoteResource(remoteResource),
-	rawData(NULL), rawDataSize(rawDataSize)
+	rawData(NULL), rawDataSize(rawDataSize),
+	thumbnailData(NULL), thumbnailDataSize(thumbnailDataSize)
 {
 	if (thumbImage != NULL && thumbImageSize > 0)
 	{
@@ -20,12 +21,18 @@ WhatsappMessage::WhatsappMessage(std::string chatId, bool fromMe, int status, st
 		this->rawData = new unsigned char[rawDataSize];
 		memcpy(this->rawData, rawData, rawDataSize);
 	}
+	if (thumbnailData != NULL && thumbnailDataSize > 0)
+	{
+		this->thumbnailData = new unsigned char[thumbnailDataSize];
+		memcpy(this->thumbnailData, thumbnailData, thumbnailDataSize);
+	}
 }
 
 WhatsappMessage::~WhatsappMessage()
 {
 	delete[] this->thumbImage;
 	delete[] this->rawData;
+	delete[] this->thumbnailData;
 }
 
 const std::string& WhatsappMessage::getData() const
@@ -41,16 +48,6 @@ bool WhatsappMessage::isFromMe() const
 long long WhatsappMessage::getTimestamp() const
 {
 	return timestamp;
-}
-
-unsigned char *WhatsappMessage::getRawData()
-{
-	return rawData;
-}
-
-int WhatsappMessage::getRawDataSize()
-{
-	return rawDataSize;
 }
 
 int WhatsappMessage::getMediaWhatsappType() const
@@ -81,4 +78,25 @@ const std::string &WhatsappMessage::getMediaName() const
 int WhatsappMessage::getMediaDuration() const
 {
 	return mediaDuration;
+}
+
+bool WhatsappMessage::hasThumbnail()
+{
+	return getThumbnail() != NULL;
+}
+
+unsigned char *WhatsappMessage::getThumbnail()
+{
+	if (rawDataSize > 0 && rawData != NULL) {
+		return rawData;
+	}
+	return thumbnailData;
+}
+
+int WhatsappMessage::getThumbnailSize()
+{
+	if (rawDataSize > 0 && rawData != NULL) {
+		return rawDataSize;
+	}
+	return thumbnailDataSize;
 }

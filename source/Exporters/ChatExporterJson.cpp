@@ -22,9 +22,9 @@ ChatExporterJson::~ChatExporterJson()
 
 void ChatExporterJson::addImageParameter(WhatsappMessage &message, rapidjson::Value &messageJson, rapidjson::Document &json)
 {
-	if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
+	if (message.hasThumbnail())
 	{
-		messageJson.AddMember("image", base64_encode(message.getRawData(), message.getRawDataSize()), json.GetAllocator());
+		messageJson.AddMember("image", base64_encode(message.getThumbnail(), message.getThumbnailSize()), json.GetAllocator());
 	}
 }
 

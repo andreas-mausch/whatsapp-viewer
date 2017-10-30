@@ -57,9 +57,9 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 			} break;
 			case MEDIA_WHATSAPP_IMAGE:
 			{
-				if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
+				if (message.hasThumbnail())
 				{
-					output << "<div><img src=\"data:image/jpeg;base64," << base64_encode(message.getRawData(), message.getRawDataSize()) << "\"></div>" << std::endl;
+					output << "<div><img src=\"data:image/jpeg;base64," << base64_encode(message.getThumbnail(), message.getThumbnailSize()) << "\"></div>" << std::endl;
 				}
 			} break;
 			case MEDIA_WHATSAPP_AUDIO:
@@ -68,9 +68,9 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 			} break;
 			case MEDIA_WHATSAPP_VIDEO:
 			{
-				if (message.getRawDataSize() > 0 && message.getRawData() != NULL)
+				if (message.hasThumbnail())
 				{
-					output << "<div><img src=\"data:image/jpeg;base64," << base64_encode(message.getRawData(), message.getRawDataSize()) << "\"></div>" << std::endl;
+					output << "<div><img src=\"data:image/jpeg;base64," << base64_encode(message.getThumbnail(), message.getThumbnailSize()) << "\"></div>" << std::endl;
 				}
 				output << "<span>[ Video ]</span>";
 			} break;

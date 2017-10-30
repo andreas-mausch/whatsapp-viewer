@@ -8,9 +8,9 @@
 ChatControlMessageWithPreview::ChatControlMessageWithPreview(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
 	: ChatControlMessage(message, width), bitmap(NULL), bitmapWidth(0), bitmapHeight(0)
 {
-	if (message.getRawData() != NULL && message.getRawDataSize() > 0)
+	if (message.hasThumbnail())
 	{
-		HBITMAP bitmap = imageDecoder.loadImage(message.getRawData(), message.getRawDataSize());
+		HBITMAP bitmap = imageDecoder.loadImage(message.getThumbnail(), message.getThumbnailSize());
 
 		BITMAP bitmapObject;
 		GetObject(bitmap, sizeof(BITMAP), &bitmapObject);

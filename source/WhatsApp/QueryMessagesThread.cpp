@@ -23,10 +23,11 @@ void QueryMessagesThread::interrupt()
 
 void QueryMessagesThread::run()
 {
-	const char *query = "SELECT key_remote_jid, key_from_me, status, data, timestamp, media_url, media_mime_type, media_wa_type, media_size, media_name, media_duration, latitude, longitude, thumb_image, remote_resource, raw_data " \
+	const char *query = "SELECT messages.key_remote_jid, messages.key_from_me, status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, message_thumbnails.thumbnail " \
 						"FROM messages " \
-						"WHERE key_remote_jid = ? " \
-						"ORDER BY timestamp asc";
+						"LEFT JOIN message_thumbnails on messages.key_id = message_thumbnails.key_id " \
+						"WHERE messages.key_remote_jid = ? " \
+						"ORDER BY messages.timestamp asc";
 
 	sqlite3_stmt *res;
 	if (sqlite3_prepare_v2(sqLiteDatabase.getHandle(), query, -1, &res, NULL) != SQLITE_OK)
@@ -64,8 +65,10 @@ void QueryMessagesThread::run()
 		std::string remoteResource = sqLiteDatabase.readString(res, 14);
 		const void *rawData = sqlite3_column_blob(res, 15);
 		int rawDataSize = sqlite3_column_bytes(res, 15);
+		const void *thumbnailData = sqlite3_column_blob(res, 16);
+		int thumbnailDataSize = sqlite3_column_bytes(res, 16);
 
-		WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, mediaName, mediaDuration, latitude, longitude, thumbImage, thumbImageSize, remoteResource, rawData, rawDataSize);
+		WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, mediaName, mediaDuration, latitude, longitude, thumbImage, thumbImageSize, remoteResource, rawData, rawDataSize, thumbnailData, thumbnailDataSize);
 		messages.push_back(message);
 	}
 
