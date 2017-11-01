@@ -45,10 +45,10 @@ void uncompressBlock(z_stream &stream, std::vector<unsigned char> &uncompressed)
 		stream.next_out = out;
 		int ret = inflate(&stream, Z_NO_FLUSH);
 
-		if (ret != Z_OK && ret != Z_STREAM_END)
+		if (ret != Z_OK && ret != Z_STREAM_END && ret != Z_BUF_ERROR)
 		{
 			inflateEnd(&stream);
-			throw Exception("Decryption failed. Error during unzipping (inflate).");
+			throw Exception("Decryption failed. Error during unzipping (inflate). In 99% this means you tried to use an invalid key.");
 		}
 
 		unsigned int have = chunk - stream.avail_out;
