@@ -10,7 +10,7 @@ void importContacts(Settings &settings, const std::string &wadbFilename)
 {
 	SQLiteDatabase wadb(wadbFilename);
 
-	const char *query = "SELECT jid, display_name, status " \
+	const char *query = "SELECT jid, display_name " \
 						"FROM wa_contacts";
 
 	sqlite3_stmt *res;
@@ -23,7 +23,6 @@ void importContacts(Settings &settings, const std::string &wadbFilename)
 	{
 		std::string jid = wadb.readString(res, 0);
 		std::string displayName = wadb.readString(res, 1);
-		std::string status = wadb.readString(res, 2);
 
 		if (displayName.length() > 0)
 		{
