@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Deutsch (Deutschland) resources
+// German (Germany) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
 #ifdef _WIN32
@@ -93,8 +93,8 @@ BEGIN
     LTEXT           "Web",IDC_STATIC,20,140,16,8
     LTEXT           "Andreas Mausch",IDC_STATIC,123,113,54,8
     LTEXT           "andreas.mausch@gmail.com",IDC_STATIC,123,127,92,8
-    LTEXT           "http://andreas-mausch.github.io/whatsapp-viewer/",IDC_STATIC,123,140,166,8
-    LTEXT           "v1.9",IDC_ABOUT_APPLICATION_VERSION,123,50,221,8
+    LTEXT           "http://andreas-mausch.de/whatsapp-viewer/",IDC_STATIC,123,140,166,8
+    LTEXT           "v1.10",IDC_ABOUT_APPLICATION_VERSION,123,50,221,8
     LTEXT           "https://github.com/andreas-mausch/",IDC_STATIC,123,151,119,8
     LTEXT           "Thanks",IDC_STATIC,20,171,24,8
     LTEXT           "TripCode for his crypt12 implementation",IDC_STATIC,123,171,128,8
@@ -1108,8 +1108,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,9,0,0
- PRODUCTVERSION 1,9,0,0
+ FILEVERSION 1,10,0,0
+ PRODUCTVERSION 1,10,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1124,14 +1124,14 @@ BEGIN
     BEGIN
         BLOCK "000004b0"
         BEGIN
-            VALUE "Comments", "http://andreas-mausch.github.io/whatsapp-viewer/"
+            VALUE "Comments", "http://andreas-mausch.de/whatsapp-viewer/"
             VALUE "FileDescription", "WhatsApp Viewer"
-            VALUE "FileVersion", "1, 9, 0, 0"
+            VALUE "FileVersion", "1, 10, 0, 0"
             VALUE "InternalName", "WhatsApp Viewer"
             VALUE "LegalCopyright", "Copyright (C) 2014 Andreas Mausch"
             VALUE "OriginalFilename", "WhatsApp Viewer.exe"
             VALUE "ProductName", "WhatsApp Viewer"
-            VALUE "ProductVersion", "v1.9"
+            VALUE "ProductVersion", "v1.10"
         END
     END
     BLOCK "VarFileInfo"
@@ -1140,7 +1140,7 @@ BEGIN
     END
 END
 
-#endif    // Deutsch (Deutschland) resources
+#endif    // German (Germany) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
