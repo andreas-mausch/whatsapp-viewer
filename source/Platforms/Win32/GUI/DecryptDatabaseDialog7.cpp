@@ -47,7 +47,7 @@ void DecryptDatabaseDialog7::selectKeyFile()
 	openFilename.hwndOwner = dialog;
 	openFilename.lpstrFile = filename;
 	openFilename.nMaxFile = MAX_PATH;
-	openFilename.lpstrFilter = L"WhatsApp Key (key)\0key\0All files (*)\0*\0";
+	openFilename.lpstrFilter = L"All files (*)\0*\0";
 	openFilename.lpstrInitialDir = NULL;
 	openFilename.lpstrDefExt = L"";
 	openFilename.Flags = OFN_EXPLORER | OFN_ENABLESIZING | OFN_HIDEREADONLY;
