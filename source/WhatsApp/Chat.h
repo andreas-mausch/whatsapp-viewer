@@ -17,11 +17,14 @@ private:
 	long long creation;
 	long long lastMessage;
 
+	int messagesSent;
+	int messagesReceived;
+
 	bool messagesLoaded;
 	std::vector<WhatsappMessage *> messages;
 
 public:
-	WhatsappChat(WhatsappDatabase &database, const std::string &displayName, const std::string &key, const std::string &subject, long long creation, long long lastMessage);
+	WhatsappChat(WhatsappDatabase &database, const std::string &displayName, const std::string &key, const std::string &subject, long long creation, long long lastMessage, int messagesSent, int messagesReceived);
 	~WhatsappChat();
 
 	const std::string& getDisplayName() const;
@@ -29,6 +32,8 @@ public:
 	const std::string& getSubject() const;
 	long long getCreation() const;
 	long long getLastMessage() const;
+	int getMessagesSent() const;
+	int getMessagesReceived() const;
 
 	std::vector<WhatsappMessage *> getMessages(const volatile bool &running);
 };

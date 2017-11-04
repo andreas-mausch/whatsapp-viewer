@@ -2,6 +2,7 @@
 #include <commctrl.h>
 #include <algorithm>
 #include <fstream>
+#include <locale>
 #include <sstream>
 #include <vector>
 
@@ -154,10 +155,10 @@ void MainWindow::createChildWindows()
 	CreateWindowEx(0, STATUSCLASSNAME, L"file manager", WS_CHILD, 0, 0, 0, 0, dialog, reinterpret_cast<HMENU>(IDC_MAIN_STATUS), GetModuleHandle(NULL), 0);
 
 	// create list view columns
-	WCHAR columnsStrings[][256] = { L"phone number", L"last message" };
-	DWORD columnsWidths[] = { 220, 140 };
+	WCHAR columnsStrings[][256] = { L"phone number", L"last message", L"messages (sent / received)" };
+	DWORD columnsWidths[] = { 220, 140, 180 };
 
-	for (DWORD i = 0; i < 2; i++)
+	for (DWORD i = 0; i < 3; i++)
 	{
 		LVCOLUMN column;
 		ZeroMemory(&column, sizeof(LVCOLUMN));
@@ -211,6 +212,11 @@ void MainWindow::addChat(WhatsappChat &chat)
 	std::wstring text = strtowstr(chat.getDisplayName());
 	std::wstring lastMessageText = strtowstr(formatTimestamp(chat.getLastMessage()));
 
+	std::stringstream messagesText;
+	messagesText.imbue(std::locale(""));
+	messagesText << std::fixed << chat.getMessagesSent() + chat.getMessagesReceived() << " (" << chat.getMessagesSent() << " / " << chat.getMessagesReceived() << ")";
+	std::wstring messagesTextW = strtowstr(messagesText.str());
+
 	LVITEM item;
 	ZeroMemory(&item, sizeof(LVITEM));
 
@@ -221,6 +227,7 @@ void MainWindow::addChat(WhatsappChat &chat)
 	ListView_InsertItem(GetDlgItem(dialog, IDC_MAIN_CHATS), &item);
 
 	ListView_SetItemText(GetDlgItem(dialog, IDC_MAIN_CHATS), item.iItem, 1, const_cast<WCHAR *>(lastMessageText.c_str()));
+	ListView_SetItemText(GetDlgItem(dialog, IDC_MAIN_CHATS), item.iItem, 2, const_cast<WCHAR *>(messagesTextW.c_str()));
 }
 
 void MainWindow::selectChat(WhatsappChat *chat)
@@ -286,6 +293,24 @@ int CALLBACK MainWindow::sortingCallback(LPARAM lParam1, LPARAM lParam2, LPARAM 
 			else
 			{
 				result = 1;
+			}
+		} break;
+		case 2:
+		{
+			int messages1 = chat1->getMessagesSent() + chat1->getMessagesReceived();
+			int messages2 = chat2->getMessagesSent() + chat2->getMessagesReceived();
+
+			if (messages1 > messages2)
+			{
+				result = 1;
+			}
+			else if (messages1 < messages2)
+			{
+				result = -1;
+			}
+			else
+			{
+				result = 0;
 			}
 		} break;
 	}

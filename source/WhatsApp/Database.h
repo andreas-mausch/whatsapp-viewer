@@ -15,6 +15,7 @@ class WhatsappDatabase
 private:
 	SQLiteDatabase database;
 	std::string findDisplayName(Settings &settings, const std::string &key);
+	int messagesCount(const std::string &chatId, int fromMe);
 
 public:
 	WhatsappDatabase(const std::string &filename);

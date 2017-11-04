@@ -3,8 +3,8 @@
 #include "Message.h"
 #include "../VectorUtils.h"
 
-WhatsappChat::WhatsappChat(WhatsappDatabase &database, const std::string &displayName, const std::string &key, const std::string &subject, long long creation, long long lastMessage)
-	: database(database), displayName(displayName), key(key), subject(subject), creation(creation), lastMessage(lastMessage), messagesLoaded(false)
+WhatsappChat::WhatsappChat(WhatsappDatabase &database, const std::string &displayName, const std::string &key, const std::string &subject, long long creation, long long lastMessage, int messagesSent, int messagesReceived)
+	: database(database), displayName(displayName), key(key), subject(subject), creation(creation), lastMessage(lastMessage), messagesSent(messagesSent), messagesReceived(messagesReceived), messagesLoaded(false)
 {
 }
 
@@ -36,6 +36,16 @@ long long WhatsappChat::getCreation() const
 long long WhatsappChat::getLastMessage() const
 {
 	return lastMessage;
+}
+
+int WhatsappChat::getMessagesSent() const
+{
+	return messagesSent;
+}
+
+int WhatsappChat::getMessagesReceived() const
+{
+	return messagesReceived;
 }
 
 std::vector<WhatsappMessage *> WhatsappChat::getMessages(const volatile bool &running)
