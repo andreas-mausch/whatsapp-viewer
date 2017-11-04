@@ -54,6 +54,8 @@ private:
 	void setIcon();
 	void resizeChildWindows(int width, int height);
 	void addChats();
+	void setMessagesCount();
+	std::string formatMessageCount(int sent, int received);
 	void addChat(WhatsappChat &chat);
 	void selectChat(WhatsappChat *chat);
 	void sortChats();

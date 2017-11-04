@@ -211,11 +211,7 @@ void MainWindow::addChat(WhatsappChat &chat)
 {
 	std::wstring text = strtowstr(chat.getDisplayName());
 	std::wstring lastMessageText = strtowstr(formatTimestamp(chat.getLastMessage()));
-
-	std::stringstream messagesText;
-	messagesText.imbue(std::locale(""));
-	messagesText << std::fixed << chat.getMessagesSent() + chat.getMessagesReceived() << " (" << chat.getMessagesSent() << " / " << chat.getMessagesReceived() << ")";
-	std::wstring messagesTextW = strtowstr(messagesText.str());
+	std::wstring messagesText = strtowstr(formatMessageCount(chat.getMessagesSent(), chat.getMessagesReceived()));
 
 	LVITEM item;
 	ZeroMemory(&item, sizeof(LVITEM));
@@ -227,7 +223,7 @@ void MainWindow::addChat(WhatsappChat &chat)
 	ListView_InsertItem(GetDlgItem(dialog, IDC_MAIN_CHATS), &item);
 
 	ListView_SetItemText(GetDlgItem(dialog, IDC_MAIN_CHATS), item.iItem, 1, const_cast<WCHAR *>(lastMessageText.c_str()));
-	ListView_SetItemText(GetDlgItem(dialog, IDC_MAIN_CHATS), item.iItem, 2, const_cast<WCHAR *>(messagesTextW.c_str()));
+	ListView_SetItemText(GetDlgItem(dialog, IDC_MAIN_CHATS), item.iItem, 2, const_cast<WCHAR *>(messagesText.c_str()));
 }
 
 void MainWindow::selectChat(WhatsappChat *chat)
@@ -253,9 +249,11 @@ void MainWindow::resizeChildWindows(int width, int height)
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_SEARCH_CHATS), NULL, border, border, chatsWidth, searchBoxHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_CHATS), NULL, border, border + searchBoxHeight + 5, chatsWidth, height - border * 2 - searchBoxHeight - 5, SWP_NOZORDER | SWP_SHOWWINDOW);
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_MESSAGES), NULL, chatsWidth + border * 2, border, width - chatsWidth - border * 3, height - border * 3 - buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
-	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT_TXT), NULL, chatsWidth + border * 2, height - border - buttonRowHeight, 120, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
-	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT_HTML), NULL, chatsWidth + border * 3 + 120, height - border - buttonRowHeight, 120, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
-	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT_JSON), NULL, chatsWidth + border * 4 + 240, height - border - buttonRowHeight, 120, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT_TXT), NULL, chatsWidth + border * 2, height - border - buttonRowHeight, 70, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT_HTML), NULL, chatsWidth + border * 2 + 75, height - border - buttonRowHeight, 70, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT_JSON), NULL, chatsWidth + border * 2 + 150, height - border - buttonRowHeight, 70, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_MESSAGES_COUNT_LABEL), NULL, width - 260 - border, height - border - buttonRowHeight + 5, 105, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_MESSAGES_COUNT), NULL, width - 150 - border, height - border - buttonRowHeight, 150, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
 }
 
 void MainWindow::sortChats()
@@ -441,6 +439,30 @@ void MainWindow::openPlainDatabase(const std::string &filename)
 	database->getChats(settings, chats);
 
 	addChats();
+	setMessagesCount();
+}
+
+void MainWindow::setMessagesCount()
+{
+	int sent = 0;
+	int received = 0;
+	for (std::vector<WhatsappChat *>::iterator it = chats.begin(); it != chats.end(); ++it)
+	{
+		WhatsappChat *chat = *it;
+		sent += chat->getMessagesSent();
+		received += chat->getMessagesReceived();
+	}
+
+	std::wstring text = strtowstr(formatMessageCount(sent, received));
+	SetDlgItemText(dialog, IDC_MAIN_MESSAGES_COUNT, const_cast<WCHAR *>(text.c_str()));
+}
+
+std::string MainWindow::formatMessageCount(int sent, int received)
+{
+	std::stringstream text;
+	text.imbue(std::locale(""));
+	text << std::fixed << sent + received << " (" << sent << " / " << received << ")";
+	return text.str();
 }
 
 void MainWindow::closeDatabase()
