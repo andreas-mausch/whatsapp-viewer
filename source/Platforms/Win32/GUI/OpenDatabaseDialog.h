@@ -11,6 +11,8 @@ struct OpenDatabaseStruct
 	std::string accountName;
 	std::string keyFilename;
 	std::string wadbFilename;
+
+	std::string decryptedFilename;
 };
 
 class OpenDatabaseDialog : public Dialog

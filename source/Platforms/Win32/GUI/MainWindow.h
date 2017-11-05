@@ -62,7 +62,6 @@ private:
 	void setSortingColumn(int columnIndex);
 	void updateSortingArrow();
 
-	bool saveFileDialog(std::string &filename, const std::string &suggestion, const std::string &filter);
 	void exportChat(WhatsappChat &chat, ChatExporter &exporter, const std::string &extension);
 	void exportChatToTxt(WhatsappChat &chat);
 	void exportChatToHtml(WhatsappChat &chat);

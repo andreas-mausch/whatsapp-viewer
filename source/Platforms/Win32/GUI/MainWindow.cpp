@@ -11,6 +11,7 @@
 #include "OpenDatabaseDialog.h"
 #include "DecryptDatabaseDialog5.h"
 #include "DecryptDatabaseDialog7.h"
+#include "FileDialog.h"
 #include "ChatControl/ChatControl.h"
 #include "SearchControl/SearchControl.h"
 #include "../Objects/Bitmap.h"
@@ -474,44 +475,6 @@ void MainWindow::closeDatabase()
 	database = NULL;
 }
 
-bool MainWindow::saveFileDialog(std::string &filename, const std::string &suggestion, const std::string &filter)
-{
-	std::string suggestionFixed = suggestion;
-	std::replace(suggestionFixed.begin(), suggestionFixed.end(), '/', '-');
-
-	WCHAR filenameW[MAX_PATH];
-	memset(filenameW, 0, sizeof(WCHAR) * MAX_PATH);
-	wcsncpy_s(filenameW, strtowstr(suggestionFixed).c_str(), suggestionFixed.length());
-
-	WCHAR filterTextW[MAX_PATH];
-	memset(filterTextW, 0, sizeof(WCHAR) * MAX_PATH);
-	std::wstring filterW = strtowstr(filter);
-	wcsncpy_s(filterTextW, MAX_PATH, filterW.c_str(), filterW.length());
-	int position = filterW.length() + 1;
-	wcsncpy_s(&filterTextW[position], MAX_PATH - position, filterW.c_str(), filterW.length());
-	filterTextW[position * 2] = '\0';
-
-	OPENFILENAME openFilename;
-	memset(&openFilename, 0, sizeof(OPENFILENAME));
-	openFilename.lStructSize = sizeof(OPENFILENAME);
-	openFilename.hwndOwner = dialog;
-	openFilename.lpstrFile = filenameW;
-	openFilename.nMaxFile = MAX_PATH;
-	openFilename.lpstrFilter = filterTextW;
-	openFilename.lpstrInitialDir = NULL;
-	openFilename.lpstrDefExt = L"";
-	openFilename.Flags = OFN_EXPLORER | OFN_ENABLESIZING | OFN_HIDEREADONLY;
-	openFilename.lpstrTitle = L"Select WhatsApp export target";
-
-	if (GetSaveFileName(&openFilename))
-	{
-		filename = wstrtostr(filenameW);
-		return true;
-	}
-
-	return false;
-}
-
 void MainWindow::exportChat(WhatsappChat &chat, ChatExporter &exporter, const std::string &extension)
 {
 	std::string filename;
@@ -520,7 +483,7 @@ void MainWindow::exportChat(WhatsappChat &chat, ChatExporter &exporter, const st
 	suggestion << "WhatsApp Chat - " << chat.getDisplayName() << " - " << formatDate(chat.getLastMessage()) << "." << extension;
 	filter << "*." << extension;
 
-	if (saveFileDialog(filename, suggestion.str(), filter.str()))
+	if (saveFileDialog(dialog, suggestion.str(), filter.str(), filename))
 	{
 		exporter.exportChat(chat, filename);
 
@@ -582,13 +545,15 @@ void MainWindow::decryptDatabaseCrypt7()
 	{
 		try
 		{
-			decryptWhatsappDatabase7(openDatabaseStruct.filename, "msgstore.decrypted.db", openDatabaseStruct.keyFilename);
+			decryptWhatsappDatabase7(openDatabaseStruct.filename, openDatabaseStruct.decryptedFilename, openDatabaseStruct.keyFilename);
 
 			lastDatabaseOpened = openDatabaseStruct;
 			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
 			settings.write("lastOpenedKeyfile", lastDatabaseOpened.keyFilename);
 
-			MessageBox(MainWindow::dialog, L"Database decrypted to file msgstore.decrypted.db", L"Success", MB_OK | MB_ICONINFORMATION);
+			std::stringstream message;
+			message << "Database decrypted to file " << openDatabaseStruct.decryptedFilename;
+			MessageBox(MainWindow::dialog, strtowstr(message.str()).c_str(), L"Success", MB_OK | MB_ICONINFORMATION);
 		}
 		catch (Exception &exception)
 		{
@@ -606,13 +571,15 @@ void MainWindow::decryptDatabaseCrypt8()
 	{
 		try
 		{
-			decryptWhatsappDatabase8(openDatabaseStruct.filename, "msgstore.decrypted.db", openDatabaseStruct.keyFilename);
+			decryptWhatsappDatabase8(openDatabaseStruct.filename, openDatabaseStruct.decryptedFilename, openDatabaseStruct.keyFilename);
 
 			lastDatabaseOpened = openDatabaseStruct;
 			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
 			settings.write("lastOpenedKeyfile", lastDatabaseOpened.keyFilename);
 
-			MessageBox(MainWindow::dialog, L"Database decrypted to file msgstore.decrypted.db", L"Success", MB_OK | MB_ICONINFORMATION);
+			std::stringstream message;
+			message << "Database decrypted to file " << openDatabaseStruct.decryptedFilename;
+			MessageBox(MainWindow::dialog, strtowstr(message.str()).c_str(), L"Success", MB_OK | MB_ICONINFORMATION);
 		}
 		catch (Exception &exception)
 		{
@@ -630,13 +597,15 @@ void MainWindow::decryptDatabaseCrypt12()
 	{
 		try
 		{
-			decryptWhatsappDatabase12(openDatabaseStruct.filename, "msgstore.decrypted.db", openDatabaseStruct.keyFilename);
+			decryptWhatsappDatabase12(openDatabaseStruct.filename, openDatabaseStruct.decryptedFilename, openDatabaseStruct.keyFilename);
 
 			lastDatabaseOpened = openDatabaseStruct;
 			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
 			settings.write("lastOpenedKeyfile", lastDatabaseOpened.keyFilename);
 
-			MessageBox(MainWindow::dialog, L"Database decrypted to file msgstore.decrypted.db", L"Success", MB_OK | MB_ICONINFORMATION);
+			std::stringstream message;
+			message << "Database decrypted to file " << openDatabaseStruct.decryptedFilename;
+			MessageBox(MainWindow::dialog, strtowstr(message.str()).c_str(), L"Success", MB_OK | MB_ICONINFORMATION);
 		}
 		catch (Exception &exception)
 		{

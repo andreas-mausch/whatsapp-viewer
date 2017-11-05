@@ -1,6 +1,7 @@
 #include <windows.h>
 
 #include "DecryptDatabaseDialog7.h"
+#include "FileDialog.h"
 #include "../StringHelper.h"
 #include "../../../../resources/resource.h"
 
@@ -70,7 +71,13 @@ void DecryptDatabaseDialog7::clickOk(WPARAM wParam)
 	openDatabaseStruct.filename = wstrtostr(filename);
 	openDatabaseStruct.keyFilename = wstrtostr(keyFilename);
 
-	close(LOWORD(wParam));
+	std::string suggestion = "messages.decrypted.db";
+	std::string filter = "*.*";
+
+	if (saveFileDialog(dialog, suggestion, filter, openDatabaseStruct.decryptedFilename))
+	{
+		close(LOWORD(wParam));
+	}
 }
 
 INT_PTR DecryptDatabaseDialog7::callback(HWND dialog, UINT message, WPARAM wParam, LPARAM lParam)
