@@ -536,7 +536,7 @@ void MainWindow::decryptDatabaseCrypt5()
 	}
 }
 
-void MainWindow::decryptDatabaseCrypt7()
+void MainWindow::decryptDatabaseCrypt7_8_12(void (*decryptWhatsappDatabase)(const std::string &filename, const std::string &filenameDecrypted, const std::string &keyFilename))
 {
 	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
 	DecryptDatabaseDialog7 dialog(MainWindow::dialog, openDatabaseStruct);
@@ -545,7 +545,7 @@ void MainWindow::decryptDatabaseCrypt7()
 	{
 		try
 		{
-			decryptWhatsappDatabase7(openDatabaseStruct.filename, openDatabaseStruct.decryptedFilename, openDatabaseStruct.keyFilename);
+			decryptWhatsappDatabase(openDatabaseStruct.filename, openDatabaseStruct.decryptedFilename, openDatabaseStruct.keyFilename);
 
 			lastDatabaseOpened = openDatabaseStruct;
 			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
@@ -560,58 +560,21 @@ void MainWindow::decryptDatabaseCrypt7()
 			displayException(MainWindow::dialog, exception);
 		}
 	}
+}
+
+void MainWindow::decryptDatabaseCrypt7()
+{
+	decryptDatabaseCrypt7_8_12(decryptWhatsappDatabase7);
 }
 
 void MainWindow::decryptDatabaseCrypt8()
 {
-	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
-	DecryptDatabaseDialog7 dialog(MainWindow::dialog, openDatabaseStruct);
-
-	if (dialog.openModal() == IDOK)
-	{
-		try
-		{
-			decryptWhatsappDatabase8(openDatabaseStruct.filename, openDatabaseStruct.decryptedFilename, openDatabaseStruct.keyFilename);
-
-			lastDatabaseOpened = openDatabaseStruct;
-			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
-			settings.write("lastOpenedKeyfile", lastDatabaseOpened.keyFilename);
-
-			std::stringstream message;
-			message << "Database decrypted to file " << openDatabaseStruct.decryptedFilename;
-			MessageBox(MainWindow::dialog, strtowstr(message.str()).c_str(), L"Success", MB_OK | MB_ICONINFORMATION);
-		}
-		catch (Exception &exception)
-		{
-			displayException(MainWindow::dialog, exception);
-		}
-	}
+	decryptDatabaseCrypt7_8_12(decryptWhatsappDatabase8);
 }
 
 void MainWindow::decryptDatabaseCrypt12()
 {
-	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
-	DecryptDatabaseDialog7 dialog(MainWindow::dialog, openDatabaseStruct);
-
-	if (dialog.openModal() == IDOK)
-	{
-		try
-		{
-			decryptWhatsappDatabase12(openDatabaseStruct.filename, openDatabaseStruct.decryptedFilename, openDatabaseStruct.keyFilename);
-
-			lastDatabaseOpened = openDatabaseStruct;
-			settings.write("lastOpenedFile", lastDatabaseOpened.filename);
-			settings.write("lastOpenedKeyfile", lastDatabaseOpened.keyFilename);
-
-			std::stringstream message;
-			message << "Database decrypted to file " << openDatabaseStruct.decryptedFilename;
-			MessageBox(MainWindow::dialog, strtowstr(message.str()).c_str(), L"Success", MB_OK | MB_ICONINFORMATION);
-		}
-		catch (Exception &exception)
-		{
-			displayException(MainWindow::dialog, exception);
-		}
-	}
+	decryptDatabaseCrypt7_8_12(decryptWhatsappDatabase12);
 }
 
 void MainWindow::displayException(HWND mainWindow, Exception &exception)
