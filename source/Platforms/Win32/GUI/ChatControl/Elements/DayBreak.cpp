@@ -49,5 +49,5 @@ void DayBreak::render(HDC deviceContext, int y, int clientHeight)
 	MoveToEx(deviceContext, xCenter + textWidth / 2 + 20, yCenter, NULL);
 	LineTo(deviceContext, width - 10, yCenter);
 
-	drawText(deviceContext, dayStringW.c_str(), xCenter - textWidth / 2, y, textWidth);
+	drawText(deviceContext, dayStringW.c_str(), xCenter - textWidth / 2, y, textWidth, font.get());
 }

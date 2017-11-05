@@ -35,7 +35,7 @@ ChatControl::ChatControl(HWND window)
 	imageDecoder = new ImageDecoder();
 	smileys = new Smileys(*imageDecoder);
 	loadingAnimation = new AnimatedGif(L"IDR_LOADING", L"GIF", *imageDecoder);
-	dateFont = new Font(CreateFont(13, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New"));
+	dateFont = new Font(CreateFont(14, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Courier New"));
 	chat = NULL;
 	shouldResizeMessages = true;
 	painting = false;

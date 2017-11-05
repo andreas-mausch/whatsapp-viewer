@@ -47,6 +47,8 @@ MainWindow::MainWindow(WhatsAppViewer &whatsAppViewer, ImageDecoder &imageDecode
 	sortingColumn(1), sortingDirection(SORTING_DIRECTION_DESCENDING),
 	dialog(NULL), accelerator(MAKEINTRESOURCE(IDR_ACCELERATOR)), aboutDialog(NULL)
 {
+	std::locale::global(std::locale(""));
+
 	INITCOMMONCONTROLSEX icex;
 	icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
 	icex.dwICC = ICC_LISTVIEW_CLASSES | ICC_BAR_CLASSES | ICC_PROGRESS_CLASS | ICC_STANDARD_CLASSES | ICC_TAB_CLASSES | ICC_WIN95_CLASSES;
@@ -252,8 +254,8 @@ void MainWindow::resizeChildWindows(int width, int height)
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT_TXT), NULL, chatsWidth + border * 2, height - border - buttonRowHeight, 70, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT_HTML), NULL, chatsWidth + border * 2 + 75, height - border - buttonRowHeight, 70, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
 	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_EXPORT_JSON), NULL, chatsWidth + border * 2 + 150, height - border - buttonRowHeight, 70, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
-	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_MESSAGES_COUNT_LABEL), NULL, width - 260 - border, height - border - buttonRowHeight + 5, 105, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
-	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_MESSAGES_COUNT), NULL, width - 150 - border, height - border - buttonRowHeight, 150, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_MESSAGES_COUNT_LABEL), HWND_BOTTOM, width - 305 - border, height - border - buttonRowHeight + 5, 130, buttonRowHeight, SWP_SHOWWINDOW);
+	SetWindowPos(GetDlgItem(dialog, IDC_MAIN_MESSAGES_COUNT), NULL, width - 170 - border, height - border - buttonRowHeight, 170, buttonRowHeight, SWP_NOZORDER | SWP_SHOWWINDOW);
 }
 
 void MainWindow::sortChats()
@@ -460,7 +462,6 @@ void MainWindow::setMessagesCount()
 std::string MainWindow::formatMessageCount(int sent, int received)
 {
 	std::stringstream text;
-	text.imbue(std::locale(""));
 	text << std::fixed << sent + received << " (" << sent << " / " << received << ")";
 	return text.str();
 }
@@ -878,7 +879,7 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 		case WM_GETMINMAXINFO:
 		{
 			MINMAXINFO *minmaxinfo = reinterpret_cast<MINMAXINFO *>(lParam);
-			minmaxinfo->ptMinTrackSize.x = 600;
+			minmaxinfo->ptMinTrackSize.x = 970;
 			minmaxinfo->ptMinTrackSize.y = 200;
 		} break;
 		case WM_CLOSE:
