@@ -13,12 +13,12 @@ std::string formatTimestamp(long long timestamp)
 	long long timestamp1000 = timestamp / 1000;
 	localtime_s(&date, &timestamp1000);
 
-	const char *formatString = "%Y.%m.%d - %H:%M:%S";
+	const char *formatString = "%x - %X";
 
 	if (isSameDay(timestamp, todayTimestamp))
 	{
 		// today!
-		formatString = "%H:%M:%S";
+		formatString = "%X";
 	}
 
 	strftime(buffer, 256, formatString, &date);
@@ -46,7 +46,7 @@ std::string formatDate(long long timestamp)
 	timestamp /= 1000;
 	localtime_s(&date, &timestamp);
 
-	const char *formatString = "%Y.%m.%d";
+	const char *formatString = "%x";
 	strftime(buffer, 256, formatString, &date);
 	return buffer;
 }
