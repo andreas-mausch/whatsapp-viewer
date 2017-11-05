@@ -1,3 +1,8 @@
+v1.11 (2017-11-05)
+	Datetime formatting now uses user's region settings (#51)
+	Fixed layouting issues (#49, 52)
+	Let the user select the filename of the decrypted database (#50)
+	Support for older databases without message_thumbnails table
 v1.10 (2017-11-05)
 	Support for new thumbnail database schema (#42)
 	Show messages count (sent / received) in chat list (#45)

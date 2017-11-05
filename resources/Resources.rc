@@ -96,7 +96,7 @@ BEGIN
     LTEXT           "Andreas Mausch",IDC_STATIC,123,113,54,8
     LTEXT           "andreas.mausch@gmail.com",IDC_STATIC,123,127,92,8
     LTEXT           "http://andreas-mausch.de/whatsapp-viewer/",IDC_STATIC,123,140,166,8
-    LTEXT           "v1.10",IDC_ABOUT_APPLICATION_VERSION,123,50,221,8
+    LTEXT           "v1.x",IDC_ABOUT_APPLICATION_VERSION,123,50,221,8
     LTEXT           "https://github.com/andreas-mausch/",IDC_STATIC,123,151,119,8
     LTEXT           "Thanks",IDC_STATIC,20,171,24,8
     LTEXT           "TripCode for his crypt12 implementation",IDC_STATIC,123,171,128,8
@@ -1110,8 +1110,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,10,0,0
- PRODUCTVERSION 1,10,0,0
+ FILEVERSION 1,11,0,0
+ PRODUCTVERSION 1,11,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1128,12 +1128,12 @@ BEGIN
         BEGIN
             VALUE "Comments", "http://andreas-mausch.de/whatsapp-viewer/"
             VALUE "FileDescription", "WhatsApp Viewer"
-            VALUE "FileVersion", "1, 10, 0, 0"
+            VALUE "FileVersion", "1, 11, 0, 0"
             VALUE "InternalName", "WhatsApp Viewer"
             VALUE "LegalCopyright", "Copyright (C) 2014 Andreas Mausch"
             VALUE "OriginalFilename", "WhatsApp Viewer.exe"
             VALUE "ProductName", "WhatsApp Viewer"
-            VALUE "ProductVersion", "v1.10"
+            VALUE "ProductVersion", "v1.11"
         END
     END
     BLOCK "VarFileInfo"
