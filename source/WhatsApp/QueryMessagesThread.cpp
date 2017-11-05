@@ -21,13 +21,45 @@ void QueryMessagesThread::interrupt()
 	sqlite3_interrupt(sqLiteDatabase.getHandle());
 }
 
+bool QueryMessagesThread::hasThumbnailTable()
+{
+	const char *query = "SELECT name FROM sqlite_master WHERE type='table' AND name='message_thumbnails'";
+
+	sqlite3_stmt *res;
+	if (sqlite3_prepare_v2(sqLiteDatabase.getHandle(), query, -1, &res, NULL) != SQLITE_OK)
+	{
+		throw SQLiteException("Could not load messages", sqLiteDatabase);
+	}
+
+	bool hasThumbnailTable = false;
+	if (sqlite3_step(res) == SQLITE_ROW)
+	{
+		hasThumbnailTable = true;
+	}
+
+	sqlite3_finalize(res);
+	return hasThumbnailTable;
+}
+
 void QueryMessagesThread::run()
 {
-	const char *query = "SELECT messages.key_remote_jid, messages.key_from_me, status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, message_thumbnails.thumbnail " \
+	const char *query;
+
+	if (hasThumbnailTable())
+	{
+		query = "SELECT messages.key_remote_jid, messages.key_from_me, status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, message_thumbnails.thumbnail " \
 						"FROM messages " \
 						"LEFT JOIN message_thumbnails on messages.key_id = message_thumbnails.key_id " \
 						"WHERE messages.key_remote_jid = ? " \
 						"ORDER BY messages.timestamp asc";
+	}
+	else
+	{
+		query = "SELECT messages.key_remote_jid, messages.key_from_me, status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, null " \
+						"FROM messages " \
+						"WHERE messages.key_remote_jid = ? " \
+						"ORDER BY messages.timestamp asc";
+	}
 
 	sqlite3_stmt *res;
 	if (sqlite3_prepare_v2(sqLiteDatabase.getHandle(), query, -1, &res, NULL) != SQLITE_OK)

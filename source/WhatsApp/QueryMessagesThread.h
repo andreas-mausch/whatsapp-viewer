@@ -16,6 +16,8 @@ private:
 	const std::string &chatId;
 	std::vector<WhatsappMessage *> &messages;
 
+	bool hasThumbnailTable();
+
 public:
 	QueryMessagesThread(WhatsappDatabase &database, SQLiteDatabase &sqLiteDatabase, const std::string &chatId, std::vector<WhatsappMessage *> &messages);
 	virtual ~QueryMessagesThread();
