@@ -476,9 +476,12 @@ void MainWindow::closeDatabase()
 
 bool MainWindow::saveFileDialog(std::string &filename, const std::string &suggestion, const std::string &filter)
 {
+	std::string suggestionFixed = suggestion;
+	std::replace(suggestionFixed.begin(), suggestionFixed.end(), '/', '-');
+
 	WCHAR filenameW[MAX_PATH];
 	memset(filenameW, 0, sizeof(WCHAR) * MAX_PATH);
-	wcsncpy_s(filenameW, strtowstr(suggestion).c_str(), suggestion.length());
+	wcsncpy_s(filenameW, strtowstr(suggestionFixed).c_str(), suggestionFixed.length());
 
 	WCHAR filterTextW[MAX_PATH];
 	memset(filterTextW, 0, sizeof(WCHAR) * MAX_PATH);
