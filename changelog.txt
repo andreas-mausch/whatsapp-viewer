@@ -1,3 +1,7 @@
+v1.10 (2017-11-05)
+	Support for new thumbnail database schema (#42)
+	Show messages count (sent / received) in chat list (#45)
+	BUGFIX: In some cases decryption failed on perfectly valid input files (#37)
 v1.9 (2016-10-23)
 	crypt12 support
 	json export
