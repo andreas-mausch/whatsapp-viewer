@@ -47,7 +47,7 @@ void QueryMessagesThread::run()
 
 	if (hasThumbnailTable())
 	{
-		query = "SELECT messages.key_remote_jid, messages.key_from_me, status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, message_thumbnails.thumbnail " \
+		query = "SELECT messages.key_remote_jid, messages.key_from_me, status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_caption, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, message_thumbnails.thumbnail " \
 						"FROM messages " \
 						"LEFT JOIN message_thumbnails on messages.key_id = message_thumbnails.key_id " \
 						"WHERE messages.key_remote_jid = ? " \
@@ -55,7 +55,7 @@ void QueryMessagesThread::run()
 	}
 	else
 	{
-		query = "SELECT messages.key_remote_jid, messages.key_from_me, status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, null " \
+		query = "SELECT messages.key_remote_jid, messages.key_from_me, status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, null, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, null " \
 						"FROM messages " \
 						"WHERE messages.key_remote_jid = ? " \
 						"ORDER BY messages.timestamp asc";
@@ -89,18 +89,19 @@ void QueryMessagesThread::run()
 		int mediaWhatsappType = sqlite3_column_int(res, 7);
 		int mediaSize = sqlite3_column_int(res, 8);
 		std::string mediaName = sqLiteDatabase.readString(res, 9);
-		int mediaDuration = sqlite3_column_int(res, 10);
-		double latitude = sqlite3_column_double(res, 11);
-		double longitude = sqlite3_column_double(res, 12);
-		const void *thumbImage = sqlite3_column_blob(res, 13);
-		int thumbImageSize = sqlite3_column_bytes(res, 13);
-		std::string remoteResource = sqLiteDatabase.readString(res, 14);
-		const void *rawData = sqlite3_column_blob(res, 15);
-		int rawDataSize = sqlite3_column_bytes(res, 15);
-		const void *thumbnailData = sqlite3_column_blob(res, 16);
-		int thumbnailDataSize = sqlite3_column_bytes(res, 16);
+		std::string mediaCaption = sqLiteDatabase.readString(res, 10);
+		int mediaDuration = sqlite3_column_int(res, 11);
+		double latitude = sqlite3_column_double(res, 12);
+		double longitude = sqlite3_column_double(res, 13);
+		const void *thumbImage = sqlite3_column_blob(res, 14);
+		int thumbImageSize = sqlite3_column_bytes(res, 14);
+		std::string remoteResource = sqLiteDatabase.readString(res, 15);
+		const void *rawData = sqlite3_column_blob(res, 16);
+		int rawDataSize = sqlite3_column_bytes(res, 16);
+		const void *thumbnailData = sqlite3_column_blob(res, 17);
+		int thumbnailDataSize = sqlite3_column_bytes(res, 17);
 
-		WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, mediaName, mediaDuration, latitude, longitude, thumbImage, thumbImageSize, remoteResource, rawData, rawDataSize, thumbnailData, thumbnailDataSize);
+		WhatsappMessage *message = new WhatsappMessage(chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, mediaName, mediaCaption, mediaDuration, latitude, longitude, thumbImage, thumbImageSize, remoteResource, rawData, rawDataSize, thumbnailData, thumbnailDataSize);
 		messages.push_back(message);
 	}
 

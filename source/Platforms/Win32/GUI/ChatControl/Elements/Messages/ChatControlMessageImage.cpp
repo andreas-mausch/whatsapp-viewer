@@ -4,21 +4,16 @@
 #include "../../../../../../WhatsApp/Message.h"
 #include "../../../../ImageDecoder.h"
 
+std::string buildImageCaption(WhatsappMessage &message)
+{
+	return message.getMediaCaption();
+}
+
 ChatControlMessageImage::ChatControlMessageImage(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreview(message, width, imageDecoder)
+	: ChatControlMessageWithPreviewAndText(message, buildImageCaption(message), width, imageDecoder)
 {
 }
 
 ChatControlMessageImage::~ChatControlMessageImage()
 {
-}
-
-int ChatControlMessageImage::calculateHeight()
-{
-	return getPreviewBitmapHeight() + 10;
-}
-
-void ChatControlMessageImage::render(HDC deviceContext, int x, int y, int clientHeight)
-{
-	renderPreviewBitmap(deviceContext, x + 5, y + 5);
 }

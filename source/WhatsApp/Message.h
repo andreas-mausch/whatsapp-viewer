@@ -27,6 +27,7 @@ private:
 	int mediaWhatsappType;
 	int mediaSize;
 	std::string mediaName;
+	std::string mediaCaption;
 	int mediaDuration;
 	double latitude;
 	double longitude;
@@ -40,9 +41,13 @@ private:
 
 public:
 	WhatsappMessage(std::string chatId, bool fromMe, int status, std::string data, long long timestamp,
-					long long receivedTimestamp, long long sendTimestamp, std::string mediaUrl, std::string mediaMimeType,
-					int mediaWhatsappType, int mediaSize, std::string mediaName, int mediaDuration, double latitude, double longitude,
-					const void *thumbImage,int thumbImageSize, const std::string &remoteResource, const void *rawData, int rawDataSize,
+					long long receivedTimestamp, long long sendTimestamp,
+					std::string mediaUrl, std::string mediaMimeType,
+					int mediaWhatsappType, int mediaSize,
+					std::string mediaName, std::string mediaCaption, int mediaDuration,
+					double latitude, double longitude,
+					const void *thumbImage,int thumbImageSize,
+					const std::string &remoteResource, const void *rawData, int rawDataSize,
 					const void *thumbnailData, int thumbnailDataSize);
 	~WhatsappMessage();
 
@@ -54,6 +59,7 @@ public:
 	const std::string &getRemoteResource() const;
 	int getMediaWhatsappType() const;
 	const std::string &getMediaName() const;
+	const std::string &getMediaCaption() const;
 	int getMediaDuration() const;
 
 	bool hasThumbnail();
