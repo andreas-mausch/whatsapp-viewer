@@ -80,7 +80,7 @@ IWICStream *ImageDecoder::createStreamFromBytes(unsigned char *bytes, int size)
 IWICBitmapDecoder *ImageDecoder::createDecoderFromStream(IWICStream *stream)
 {
 	IWICBitmapDecoder *decoder = NULL;
-	if (FAILED(factory->CreateDecoderFromStream(stream, NULL, WICDecodeMetadataCacheOnLoad, &decoder)))
+	if (FAILED(factory->CreateDecoderFromStream(stream, NULL, WICDecodeMetadataCacheOnDemand, &decoder)))
 	{
 		throw Exception("loadImage() failed: could not create decoder");
 	}
