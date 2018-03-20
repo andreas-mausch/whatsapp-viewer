@@ -70,6 +70,11 @@ void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filenam
 			{
 				messageJson.AddMember("type", "image", json.GetAllocator());
 				addImageParameter(message, messageJson, json);
+
+				if (message.getMediaCaption().length() > 0)
+				{
+					messageJson.AddMember("caption", message.getMediaCaption(), json.GetAllocator());
+				}
 			} break;
 			case MEDIA_WHATSAPP_AUDIO:
 			{

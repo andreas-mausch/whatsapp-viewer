@@ -61,6 +61,10 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 				{
 					output << "<div><img src=\"data:image/jpeg;base64," << base64_encode(message.getThumbnail(), message.getThumbnailSize()) << "\"></div>" << std::endl;
 				}
+				if (message.getMediaCaption().length() > 0)
+				{
+					output << "<span>" << message.getMediaCaption() << "</span>";
+				}
 			} break;
 			case MEDIA_WHATSAPP_AUDIO:
 			{

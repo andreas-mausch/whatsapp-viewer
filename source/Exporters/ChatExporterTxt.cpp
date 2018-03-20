@@ -58,6 +58,10 @@ void ChatExporterTxt::exportChat(WhatsappChat &chat, const std::string &filename
 			case MEDIA_WHATSAPP_IMAGE:
 			{
 				file << "[ Image ]";
+				if (message.getMediaCaption().length() > 0)
+				{
+					file << ": " << message.getMediaCaption();
+				}
 			} break;
 			case MEDIA_WHATSAPP_AUDIO:
 			{
