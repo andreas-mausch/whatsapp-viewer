@@ -12,6 +12,7 @@ class ChatControlMessageText : public ChatControlMessage
 private:
 	std::vector<ChatControlMessageTextElement *> elements;
 	Smileys &smileys;
+	ChatControlMessageTextElement *quotedMessage;
 
 	void splitMessage(WhatsappMessage &message);
 

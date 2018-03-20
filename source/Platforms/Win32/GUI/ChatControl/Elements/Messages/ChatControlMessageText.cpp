@@ -12,19 +12,37 @@
 #include "../../../../Timestamp.h"
 
 ChatControlMessageText::ChatControlMessageText(WhatsappMessage &message, int width, Smileys &smileys)
-	: ChatControlMessage(message, width), smileys(smileys)
+	: ChatControlMessage(message, width), smileys(smileys), quotedMessage(NULL)
 {
 	splitMessage(message);
+
+	if (message.getQuotedMessageId().length() > 0)
+	{
+		std::stringstream quoted;
+		quoted << "Quote: " << message.getQuotedMessageId();
+		quotedMessage = new ChatControlMessageTextElement(quoted.str());
+	}
 }
 
 ChatControlMessageText::~ChatControlMessageText()
 {
 	clearVector(elements);
+
+	if (quotedMessage != NULL)
+	{
+		delete quotedMessage;
+	}
 }
 
 int ChatControlMessageText::calculateHeight()
 {
 	int height = 0;
+
+	if (quotedMessage != NULL)
+	{
+		quotedMessage->calculateHeight(getWidth());
+		height += quotedMessage->getHeight();
+	}
 
 	for (std::vector<ChatControlMessageTextElement *>::iterator it = elements.begin(); it != elements.end(); it++)
 	{
@@ -83,6 +101,12 @@ void ChatControlMessageText::splitMessage(WhatsappMessage &message)
 void ChatControlMessageText::render(HDC deviceContext, int x, int y, int clientHeight)
 {
 	SetTextColor(deviceContext, RGB(0, 0, 0));
+
+	if (quotedMessage != NULL)
+	{
+		quotedMessage->render(deviceContext, x, y, getWidth(), smileys);
+		y += quotedMessage->getHeight();
+	}
 
 	for (std::vector<ChatControlMessageTextElement *>::iterator it = elements.begin(); it != elements.end(); it++)
 	{

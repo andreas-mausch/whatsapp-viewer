@@ -15,6 +15,7 @@ enum MediaWhatsappType
 class WhatsappMessage
 {
 private:
+	std::string messageId;
 	std::string chatId;
 	bool fromMe;
 	int status;
@@ -38,9 +39,10 @@ private:
 	int rawDataSize;
 	unsigned char *thumbnailData;
 	int thumbnailDataSize;
+	std::string quotedMessageId;
 
 public:
-	WhatsappMessage(std::string chatId, bool fromMe, int status, std::string data, long long timestamp,
+	WhatsappMessage(std::string messageId, std::string chatId, bool fromMe, int status, std::string data, long long timestamp,
 					long long receivedTimestamp, long long sendTimestamp,
 					std::string mediaUrl, std::string mediaMimeType,
 					int mediaWhatsappType, int mediaSize,
@@ -48,7 +50,8 @@ public:
 					double latitude, double longitude,
 					const void *thumbImage,int thumbImageSize,
 					const std::string &remoteResource, const void *rawData, int rawDataSize,
-					const void *thumbnailData, int thumbnailDataSize);
+					const void *thumbnailData, int thumbnailDataSize,
+					std::string quotedMessageId);
 	~WhatsappMessage();
 
 	const std::string &getData() const;
@@ -61,6 +64,7 @@ public:
 	const std::string &getMediaName() const;
 	const std::string &getMediaCaption() const;
 	int getMediaDuration() const;
+	const std::string &getQuotedMessageId() const;
 
 	bool hasThumbnail();
 	unsigned char *getThumbnail();
