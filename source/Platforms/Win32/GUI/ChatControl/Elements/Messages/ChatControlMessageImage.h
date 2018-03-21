@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ChatControlMessageWithPreviewAndText.h"
+#include "ChatControlMessageThumbnail.h"
 
 class ImageDecoder;
 class WhatsappMessage;
 
-class ChatControlMessageImage : public ChatControlMessageWithPreviewAndText
+class ChatControlMessageImage : public ChatControlMessageThumbnail
 {
 public:
 	ChatControlMessageImage(WhatsappMessage &message, int width, ImageDecoder &imageDecoder);

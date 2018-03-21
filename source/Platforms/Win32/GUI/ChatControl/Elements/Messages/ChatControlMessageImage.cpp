@@ -10,7 +10,7 @@ std::string buildImageCaption(WhatsappMessage &message)
 }
 
 ChatControlMessageImage::ChatControlMessageImage(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreviewAndText(message, message.getThumbnail(), message.getThumbnailSize(), buildImageCaption(message), width, imageDecoder)
+	: ChatControlMessageThumbnail(message, message.getThumbnail(), message.getThumbnailSize(), buildImageCaption(message), width, imageDecoder)
 {
 }
 

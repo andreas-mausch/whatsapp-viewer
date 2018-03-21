@@ -18,7 +18,7 @@ std::string formatVideoText(WhatsappMessage &message)
 }
 
 ChatControlMessageVideo::ChatControlMessageVideo(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreviewAndText(message, message.getThumbnail(), message.getThumbnailSize(), formatVideoText(message), width, imageDecoder)
+	: ChatControlMessageThumbnail(message, message.getThumbnail(), message.getThumbnailSize(), formatVideoText(message), width, imageDecoder)
 {
 }
 

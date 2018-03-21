@@ -1,13 +1,13 @@
 #include <windows.h>
 
-#include "ChatControlMessageWithPreviewAndText.h"
+#include "ChatControlMessageThumbnail.h"
 #include "../../../DrawText.h"
 #include "../../../../ImageDecoder.h"
 #include "../../../../StringHelper.h"
 #include "../../../../Objects/Bitmap.h"
 #include "../../../../../../WhatsApp/Message.h"
 
-ChatControlMessageWithPreviewAndText::ChatControlMessageWithPreviewAndText(WhatsappMessage &message, unsigned char *data, int size, const std::string &text, int width, ImageDecoder &imageDecoder)
+ChatControlMessageThumbnail::ChatControlMessageThumbnail(WhatsappMessage &message, unsigned char *data, int size, const std::string &text, int width, ImageDecoder &imageDecoder)
 	: ChatControlMessage(message, width), text(text), thumbnail(NULL), thumbnailWidth(0), thumbnailHeight(0)
 {
 	if (text.length() > 0)
@@ -28,7 +28,7 @@ ChatControlMessageWithPreviewAndText::ChatControlMessageWithPreviewAndText(Whats
 	}
 }
 
-ChatControlMessageWithPreviewAndText::~ChatControlMessageWithPreviewAndText()
+ChatControlMessageThumbnail::~ChatControlMessageThumbnail()
 {
 	if (text.length() > 0)
 	{
@@ -37,7 +37,7 @@ ChatControlMessageWithPreviewAndText::~ChatControlMessageWithPreviewAndText()
 	delete thumbnail;
 }
 
-int ChatControlMessageWithPreviewAndText::calculateHeight()
+int ChatControlMessageThumbnail::calculateHeight()
 {
 	int height = getThumbnailHeight();
 
@@ -56,7 +56,7 @@ int ChatControlMessageWithPreviewAndText::calculateHeight()
 	return height;
 }
 
-void ChatControlMessageWithPreviewAndText::render(HDC deviceContext, int x, int y, int clientHeight)
+void ChatControlMessageThumbnail::render(HDC deviceContext, int x, int y, int clientHeight)
 {
 	renderThumbnail(deviceContext, x + 5, y + 5);
 
@@ -74,17 +74,17 @@ void ChatControlMessageWithPreviewAndText::render(HDC deviceContext, int x, int 
 	}
 }
 
-int ChatControlMessageWithPreviewAndText::getThumbnailWidth()
+int ChatControlMessageThumbnail::getThumbnailWidth()
 {
 	return thumbnailWidth;
 }
 
-int ChatControlMessageWithPreviewAndText::getThumbnailHeight()
+int ChatControlMessageThumbnail::getThumbnailHeight()
 {
 	return thumbnailHeight;
 }
 
-void ChatControlMessageWithPreviewAndText::renderThumbnail(HDC deviceContext, int x, int y)
+void ChatControlMessageThumbnail::renderThumbnail(HDC deviceContext, int x, int y)
 {
 	if (thumbnail != NULL)
 	{

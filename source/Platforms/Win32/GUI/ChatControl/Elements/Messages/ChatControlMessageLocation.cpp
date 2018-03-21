@@ -13,7 +13,7 @@ std::string buildLocationString(WhatsappMessage &message)
 }
 
 ChatControlMessageLocation::ChatControlMessageLocation(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreviewAndText(message, message.getThumbnail(), message.getThumbnailSize(), buildLocationString(message), width, imageDecoder)
+	: ChatControlMessageThumbnail(message, message.getThumbnail(), message.getThumbnailSize(), buildLocationString(message), width, imageDecoder)
 {
 	latitude = message.getLatitude();
 	longitude = message.getLongitude();

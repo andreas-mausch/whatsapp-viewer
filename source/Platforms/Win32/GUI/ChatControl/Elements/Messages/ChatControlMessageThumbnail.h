@@ -6,7 +6,7 @@ class Bitmap;
 class ImageDecoder;
 class WhatsappMessage;
 
-class ChatControlMessageWithPreviewAndText : public ChatControlMessage
+class ChatControlMessageThumbnail : public ChatControlMessage
 {
 private:
 	std::string text;
@@ -21,8 +21,8 @@ private:
 	void renderThumbnail(HDC deviceContext, int x, int y);
 
 public:
-	ChatControlMessageWithPreviewAndText(WhatsappMessage &message, unsigned char *data, int size, const std::string &text, int width, ImageDecoder &imageDecoder);
-	virtual ~ChatControlMessageWithPreviewAndText();
+	ChatControlMessageThumbnail(WhatsappMessage &message, unsigned char *data, int size, const std::string &text, int width, ImageDecoder &imageDecoder);
+	virtual ~ChatControlMessageThumbnail();
 
 	virtual int calculateHeight();
 	virtual void render(HDC deviceContext, int x, int y, int clientHeight);

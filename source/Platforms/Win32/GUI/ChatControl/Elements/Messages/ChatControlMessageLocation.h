@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ChatControlMessageWithPreviewAndText.h"
+#include "ChatControlMessageThumbnail.h"
 
 class ImageDecoder;
 class WhatsappMessage;
 
-class ChatControlMessageLocation : public ChatControlMessageWithPreviewAndText
+class ChatControlMessageLocation : public ChatControlMessageThumbnail
 {
 private:
 	double latitude;

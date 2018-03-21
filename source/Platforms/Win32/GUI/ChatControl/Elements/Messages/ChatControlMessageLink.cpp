@@ -14,7 +14,7 @@ std::string buildText(WhatsappMessage &message)
 }
 
 ChatControlMessageLink::ChatControlMessageLink(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreviewAndText(message, message.getLinkThumbnail(), message.getLinkThumbnailSize(), buildText(message), width, imageDecoder)
+	: ChatControlMessageThumbnail(message, message.getLinkThumbnail(), message.getLinkThumbnailSize(), buildText(message), width, imageDecoder)
 {
 }
 

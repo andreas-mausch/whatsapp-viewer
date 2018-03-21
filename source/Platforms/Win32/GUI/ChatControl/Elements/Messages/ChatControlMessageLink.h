@@ -1,12 +1,12 @@
 #pragma once
 
 #include <vector>
-#include "ChatControlMessageWithPreviewAndText.h"
+#include "ChatControlMessageThumbnail.h"
 
 class ImageDecoder;
 class WhatsappMessage;
 
-class ChatControlMessageLink : public ChatControlMessageWithPreviewAndText
+class ChatControlMessageLink : public ChatControlMessageThumbnail
 {
 private:
 

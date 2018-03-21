@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ChatControlMessageWithPreviewAndText.h"
+#include "ChatControlMessageThumbnail.h"
 
 class ImageDecoder;
 class WhatsappMessage;
 
-class ChatControlMessageVideo : public ChatControlMessageWithPreviewAndText
+class ChatControlMessageVideo : public ChatControlMessageThumbnail
 {
 private:
 	std::wstring text;
