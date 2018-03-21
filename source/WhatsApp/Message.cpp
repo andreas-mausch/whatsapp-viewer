@@ -1,6 +1,6 @@
 #include "Message.h"
 
-WhatsappMessage::WhatsappMessage(std::string messageId, std::string chatId, bool fromMe, int status, std::string data, long long timestamp, long long receivedTimestamp, long long sendTimestamp, std::string mediaUrl, std::string mediaMimeType, int mediaWhatsappType, int mediaSize, std::string mediaName, std::string mediaCaption, int mediaDuration, double latitude, double longitude, const void *thumbImage, int thumbImageSize, const std::string &remoteResource, const void *rawData, int rawDataSize, const void *thumbnailData, int thumbnailDataSize, std::string quotedMessageId) :
+WhatsappMessage::WhatsappMessage(std::string messageId, std::string chatId, bool fromMe, int status, std::string data, long long timestamp, long long receivedTimestamp, long long sendTimestamp, std::string mediaUrl, std::string mediaMimeType, int mediaWhatsappType, int mediaSize, std::string mediaName, std::string mediaCaption, int mediaDuration, double latitude, double longitude, const void *thumbImage, int thumbImageSize, const std::string &remoteResource, const void *rawData, int rawDataSize, const void *thumbnailData, int thumbnailDataSize, std::string quotedMessageId, bool link) :
 	messageId(messageId), chatId(chatId), fromMe(fromMe), status(status), data(data), timestamp(timestamp),
 	receivedTimestamp(receivedTimestamp), sendTimestamp(sendTimestamp), mediaUrl(mediaUrl),
 	mediaMimeType(mediaMimeType), mediaWhatsappType(mediaWhatsappType), mediaSize(mediaSize),
@@ -10,7 +10,7 @@ WhatsappMessage::WhatsappMessage(std::string messageId, std::string chatId, bool
 	remoteResource(remoteResource),
 	rawData(NULL), rawDataSize(rawDataSize),
 	thumbnailData(NULL), thumbnailDataSize(thumbnailDataSize),
-	quotedMessageId(quotedMessageId)
+	quotedMessageId(quotedMessageId), link(link)
 {
 	if (thumbImage != NULL && thumbImageSize > 0)
 	{
@@ -84,6 +84,11 @@ const std::string &WhatsappMessage::getMediaCaption() const
 int WhatsappMessage::getMediaDuration() const
 {
 	return mediaDuration;
+}
+
+bool WhatsappMessage::isLink() const
+{
+	return link;
 }
 
 bool WhatsappMessage::hasThumbnail()

@@ -47,16 +47,17 @@ void QueryMessagesThread::run()
 
 	if (hasThumbnailTable())
 	{
-		query = "SELECT messages.key_id, messages.key_remote_jid, messages.key_from_me, messages.status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_caption, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, message_thumbnails.thumbnail, messages_quotes.key_id " \
+		query = "SELECT messages.key_id, messages.key_remote_jid, messages.key_from_me, messages.status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_caption, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, message_thumbnails.thumbnail, messages_quotes.key_id, messages_links._id " \
 						"FROM messages " \
 						"LEFT JOIN message_thumbnails on messages.key_id = message_thumbnails.key_id " \
 						"LEFT JOIN messages_quotes on messages.quoted_row_id > 0 AND messages.quoted_row_id = messages_quotes._id " \
+						"LEFT JOIN messages_links on messages._id = messages_links.message_row_id " \
 						"WHERE messages.key_remote_jid = ? " \
 						"ORDER BY messages.timestamp asc";
 	}
 	else
 	{
-		query = "SELECT messages.key_id, messages.key_remote_jid, messages.key_from_me, messages.status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, null, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, null, null " \
+		query = "SELECT messages.key_id, messages.key_remote_jid, messages.key_from_me, messages.status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, null, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, null, null, null" \
 						"FROM messages " \
 						"WHERE messages.key_remote_jid = ? " \
 						"ORDER BY messages.timestamp asc";
@@ -103,8 +104,9 @@ void QueryMessagesThread::run()
 		const void *thumbnailData = sqlite3_column_blob(res, 18);
 		int thumbnailDataSize = sqlite3_column_bytes(res, 18);
 		std::string quotedMessageId = sqLiteDatabase.readString(res, 19);
+		int linkId = sqlite3_column_int(res, 20);
 
-		WhatsappMessage *message = new WhatsappMessage(messageId, chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, mediaName, mediaCaption, mediaDuration, latitude, longitude, thumbImage, thumbImageSize, remoteResource, rawData, rawDataSize, thumbnailData, thumbnailDataSize, quotedMessageId);
+		WhatsappMessage *message = new WhatsappMessage(messageId, chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, mediaName, mediaCaption, mediaDuration, latitude, longitude, thumbImage, thumbImageSize, remoteResource, rawData, rawDataSize, thumbnailData, thumbnailDataSize, quotedMessageId, linkId > 0);
 		messages.push_back(message);
 	}
 

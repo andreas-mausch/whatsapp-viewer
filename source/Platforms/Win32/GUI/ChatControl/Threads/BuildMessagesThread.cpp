@@ -8,6 +8,7 @@
 #include "../Elements/Messages/ChatControlMessage.h"
 #include "../Elements/Messages/ChatControlMessageAudio.h"
 #include "../Elements/Messages/ChatControlMessageImage.h"
+#include "../Elements/Messages/ChatControlMessageLink.h"
 #include "../Elements/Messages/ChatControlMessageLocation.h"
 #include "../Elements/Messages/ChatControlMessageText.h"
 #include "../Elements/Messages/ChatControlMessageVideo.h"
@@ -71,7 +72,16 @@ void BuildMessagesThread::run()
 			{
 				case MEDIA_WHATSAPP_TEXT:
 				{
-					messageFrame = new ChatControlMessageFrame(new ChatControlMessageText(message, 0, smileys), 0, color, dateFont);
+					ChatControlMessage *chatControlMessage;
+					if (message.isLink())
+					{
+						chatControlMessage = new ChatControlMessageLink(message, 0, imageDecoder);
+					}
+					else
+					{
+						chatControlMessage = new ChatControlMessageText(message, 0, smileys);
+					}
+					messageFrame = new ChatControlMessageFrame(chatControlMessage, 0, color, dateFont);
 				} break;
 				case MEDIA_WHATSAPP_IMAGE:
 				{
