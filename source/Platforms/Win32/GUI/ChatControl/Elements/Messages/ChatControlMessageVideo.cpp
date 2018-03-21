@@ -6,7 +6,7 @@
 #include "../../../../ImageDecoder.h"
 
 ChatControlMessageVideo::ChatControlMessageVideo(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreview(message, width, imageDecoder), text(L"Video")
+	: ChatControlMessageWithPreview(message, message.getThumbnail(), message.getThumbnailSize(), width, imageDecoder), text(L"Video")
 {
 }
 

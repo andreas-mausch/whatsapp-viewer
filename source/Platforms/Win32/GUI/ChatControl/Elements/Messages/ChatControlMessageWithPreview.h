@@ -14,7 +14,7 @@ private:
 	int bitmapHeight;
 
 public:
-	ChatControlMessageWithPreview(WhatsappMessage &message, int width, ImageDecoder &imageDecoder);
+	ChatControlMessageWithPreview(WhatsappMessage &message, unsigned char *data, int size, int width, ImageDecoder &imageDecoder);
 	virtual ~ChatControlMessageWithPreview();
 
 	void renderPreviewBitmap(HDC deviceContext, int x, int y);

@@ -1,16 +1,15 @@
 #include <windows.h>
 
 #include "ChatControlMessageWithPreview.h"
-#include "../../../../../../WhatsApp/Message.h"
 #include "../../../../ImageDecoder.h"
 #include "../../../../Objects/Bitmap.h"
 
-ChatControlMessageWithPreview::ChatControlMessageWithPreview(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
+ChatControlMessageWithPreview::ChatControlMessageWithPreview(WhatsappMessage &message, unsigned char *data, int size, int width, ImageDecoder &imageDecoder)
 	: ChatControlMessage(message, width), bitmap(NULL), bitmapWidth(0), bitmapHeight(0)
 {
-	if (message.hasThumbnail())
+	if (data != NULL && size > 0)
 	{
-		HBITMAP bitmap = imageDecoder.loadImage(message.getThumbnail(), message.getThumbnailSize());
+		HBITMAP bitmap = imageDecoder.loadImage(data, size);
 
 		BITMAP bitmapObject;
 		GetObject(bitmap, sizeof(BITMAP), &bitmapObject);

@@ -7,7 +7,7 @@
 #include "../../../../../../WhatsApp/Message.h"
 
 ChatControlMessageWithPreviewAndText::ChatControlMessageWithPreviewAndText(WhatsappMessage &message, const std::string &text, int width, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreview(message, width, imageDecoder), text(text)
+	: ChatControlMessageWithPreview(message, message.getThumbnail(), message.getThumbnailSize(), width, imageDecoder), text(text)
 {
 	if (text.length() > 0)
 	{
