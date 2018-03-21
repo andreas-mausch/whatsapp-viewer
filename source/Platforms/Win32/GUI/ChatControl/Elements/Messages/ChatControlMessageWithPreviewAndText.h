@@ -1,15 +1,24 @@
 #pragma once
 
-#include "ChatControlMessageWithPreview.h"
+#include "ChatControlMessage.h"
 
+class Bitmap;
 class ImageDecoder;
 class WhatsappMessage;
 
-class ChatControlMessageWithPreviewAndText : public ChatControlMessageWithPreview
+class ChatControlMessageWithPreviewAndText : public ChatControlMessage
 {
 private:
 	std::string text;
 	WCHAR *wcharText;
+
+	Bitmap *thumbnail;
+	int thumbnailWidth;
+	int thumbnailHeight;
+
+	int getThumbnailWidth();
+	int getThumbnailHeight();
+	void renderThumbnail(HDC deviceContext, int x, int y);
 
 public:
 	ChatControlMessageWithPreviewAndText(WhatsappMessage &message, unsigned char *data, int size, const std::string &text, int width, ImageDecoder &imageDecoder);
