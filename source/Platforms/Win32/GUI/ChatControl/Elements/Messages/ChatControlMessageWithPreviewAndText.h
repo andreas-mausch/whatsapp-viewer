@@ -12,7 +12,7 @@ private:
 	WCHAR *wcharText;
 
 public:
-	ChatControlMessageWithPreviewAndText(WhatsappMessage &message, const std::string &text, int width, ImageDecoder &imageDecoder);
+	ChatControlMessageWithPreviewAndText(WhatsappMessage &message, unsigned char *data, int size, const std::string &text, int width, ImageDecoder &imageDecoder);
 	virtual ~ChatControlMessageWithPreviewAndText();
 
 	virtual int calculateHeight();

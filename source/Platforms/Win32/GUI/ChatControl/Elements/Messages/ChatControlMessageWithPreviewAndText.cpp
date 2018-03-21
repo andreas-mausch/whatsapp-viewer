@@ -6,8 +6,8 @@
 #include "../../../../StringHelper.h"
 #include "../../../../../../WhatsApp/Message.h"
 
-ChatControlMessageWithPreviewAndText::ChatControlMessageWithPreviewAndText(WhatsappMessage &message, const std::string &text, int width, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreview(message, message.getThumbnail(), message.getThumbnailSize(), width, imageDecoder), text(text)
+ChatControlMessageWithPreviewAndText::ChatControlMessageWithPreviewAndText(WhatsappMessage &message, unsigned char *data, int size, const std::string &text, int width, ImageDecoder &imageDecoder)
+	: ChatControlMessageWithPreview(message, data, size, width, imageDecoder), text(text)
 {
 	if (text.length() > 0)
 	{

@@ -112,6 +112,16 @@ int WhatsappMessage::getThumbnailSize()
 	return thumbnailDataSize;
 }
 
+unsigned char *WhatsappMessage::getThumbImage()
+{
+	return thumbImage;
+}
+
+int WhatsappMessage::getThumbImageSize()
+{
+	return thumbImageSize;
+}
+
 const std::string &WhatsappMessage::getQuotedMessageId() const
 {
 	return quotedMessageId;

@@ -72,4 +72,7 @@ public:
 	unsigned char *getThumbnail();
 	int getThumbnailSize();
 
+	unsigned char *getThumbImage();
+	int getThumbImageSize();
+
 };
