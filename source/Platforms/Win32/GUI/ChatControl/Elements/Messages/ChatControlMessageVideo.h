@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ChatControlMessageWithPreview.h"
+#include "ChatControlMessageWithPreviewAndText.h"
 
 class ImageDecoder;
 class WhatsappMessage;
 
-class ChatControlMessageVideo : public ChatControlMessageWithPreview
+class ChatControlMessageVideo : public ChatControlMessageWithPreviewAndText
 {
 private:
 	std::wstring text;
@@ -13,8 +13,5 @@ private:
 public:
 	ChatControlMessageVideo(WhatsappMessage &message, int width, ImageDecoder &imageDecoder);
 	virtual ~ChatControlMessageVideo();
-
-	virtual int calculateHeight();
-	virtual void render(HDC deviceContext, int x, int y, int clientHeight);
 
 };

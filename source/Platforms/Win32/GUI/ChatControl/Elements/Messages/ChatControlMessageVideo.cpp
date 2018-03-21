@@ -1,36 +1,27 @@
 #include <windows.h>
+#include <sstream>
 
 #include "ChatControlMessageVideo.h"
-#include "../../../DrawText.h"
 #include "../../../../../../WhatsApp/Message.h"
 #include "../../../../ImageDecoder.h"
 
+std::string formatVideoText(WhatsappMessage &message)
+{
+	std::stringstream text;
+	text << "Video (" << message.getMediaDuration() << "s)";
+
+	if (message.getMediaCaption().length() > 0)
+	{
+		text << std::endl << message.getMediaCaption();
+	}
+	return text.str();
+}
+
 ChatControlMessageVideo::ChatControlMessageVideo(WhatsappMessage &message, int width, ImageDecoder &imageDecoder)
-	: ChatControlMessageWithPreview(message, message.getThumbnail(), message.getThumbnailSize(), width, imageDecoder), text(L"Video")
+	: ChatControlMessageWithPreviewAndText(message, message.getThumbnail(), message.getThumbnailSize(), formatVideoText(message), width, imageDecoder)
 {
 }
 
 ChatControlMessageVideo::~ChatControlMessageVideo()
 {
-}
-
-int ChatControlMessageVideo::calculateHeight()
-{
-	int height = getPreviewBitmapHeight();
-
-	HDC deviceContext = GetDC(NULL);
-	height += calculateDrawTextHeight(deviceContext, text.c_str(), getWidth(), static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
-	ReleaseDC(NULL, deviceContext);
-
-	height += 10;
-
-	return height;
-}
-
-void ChatControlMessageVideo::render(HDC deviceContext, int x, int y, int clientHeight)
-{
-	renderPreviewBitmap(deviceContext, x + 5, y + 5);
-
-	SetTextColor(deviceContext, RGB(0, 0, 0));
-	drawText(deviceContext, text.c_str(), x, y + getPreviewBitmapHeight() + 10, getWidth(), static_cast<HFONT>(GetStockObject(DEFAULT_GUI_FONT)));
 }
