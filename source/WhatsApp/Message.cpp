@@ -112,14 +112,33 @@ int WhatsappMessage::getThumbnailSize()
 	return thumbnailDataSize;
 }
 
-unsigned char *WhatsappMessage::getThumbImage()
+unsigned char *WhatsappMessage::getLinkThumbnail()
 {
-	return thumbImage;
+	if (!link || thumbImage == NULL)
+	{
+		return NULL;
+	}
+
+	unsigned char *image = thumbImage + 27;
+
+	if (image[0] == 0xFF && image[1] == 0xD8)
+	{
+		return image;
+	}
+
+	return NULL;
 }
 
-int WhatsappMessage::getThumbImageSize()
+int WhatsappMessage::getLinkThumbnailSize()
 {
-	return thumbImageSize;
+	unsigned char *thumbnail = getLinkThumbnail();
+
+	if (thumbnail == NULL)
+	{
+		return 0;
+	}
+
+	return (thumbnail - thumbImage) + thumbImageSize;
 }
 
 const std::string &WhatsappMessage::getQuotedMessageId() const
