@@ -21,6 +21,7 @@ private:
 
 	void addImageParameter(WhatsappMessage &message, rapidjson::Value &messageJson, rapidjson::Document &json);
 	void addImageParameter(unsigned char *image, int size, rapidjson::Value &messageJson, rapidjson::Document &json);
+	void addFilename(WhatsappMessage &message, rapidjson::Value &messageJson, rapidjson::Document &json);
 	std::string findDisplayName(const std::string &key);
 
 public:

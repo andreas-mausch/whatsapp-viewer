@@ -33,6 +33,14 @@ void ChatExporterJson::addImageParameter(unsigned char *image, int size, rapidjs
 	}
 }
 
+void ChatExporterJson::addFilename(WhatsappMessage &message, rapidjson::Value &messageJson, rapidjson::Document &json)
+{
+	if (message.getFilename().length() > 0)
+	{
+		messageJson.AddMember("filename", message.getFilename(), json.GetAllocator());
+	}
+}
+
 void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filename)
 {
 	rapidjson::Document json;
@@ -88,6 +96,7 @@ void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filenam
 			{
 				messageJson.AddMember("type", "image", json.GetAllocator());
 				addImageParameter(message, messageJson, json);
+				addFilename(message, messageJson, json);
 
 				if (message.getMediaCaption().length() > 0)
 				{
@@ -102,6 +111,7 @@ void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filenam
 			{
 				messageJson.AddMember("type", "video", json.GetAllocator());
 				addImageParameter(message, messageJson, json);
+				addFilename(message, messageJson, json);
 			} break;
 			case MEDIA_WHATSAPP_CONTACT:
 			{
