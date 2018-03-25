@@ -112,6 +112,11 @@ int WhatsappMessage::getThumbnailSize()
 	return thumbnailDataSize;
 }
 
+bool WhatsappMessage::hasLinkThumbnail()
+{
+	return getLinkThumbnail() != NULL;
+}
+
 unsigned char *WhatsappMessage::getLinkThumbnail()
 {
 	if (!link || thumbImage == NULL)

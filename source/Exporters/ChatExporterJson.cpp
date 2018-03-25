@@ -70,7 +70,7 @@ void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filenam
 					{
 						messageJson.AddMember("caption", message.getMediaCaption(), json.GetAllocator());
 					}
-					if (message.getLinkThumbnail() != NULL && message.getLinkThumbnailSize() > 0)
+					if (message.hasLinkThumbnail())
 					{
 						messageJson.AddMember("image", base64_encode(message.getLinkThumbnail(), message.getLinkThumbnailSize()), json.GetAllocator());
 					}

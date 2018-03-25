@@ -55,7 +55,7 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 			{
 				if (message.isLink())
 				{
-					if (message.getLinkThumbnail() != NULL && message.getLinkThumbnailSize() > 0)
+					if (message.hasLinkThumbnail())
 					{
 						output << "<div><img src=\"data:image/jpeg;base64," << base64_encode(message.getLinkThumbnail(), message.getLinkThumbnailSize()) << "\"></div>" << std::endl;
 					}

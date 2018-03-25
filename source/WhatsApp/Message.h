@@ -72,6 +72,7 @@ public:
 	unsigned char *getThumbnail();
 	int getThumbnailSize();
 
+	bool hasLinkThumbnail();
 	unsigned char *getLinkThumbnail();
 	int getLinkThumbnailSize();
 
