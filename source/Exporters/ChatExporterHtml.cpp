@@ -75,7 +75,7 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 				}
 				if (message.getMediaCaption().length() > 0)
 				{
-					output << "<span>" << message.getMediaCaption() << "</span>";
+					output << "<div><span>" << message.getMediaCaption() << "</span></div>";
 				}
 			} break;
 			case MEDIA_WHATSAPP_AUDIO:
@@ -87,6 +87,10 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 				if (message.hasThumbnail())
 				{
 					output << "<div><img src=\"data:image/jpeg;base64," << base64_encode(message.getThumbnail(), message.getThumbnailSize()) << "\"></div>" << std::endl;
+				}
+				if (message.getMediaCaption().length() > 0)
+				{
+					output << "<div><span>" << message.getMediaCaption() << "</span></div>";
 				}
 				output << "<span>[ Video ]</span>";
 			} break;
@@ -101,6 +105,11 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 		}
 
 		output << "</div>";
+
+		if (message.getFilename().length() > 0)
+		{
+			output << "<div class=\"filename\"><span>" << message.getFilename() << "</span></div>";
+		}
 
 		if (message.getRemoteResource().size() > 0)
 		{

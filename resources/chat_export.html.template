@@ -13,7 +13,7 @@
 				margin-left: auto;
 				margin-right: auto;
 			}
-			
+
 			.chat_header {
 				text-align: center;
 				font-weight: bold;
@@ -23,51 +23,57 @@
 				background-color: #F1F1F1;
 				border: 1px solid #009000;
 			}
-			
+
 			.heading {
 				font-size: 140%;
 			}
-			
+
 			.contact {
 			}
-			
+
 			.day {
 				text-align: center;
 				margin: 30px 10px 10px 10px;
 			}
-			
+
 			.day > span {
 				background-color: #B0D0F0;
 			}
-			
+
 			.messages {
 				background-color: #F1F1F1;
 				border: 1px solid #009000;
 				padding: 2px 4px;
 			}
-			
+
 			.message {
 				margin: 2px 0px;
 				max-width: 80%;
 			}
-			
+
 			.message > .timestamp {
 				font-family: "Courier New", monospace;
 				font-size: 8pt;
 			}
-			
+
 			.message > .remote-resource {
 				font-family: "Courier New", monospace;
 				font-size: 8pt;
 			}
-			
+
+			.message > .filename {
+				font-family: "Courier New", monospace;
+				font-size: 8pt;
+				color: #777777;
+			}
+
 			.message > .text span {
 			}
-			
+
 			.incoming_message {
 				text-align: left;
 			}
-			
+
 			.incoming_message > .text span {
 				background-color: #CCD9FF;
 			}
@@ -80,7 +86,7 @@
 			.outgoing_message > .text span {
 				background-color: #BAE691;
 			}
-			
+
 			%EMOTICON_STYLES%
 		</style>
 	</head>
