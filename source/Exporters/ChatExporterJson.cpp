@@ -63,8 +63,24 @@ void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filenam
 		{
 			case MEDIA_WHATSAPP_TEXT:
 			{
-				messageJson.AddMember("type", "text", json.GetAllocator());
-				messageJson.AddMember("text", message.getData(), json.GetAllocator());
+				if (message.isLink())
+				{
+					messageJson.AddMember("type", "link", json.GetAllocator());
+					if (message.getMediaCaption().length() > 0)
+					{
+						messageJson.AddMember("caption", message.getMediaCaption(), json.GetAllocator());
+					}
+					if (message.getLinkThumbnail() != NULL && message.getLinkThumbnailSize() > 0)
+					{
+						messageJson.AddMember("image", base64_encode(message.getLinkThumbnail(), message.getLinkThumbnailSize()), json.GetAllocator());
+					}
+					messageJson.AddMember("link", message.getData(), json.GetAllocator());
+				}
+				else
+				{
+					messageJson.AddMember("type", "text", json.GetAllocator());
+					messageJson.AddMember("text", message.getData(), json.GetAllocator());
+				}
 			} break;
 			case MEDIA_WHATSAPP_IMAGE:
 			{
