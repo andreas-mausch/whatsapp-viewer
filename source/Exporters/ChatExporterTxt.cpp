@@ -69,11 +69,12 @@ void ChatExporterTxt::exportChat(WhatsappChat &chat, const std::string &filename
 			} break;
 			case MEDIA_WHATSAPP_IMAGE:
 			{
-				file << "[ Image ]";
+				file << "[ Image: " << message.getFilename();
 				if (message.getMediaCaption().length() > 0)
 				{
-					file << ": " << message.getMediaCaption();
+					file << "; " << message.getMediaCaption();
 				}
+				file << " ]";
 			} break;
 			case MEDIA_WHATSAPP_AUDIO:
 			{
@@ -81,7 +82,12 @@ void ChatExporterTxt::exportChat(WhatsappChat &chat, const std::string &filename
 			} break;
 			case MEDIA_WHATSAPP_VIDEO:
 			{
-				file << "[ Video ]";
+				file << "[ Video: " << message.getFilename();
+				if (message.getMediaCaption().length() > 0)
+				{
+					file << "; " << message.getMediaCaption();
+				}
+				file << " ]";
 			} break;
 			case MEDIA_WHATSAPP_CONTACT:
 			{
