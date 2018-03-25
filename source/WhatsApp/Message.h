@@ -42,6 +42,9 @@ private:
 	std::string quotedMessageId;
 	bool link;
 
+	std::string filename;
+	void buildFilename();
+
 public:
 	WhatsappMessage(std::string messageId, std::string chatId, bool fromMe, int status, std::string data, long long timestamp,
 					long long receivedTimestamp, long long sendTimestamp,
@@ -75,5 +78,7 @@ public:
 	bool hasLinkThumbnail();
 	unsigned char *getLinkThumbnail();
 	int getLinkThumbnailSize();
+
+	const std::string &getFilename() const;
 
 };

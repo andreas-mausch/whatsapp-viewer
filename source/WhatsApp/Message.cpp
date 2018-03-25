@@ -1,4 +1,5 @@
 #include "Message.h"
+#include <algorithm>
 
 WhatsappMessage::WhatsappMessage(std::string messageId, std::string chatId, bool fromMe, int status, std::string data, long long timestamp, long long receivedTimestamp, long long sendTimestamp, std::string mediaUrl, std::string mediaMimeType, int mediaWhatsappType, int mediaSize, std::string mediaName, std::string mediaCaption, int mediaDuration, double latitude, double longitude, const void *thumbImage, int thumbImageSize, const std::string &remoteResource, const void *rawData, int rawDataSize, const void *thumbnailData, int thumbnailDataSize, std::string quotedMessageId, bool link) :
 	messageId(messageId), chatId(chatId), fromMe(fromMe), status(status), data(data), timestamp(timestamp),
@@ -16,6 +17,8 @@ WhatsappMessage::WhatsappMessage(std::string messageId, std::string chatId, bool
 	{
 		this->thumbImage = new unsigned char[thumbImageSize];
 		memcpy(this->thumbImage, thumbImage, thumbImageSize);
+
+		buildFilename();
 	}
 	if (rawData != NULL && rawDataSize > 0)
 	{
@@ -149,4 +152,37 @@ int WhatsappMessage::getLinkThumbnailSize()
 const std::string &WhatsappMessage::getQuotedMessageId() const
 {
 	return quotedMessageId;
+}
+
+const std::string &WhatsappMessage::getFilename() const
+{
+	return filename;
+}
+
+void WhatsappMessage::buildFilename()
+{
+	unsigned char pathStartPattern[] = { 0x4C, 0x00, 0x04, 'p', 'a', 't', 'h' };
+	unsigned char *pathStart = std::search(thumbImage, thumbImage + thumbImageSize, pathStartPattern, pathStartPattern + sizeof(pathStartPattern));
+
+	if (pathStart >= thumbImage + thumbImageSize)
+	{
+		return;
+	}
+
+	unsigned char endPattern[] = { 0x78, 0x70, 0x74 };
+	unsigned char *end = std::search(pathStart, thumbImage + thumbImageSize, endPattern, endPattern + sizeof(endPattern));
+
+	if (end >= thumbImage + thumbImageSize)
+	{
+		return;
+	}
+
+	unsigned short length = ((*(end + sizeof(endPattern))) << 8) | *(end + sizeof(endPattern) + 1);
+
+	if (length == 0)
+	{
+		return;
+	}
+
+	filename = std::string(reinterpret_cast<char *>(end + sizeof(endPattern) + sizeof(unsigned short)), length);
 }
