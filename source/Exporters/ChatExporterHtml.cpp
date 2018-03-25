@@ -53,7 +53,19 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 		{
 			case MEDIA_WHATSAPP_TEXT:
 			{
-				output << "<span>" << convertMessageToHtml(message, usedEmoticons) << "</span>";
+				if (message.isLink())
+				{
+					if (message.getLinkThumbnail() != NULL && message.getLinkThumbnailSize() > 0)
+					{
+						output << "<div><img src=\"data:image/jpeg;base64," << base64_encode(message.getLinkThumbnail(), message.getLinkThumbnailSize()) << "\"></div>" << std::endl;
+					}
+					output << "<div><span>" << message.getMediaCaption() << "</span></div>";
+					output << "<div><span>" << message.getData() << "</span></div>";
+				}
+				else
+				{
+					output << "<span>" << convertMessageToHtml(message, usedEmoticons) << "</span>";
+				}
 			} break;
 			case MEDIA_WHATSAPP_IMAGE:
 			{
