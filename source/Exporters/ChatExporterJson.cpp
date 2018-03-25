@@ -22,9 +22,14 @@ ChatExporterJson::~ChatExporterJson()
 
 void ChatExporterJson::addImageParameter(WhatsappMessage &message, rapidjson::Value &messageJson, rapidjson::Document &json)
 {
-	if (message.hasThumbnail())
+	addImageParameter(message.getThumbnail(), message.getThumbnailSize(), messageJson, json);
+}
+
+void ChatExporterJson::addImageParameter(unsigned char *image, int size, rapidjson::Value &messageJson, rapidjson::Document &json)
+{
+	if (image != NULL && size > 0)
 	{
-		messageJson.AddMember("image", base64_encode(message.getThumbnail(), message.getThumbnailSize()), json.GetAllocator());
+		messageJson.AddMember("image", base64_encode(image, size), json.GetAllocator());
 	}
 }
 
@@ -70,10 +75,7 @@ void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filenam
 					{
 						messageJson.AddMember("caption", message.getMediaCaption(), json.GetAllocator());
 					}
-					if (message.hasLinkThumbnail())
-					{
-						messageJson.AddMember("image", base64_encode(message.getLinkThumbnail(), message.getLinkThumbnailSize()), json.GetAllocator());
-					}
+					addImageParameter(message.getLinkThumbnail(), message.getLinkThumbnailSize(), messageJson, json);
 					messageJson.AddMember("link", message.getData(), json.GetAllocator());
 				}
 				else
