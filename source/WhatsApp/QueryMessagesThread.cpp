@@ -22,6 +22,20 @@ void QueryMessagesThread::interrupt()
 	sqlite3_interrupt(sqLiteDatabase.getHandle());
 }
 
+WhatsappMessage *QueryMessagesThread::findByMessageId(const std::string &messageId)
+{
+	for(std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
+	{
+		WhatsappMessage *message = *it;
+		if (message->getMessageId() == messageId)
+		{
+			return message;
+		}
+	}
+
+	return NULL;
+}
+
 void QueryMessagesThread::run()
 {
 	const char *query = "SELECT messages.key_id, messages.key_remote_jid, messages.key_from_me, messages.status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_caption, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, message_thumbnails.thumbnail, messages_quotes.key_id, messages_links._id " \
@@ -75,7 +89,12 @@ void QueryMessagesThread::run()
 		std::string quotedMessageId = sqLiteDatabase.readString(res, 19);
 		int linkId = sqlite3_column_int(res, 20);
 
-		WhatsappMessage *message = new WhatsappMessage(messageId, chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, mediaName, mediaCaption, mediaDuration, latitude, longitude, thumbImage, thumbImageSize, remoteResource, rawData, rawDataSize, thumbnailData, thumbnailDataSize, quotedMessageId, linkId > 0);
+		WhatsappMessage *quotedMessage = NULL;
+		if (quotedMessageId.length() > 0)
+		{
+			quotedMessage = findByMessageId(quotedMessageId);
+		}
+		WhatsappMessage *message = new WhatsappMessage(messageId, chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, mediaName, mediaCaption, mediaDuration, latitude, longitude, thumbImage, thumbImageSize, remoteResource, rawData, rawDataSize, thumbnailData, thumbnailDataSize, quotedMessage, linkId > 0);
 		messages.push_back(message);
 	}
 

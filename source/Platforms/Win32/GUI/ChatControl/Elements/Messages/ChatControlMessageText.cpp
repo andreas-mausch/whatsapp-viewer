@@ -16,10 +16,10 @@ ChatControlMessageText::ChatControlMessageText(WhatsappMessage &message, int wid
 {
 	splitMessage(message);
 
-	if (message.getQuotedMessageId().length() > 0)
+	if (message.getQuotedMessage() != NULL)
 	{
 		std::stringstream quoted;
-		quoted << "Quote: " << message.getQuotedMessageId();
+		quoted << "Quoted message from " << formatTimestamp(message.getQuotedMessage()->getTimestamp()) << ": " << message.getQuotedMessage()->getMessageId();
 		quotedMessage = new ChatControlMessageTextElement(quoted.str());
 	}
 }

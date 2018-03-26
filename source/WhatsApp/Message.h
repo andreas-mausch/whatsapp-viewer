@@ -50,7 +50,7 @@ private:
 	int rawDataSize;
 	unsigned char *thumbnailData;
 	int thumbnailDataSize;
-	std::string quotedMessageId;
+	WhatsappMessage *quotedMessage;
 	bool link;
 
 	std::string filename;
@@ -66,9 +66,10 @@ public:
 					const void *thumbImage,int thumbImageSize,
 					const std::string &remoteResource, const void *rawData, int rawDataSize,
 					const void *thumbnailData, int thumbnailDataSize,
-					std::string quotedMessageId, bool link);
+					WhatsappMessage *quotedMessage, bool link);
 	~WhatsappMessage();
 
+	const std::string &getMessageId() const;
 	const std::string &getData() const;
 	bool isFromMe() const;
 	long long getTimestamp() const;
@@ -79,7 +80,6 @@ public:
 	const std::string &getMediaName() const;
 	const std::string &getMediaCaption() const;
 	int getMediaDuration() const;
-	const std::string &getQuotedMessageId() const;
 	bool isLink() const;
 
 	bool hasThumbnail();
@@ -92,4 +92,5 @@ public:
 
 	const std::string &getFilename() const;
 
+	WhatsappMessage *getQuotedMessage();
 };
