@@ -78,7 +78,7 @@ void ChatExporterTxt::exportChat(WhatsappChat &chat, const std::string &filename
 			} break;
 			case MEDIA_WHATSAPP_AUDIO:
 			{
-				file << "[ Audio ]";
+				file << "[ Audio: " << message.getMediaDuration() << "s; " << message.getFilename() << " ]";
 			} break;
 			case MEDIA_WHATSAPP_VIDEO:
 			{

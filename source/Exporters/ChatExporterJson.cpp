@@ -106,6 +106,8 @@ void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filenam
 			case MEDIA_WHATSAPP_AUDIO:
 			{
 				messageJson.AddMember("type", "audio", json.GetAllocator());
+				messageJson.AddMember("duration", message.getMediaDuration(), json.GetAllocator());
+				addFilename(message, messageJson, json);
 			} break;
 			case MEDIA_WHATSAPP_VIDEO:
 			{

@@ -15,6 +15,10 @@ std::string formatAudio(WhatsappMessage &message)
 	{
 		text << " : " << message.getMediaName();
 	}
+	if (message.getFilename().length() > 0)
+	{
+		text << std::endl << message.getFilename();
+	}
 
 	return text.str();
 }
