@@ -102,6 +102,10 @@ void BuildMessagesThread::run()
 				{
 					messageFrame = new ChatControlMessageFrame(new ChatControlMessageLocation(message, 0, imageDecoder), 0, color, dateFont);
 				} break;
+				case MEDIA_WHATSAPP_GIF:
+				{
+					messageFrame = new ChatControlMessageFrame(new ChatControlMessageImage(message, 0, imageDecoder), 0, color, dateFont);
+				} break;
 			}
 
 			if (messageFrame != NULL)
