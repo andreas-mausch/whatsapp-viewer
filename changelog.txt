@@ -1,3 +1,11 @@
+v1.12 (2018-03-26)
+	Show filenames of media (#22)
+	Support Links (youtube, general website, ..) (#65)
+	Support more message types (calls (8), files (9), gifs (13), live locations (16)) (#67)
+	Basic quote support (#62)
+	Text below images is now shown (#60)
+	Added license file (#16)
+	BUGFIX: fixed Windows Imaging Component decoder problem on XP
 v1.11 (2017-11-05)
 	Datetime formatting now uses user's region settings (#51)
 	Fixed layouting issues (#49, 52)
