@@ -100,8 +100,13 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 				output << "<span>[ Contact ]</span>";
 			} break;
 			case MEDIA_WHATSAPP_LOCATION:
+			case MEDIA_WHATSAPP_LIVE_LOCATION:
 			{
-				output << "<span>[ Location: " << message.getLatitude() << "; " << message.getLongitude() << " ]</span>";
+				if (message.hasThumbnail())
+				{
+					output << "<div><img src=\"data:image/jpeg;base64," << base64_encode(message.getThumbnail(), message.getThumbnailSize()) << "\"></div>" << std::endl;
+				}
+				output << "<span>[ Location: " << message.getLatitude() << "," << message.getLongitude() << " ]</span>";
 			} break;
 		}
 

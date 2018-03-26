@@ -121,6 +121,7 @@ void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filenam
 				messageJson.AddMember("type", "contact", json.GetAllocator());
 			} break;
 			case MEDIA_WHATSAPP_LOCATION:
+			case MEDIA_WHATSAPP_LIVE_LOCATION:
 			{
 				messageJson.AddMember("type", "location", json.GetAllocator());
 
