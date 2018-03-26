@@ -99,6 +99,7 @@ void BuildMessagesThread::run()
 					messageFrame = new ChatControlMessageFrame(new ChatControlMessageVideo(message, 0, imageDecoder), 0, color, dateFont);
 				} break;
 				case MEDIA_WHATSAPP_LOCATION:
+				case MEDIA_WHATSAPP_LIVE_LOCATION:
 				{
 					messageFrame = new ChatControlMessageFrame(new ChatControlMessageLocation(message, 0, imageDecoder), 0, color, dateFont);
 				} break;
