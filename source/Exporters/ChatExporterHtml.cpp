@@ -68,6 +68,7 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 				}
 			} break;
 			case MEDIA_WHATSAPP_IMAGE:
+			case MEDIA_WHATSAPP_GIF:
 			{
 				if (message.hasThumbnail())
 				{

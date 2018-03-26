@@ -93,6 +93,7 @@ void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filenam
 				}
 			} break;
 			case MEDIA_WHATSAPP_IMAGE:
+			case MEDIA_WHATSAPP_GIF:
 			{
 				messageJson.AddMember("type", "image", json.GetAllocator());
 				addImageParameter(message, messageJson, json);

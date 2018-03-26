@@ -97,6 +97,15 @@ void ChatExporterTxt::exportChat(WhatsappChat &chat, const std::string &filename
 			{
 				file << "[ Location: " << message.getLatitude() << "; " << message.getLongitude() << " ]";
 			} break;
+			case MEDIA_WHATSAPP_GIF:
+			{
+				file << "[ Image (gif/mp4): " << message.getFilename();
+				if (message.getMediaCaption().length() > 0)
+				{
+					file << "; " << message.getMediaCaption();
+				}
+				file << " ]";
+			} break;
 		}
 
 		file << std::endl;
