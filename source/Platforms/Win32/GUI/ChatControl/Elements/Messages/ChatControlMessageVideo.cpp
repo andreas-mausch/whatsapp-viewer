@@ -14,10 +14,6 @@ std::string formatVideoText(WhatsappMessage &message)
 	{
 		text << std::endl << message.getMediaCaption();
 	}
-	if (message.getFilename().length() > 0)
-	{
-		text << std::endl << message.getFilename();
-	}
 
 	return text.str();
 }

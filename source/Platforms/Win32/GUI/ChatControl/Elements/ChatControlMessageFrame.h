@@ -14,9 +14,10 @@ private:
 	int color;
 	Font &dateFont;
 	std::wstring wcharDate;
+	std::wstring wcharFilename;
 
 	void renderFrame(HDC deviceContext, int x, int y);
-	int getDateHeight();
+	int getHeight(const std::wstring &string);
 	int getRemoteResourceHeight();
 
 public:

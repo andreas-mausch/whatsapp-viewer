@@ -14,6 +14,7 @@ ChatControlMessageFrame::ChatControlMessageFrame(ChatControlMessage *message, in
 	: message(message), width(width), color(color), height(0), dateFont(dateFont)
 {
 	wcharDate = strtowstr(formatTimestamp(message->getMessage().getTimestamp()));
+	wcharFilename = strtowstr(message->getMessage().getFilename());
 }
 
 ChatControlMessageFrame::~ChatControlMessageFrame()
@@ -34,7 +35,8 @@ void ChatControlMessageFrame::updateWidth(HWND window, int width)
 void ChatControlMessageFrame::calculateHeight()
 {
 	height = message->calculateHeight();
-	height += getDateHeight();
+	height += getHeight(wcharFilename);
+	height += getHeight(wcharDate);
 
 	if (message->getMessage().getRemoteResource().size() > 0)
 	{
@@ -76,21 +78,24 @@ void ChatControlMessageFrame::renderFrame(HDC deviceContext, int x, int y)
 	FillRect(deviceContext, &completeRect, brush.get());
 
 	SetTextColor(deviceContext, RGB(110, 110, 110));
+	int filenameHeight = calculateDrawTextHeight(deviceContext, wcharFilename.c_str(), messageWidth, dateFont.get());
 	int dateHeight = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), messageWidth, dateFont.get());
+
+	drawTextRight(deviceContext, wcharFilename.c_str(), x, y + getHeight() - dateHeight - filenameHeight, messageWidth, dateFont.get());
 	drawTextRight(deviceContext, wcharDate.c_str(), x, y + getHeight() - dateHeight, messageWidth, dateFont.get());
 
 	if (message->getMessage().getRemoteResource().size() > 0)
 	{
 		std::wstring remoteResource = strtowstr(message->getMessage().getRemoteResource());
 		int remoteResourceHeight = calculateDrawTextHeight(deviceContext, remoteResource.c_str(), messageWidth, dateFont.get());
-		drawTextRight(deviceContext, remoteResource.c_str(), x, y + getHeight() - dateHeight - remoteResourceHeight, messageWidth, dateFont.get());
+		drawTextRight(deviceContext, remoteResource.c_str(), x, y + getHeight() - dateHeight - filenameHeight - remoteResourceHeight, messageWidth, dateFont.get());
 	}
 }
 
-int ChatControlMessageFrame::getDateHeight()
+int ChatControlMessageFrame::getHeight(const std::wstring &string)
 {
 	HDC deviceContext = GetDC(NULL);
-	int height = calculateDrawTextHeight(deviceContext, wcharDate.c_str(), width, dateFont.get());
+	int height = calculateDrawTextHeight(deviceContext, string.c_str(), width, dateFont.get());
 	ReleaseDC(NULL, deviceContext);
 	return height;
 }
