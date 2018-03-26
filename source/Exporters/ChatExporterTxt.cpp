@@ -49,6 +49,11 @@ void ChatExporterTxt::exportChat(WhatsappChat &chat, const std::string &filename
 			file << "he: ";
 		}
 
+		if (message.getQuotedMessage() != NULL)
+		{
+			file << "[ Quote from " << formatTimestamp(message.getQuotedMessage()->getTimestamp()) << ": " << message.getQuotedMessage()->getMessageId() << " ]; ";
+		}
+
 		switch (message.getMediaWhatsappType())
 		{
 			case MEDIA_WHATSAPP_TEXT:

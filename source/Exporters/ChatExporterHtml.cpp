@@ -47,7 +47,18 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 			output << "incoming_message";
 		}
 
-		output << "\"><div class=\"text\">";
+		output << "\">";
+
+		if (message.getQuotedMessage() != NULL)
+		{
+			output << "<div class=\"quote\">";
+			output << "<div><span>Quote</span></div>";
+			output << "<div><span>At: " << formatTimestamp(message.getQuotedMessage()->getTimestamp()) << "</span></div>";
+			output << "<div><span>Message ID: " << message.getQuotedMessage()->getMessageId() << "</span></div>";
+			output << "</div>";
+		}
+
+		output << "<div class=\"text\">";
 
 		switch (message.getMediaWhatsappType())
 		{
@@ -111,6 +122,7 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 		}
 
 		output << "</div>";
+		output << "<div class=\"footer\">";
 
 		if (message.getFilename().length() > 0)
 		{
@@ -122,7 +134,8 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 			output << "<div class=\"remote-resource\"><span>" << settings.findDisplayName(message.getRemoteResource()) << "</span> (<span>" << message.getRemoteResource() << "</span>)</div>";
 		}
 
-		output << "<div class=\"timestamp\"><span>" << formatTimestamp(message.getTimestamp()) << "</span></div></div>" << std::endl;
+		output << "<div class=\"timestamp\"><span>" << formatTimestamp(message.getTimestamp()) << "</span></div>";
+		output << "</div></div>" << std::endl;
 	}
 
 	return output.str();

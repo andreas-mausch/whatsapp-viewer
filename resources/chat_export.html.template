@@ -49,41 +49,33 @@
 			.message {
 				margin: 2px 0px;
 				max-width: 80%;
+				overflow: auto;
 			}
 
-			.message > .timestamp {
-				font-family: "Courier New", monospace;
-				font-size: 8pt;
-			}
-
-			.message > .remote-resource {
-				font-family: "Courier New", monospace;
-				font-size: 8pt;
-			}
-
-			.message > .filename {
+			.message > .footer {
 				font-family: "Courier New", monospace;
 				font-size: 8pt;
 				color: #777777;
 			}
 
-			.message > .text span {
+			.message > .quote {
+				font-family: "Courier New", monospace;
+				font-size: 8pt;
+				background-color: #FFFFFF;
+				border-radius: 10px;
+				padding-left: 14px;
+				padding-right: 14px;
+				margin: 10px;
 			}
 
 			.incoming_message {
 				text-align: left;
-			}
-
-			.incoming_message > .text span {
 				background-color: #CCD9FF;
 			}
 
 			.outgoing_message {
 				text-align: right;
 				margin-left: auto;
-			}
-
-			.outgoing_message > .text span {
 				background-color: #BAE691;
 			}
 

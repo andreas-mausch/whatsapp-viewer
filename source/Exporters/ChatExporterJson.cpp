@@ -64,12 +64,19 @@ void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filenam
 		rapidjson::Value messageJson(rapidjson::kObjectType);
 
 		messageJson.AddMember("timestamp", formatTimestampIso(message.getTimestamp()), json.GetAllocator());
+		messageJson.AddMember("id", message.getMessageId(), json.GetAllocator());
 		messageJson.AddMember("fromMe", message.isFromMe(), json.GetAllocator());
 
 		if (message.getRemoteResource().size() > 0)
 		{
 			messageJson.AddMember("remoteResource", message.getRemoteResource(), json.GetAllocator());
 			messageJson.AddMember("remoteResourceDisplayName", settings.findDisplayName(message.getRemoteResource()), json.GetAllocator());
+		}
+
+		if (message.getQuotedMessage() != NULL)
+		{
+			messageJson.AddMember("quotedTimestamp", formatTimestampIso(message.getQuotedMessage()->getTimestamp()), json.GetAllocator());
+			messageJson.AddMember("quotedMessageId", message.getQuotedMessage()->getMessageId(), json.GetAllocator());
 		}
 
 		switch (message.getMediaWhatsappType())
