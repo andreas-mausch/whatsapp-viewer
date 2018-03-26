@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="WhatsApp Viewer"
 	ProjectGUID="{FFD53153-8C2A-42B1-A8EA-89FCE65DDD85}"
 	RootNamespace="WhatsAppReader"
@@ -546,6 +546,10 @@
 										>
 									</File>
 									<File
+										RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageLink.cpp"
+										>
+									</File>
+									<File
 										RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageLocation.cpp"
 										>
 									</File>
@@ -558,11 +562,11 @@
 										>
 									</File>
 									<File
-										RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageVideo.cpp"
+										RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageThumbnail.cpp"
 										>
 									</File>
 									<File
-										RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageWithPreview.cpp"
+										RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageVideo.cpp"
 										>
 									</File>
 								</Filter>
@@ -1112,6 +1116,10 @@
 										>
 									</File>
 									<File
+										RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageLink.h"
+										>
+									</File>
+									<File
 										RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageLocation.h"
 										>
 									</File>
@@ -1124,11 +1132,11 @@
 										>
 									</File>
 									<File
-										RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageVideo.h"
+										RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageThumbnail.h"
 										>
 									</File>
 									<File
-										RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageWithPreview.h"
+										RelativePath="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageVideo.h"
 										>
 									</File>
 								</Filter>

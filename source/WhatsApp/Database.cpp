@@ -14,10 +14,23 @@
 WhatsappDatabase::WhatsappDatabase(const std::string &filename)
 	: database(filename)
 {
+	validate();
 }
 
 WhatsappDatabase::~WhatsappDatabase()
 {
+}
+
+void WhatsappDatabase::validate()
+{
+	if (!hasTable("message_thumbnails")
+		|| !hasTable("messages_quotes")
+		|| !hasTable("messages_links")
+		|| !hasColumn("messages", "quoted_row_id")
+		|| !hasColumn("messages", "media_caption"))
+	{
+		throw Exception("It seems like you tried to open an older WhatsApp database. Please try to use an older version of WhatsApp Viewer.");
+	}
 }
 
 void WhatsappDatabase::getChats(Settings &settings, std::vector<WhatsappChat*> &chats)
@@ -99,3 +112,54 @@ void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<Whatsa
 	}
 }
 
+
+bool WhatsappDatabase::hasTable(const std::string &tableName)
+{
+	const char *query = "SELECT name FROM sqlite_master WHERE type='table' AND name = ?";
+
+	sqlite3_stmt *res;
+	if (sqlite3_prepare_v2(database.getHandle(), query, -1, &res, NULL) != SQLITE_OK)
+	{
+		throw SQLiteException("Could not query tables", database);
+	}
+	if (sqlite3_bind_text(res, 1, tableName.c_str(), -1, SQLITE_STATIC) != SQLITE_OK)
+	{
+		throw SQLiteException("Could not bind sql parameter", database);
+	}
+
+	bool hasTable = false;
+	if (sqlite3_step(res) == SQLITE_ROW)
+	{
+		hasTable = true;
+	}
+
+	sqlite3_finalize(res);
+	return hasTable;
+}
+
+bool WhatsappDatabase::hasColumn(const std::string &tableName, const std::string &columnName)
+{
+	std::stringstream query;
+	query << "PRAGMA table_info('" << tableName << "')";
+	std::string queryString = query.str();
+
+	sqlite3_stmt *res;
+	if (sqlite3_prepare_v2(database.getHandle(), queryString.c_str(), -1, &res, NULL) != SQLITE_OK)
+	{
+		throw SQLiteException("Could not query columns", database);
+	}
+
+	while (sqlite3_step(res) == SQLITE_ROW)
+	{
+		std::string columnNameDb = database.readString(res, 1);
+
+		if (columnName == columnNameDb)
+		{
+			sqlite3_finalize(res);
+			return true;
+		}
+	}
+
+	sqlite3_finalize(res);
+	return false;
+}

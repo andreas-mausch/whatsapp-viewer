@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <sstream>
 
 #include "QueryMessagesThread.h"
 #include "Message.h"
@@ -21,47 +22,15 @@ void QueryMessagesThread::interrupt()
 	sqlite3_interrupt(sqLiteDatabase.getHandle());
 }
 
-bool QueryMessagesThread::hasThumbnailTable()
-{
-	const char *query = "SELECT name FROM sqlite_master WHERE type='table' AND name='message_thumbnails'";
-
-	sqlite3_stmt *res;
-	if (sqlite3_prepare_v2(sqLiteDatabase.getHandle(), query, -1, &res, NULL) != SQLITE_OK)
-	{
-		throw SQLiteException("Could not load messages", sqLiteDatabase);
-	}
-
-	bool hasThumbnailTable = false;
-	if (sqlite3_step(res) == SQLITE_ROW)
-	{
-		hasThumbnailTable = true;
-	}
-
-	sqlite3_finalize(res);
-	return hasThumbnailTable;
-}
-
 void QueryMessagesThread::run()
 {
-	const char *query;
-
-	if (hasThumbnailTable())
-	{
-		query = "SELECT messages.key_id, messages.key_remote_jid, messages.key_from_me, messages.status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_caption, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, message_thumbnails.thumbnail, messages_quotes.key_id, messages_links._id " \
-						"FROM messages " \
-						"LEFT JOIN message_thumbnails on messages.key_id = message_thumbnails.key_id " \
-						"LEFT JOIN messages_quotes on messages.quoted_row_id > 0 AND messages.quoted_row_id = messages_quotes._id " \
-						"LEFT JOIN messages_links on messages._id = messages_links.message_row_id " \
-						"WHERE messages.key_remote_jid = ? " \
-						"ORDER BY messages.timestamp asc";
-	}
-	else
-	{
-		query = "SELECT messages.key_id, messages.key_remote_jid, messages.key_from_me, messages.status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, null, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, null, null, null" \
-						"FROM messages " \
-						"WHERE messages.key_remote_jid = ? " \
-						"ORDER BY messages.timestamp asc";
-	}
+	const char *query = "SELECT messages.key_id, messages.key_remote_jid, messages.key_from_me, messages.status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_caption, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, message_thumbnails.thumbnail, messages_quotes.key_id, messages_links._id " \
+				"FROM messages " \
+				"LEFT JOIN message_thumbnails on messages.key_id = message_thumbnails.key_id " \
+				"LEFT JOIN messages_quotes on messages.quoted_row_id > 0 AND messages.quoted_row_id = messages_quotes._id " \
+				"LEFT JOIN messages_links on messages._id = messages_links.message_row_id " \
+				"WHERE messages.key_remote_jid = ? " \
+				"ORDER BY messages.timestamp asc";
 
 	sqlite3_stmt *res;
 	if (sqlite3_prepare_v2(sqLiteDatabase.getHandle(), query, -1, &res, NULL) != SQLITE_OK)
