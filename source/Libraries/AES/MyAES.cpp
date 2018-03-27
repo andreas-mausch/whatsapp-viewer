@@ -1,38 +1,42 @@
-#include "PolarSSL.h"
+#include "mbedtls/aes.h"
 #include "../../Exceptions/Exception.h"
 
 int aesBlocksize = 16;
 
 void encrypt_aes_cbc_192(const unsigned char *input, unsigned char *output, int length, const unsigned char *key, unsigned char *initVector)
 {
-	aes_context ctx;
+	mbedtls_aes_context context;
 
-	aes_setkey_enc(&ctx, key, 192);
-	if (aes_crypt_cbc(&ctx, AES_ENCRYPT, length, initVector, input, output) != 0)
+	mbedtls_aes_init(&context);
+	mbedtls_aes_setkey_enc(&context, key, 192);
+	if (mbedtls_aes_crypt_cbc(&context, MBEDTLS_AES_ENCRYPT, length, initVector, input, output) != 0)
 	{
 		throw Exception("Could not encrypt block");
 	}
+	mbedtls_aes_free(&context);
 }
 
 void decrypt_aes_cbc_192(const unsigned char *input, unsigned char *output, int length, const unsigned char *key, unsigned char *initVector)
 {
-	aes_context ctx;
+	mbedtls_aes_context context;
 
-	aes_setkey_dec(&ctx, key, 192);
-	if (aes_crypt_cbc(&ctx, AES_DECRYPT, length, initVector, input, output) != 0)
+	mbedtls_aes_setkey_dec(&context, key, 192);
+	if (mbedtls_aes_crypt_cbc(&context, MBEDTLS_AES_DECRYPT, length, initVector, input, output) != 0)
 	{
 		throw Exception("Could not decrypt block");
 	}
+	mbedtls_aes_free(&context);
 }
 
 void decrypt_aes_cbc_256(const unsigned char *input, unsigned char *output, int length, const unsigned char *key, unsigned char *initVector)
 {
-	aes_context ctx;
+	mbedtls_aes_context context;
 
-	aes_setkey_dec(&ctx, key, 256);
-	int result = aes_crypt_cbc(&ctx, AES_DECRYPT, length, initVector, input, output);
+	mbedtls_aes_setkey_dec(&context, key, 256);
+	int result = mbedtls_aes_crypt_cbc(&context, MBEDTLS_AES_DECRYPT, length, initVector, input, output);
 	if (result != 0)
 	{
 		throw Exception("Could not decrypt block");
 	}
+	mbedtls_aes_free(&context);
 }
