@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 class WhatsappChat;
 
@@ -10,5 +11,5 @@ public:
 	ChatExporter() {}
 	virtual ~ChatExporter() {}
 
-	virtual void exportChat(WhatsappChat &chat, const std::string &filename) = 0;
+	virtual void exportChats(const std::vector<WhatsappChat *> &chats, const std::string &filename) = 0;
 };

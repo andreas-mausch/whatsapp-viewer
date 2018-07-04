@@ -23,10 +23,11 @@ private:
 	void addImageParameter(unsigned char *image, int size, rapidjson::Value &messageJson, rapidjson::Document &json);
 	void addFilename(WhatsappMessage &message, rapidjson::Value &messageJson, rapidjson::Document &json);
 	std::string findDisplayName(const std::string &key);
+	void exportChat(WhatsappChat &chat, rapidjson::Value &chatJson, rapidjson::Document &json);
 
 public:
 	ChatExporterJson(Settings &settings);
 	~ChatExporterJson();
 
-	void exportChat(WhatsappChat &chat, const std::string &filename);
+	void exportChats(const std::vector<WhatsappChat *> &chats, const std::string &filename);
 };

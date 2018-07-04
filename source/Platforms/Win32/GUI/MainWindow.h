@@ -64,7 +64,11 @@ private:
 	void setSortingColumn(int columnIndex);
 	void updateSortingArrow();
 
-	void exportChat(WhatsappChat &chat, ChatExporter &exporter, const std::string &extension);
+	void exportChats(const std::vector<WhatsappChat *> &chats, ChatExporter &exporter, const std::string &extension);
+	bool canExportChats();
+	void exportAllChatsToTxt();
+	void exportAllChatsToHtml();
+	void exportAllChatsToJson();
 	void exportChatToTxt(WhatsappChat &chat);
 	void exportChatToHtml(WhatsappChat &chat);
 	void exportChatToJson(WhatsappChat &chat);

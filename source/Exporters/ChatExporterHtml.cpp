@@ -18,8 +18,9 @@
 #include "../Settings.h"
 #include "../../resources/resource.h"
 
-ChatExporterHtml::ChatExporterHtml(Settings &settings, const std::string &templateHtml)
-	: settings(settings), templateHtml(templateHtml)
+ChatExporterHtml::ChatExporterHtml(Settings &settings, const std::string &templateHtml,
+		const std::string &entryTemplateHtml)
+	: settings(settings), templateHtml(templateHtml), entryTemplateHtml(entryTemplateHtml)
 {
 }
 
@@ -206,9 +207,8 @@ std::string ChatExporterHtml::buildEmoticonStyles(const std::set<int> &usedEmoti
 	return css.str();
 }
 
-void ChatExporterHtml::exportChat(WhatsappChat &chat, const std::string &filename)
+std::string ChatExporterHtml::exportChat(WhatsappChat &chat, std::set<int> &usedEmoticons)
 {
-	std::set<int> usedEmoticons;
 	std::string messages = buildMessages(chat, usedEmoticons);
 
 	std::string contact = chat.getKey();
@@ -224,20 +224,41 @@ void ChatExporterHtml::exportChat(WhatsappChat &chat, const std::string &filenam
 		contactName = "";
 	}
 
+	std::string html = entryTemplateHtml;
+	std::string heading = "WhatsApp Chat";
+	replacePlaceholder(html, "%HEADING%", heading);
+	replacePlaceholder(html, "%CONTACT%", contact);
+	replacePlaceholder(html, "%CONTACT_NAME%", contactName);
+	replacePlaceholder(html, "%MESSAGES%", messages);
+	return html;
+}
+
+void ChatExporterHtml::exportChats(const std::vector<WhatsappChat *> &chats, const std::string &filename)
+{
 	std::ofstream file(filename.c_str());
 	if (!file)
 	{
 		throw Exception("could not open chat export file");
 	}
 
+	std::set<int> usedEmoticons;
+
+	std::string chatEntries;
+	for (auto i = chats.begin(); i != chats.end(); ++i) {
+		WhatsappChat *chat = *i;
+
+		if (i != chats.begin())
+			chatEntries += "\n";
+
+		chatEntries += exportChat(*chat, /* inout */ usedEmoticons);
+	}
+
 	std::string html = templateHtml;
 	std::string heading = "WhatsApp Chat";
-	replacePlaceholder(html, "%HEADING%", heading);
-	replacePlaceholder(html, "%TITLE%", heading + " " + contact);
-	replacePlaceholder(html, "%CONTACT%", contact);
-	replacePlaceholder(html, "%CONTACT_NAME%", contactName);
-	replacePlaceholder(html, "%MESSAGES%", messages);
+	std::string title = (chats.size() == 1) ? (heading + " " + chats[0]->getKey()) : heading;
+	replacePlaceholder(html, "%TITLE%", title);
 	replacePlaceholder(html, "%EMOTICON_STYLES%", buildEmoticonStyles(usedEmoticons));
+	replacePlaceholder(html, "%CHAT_ENTRIES%", chatEntries);
 
 	file << html;
 }

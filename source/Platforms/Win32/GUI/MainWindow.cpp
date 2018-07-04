@@ -476,41 +476,101 @@ void MainWindow::closeDatabase()
 	database = NULL;
 }
 
-void MainWindow::exportChat(WhatsappChat &chat, ChatExporter &exporter, const std::string &extension)
+void MainWindow::exportChats(const std::vector<WhatsappChat *> &chats, ChatExporter &exporter, const std::string &extension)
 {
 	std::string filename;
 	std::stringstream suggestion;
 	std::stringstream filter;
-	suggestion << "WhatsApp Chat - " << chat.getDisplayName() << " - " << formatDate(chat.getLastMessage()) << "." << extension;
+	if (chats.size() == 1)
+	{
+		WhatsappChat *chat = chats[0];
+		suggestion << "WhatsApp Chat - " << chat->getDisplayName() << " - " << formatDate(chat->getLastMessage()) << "." << extension;
+	}
+	else
+	{
+		long long maxDate = 0;
+		for (auto i = chats.begin(); i != chats.end(); ++i)
+		{
+			WhatsappChat *chat = *i;
+			long long date = chat->getLastMessage();
+			if (date > maxDate) {
+				maxDate = date;
+			}
+		}
+		suggestion << "WhatsApp Chats - " << formatDate(maxDate) << "." << extension;
+	}
 	filter << "*." << extension;
 
 	if (saveFileDialog(dialog, suggestion.str(), filter.str(), filename))
 	{
-		exporter.exportChat(chat, filename);
+		exporter.exportChats(chats, filename);
 
 		std::stringstream message;
-		message << "Chat exported to file " << filename;
+		message << (chats.size() == 1 ? "Chat" : "Chats") << " exported to file " << filename;
 		MessageBox(dialog, strtowstr(message.str()).c_str(), L"Success", MB_OK | MB_ICONINFORMATION);
 	}
+}
+
+bool MainWindow::canExportChats()
+{
+	if (!chats.empty())
+		return true;
+
+	std::wstring cause = L"No chats found, please import chats first.";
+	MessageBox(dialog, cause.c_str(), L"Error", MB_OK | MB_ICONERROR);
+	return false;
+}
+
+void MainWindow::exportAllChatsToTxt()
+{
+	if (!canExportChats())
+		return;
+	ChatExporterTxt exporter;
+	exportChats(chats, exporter, "txt");
+}
+
+void MainWindow::exportAllChatsToHtml()
+{
+	if (!canExportChats())
+		return;
+	std::string templateHtml = imageDecoder.loadString(MAKEINTRESOURCE(IDR_CHAT_EXPORT_HTML_TEMPLATE), RT_HTML);
+	std::string entryTemplateHtml = imageDecoder.loadString(MAKEINTRESOURCE(IDR_CHAT_ENTRY_HTML_TEMPLATE), RT_HTML);
+	ChatExporterHtml exporter(settings, templateHtml, entryTemplateHtml);
+	exportChats(chats, exporter, "html");
+}
+
+void MainWindow::exportAllChatsToJson()
+{
+	if (!canExportChats())
+		return;
+	ChatExporterJson exporter(settings);
+	exportChats(chats, exporter, "json");
 }
 
 void MainWindow::exportChatToTxt(WhatsappChat &chat)
 {
 	ChatExporterTxt exporter;
-	exportChat(chat, exporter, "txt");
+	std::vector<WhatsappChat *> chats;
+	chats.push_back(&chat);
+	exportChats(chats, exporter, "txt");
 }
 
 void MainWindow::exportChatToHtml(WhatsappChat &chat)
 {
 	std::string templateHtml = imageDecoder.loadString(MAKEINTRESOURCE(IDR_CHAT_EXPORT_HTML_TEMPLATE), RT_HTML);
-	ChatExporterHtml exporter(settings, templateHtml);
-	exportChat(chat, exporter, "html");
+	std::string entryTemplateHtml = imageDecoder.loadString(MAKEINTRESOURCE(IDR_CHAT_ENTRY_HTML_TEMPLATE), RT_HTML);
+	ChatExporterHtml exporter(settings, templateHtml, entryTemplateHtml);
+	std::vector<WhatsappChat *> chats;
+	chats.push_back(&chat);
+	exportChats(chats, exporter, "html");
 }
 
 void MainWindow::exportChatToJson(WhatsappChat &chat)
 {
 	ChatExporterJson exporter(settings);
-	exportChat(chat, exporter, "json");
+	std::vector<WhatsappChat *> chats;
+	chats.push_back(&chat);
+	exportChats(chats, exporter, "json");
 }
 
 void MainWindow::decryptDatabaseCrypt5()
@@ -708,6 +768,18 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 						case ID_MENU_MAIN_FILE_DECRYPT_CRYPT14:
 						{
 							decryptDatabaseCrypt14();
+						} break;
+						case ID_MENU_MAIN_FILE_EXPORT_ALL_CHATS_TXT:
+						{
+							exportAllChatsToTxt();
+						} break;
+						case ID_MENU_MAIN_FILE_EXPORT_ALL_CHATS_HTML:
+						{
+							exportAllChatsToHtml();
+						} break;
+						case ID_MENU_MAIN_FILE_EXPORT_ALL_CHATS_JSON:
+						{
+							exportAllChatsToJson();
 						} break;
 						case IDC_MAIN_EXPORT_TXT:
 						{
