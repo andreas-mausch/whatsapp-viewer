@@ -204,6 +204,10 @@ BEGIN
         MENUITEM "Decrypt .crypt&8...\tCtrl+8", ID_MENU_MAIN_FILE_DECRYPT_CRYPT8
         MENUITEM "Decrypt .crypt&12...",        ID_MENU_MAIN_FILE_DECRYPT_CRYPT12
         MENUITEM SEPARATOR
+        MENUITEM "Export All Chats To Txt...",     ID_MENU_MAIN_FILE_EXPORT_ALL_CHATS_TXT
+        MENUITEM "Export All Chats To Html...",    ID_MENU_MAIN_FILE_EXPORT_ALL_CHATS_HTML
+        MENUITEM "Export All Chats To Json...",    ID_MENU_MAIN_FILE_EXPORT_ALL_CHATS_JSON
+        MENUITEM SEPARATOR
         MENUITEM "&Exit\tAlt+F4",               ID_MENU_MAIN_FILE_EXIT
     END
     POPUP "&Help"
@@ -1074,6 +1078,7 @@ IDB_CLEAR_HOVER         PNG                     "ClearHover.png"
 //
 
 IDR_CHAT_EXPORT_HTML_TEMPLATE HTML                    "chat_export.html.template"
+IDR_CHAT_ENTRY_HTML_TEMPLATE HTML                     "chat_entry.html.template"
 
 /////////////////////////////////////////////////////////////////////////////
 //

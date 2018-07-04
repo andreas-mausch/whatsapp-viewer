@@ -15,15 +15,8 @@ ChatExporterTxt::~ChatExporterTxt()
 {
 }
 
-void ChatExporterTxt::exportChat(WhatsappChat &chat, const std::string &filename)
+void ChatExporterTxt::exportChat(WhatsappChat &chat, std::ofstream &file)
 {
-	std::ofstream file(filename.c_str());
-
-	if (!file)
-	{
-		throw Exception("could not open chat export file");
-	}
-
 	file << chat.getKey();
 
 	if (chat.getSubject().length() > 0)
@@ -115,5 +108,24 @@ void ChatExporterTxt::exportChat(WhatsappChat &chat, const std::string &filename
 		}
 
 		file << std::endl;
+	}
+}
+
+void ChatExporterTxt::exportChats(const std::vector<WhatsappChat *> &chats, const std::string &filename)
+{
+	std::ofstream file(filename.c_str());
+
+	if (!file)
+	{
+		throw Exception("could not open chat export file");
+	}
+
+	for (auto i = chats.begin(); i != chats.end(); ++i) {
+		WhatsappChat *chat = *i;
+
+		if (i != chats.begin())
+			file << std::endl;
+
+		exportChat(*chat, file);
 	}
 }

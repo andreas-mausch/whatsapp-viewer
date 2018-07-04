@@ -84,21 +84,6 @@
 	</head>
 
 	<body>
-		<div class="chat">
-			<div class="chat_header">
-				<div>
-					<span class="heading">%HEADING%</span>
-				</div>
-				<div>
-					<span class="contact">%CONTACT%</span>
-				</div>
-				<div>
-					<span class="contact">%CONTACT_NAME%</span>
-				</div>
-			</div>
-			<div class="messages">
-				%MESSAGES%
-			</div>
-		</div>
+		%CHAT_ENTRIES%
 	</body>
 </html>

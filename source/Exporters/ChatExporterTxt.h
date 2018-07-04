@@ -1,5 +1,6 @@
 #pragma once
 
+#include <fstream>
 #include <string>
 
 #include "ChatExporter.h"
@@ -8,9 +9,12 @@ class WhatsappChat;
 
 class ChatExporterTxt : public ChatExporter
 {
+private:
+	void exportChat(WhatsappChat &chat, std::ofstream &file);
+
 public:
 	ChatExporterTxt();
 	~ChatExporterTxt();
 
-	void exportChat(WhatsappChat &chat, const std::string &filename);
+	void exportChats(const std::vector<WhatsappChat *> &chats, const std::string &filename);
 };
