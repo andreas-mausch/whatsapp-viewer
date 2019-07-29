@@ -20,7 +20,7 @@
  */
 
 #if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
+#include "config.h"
 #else
 #include MBEDTLS_CONFIG_FILE
 #endif
@@ -28,23 +28,23 @@
 #if defined(MBEDTLS_SSL_CLI_C)
 
 #if defined(MBEDTLS_PLATFORM_C)
-#include "mbedtls/platform.h"
+#include "platform.h"
 #else
 #include <stdlib.h>
 #define mbedtls_calloc    calloc
 #define mbedtls_free      free
 #endif
 
-#include "mbedtls/debug.h"
-#include "mbedtls/ssl.h"
-#include "mbedtls/ssl_internal.h"
+#include "debug.h"
+#include "ssl.h"
+#include "ssl_internal.h"
 
 #include <string.h>
 
 #include <stdint.h>
 
 #if defined(MBEDTLS_HAVE_TIME)
-#include "mbedtls/platform_time.h"
+#include "platform_time.h"
 #endif
 
 #if defined(MBEDTLS_SSL_SESSION_TICKETS)

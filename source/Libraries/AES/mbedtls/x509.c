@@ -30,26 +30,26 @@
  */
 
 #if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
+#include "config.h"
 #else
 #include MBEDTLS_CONFIG_FILE
 #endif
 
 #if defined(MBEDTLS_X509_USE_C)
 
-#include "mbedtls/x509.h"
-#include "mbedtls/asn1.h"
-#include "mbedtls/oid.h"
+#include "x509.h"
+#include "asn1.h"
+#include "oid.h"
 
 #include <stdio.h>
 #include <string.h>
 
 #if defined(MBEDTLS_PEM_PARSE_C)
-#include "mbedtls/pem.h"
+#include "pem.h"
 #endif
 
 #if defined(MBEDTLS_PLATFORM_C)
-#include "mbedtls/platform.h"
+#include "platform.h"
 #else
 #include <stdio.h>
 #include <stdlib.h>
@@ -61,7 +61,7 @@
 
 
 #if defined(MBEDTLS_HAVE_TIME)
-#include "mbedtls/platform_time.h"
+#include "platform_time.h"
 #endif
 
 #if defined(_WIN32) && !defined(EFIX64) && !defined(EFI32)
@@ -992,8 +992,8 @@ int mbedtls_x509_time_is_future( const mbedtls_x509_time *from )
 
 #if defined(MBEDTLS_SELF_TEST)
 
-#include "mbedtls/x509_crt.h"
-#include "mbedtls/certs.h"
+#include "x509_crt.h"
+#include "certs.h"
 
 /*
  * Checkup routine

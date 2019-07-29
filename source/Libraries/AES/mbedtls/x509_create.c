@@ -20,16 +20,16 @@
  */
 
 #if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
+#include "config.h"
 #else
 #include MBEDTLS_CONFIG_FILE
 #endif
 
 #if defined(MBEDTLS_X509_CREATE_C)
 
-#include "mbedtls/x509.h"
-#include "mbedtls/asn1write.h"
-#include "mbedtls/oid.h"
+#include "x509.h"
+#include "asn1write.h"
+#include "oid.h"
 
 #include <string.h>
 

@@ -22,27 +22,27 @@
  */
 
 #if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
+#include "config.h"
 #else
 #include MBEDTLS_CONFIG_FILE
 #endif
 
 #if defined(MBEDTLS_OID_C)
 
-#include "mbedtls/oid.h"
-#include "mbedtls/rsa.h"
+#include "oid.h"
+#include "rsa.h"
 
 #include <stdio.h>
 #include <string.h>
 
 #if defined(MBEDTLS_PLATFORM_C)
-#include "mbedtls/platform.h"
+#include "platform.h"
 #else
 #define mbedtls_snprintf snprintf
 #endif
 
 #if defined(MBEDTLS_X509_USE_C) || defined(MBEDTLS_X509_CREATE_C)
-#include "mbedtls/x509.h"
+#include "x509.h"
 #endif
 
 /*
