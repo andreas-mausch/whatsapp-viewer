@@ -13,6 +13,8 @@ data/test-database-large.db
 data/test-database-large.sql
 data/private
 
+bazel-*/
+
 resources/Resources.aps
 
 whatsapp-viewer.bundle

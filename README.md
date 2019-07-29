@@ -17,11 +17,22 @@ Small tool to display chats from the Android msgstore.db database.
 
 ## Command line support
 
-```
+```bash
 "WhatsApp Viewer.exe" -decrypt12 msgstore-2016-10-22.1.db.crypt12 whatsapp.cryptkey12 decrypted.db
 ```
 
 You cannot see bigger images because only thumbnails are stored in the database.
+
+## Build (using Bazel)
+
+```bash
+# Replace with your Visual Studio installation directory
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
+# Unfortunately, I don't know a way to handle resource files inside the bazel script yet
+rc.exe -fo resources\Resources.res resources\Resources.rc
+
+bazel build //:whatsapp-viewer
+```
 
 Credits:
 
