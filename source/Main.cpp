@@ -1,7 +1,3 @@
-#ifdef _DEBUG
-	#include <vld.h>
-#endif
-
 #include <string>
 #include <vector>
 
