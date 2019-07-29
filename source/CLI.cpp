@@ -12,7 +12,7 @@ void displayUsage()
 {
 	const WCHAR *usage = L"Supported commands:\n\n"
 		L"-decrypt5 [input database] [account name] [output filename]\n"
-		L"example: -decrypt5 msgstore.db.crypt5 andreas.mausch@gmail.com msgstore.decrypted.db\n\n"
+		L"example: -decrypt5 msgstore.db.crypt5 your@email.com msgstore.decrypted.db\n\n"
 		L"-decrypt7 [input database] [key filename] [output filename]\n"
 		L"example: -decrypt7 msgstore.db.crypt7 key msgstore.decrypted.db\n\n"
 		L"-decrypt8 [input database] [key filename] [output filename]\n"
