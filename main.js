@@ -19,7 +19,10 @@ app.on('ready', () => {
 
   mainWindow = new BrowserWindow({
     height: 720,
-    width: 1024
+    width: 1024,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   mainWindow.loadURL('file://' + __dirname + '/index.html');

@@ -1,10 +1,15 @@
 # WhatsApp Viewer 2
 
-## How to build
+## How to develop
 
 ```
-sudo npm install electron -g
 npm install
-./node_modules/.bin/electron-rebuild
-electron .
+npx electron-rebuild
+npm start
+```
+
+## How to native build for production
+
+```
+npm run build
 ```
