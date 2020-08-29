@@ -41,19 +41,16 @@ void ChatExporterJson::addFilename(WhatsappMessage &message, rapidjson::Value &m
 	}
 }
 
-void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filename)
+void ChatExporterJson::exportChat(WhatsappChat &chat, rapidjson::Value &chatJson, rapidjson::Document &json)
 {
-	rapidjson::Document json;
-	json.SetObject();
-
-	json.AddMember("key", chat.getKey(), json.GetAllocator());
+	chatJson.AddMember("key", chat.getKey(), json.GetAllocator());
 
 	if (chat.getSubject().length() > 0)
 	{
-		json.AddMember("subject", chat.getSubject(), json.GetAllocator());
+		chatJson.AddMember("subject", chat.getSubject(), json.GetAllocator());
 	}
 
-	json.AddMember("contactName", chat.getDisplayName(), json.GetAllocator());
+	chatJson.AddMember("contactName", chat.getDisplayName(), json.GetAllocator());
 
 	rapidjson::Value messagesJson(rapidjson::kArrayType);
 
@@ -143,11 +140,30 @@ void ChatExporterJson::exportChat(WhatsappChat &chat, const std::string &filenam
 		messagesJson.PushBack(messageJson, json.GetAllocator());
 	}
 
-	json.AddMember("messages", messagesJson, json.GetAllocator());
+	chatJson.AddMember("messages", messagesJson, json.GetAllocator());
+
+}
+
+void ChatExporterJson::exportChats(const std::vector<WhatsappChat *> &chats, const std::string &filename)
+{
+	rapidjson::Document json;
+	json.SetObject();
+
+	rapidjson::Value chatsJson(rapidjson::kArrayType);
+
+	for (auto i = chats.begin(); i != chats.end(); ++i) {
+		WhatsappChat *chat = *i;
+
+		rapidjson::Value chatJson(rapidjson::kObjectType);
+		exportChat(*chat, chatJson, json);
+		chatsJson.PushBack(chatJson, json.GetAllocator());
+	}
+
+	json.AddMember("chats", chatsJson, json.GetAllocator());
 
 	rapidjson::StringBuffer buffer;
-    rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
-    json.Accept(writer);
+	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+	json.Accept(writer);
 
 	std::ofstream file(filename.c_str());
 	if (!file)

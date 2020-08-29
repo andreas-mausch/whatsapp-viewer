@@ -8052,6 +8052,10 @@
 			RelativePath="..\resources\chat_export.html.template"
 			>
 		</File>
+		<File
+			RelativePath="..\resources\chat_entry.html.template"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
