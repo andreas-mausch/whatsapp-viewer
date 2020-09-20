@@ -25,26 +25,28 @@ void extractKey(const std::string &keyFilename, unsigned char *key, unsigned cha
 	delete[] keyBytes;
 }
 
-void decryptAes(unsigned char *crypted, unsigned char *uncrypted, unsigned char *key, unsigned char *initVector, int size)
+void decryptWhatsappDatabase7(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key)
 {
-	unsigned char iv[16];
-	memcpy(iv, initVector, 16);
+	std::ifstream file(filename, std::ios::binary);
 
-	decrypt_aes_cbc_256(crypted, uncrypted, size, key, iv);
-}
+	file.seekg(0, std::ios::end);
+	std::streamoff filesize = file.tellg();
 
-void decryptWhatsappDatabase7(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key, unsigned char *initVector)
-{
-	unsigned char *fileBytes;
-	int filesize = loadFile(filename, &fileBytes);
-	int databaseSize = filesize - skipBytesCrypt7;
-	unsigned char *databaseBytes = &fileBytes[skipBytesCrypt7];
+	unsigned char initVector[16];
+	file.seekg(51, std::ios::beg);
+	file.read(reinterpret_cast<char*>(initVector), 16);
 
-	decryptAes(databaseBytes, databaseBytes, key, initVector, databaseSize);
-	validateOutput(databaseBytes);
-	saveOutputToFile(databaseBytes, databaseSize, filenameDecrypted);
+	std::streamoff databaseSize = filesize - skipBytesCrypt7;
 
-	delete[] fileBytes;
+	{
+		std::ofstream decryptedFile(filenameDecrypted, std::ios::binary);
+		decrypt_aes_cbc_256(file, databaseSize, key, initVector, decryptedFile);
+	}
+
+	{
+		std::ifstream uncompressedFile(filenameDecrypted, std::ios::binary);
+		validateOutput(uncompressedFile);
+	}
 }
 
 void decryptWhatsappDatabase7(const std::string &filename, const std::string &filenameDecrypted, const std::string &keyFilename)
@@ -53,5 +55,5 @@ void decryptWhatsappDatabase7(const std::string &filename, const std::string &fi
 	unsigned char iv[16];
 
 	extractKey(keyFilename, key, iv);
-	decryptWhatsappDatabase7(filename, filenameDecrypted, key, iv);
+	decryptWhatsappDatabase7(filename, filenameDecrypted, key);
 }
