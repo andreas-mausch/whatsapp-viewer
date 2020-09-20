@@ -9,26 +9,6 @@
 const unsigned char baseKey[] = { 141, 75, 21, 92, 201, 255, 129, 229, 203, 246, 250, 120, 25, 54, 106, 62, 198, 33, 166, 86, 65, 108, 215, 147 };
 const unsigned char initVector[] = { 0x1E,0x39,0xF3,0x69,0xE9,0xD,0xB3,0x3A,0xA7,0x3B,0x44,0x2B,0xBB,0xB6,0xB0,0xB9 };
 
-long loadFile(const std::string &filename, unsigned char **output)
-{
-	std::ifstream file(filename.c_str(), std::ios::binary);
-
-	if (!file)
-	{
-		throw Exception("database not found");
-	}
-
-	file.seekg(0, std::ios::end);
-	int filesize = file.tellg();
-	file.seekg(0, std::ios::beg);
-
-	*output = new unsigned char[filesize];
-	file.read(reinterpret_cast<char *>(*output), filesize);
-	file.close();
-
-	return filesize;
-}
-
 void buildKey(unsigned char *key, const std::string &accountName)
 {
 	MD5 md5;
