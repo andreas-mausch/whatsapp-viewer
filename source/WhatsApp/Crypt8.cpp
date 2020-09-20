@@ -59,47 +59,6 @@ int uncompressBlock(z_stream& stream, std::ostream &uncompressed)
 	return ret;
 }
 
-void uncompressGzipBuffer(unsigned char* compressedBytes, int size, std::vector<unsigned char>& uncompressed)
-{
-	unsigned char in[chunk];
-
-	z_stream stream;
-	memset(&stream, 0, sizeof(z_stream));
-
-	int ret = inflateInit2(&stream, 15 | 32);
-	if (ret != Z_OK)
-	{
-		throw Exception("Decryption failed. Error during unzipping (inflateInit). Invalid key?");
-	}
-
-	unsigned char* currentPosition = compressedBytes;
-
-	do
-	{
-		int bytesLeft = size - (currentPosition - compressedBytes);
-		if (bytesLeft == 0)
-		{
-			break;
-		}
-
-		int bytesToCopy = bytesLeft;
-		if (bytesLeft > chunk)
-		{
-			bytesToCopy = chunk;
-		}
-
-		memcpy(in, currentPosition, bytesToCopy);
-		stream.avail_in = bytesToCopy;
-		stream.next_in = in;
-
-		uncompressBlock(stream, uncompressed);
-
-		currentPosition += bytesToCopy;
-	} while (ret != Z_STREAM_END);
-
-	inflateEnd(&stream);
-}
-
 void uncompressGzipBuffer(std::istream &compressed, std::ostream &uncompressed)
 {
 	unsigned char in[chunk];
