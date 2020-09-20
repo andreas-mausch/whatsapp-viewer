@@ -55,7 +55,7 @@ void uncompressGzipBuffer(std::istream &compressed, std::ostream &uncompressed)
 		}
 
 		compressed.read(reinterpret_cast<char*>(in), chunk);
-		int bytesRead = compressed.gcount();
+		std::streamsize bytesRead = compressed.gcount();
 		stream.avail_in = bytesRead;
 		stream.next_in = in;
 
