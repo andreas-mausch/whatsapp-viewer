@@ -17,7 +17,7 @@ void decrypt_aes_cbc(int keySize, std::istream& input, std::streamoff length, co
 		const int chunk = 16 * 1024;
 		unsigned char inputBuffer[chunk];
 		unsigned char outputBuffer[chunk];
-		int toRead = (length - totalRead) < chunk ? (length - totalRead) : chunk;
+		std::streamoff toRead = (length - totalRead) < chunk ? (length - totalRead) : chunk;
 
 		if (toRead == 0)
 		{
@@ -25,7 +25,7 @@ void decrypt_aes_cbc(int keySize, std::istream& input, std::streamoff length, co
 		}
 
 		input.read(reinterpret_cast<char*>(inputBuffer), toRead);
-		int bytesRead = input.gcount();
+		std::streamsize bytesRead = input.gcount();
 
 		if (bytesRead == 0 && !input.eof())
 		{
@@ -62,7 +62,7 @@ void decrypt_aes_gcm(std::istream &input, std::streamoff length, const unsigned 
 		const int chunk = 16 * 1024;
 		unsigned char inputBuffer[chunk];
 		unsigned char outputBuffer[chunk];
-		int toRead = (length - totalRead) < chunk ? (length - totalRead) : chunk;
+		std::streamoff toRead = (length - totalRead) < chunk ? (length - totalRead) : chunk;
 
 		if (toRead == 0)
 		{
@@ -70,7 +70,7 @@ void decrypt_aes_gcm(std::istream &input, std::streamoff length, const unsigned 
 		}
 
 		input.read(reinterpret_cast<char *>(inputBuffer), toRead);
-		int bytesRead = input.gcount();
+		std::streamsize bytesRead = input.gcount();
 
 		if (bytesRead == 0 && !input.eof())
 		{
