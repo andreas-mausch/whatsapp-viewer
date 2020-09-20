@@ -10,31 +10,6 @@
 
 const int chunk = 16 * 1024;
 
-void uncompressBlock(z_stream& stream, std::vector<unsigned char>& uncompressed)
-{
-	unsigned char out[chunk];
-
-	do
-	{
-		stream.avail_out = chunk;
-		stream.next_out = out;
-		int ret = inflate(&stream, Z_NO_FLUSH);
-
-		if (ret != Z_OK && ret != Z_STREAM_END && ret != Z_BUF_ERROR)
-		{
-			inflateEnd(&stream);
-			throw Exception("Decryption failed. Error during unzipping (inflate). In 99% this means you tried to use an invalid key.");
-		}
-
-		unsigned int have = chunk - stream.avail_out;
-
-		for (unsigned int i = 0; i < have; i++)
-		{
-			uncompressed.push_back(out[i]);
-		}
-	} while (stream.avail_out == 0);
-}
-
 int uncompressBlock(z_stream& stream, std::ostream &uncompressed)
 {
 	unsigned char out[chunk];
