@@ -23,18 +23,16 @@ Small tool to display chats from the Android msgstore.db database.
 
 You cannot see bigger images because only thumbnails are stored in the database.
 
-## Build (using Bazel)
+## Build (using msbuild)
 
 ```bash
 # Replace with your Visual Studio installation directory
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
-# Unfortunately, I don't know a way to handle resource files inside the bazel script yet
-rc.exe -fo resources\Resources.res resources\Resources.rc
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
 
-bazel build //:whatsapp-viewer
+msbuild /p:Configuration=Release /p:Platform=Win32 /m /t:Clean,Build
 ```
 
-Credits:
+## Credits
 
 * TripCode for crypt12 support https://github.com/EliteAndroidApps/WhatsApp-Crypt12-Decrypter
 * Whatsapp Xtract
