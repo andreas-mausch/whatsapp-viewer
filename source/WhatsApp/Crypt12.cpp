@@ -24,25 +24,34 @@ void decryptWhatsappDatabase12(const std::string &filename, const std::string &f
 
 void decryptWhatsappDatabase12(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key)
 {
-	unsigned char *fileBytes;
-	int filesize = loadFile(filename, &fileBytes);
-	int databaseSize = filesize - skipBytesCrypt7 - 20;
-	unsigned char *cryptedDatabaseBytes = new unsigned char[databaseSize];
-	memcpy(cryptedDatabaseBytes, &fileBytes[skipBytesCrypt7], databaseSize);
+	std::ifstream file(filename, std::ios::binary);
+
+	file.seekg(0, std::ios::end);
+	std::streamoff filesize = file.tellg();
 
 	unsigned char initVector[16];
-	memcpy(initVector, &fileBytes[51], 16);
-	unsigned char *decryptedDatabaseBytes = new unsigned char[databaseSize];
+	file.seekg(51, std::ios::beg);
+	file.read(reinterpret_cast<char*>(initVector), 16);
 
-	decrypt_aes_gcm(cryptedDatabaseBytes, decryptedDatabaseBytes, databaseSize, key, initVector);
+	std::streamoff databaseSize = filesize - skipBytesCrypt7 - 20;
+	const std::string tempFilename = filenameDecrypted + ".temp";
 
-	std::vector<unsigned char> uncompressed;
-	uncompressGzipBuffer(decryptedDatabaseBytes, databaseSize, uncompressed);
+	{
+		std::ofstream decryptedFile(tempFilename, std::ios::binary);
+		decrypt_aes_gcm(file, databaseSize, key, initVector, decryptedFile);
+	}
 
-	validateOutput(&uncompressed[0]);
-	saveOutputToFile(&uncompressed[0], uncompressed.size(), filenameDecrypted);
+	{
+		std::ifstream decryptedFile(tempFilename, std::ios::binary);
+		std::ofstream uncompressedFile(filenameDecrypted, std::ios::binary);
+		uncompressGzipBuffer(decryptedFile, uncompressedFile);
+	}
 
-	delete[] fileBytes;
-	delete[] cryptedDatabaseBytes;
-	delete[] decryptedDatabaseBytes;
+	std::remove(tempFilename.c_str());
+
+	{
+		std::ifstream uncompressedFile(filenameDecrypted, std::ios::binary);
+		uncompressedFile.seekg(0, std::ios::beg);
+		validateOutput(uncompressedFile);
+	}
 }

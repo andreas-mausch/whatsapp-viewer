@@ -7,4 +7,6 @@ void decryptWhatsappDatabase5(const std::string &filename, const std::string &fi
 void decryptWhatsappDatabase5(const std::string &filename, const std::string &filenameDecrypted, const std::string &accountName);
 
 void validateOutput(unsigned char *databaseBytes);
+void validateOutput(std::istream& input);
+
 void saveOutputToFile(unsigned char *databaseBytes, int size, const std::string &filename);

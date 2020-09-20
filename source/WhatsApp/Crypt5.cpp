@@ -40,12 +40,29 @@ void buildKey(unsigned char *key, const std::string &accountName)
 	}
 }
 
-void validateOutput(unsigned char *databaseBytes)
+void validateOutput(unsigned char* databaseBytes)
 {
 	const char expectedBytes[] = "SQLite format 3";
 	if (memcmp(databaseBytes, expectedBytes, sizeof(expectedBytes)) != 0)
 	{
 		throw Exception("Decryption failed. Invalid key file or account name?");
+	}
+}
+
+void validateOutput(std::istream &input)
+{
+	const char expectedBytes[] = "SQLite format 3";
+	char read[sizeof(expectedBytes)];
+
+	input.read(read, sizeof(expectedBytes));
+
+	if (input.gcount() != sizeof(expectedBytes))
+	{
+		throw Exception("Couldn't validate output file");
+	}
+	if (memcmp(read, expectedBytes, sizeof(expectedBytes)) != 0)
+	{
+		throw Exception("Validation failed. Invalid key file or account name?");
 	}
 }
 

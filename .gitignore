@@ -16,6 +16,7 @@ data/private
 bazel-*/
 
 resources/Resources.aps
+resources/Resources.res
 
 whatsapp-viewer.bundle
 
