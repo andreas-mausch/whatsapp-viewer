@@ -44,8 +44,8 @@ void decryptWhatsappDatabase7(const std::string &filename, const std::string &fi
 	}
 
 	{
-		std::ifstream uncompressedFile(filenameDecrypted, std::ios::binary);
-		validateOutput(uncompressedFile);
+		std::ifstream decryptedFile(filenameDecrypted, std::ios::binary);
+		validateOutput(decryptedFile);
 	}
 }
 

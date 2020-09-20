@@ -79,17 +79,24 @@ void saveOutputToFile(unsigned char *databaseBytes, int size, const std::string 
 
 void decryptWhatsappDatabase5(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key)
 {
-	unsigned char *databaseBytes;
-	int filesize = loadFile(filename, &databaseBytes);
+	std::ifstream file(filename, std::ios::binary);
+
+	file.seekg(0, std::ios::end);
+	std::streamoff filesize = file.tellg();
 
 	unsigned char iv[16];
 	memcpy(iv, initVector, 16);
 
-	decrypt_aes_cbc_192(databaseBytes, databaseBytes, filesize, key, iv);
-	validateOutput(databaseBytes);
-	saveOutputToFile(databaseBytes, filesize, filenameDecrypted);
+	{
+		std::ofstream decryptedFile(filenameDecrypted, std::ios::binary);
+		file.seekg(0, std::ios::beg);
+		decrypt_aes_cbc_192(file, filesize, key, iv, decryptedFile);
+	}
 
-	delete[] databaseBytes;
+	{
+		std::ifstream decryptedFile(filenameDecrypted, std::ios::binary);
+		validateOutput(decryptedFile);
+	}
 }
 
 void decryptWhatsappDatabase5(const std::string &filename, const std::string &filenameDecrypted, const std::string &accountName)
