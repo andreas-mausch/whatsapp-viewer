@@ -12,7 +12,7 @@ const int skipBytesCrypt7 = 67;
 void extractKey(const std::string &keyFilename, unsigned char *key, unsigned char *iv)
 {
 	unsigned char *keyBytes;
-	int filesize = loadFileUnsigned(keyFilename, &keyBytes);
+	int filesize = loadFile(keyFilename, &keyBytes);
 
 	if (filesize != 158)
 	{
@@ -36,7 +36,7 @@ void decryptAes(unsigned char *crypted, unsigned char *uncrypted, unsigned char 
 void decryptWhatsappDatabase7(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key, unsigned char *initVector)
 {
 	unsigned char *fileBytes;
-	int filesize = loadFileUnsigned(filename, &fileBytes);
+	int filesize = loadFile(filename, &fileBytes);
 	int databaseSize = filesize - skipBytesCrypt7;
 	unsigned char *databaseBytes = &fileBytes[skipBytesCrypt7];
 

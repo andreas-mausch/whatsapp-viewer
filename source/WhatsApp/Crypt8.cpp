@@ -13,7 +13,7 @@ const int chunk = 16384;
 void extractKey8(const std::string &keyFilename, const std::string &dbFilename, unsigned char *key, unsigned char *iv)
 {
 	unsigned char *keyBytes;
-	int filesize = loadFileUnsigned(keyFilename, &keyBytes);
+	int filesize = loadFile(keyFilename, &keyBytes);
 
 	if (filesize != 158)
 	{
@@ -21,7 +21,7 @@ void extractKey8(const std::string &keyFilename, const std::string &dbFilename, 
 	}
 
 	unsigned char *dbBytes;
-	int filesizeDB = loadFileUnsigned(dbFilename, &dbBytes);
+	int filesizeDB = loadFile(dbFilename, &dbBytes);
 
 	// Initialisation vector is stored in the msgstore after v2-12-38
 	// hexdump -n 67 -e '2/1 "%02x"' msgstore.db.crypt8 | cut -b 103-134 > iv.txt
@@ -104,7 +104,7 @@ void uncompressGzipBuffer(unsigned char *compressedBytes, int size, std::vector<
 void decryptWhatsappDatabase8(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key, unsigned char *initVector)
 {
 	unsigned char *fileBytes;
-	int filesize = loadFileUnsigned(filename, &fileBytes);
+	int filesize = loadFile(filename, &fileBytes);
 	int databaseSize = filesize - skipBytesCrypt7;
 	unsigned char *databaseBytes = &fileBytes[skipBytesCrypt7];
 

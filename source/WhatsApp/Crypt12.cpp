@@ -25,7 +25,7 @@ void decryptWhatsappDatabase12(const std::string &filename, const std::string &f
 void decryptWhatsappDatabase12(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key)
 {
 	unsigned char *fileBytes;
-	int filesize = loadFileUnsigned(filename, &fileBytes);
+	int filesize = loadFile(filename, &fileBytes);
 	int databaseSize = filesize - skipBytesCrypt7 - 20;
 	unsigned char *cryptedDatabaseBytes = new unsigned char[databaseSize];
 	memcpy(cryptedDatabaseBytes, &fileBytes[skipBytesCrypt7], databaseSize);
