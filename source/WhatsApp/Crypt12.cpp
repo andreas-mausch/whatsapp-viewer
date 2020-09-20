@@ -11,17 +11,6 @@
 
 const int chunk = 16384;
 
-void decryptWhatsappDatabase12(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key);
-
-void decryptWhatsappDatabase12(const std::string &filename, const std::string &filenameDecrypted, const std::string &keyFilename)
-{
-	unsigned char key[32];
-	unsigned char iv[16];
-
-	extractKey8(keyFilename, filename, key, iv);
-	decryptWhatsappDatabase12(filename, filenameDecrypted, key);
-}
-
 void decryptWhatsappDatabase12(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key)
 {
 	std::ifstream file(filename, std::ios::binary);
@@ -53,4 +42,13 @@ void decryptWhatsappDatabase12(const std::string &filename, const std::string &f
 		std::ifstream uncompressedFile(filenameDecrypted, std::ios::binary);
 		validateOutput(uncompressedFile);
 	}
+}
+
+void decryptWhatsappDatabase12(const std::string& filename, const std::string& filenameDecrypted, const std::string& keyFilename)
+{
+	unsigned char key[32];
+	unsigned char iv[16];
+
+	loadKey(keyFilename, key, iv);
+	decryptWhatsappDatabase12(filename, filenameDecrypted, key);
 }
