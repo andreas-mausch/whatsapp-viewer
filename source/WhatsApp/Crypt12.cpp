@@ -51,7 +51,6 @@ void decryptWhatsappDatabase12(const std::string &filename, const std::string &f
 
 	{
 		std::ifstream uncompressedFile(filenameDecrypted, std::ios::binary);
-		uncompressedFile.seekg(0, std::ios::beg);
 		validateOutput(uncompressedFile);
 	}
 }

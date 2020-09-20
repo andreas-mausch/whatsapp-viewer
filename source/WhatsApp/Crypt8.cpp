@@ -155,22 +155,37 @@ void uncompressGzipBuffer(std::istream &compressed, std::ostream &uncompressed)
 	inflateEnd(&stream);
 }
 
-void decryptWhatsappDatabase8(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key, unsigned char *initVector)
+void decryptWhatsappDatabase8(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key)
 {
-	unsigned char *fileBytes;
-	int filesize = loadFile(filename, &fileBytes);
-	int databaseSize = filesize - skipBytesCrypt7;
-	unsigned char *databaseBytes = &fileBytes[skipBytesCrypt7];
+	std::ifstream file(filename, std::ios::binary);
 
-	decryptAes(databaseBytes, databaseBytes, key, initVector, databaseSize);
+	file.seekg(0, std::ios::end);
+	std::streamoff filesize = file.tellg();
 
-	std::vector<unsigned char> uncompressed;
-	uncompressGzipBuffer(databaseBytes, databaseSize, uncompressed);
+	unsigned char initVector[16];
+	file.seekg(51, std::ios::beg);
+	file.read(reinterpret_cast<char*>(initVector), 16);
 
-	validateOutput(&uncompressed[0]);
-	saveOutputToFile(&uncompressed[0], uncompressed.size(), filenameDecrypted);
+	std::streamoff databaseSize = filesize - skipBytesCrypt7;
+	const std::string tempFilename = filenameDecrypted + ".temp";
 
-	delete[] fileBytes;
+	{
+		std::ofstream decryptedFile(tempFilename, std::ios::binary);
+		decrypt_aes_cbc_256(file, databaseSize, key, initVector, decryptedFile);
+	}
+
+	{
+		std::ifstream decryptedFile(tempFilename, std::ios::binary);
+		std::ofstream uncompressedFile(filenameDecrypted, std::ios::binary);
+		uncompressGzipBuffer(decryptedFile, uncompressedFile);
+	}
+
+	std::remove(tempFilename.c_str());
+
+	{
+		std::ifstream uncompressedFile(filenameDecrypted, std::ios::binary);
+		validateOutput(uncompressedFile);
+	}
 }
 
 void decryptWhatsappDatabase8(const std::string &filename, const std::string &filenameDecrypted, const std::string &keyFilename)
@@ -179,5 +194,5 @@ void decryptWhatsappDatabase8(const std::string &filename, const std::string &fi
 	unsigned char iv[16];
 
 	extractKey8(keyFilename, filename, key, iv);
-	decryptWhatsappDatabase8(filename, filenameDecrypted, key, iv);
+	decryptWhatsappDatabase8(filename, filenameDecrypted, key);
 }
