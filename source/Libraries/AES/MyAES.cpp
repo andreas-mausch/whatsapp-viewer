@@ -6,49 +6,10 @@
 
 int aesBlocksize = 16;
 
-void decrypt_aes_cbc_192(std::istream& input, std::streamoff length, const unsigned char* key, unsigned char* initVector, std::ostream& output)
+void decrypt_aes_cbc(int keySize, std::istream& input, std::streamoff length, const unsigned char* key, unsigned char* initVector, std::ostream& output)
 {
 	mbedtls_aes_context context;
-
-	mbedtls_aes_setkey_dec(&context, key, 192);
-
-	std::streamoff totalRead = 0;
-
-	do {
-		const int chunk = 16 * 1024;
-		unsigned char inputBuffer[chunk];
-		unsigned char outputBuffer[chunk];
-		int toRead = (length - totalRead) < chunk ? (length - totalRead) : chunk;
-
-		if (toRead == 0)
-		{
-			break;
-		}
-
-		input.read(reinterpret_cast<char*>(inputBuffer), toRead);
-		int bytesRead = input.gcount();
-
-		if (bytesRead == 0 && !input.eof())
-		{
-			throw Exception("Could not read crypted file.");
-		}
-
-		totalRead += bytesRead;
-
-		if (mbedtls_aes_crypt_cbc(&context, MBEDTLS_AES_DECRYPT, bytesRead, initVector, inputBuffer, outputBuffer) != 0) {
-			throw Exception("Could not decrypt (mbedtls_aes_crypt_cbc)");
-		}
-		output.write(reinterpret_cast<char*>(outputBuffer), input.gcount());
-	} while (!input.eof());
-
-	mbedtls_aes_free(&context);
-}
-
-void decrypt_aes_cbc_256(std::istream& input, std::streamoff length, const unsigned char* key, unsigned char* initVector, std::ostream& output)
-{
-	mbedtls_aes_context context;
-
-	mbedtls_aes_setkey_dec(&context, key, 256);
+	mbedtls_aes_setkey_dec(&context, key, keySize);
 
 	std::streamoff totalRead = 0;
 

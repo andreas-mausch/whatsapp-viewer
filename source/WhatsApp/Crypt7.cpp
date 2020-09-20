@@ -40,7 +40,7 @@ void decryptWhatsappDatabase7(const std::string &filename, const std::string &fi
 
 	{
 		std::ofstream decryptedFile(filenameDecrypted, std::ios::binary);
-		decrypt_aes_cbc_256(file, databaseSize, key, initVector, decryptedFile);
+		decrypt_aes_cbc(256, file, databaseSize, key, initVector, decryptedFile);
 	}
 
 	{
