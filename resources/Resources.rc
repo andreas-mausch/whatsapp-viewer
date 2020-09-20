@@ -79,7 +79,7 @@ BEGIN
     LTEXT           "Database file",IDC_STATIC,7,13,43,8
     LTEXT           "Key file",IDC_STATIC,7,34,24,8
     PUSHBUTTON      "...",IDC_DECRYPT_CRYPT7_SELECT_KEY,255,28,31,14
-    LTEXT           "Download database file from:\r\n/sdcard/WhatsApp/Databases/msgstore.db.crypt7\r\n\r\nand key file from:\r\n/data/data/com.whatsapp/files/key\r\nYou need root access to your phone to download the file!",IDC_STATIC,7,51,311,56
+    LTEXT           "Download database file from:\r\n/sdcard/WhatsApp/Databases/msgstore.db.cryptX\r\n\r\nand key file from:\r\n/data/data/com.whatsapp/files/key\r\nYou need root access to your phone to download the file!",IDC_STATIC,7,51,311,56
 END
 
 IDD_ABOUT DIALOGEX 0, 0, 364, 213
@@ -1975,12 +1975,12 @@ BEGIN
         BEGIN
             VALUE "Comments", "http://andreas-mausch.de/whatsapp-viewer/"
             VALUE "FileDescription", "WhatsApp Viewer"
-            VALUE "FileVersion", "1, 12, 0, 0"
+            VALUE "FileVersion", "1, 13, 0, 0"
             VALUE "InternalName", "WhatsApp Viewer"
-            VALUE "LegalCopyright", "Copyright (C) 2014-2018 Andreas Mausch"
+            VALUE "LegalCopyright", "Copyright (C) 2014-2020 Andreas Mausch"
             VALUE "OriginalFilename", "WhatsApp Viewer.exe"
             VALUE "ProductName", "WhatsApp Viewer"
-            VALUE "ProductVersion", "v1.12"
+            VALUE "ProductVersion", "v1.13"
         END
     END
     BLOCK "VarFileInfo"
