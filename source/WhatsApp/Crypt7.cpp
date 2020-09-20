@@ -9,20 +9,20 @@
 
 const int skipBytesCrypt7 = 67;
 
-void loadKey(const std::string &keyFilename, unsigned char *key, unsigned char *iv)
+void loadKey(const std::string &filename, unsigned char *key, unsigned char *iv)
 {
-	unsigned char *keyBytes;
-	int filesize = loadFile(keyFilename, &keyBytes);
+	std::ifstream file(filename, std::ios::binary);
+	file.seekg(0, std::ios::end);
+	std::streamoff filesize = file.tellg();
 
 	if (filesize != 158)
 	{
 		throw Exception("Expected key filesize of 158 bytes does not match.");
 	}
 
-	memcpy(iv, &keyBytes[110], 16);
-	memcpy(key, &keyBytes[126], 32);
-
-	delete[] keyBytes;
+	file.seekg(110, std::ios::beg);
+	file.read(reinterpret_cast<char*>(iv), 16);
+	file.read(reinterpret_cast<char*>(key), 32);
 }
 
 void decryptWhatsappDatabase7(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key)
