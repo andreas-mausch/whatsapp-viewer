@@ -1,3 +1,3 @@
 #pragma once
 
-bool isSmiley(int character);
+int getSmiley(int character);

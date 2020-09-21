@@ -66,8 +66,9 @@ void ChatControlMessageText::splitMessage(WhatsappMessage &message)
 			bool begin = (it - messageString.begin()) == lastSplit;
 			std::string::iterator before = it;
 			int character = utf8::next(it, messageString.end());
+			int emoticonCharacter = getSmiley(character);
 
-			if (isSmiley(character))
+			if (emoticonCharacter > 0)
 			{
 				if (!begin)
 				{
@@ -77,7 +78,7 @@ void ChatControlMessageText::splitMessage(WhatsappMessage &message)
 					elements.push_back(new ChatControlMessageTextElement(leftPart));
 				}
 
-				elements.push_back(new ChatControlMessageTextElement(character));
+				elements.push_back(new ChatControlMessageTextElement(emoticonCharacter));
 
 				lastSplit = (it - messageString.begin());
 			}

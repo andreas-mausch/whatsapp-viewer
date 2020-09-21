@@ -158,12 +158,13 @@ std::string ChatExporterHtml::convertMessageToHtml(WhatsappMessage &message, std
 		{
 			std::string::iterator before = it;
 			int character = utf8::next(it, messageString.end());
+			int emoticonCharacter = getSmiley(character);
 
-			if (isSmiley(character))
+			if (emoticonCharacter > 0)
 			{
-				usedEmoticons.insert(character);
+				usedEmoticons.insert(emoticonCharacter);
 				output.imbue(std::locale::classic());
-				output << "<span class=\"emoticon_" << std::hex << character << "\"></span>";
+				output << "<span class=\"emoticon_" << std::hex << emoticonCharacter << "\"></span>";
 				output.imbue(std::locale());
 			}
 			else
