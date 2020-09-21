@@ -162,7 +162,9 @@ std::string ChatExporterHtml::convertMessageToHtml(WhatsappMessage &message, std
 			if (isSmiley(character))
 			{
 				usedEmoticons.insert(character);
+				output.imbue(std::locale::classic());
 				output << "<span class=\"emoticon_" << std::hex << character << "\"></span>";
+				output.imbue(std::locale());
 			}
 			else
 			{
@@ -181,6 +183,7 @@ std::string ChatExporterHtml::convertMessageToHtml(WhatsappMessage &message, std
 std::string ChatExporterHtml::buildEmoticonStyles(const std::set<int> &usedEmoticons)
 {
 	std::stringstream css;
+
 	for(std::set<int>::const_iterator it = usedEmoticons.begin(); it != usedEmoticons.end(); ++it)
 	{
 		int character = *it;
@@ -202,7 +205,9 @@ std::string ChatExporterHtml::buildEmoticonStyles(const std::set<int> &usedEmoti
 			loadResource(MAKEINTRESOURCE(smileyList[smileyIndex].resource), L"PNG", bytes, size);
 			std::string base64Emoticon = base64_encode(bytes, size);
 
+			css.imbue(std::locale::classic());
 			css << ".emoticon_" << std::hex << character << " {" << std::endl;
+			css.imbue(std::locale());
 			css << "display: inline-block;" << std::endl;
 			css << "width: 20px;" << std::endl;
 			css << "height: 20px;" << std::endl;
