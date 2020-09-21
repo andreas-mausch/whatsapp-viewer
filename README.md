@@ -23,14 +23,9 @@ Small tool to display chats from the Android msgstore.db database.
 
 You cannot see bigger images because only thumbnails are stored in the database.
 
-## Build (using msbuild)
+## Build
 
-```bash
-# Replace with your Visual Studio installation directory
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-
-msbuild /p:Configuration=Release /p:Platform=Win32 /m /t:Clean,Build
-```
+See *build-release.cmd*.
 
 ## Credits
 
