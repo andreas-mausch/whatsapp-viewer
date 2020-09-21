@@ -1,3 +1,5 @@
+v1.13 (2020-09-21)
+	Fix runtime error on large databases (#46)
 v1.12 (2018-03-26)
 	Show filenames of media (#22)
 	Support Links (youtube, general website, ..) (#65)
