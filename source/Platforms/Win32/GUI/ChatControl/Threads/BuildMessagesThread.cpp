@@ -6,6 +6,7 @@
 #include "../Elements/ChatControlMessageFrame.h"
 #include "../Elements/DayBreak.h"
 #include "../Elements/Messages/ChatControlMessage.h"
+#include "../Elements/Messages/ChatControlMessage2.h"
 #include "../Elements/Messages/ChatControlMessageAudio.h"
 #include "../Elements/Messages/ChatControlMessageImage.h"
 #include "../Elements/Messages/ChatControlMessageLink.h"
@@ -68,7 +69,8 @@ void BuildMessagesThread::run()
 				color = RGB(204, 217, 255);
 			}
 
-			switch (message.getMediaWhatsappType())
+			messageFrame = new ChatControlMessageFrame(new ChatControlMessage2(message, 0, imageDecoder, smileys), 0, color, dateFont);
+			/*switch (message.getMediaWhatsappType())
 			{
 				case MEDIA_WHATSAPP_TEXT:
 				{
@@ -107,7 +109,7 @@ void BuildMessagesThread::run()
 				{
 					messageFrame = new ChatControlMessageFrame(new ChatControlMessageImage(message, 0, imageDecoder), 0, color, dateFont);
 				} break;
-			}
+			}*/
 
 			if (messageFrame != NULL)
 			{

@@ -144,7 +144,12 @@
     <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\ChatControlMessageFrame.cpp" />
     <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\DayBreak.cpp" />
     <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessage.cpp" />
+    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessage2.cpp" />
     <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageAudio.cpp" />
+    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElement.cpp" />
+    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElementSmiley.cpp" />
+    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElementText.cpp" />
+    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElementThumbnail.cpp" />
     <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageImage.cpp" />
     <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageLink.cpp" />
     <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageLocation.cpp" />
@@ -264,7 +269,12 @@
     <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\ChatControlMessageFrame.h" />
     <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\DayBreak.h" />
     <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessage.h" />
+    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessage2.h" />
     <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageAudio.h" />
+    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElement.h" />
+    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElementSmiley.h" />
+    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElementText.h" />
+    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElementThumbnail.h" />
     <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageImage.h" />
     <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageLink.h" />
     <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageLocation.h" />

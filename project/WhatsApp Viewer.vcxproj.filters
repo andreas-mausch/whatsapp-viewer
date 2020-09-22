@@ -426,6 +426,21 @@
     <ClCompile Include="..\source\WhatsApp\EmoticonsUnicodeToSoftbank.cpp">
       <Filter>Quelldateien\WhatsApp</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessage2.cpp">
+      <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElement.cpp">
+      <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElementText.cpp">
+      <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElementThumbnail.cpp">
+      <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElementSmiley.cpp">
+      <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\CLI.h">
@@ -790,6 +805,21 @@
     </ClInclude>
     <ClInclude Include="..\source\WhatsApp\EmoticonsUnicodeToSoftbank.h">
       <Filter>Headerdateien\WhatsApp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessage2.h">
+      <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElement.h">
+      <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElementText.h">
+      <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElementThumbnail.h">
+      <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageElementSmiley.h">
+      <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
