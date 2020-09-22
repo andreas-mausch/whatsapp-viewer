@@ -9,6 +9,8 @@ class ImageDecoder;
 class Smileys;
 class WhatsappMessage;
 
+std::string formatAudio(WhatsappMessage& message);
+
 class ChatControlMessage2 : public ChatControlMessage
 {
 private:

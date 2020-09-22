@@ -7,12 +7,6 @@
 #include "../Elements/DayBreak.h"
 #include "../Elements/Messages/ChatControlMessage.h"
 #include "../Elements/Messages/ChatControlMessage2.h"
-#include "../Elements/Messages/ChatControlMessageAudio.h"
-#include "../Elements/Messages/ChatControlMessageImage.h"
-#include "../Elements/Messages/ChatControlMessageLink.h"
-#include "../Elements/Messages/ChatControlMessageLocation.h"
-#include "../Elements/Messages/ChatControlMessageText.h"
-#include "../Elements/Messages/ChatControlMessageVideo.h"
 #include "../../../Timestamp.h"
 #include "../../../../../VectorUtils.h"
 #include "../../../../../Synchronization/Lock.h"
@@ -70,51 +64,7 @@ void BuildMessagesThread::run()
 			}
 
 			messageFrame = new ChatControlMessageFrame(new ChatControlMessage2(message, 0, imageDecoder, smileys), 0, color, dateFont);
-			/*switch (message.getMediaWhatsappType())
-			{
-				case MEDIA_WHATSAPP_TEXT:
-				{
-					ChatControlMessage *chatControlMessage;
-					if (message.isLink())
-					{
-						chatControlMessage = new ChatControlMessageLink(message, 0, imageDecoder);
-					}
-					else
-					{
-						chatControlMessage = new ChatControlMessageText(message, 0, smileys);
-					}
-					messageFrame = new ChatControlMessageFrame(chatControlMessage, 0, color, dateFont);
-				} break;
-				case MEDIA_WHATSAPP_IMAGE:
-				{
-					if (message.hasThumbnail())
-					{
-						messageFrame = new ChatControlMessageFrame(new ChatControlMessageImage(message, 0, imageDecoder), 0, color, dateFont);
-					}
-				} break;
-				case MEDIA_WHATSAPP_AUDIO:
-				{
-					messageFrame = new ChatControlMessageFrame(new ChatControlMessageAudio(message, 0, smileys), 0, color, dateFont);
-				} break;
-				case MEDIA_WHATSAPP_VIDEO:
-				{
-					messageFrame = new ChatControlMessageFrame(new ChatControlMessageVideo(message, 0, imageDecoder), 0, color, dateFont);
-				} break;
-				case MEDIA_WHATSAPP_LOCATION:
-				case MEDIA_WHATSAPP_LIVE_LOCATION:
-				{
-					messageFrame = new ChatControlMessageFrame(new ChatControlMessageLocation(message, 0, imageDecoder), 0, color, dateFont);
-				} break;
-				case MEDIA_WHATSAPP_GIF:
-				{
-					messageFrame = new ChatControlMessageFrame(new ChatControlMessageImage(message, 0, imageDecoder), 0, color, dateFont);
-				} break;
-			}*/
-
-			if (messageFrame != NULL)
-			{
-				this->elements.push_back(messageFrame);
-			}
+			this->elements.push_back(messageFrame);
 		}
 	}
 

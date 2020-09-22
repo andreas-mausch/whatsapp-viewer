@@ -366,30 +366,6 @@
     <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessage.cpp">
       <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageAudio.cpp">
-      <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageImage.cpp">
-      <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageLink.cpp">
-      <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageLocation.cpp">
-      <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageText.cpp">
-      <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageTextElement.cpp">
-      <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageThumbnail.cpp">
-      <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageVideo.cpp">
-      <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Platforms\Win32\GUI\SearchControl\HoverButton.cpp">
       <Filter>Quelldateien\Platforms\Win32\GUI\SearchControl</Filter>
     </ClCompile>
@@ -738,30 +714,6 @@
       <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements</Filter>
     </ClInclude>
     <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessage.h">
-      <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageAudio.h">
-      <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageImage.h">
-      <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageLink.h">
-      <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageLocation.h">
-      <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageText.h">
-      <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageTextElement.h">
-      <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageThumbnail.h">
-      <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessageVideo.h">
       <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
     </ClInclude>
     <ClInclude Include="..\source\Platforms\Win32\GUI\SearchControl\HoverButton.h">

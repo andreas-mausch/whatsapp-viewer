@@ -14,6 +14,19 @@
 #include "../../../../StringHelper.h"
 #include "../../../../Timestamp.h"
 
+std::string formatAudio(WhatsappMessage& message)
+{
+	std::stringstream text;
+	text << "Audio (" << message.getMediaDuration() << "s)";
+
+	if (message.getMediaName().length() > 0)
+	{
+		text << " : " << message.getMediaName();
+	}
+
+	return text.str();
+}
+
 ChatControlMessage2::ChatControlMessage2(WhatsappMessage &message, int width, ImageDecoder &imageDecoder, Smileys &smileys)
 	: ChatControlMessage(message, width), smileys(smileys)
 {
@@ -39,15 +52,7 @@ ChatControlMessage2::ChatControlMessage2(WhatsappMessage &message, int width, Im
 	{
 		case MEDIA_WHATSAPP_AUDIO:
 		{
-			std::stringstream text;
-			text << "Audio (" << message.getMediaDuration() << "s)";
-
-			if (message.getMediaName().length() > 0)
-			{
-				text << " : " << message.getMediaName();
-			}
-
-			addText(text.str());
+			addText(formatAudio(message));
 		} break;
 		case MEDIA_WHATSAPP_VIDEO:
 		{

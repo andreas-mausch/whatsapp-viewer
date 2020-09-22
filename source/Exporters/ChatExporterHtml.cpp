@@ -11,7 +11,7 @@
 #include "../Platforms/Win32/Resource.h"
 #include "../Platforms/Win32/Timestamp.h"
 #include "../Platforms/Win32/GUI/SmileyList.h"
-#include "../Platforms/Win32/GUI/ChatControl/Elements/Messages/ChatControlMessageAudio.h"
+#include "../Platforms/Win32/GUI/ChatControl/Elements/Messages/ChatControlMessage2.h"
 #include "../WhatsApp/Chat.h"
 #include "../WhatsApp/Emoticons.h"
 #include "../WhatsApp/Message.h"
