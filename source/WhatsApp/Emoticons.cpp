@@ -3,15 +3,7 @@
 
 bool isSmiley(int character)
 {
-	for (int i = 0; i < smileyCount; i++)
-	{
-		if (smileyList[i].character == character)
-		{
-			return true;
-		}
-	}
-
-	return false;
+	return characterToResource.find(character) != characterToResource.end();
 }
 
 int getSmiley(int character)

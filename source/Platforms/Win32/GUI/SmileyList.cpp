@@ -1,6 +1,6 @@
 #include "SmileyList.h"
 
-SmileyInfo smileyList[] = { 
+std::map<int, int> characterToResource = {
 	{ 0x0E00A, IDB_0E00A },
 	{ 0x0E00B, IDB_0E00B },
 	{ 0x0E00C, IDB_0E00C },
@@ -848,5 +848,3 @@ SmileyInfo smileyList[] = {
 	{ 0x02935, IDB_02935 },
 	{ 0x03030, IDB_03030 },
 };
-
-int smileyCount = sizeof(smileyList) / sizeof(SmileyInfo);

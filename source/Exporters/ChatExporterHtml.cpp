@@ -188,33 +188,20 @@ std::string ChatExporterHtml::buildEmoticonStyles(const std::set<int> &usedEmoti
 	for(std::set<int>::const_iterator it = usedEmoticons.begin(); it != usedEmoticons.end(); ++it)
 	{
 		int character = *it;
-		int smileyIndex = -1;
 
-		for (int i = 0; i < smileyCount; i++)
-		{
-			if (smileyList[i].character == character)
-			{
-				smileyIndex = i;
-				break;
-			}
-		}
+		unsigned char *bytes = NULL;
+		DWORD size = 0;
+		loadResource(MAKEINTRESOURCE(characterToResource[character]), L"PNG", bytes, size);
+		std::string base64Emoticon = base64_encode(bytes, size);
 
-		if (smileyIndex >= 0)
-		{
-			unsigned char *bytes = NULL;
-			DWORD size = 0;
-			loadResource(MAKEINTRESOURCE(smileyList[smileyIndex].resource), L"PNG", bytes, size);
-			std::string base64Emoticon = base64_encode(bytes, size);
-
-			css.imbue(std::locale::classic());
-			css << ".emoticon_" << std::hex << character << " {" << std::endl;
-			css.imbue(std::locale());
-			css << "display: inline-block;" << std::endl;
-			css << "width: 20px;" << std::endl;
-			css << "height: 20px;" << std::endl;
-			css << "background-image: url(data:image/png;base64," << base64Emoticon << ")" << std::endl;
-			css << "}" << std::endl;
-		}
+		css.imbue(std::locale::classic());
+		css << ".emoticon_" << std::hex << character << " {" << std::endl;
+		css.imbue(std::locale());
+		css << "display: inline-block;" << std::endl;
+		css << "width: 20px;" << std::endl;
+		css << "height: 20px;" << std::endl;
+		css << "background-image: url(data:image/png;base64," << base64Emoticon << ")" << std::endl;
+		css << "}" << std::endl;
 	}
 
 	return css.str();

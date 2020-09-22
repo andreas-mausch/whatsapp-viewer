@@ -1,12 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include "../../../../resources/resource.h"
 
-struct SmileyInfo
-{
-	int character;
-	int resource;
-};
-
-extern SmileyInfo smileyList[];
-extern int smileyCount;
+extern std::map<int, int> characterToResource;

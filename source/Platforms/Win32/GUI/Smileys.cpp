@@ -10,9 +10,9 @@
 
 Smileys::Smileys(ImageDecoder &imageDecoder) : imageDecoder(imageDecoder)
 {
-	for (int i = 0; i < smileyCount; i++)
+	for (auto const& smiley : characterToResource)
 	{
-		load(smileyList[i].character, MAKEINTRESOURCE(smileyList[i].resource));
+		load(smiley.first, MAKEINTRESOURCE(smiley.second));
 	}
 }
 
