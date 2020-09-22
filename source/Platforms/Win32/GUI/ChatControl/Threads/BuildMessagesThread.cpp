@@ -6,7 +6,6 @@
 #include "../Elements/ChatControlMessageFrame.h"
 #include "../Elements/DayBreak.h"
 #include "../Elements/Messages/ChatControlMessage.h"
-#include "../Elements/Messages/ChatControlMessage2.h"
 #include "../../../Timestamp.h"
 #include "../../../../../VectorUtils.h"
 #include "../../../../../Synchronization/Lock.h"
@@ -63,7 +62,7 @@ void BuildMessagesThread::run()
 				color = RGB(204, 217, 255);
 			}
 
-			messageFrame = new ChatControlMessageFrame(new ChatControlMessage2(message, 0, imageDecoder, smileys), 0, color, dateFont);
+			messageFrame = new ChatControlMessageFrame(new ChatControlMessage(message, 0, imageDecoder, smileys), 0, color, dateFont);
 			this->elements.push_back(messageFrame);
 		}
 	}
