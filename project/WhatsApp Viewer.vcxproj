@@ -191,6 +191,7 @@
     <ClCompile Include="..\source\WhatsApp\Crypt8.cpp" />
     <ClCompile Include="..\source\WhatsApp\Database.cpp" />
     <ClCompile Include="..\source\WhatsApp\Emoticons.cpp" />
+    <ClCompile Include="..\source\WhatsApp\EmoticonsUnicodeToSoftbank.cpp" />
     <ClCompile Include="..\source\WhatsApp\Message.cpp" />
     <ClCompile Include="..\source\WhatsApp\QueryMessagesThread.cpp" />
   </ItemGroup>
@@ -313,6 +314,7 @@
     <ClInclude Include="..\source\WhatsApp\Crypt8.h" />
     <ClInclude Include="..\source\WhatsApp\Database.h" />
     <ClInclude Include="..\source\WhatsApp\Emoticons.h" />
+    <ClInclude Include="..\source\WhatsApp\EmoticonsUnicodeToSoftbank.h" />
     <ClInclude Include="..\source\WhatsApp\Message.h" />
     <ClInclude Include="..\source\WhatsApp\QueryMessagesThread.h" />
   </ItemGroup>
