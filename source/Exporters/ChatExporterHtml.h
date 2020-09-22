@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -17,7 +18,7 @@ private:
 
 	std::string buildMessages(WhatsappChat &chat, std::set<int> &usedEmoticons);
 	void replacePlaceholder(std::string &html, const std::string &placeholder, const std::string &text);
-	std::string convertMessageToHtml(WhatsappMessage &message, std::set<int> &usedEmoticons);
+	std::string convertMessageToHtml(std::string message, std::set<int> &usedEmoticons);
 	std::string buildEmoticonStyles(const std::set<int> &usedEmoticons);
 
 public:

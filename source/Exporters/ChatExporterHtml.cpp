@@ -70,12 +70,12 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 					{
 						output << "<div><img src=\"data:image/jpeg;base64," << base64_encode(message.getLinkThumbnail(), message.getLinkThumbnailSize()) << "\"></div>" << std::endl;
 					}
-					output << "<div><span>" << message.getMediaCaption() << "</span></div>";
-					output << "<div><span>" << message.getData() << "</span></div>";
+					output << "<div><span>" << convertMessageToHtml(message.getMediaCaption(), usedEmoticons) << "</span></div>";
+					output << "<div><span>" << convertMessageToHtml(message.getData(), usedEmoticons) << "</span></div>";
 				}
 				else
 				{
-					output << "<span>" << convertMessageToHtml(message, usedEmoticons) << "</span>";
+					output << "<span>" << convertMessageToHtml(message.getData(), usedEmoticons) << "</span>";
 				}
 			} break;
 			case MEDIA_WHATSAPP_IMAGE:
@@ -87,7 +87,7 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 				}
 				if (message.getMediaCaption().length() > 0)
 				{
-					output << "<div><span>" << message.getMediaCaption() << "</span></div>";
+					output << "<div><span>" << convertMessageToHtml(message.getMediaCaption(), usedEmoticons) << "</span></div>";
 				}
 			} break;
 			case MEDIA_WHATSAPP_AUDIO:
@@ -102,7 +102,7 @@ std::string ChatExporterHtml::buildMessages(WhatsappChat &chat, std::set<int> &u
 				}
 				if (message.getMediaCaption().length() > 0)
 				{
-					output << "<div><span>" << message.getMediaCaption() << "</span></div>";
+					output << "<div><span>" << convertMessageToHtml(message.getMediaCaption(), usedEmoticons) << "</span></div>";
 				}
 				output << "<span>[ Video ]</span>";
 			} break;
@@ -147,17 +147,16 @@ void ChatExporterHtml::replacePlaceholder(std::string &html, const std::string &
 	html.replace(start, placeholder.length(), text);
 }
 
-std::string ChatExporterHtml::convertMessageToHtml(WhatsappMessage &message, std::set<int> &usedEmoticons)
+std::string ChatExporterHtml::convertMessageToHtml(std::string message, std::set<int> &usedEmoticons)
 {
-	std::string messageString = message.getData();
 	std::stringstream output;
 
 	try
 	{
-		for (std::string::iterator it = messageString.begin(); it != messageString.end();)
+		for (std::string::iterator it = message.begin(); it != message.end();)
 		{
 			std::string::iterator before = it;
-			int character = utf8::next(it, messageString.end());
+			int character = utf8::next(it, message.end());
 			int emoticonCharacter = getSmiley(character);
 
 			if (emoticonCharacter > 0)
@@ -175,7 +174,7 @@ std::string ChatExporterHtml::convertMessageToHtml(WhatsappMessage &message, std
 	}
 	catch (utf8::exception &exception)
 	{
-		output << "[INVALID DATA: " << messageString << "]";
+		output << "[INVALID DATA: " << message << "]";
 	}
 
 	return output.str();
