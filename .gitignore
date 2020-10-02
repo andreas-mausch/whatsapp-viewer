@@ -1,0 +1,23 @@
+# Conan
+
+conan.lock
+conan_imports_manifest.txt
+conanbuildinfo.txt
+conanbuildinfo.premake.lua
+conaninfo.txt
+graph_info.json
+
+# Premake
+
+Makefile
+WxWidgetsConanPremake.make
+
+WxWidgetsConanPremake.sln
+WxWidgetsConanPremake.vcxproj
+WxWidgetsConanPremake.vcxproj.filters
+
+# Target
+
+bin/
+obj/
+generated/

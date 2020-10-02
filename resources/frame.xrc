@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<resource
+    xmlns="http://www.wxwidgets.org/wxxrc" version="2.3.0.1">
+    <object class="wxFrame" name="HelloWorldFrame">
+        <title>Hello World</title>
+        <centered>1</centered>
+        <size>600,400</size>
+        <object class="wxMenuBar" name="main_menu_bar">
+            <object class="wxMenu" name="file_menu">
+                <label>&amp;File</label>
+                <object class="wxMenuItem" name="ID_Hello">
+                    <label>&amp;Hello...</label>
+                    <help>Help string shown in status bar for this menu item</help>
+                    <accel>Ctrl-H</accel>
+                </object>
+                <object class="break" />
+                <object class="wxMenuItem" name="wxID_EXIT" />
+            </object>
+            <object class="wxMenu" name="help_menu">
+                <label>&amp;Help</label>
+                <object class="wxMenuItem" name="wxID_ABOUT" />
+            </object>
+        </object>
+        <object class="wxStatusBar" name="status_bar" />
+    </object>
+</resource>

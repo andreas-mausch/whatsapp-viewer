@@ -1,0 +1,21 @@
+[requires]
+wxwidgets/3.1.3@bincrafters/stable
+
+[options]
+wxwidgets:compatibility=3.1
+wxwidgets:zlib=off
+wxwidgets:png=off
+wxwidgets:jpeg=off
+wxwidgets:tiff=off
+wxwidgets:opengl=False
+wxwidgets:ribbon=False
+wxwidgets:sockets=False
+wxwidgets:webview=False
+wxwidgets:custom_disables=wxUSE_ARTPROVIDER_TANGO,wxUSE_SVG,wxUSE_ZIPSTREAM,wxUSE_PROTOCOL,wxUSE_FS_INET,wxUSE_URL
+
+[generators]
+premake
+
+[imports]
+bin, wxrc-3.1 -> ./bin
+bin, wxrc.exe -> ./bin
