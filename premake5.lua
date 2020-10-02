@@ -1,9 +1,9 @@
 include("conanbuildinfo.premake.lua")
 
-workspace("WxWidgetsConanPremake")
+workspace("WhatsAppViewer")
     conan_basic_setup()
 
-    project "WxWidgetsConanPremake"
+    project "WhatsAppViewer"
         kind "WindowedApp"
         language "C++"
         targetdir "bin/%{cfg.buildcfg}"

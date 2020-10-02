@@ -1,17 +1,17 @@
 #include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
 
-#include "HelloWorldApp.h"
-#include "HelloWorldFrame.h"
+#include "App.h"
+#include "MainFrame.h"
 
 extern void InitXmlResource();
 
-bool HelloWorldApp::OnInit()
+bool App::OnInit()
 {
     wxXmlResource::Get()->InitAllHandlers();
     InitXmlResource();
 
-    HelloWorldFrame *frame = new HelloWorldFrame(NULL);
+    MainFrame *frame = new MainFrame(NULL);
     frame->Show(true);
 
     return true;

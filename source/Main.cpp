@@ -1,5 +1,5 @@
 #include <wx/wx.h>
 
-#include "HelloWorldApp.h"
+#include "App.h"
 
-wxIMPLEMENT_APP(HelloWorldApp);
+wxIMPLEMENT_APP(App);

@@ -1,6 +1,6 @@
 #pragma once
 
-class HelloWorldApp: public wxApp
+class App: public wxApp
 {
 public:
     virtual bool OnInit();

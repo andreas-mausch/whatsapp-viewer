@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <resource
     xmlns="http://www.wxwidgets.org/wxxrc" version="2.3.0.1">
-    <object class="wxFrame" name="HelloWorldFrame">
-        <title>Hello World</title>
+    <object class="wxFrame" name="MainFrame">
+        <title>WhatsApp Viewer</title>
         <centered>1</centered>
         <size>600,400</size>
         <object class="wxMenuBar" name="main_menu_bar">

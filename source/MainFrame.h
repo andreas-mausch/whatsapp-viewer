@@ -1,9 +1,9 @@
 #pragma once
 
-class HelloWorldFrame: public wxFrame
+class MainFrame: public wxFrame
 {
 public:
-    HelloWorldFrame(wxWindow* parent);
+    MainFrame(wxWindow* parent);
 private:
     void OnHello(wxCommandEvent& event);
     void OnExit(wxCommandEvent& event);

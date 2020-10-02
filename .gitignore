@@ -10,11 +10,11 @@ graph_info.json
 # Premake
 
 Makefile
-WxWidgetsConanPremake.make
+WhatsAppViewer.make
 
-WxWidgetsConanPremake.sln
-WxWidgetsConanPremake.vcxproj
-WxWidgetsConanPremake.vcxproj.filters
+WhatsAppViewer.sln
+WhatsAppViewer.vcxproj
+WhatsAppViewer.vcxproj.filters
 
 # Target
 
