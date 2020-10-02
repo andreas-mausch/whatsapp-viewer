@@ -11,7 +11,7 @@ bool App::OnInit()
     wxXmlResource::Get()->InitAllHandlers();
     InitXmlResource();
 
-    MainFrame *frame = new MainFrame(NULL);
+    MainFrame *frame = new MainFrame(nullptr);
     frame->Show(true);
 
     return true;
