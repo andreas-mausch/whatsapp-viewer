@@ -1,5 +1,5 @@
 #include <wx/wx.h>
 
-#include "App.h"
+#include "ui/App.h"
 
 wxIMPLEMENT_APP(App);
