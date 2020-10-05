@@ -2,9 +2,10 @@
 #include <wx/xrc/xmlres.h>
 
 #include "MainFrame.h"
+#include "FileOpenDialog.h"
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
-    EVT_MENU(XRCID("ID_Hello"),   MainFrame::OnHello)
+    EVT_MENU(XRCID("ID_OpenDatabase"),   MainFrame::OnOpenDatabase)
     EVT_MENU(wxID_EXIT,  MainFrame::OnExit)
     EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 wxEND_EVENT_TABLE()
@@ -27,7 +28,16 @@ void MainFrame::OnAbout(wxCommandEvent& event)
                  wxOK | wxICON_INFORMATION);
 }
 
-void MainFrame::OnHello(wxCommandEvent& event)
+void MainFrame::OnOpenDatabase(wxCommandEvent& event)
 {
-    wxLogMessage("Hello world from wxWidgets!");
+    auto filename = fileOpenDialog(this);
+
+    if (filename)
+    {
+        wxLogMessage((*filename).c_str());
+    }
+    else
+    {
+        wxLogMessage("No file selected");
+    }
 }
