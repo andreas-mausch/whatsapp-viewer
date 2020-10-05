@@ -21,3 +21,7 @@ WhatsAppViewer.vcxproj.filters
 bin/
 obj/
 generated/
+
+# Test data
+
+test-data/

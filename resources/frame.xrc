@@ -22,5 +22,13 @@
             </object>
         </object>
         <object class="wxStatusBar" name="status_bar" />
+        <object class="wxListCtrl" name="chats">
+            <style>wxLC_REPORT</style>
+            <object class="listcol">
+                <text>Name</text>
+                <width>-1</width>
+                <align>wxLIST_FORMAT_LEFT</align>
+            </object>
+        </object>
     </object>
 </resource>

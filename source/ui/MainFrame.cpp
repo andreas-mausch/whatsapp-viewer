@@ -1,8 +1,11 @@
 #include <wx/wx.h>
+#include <wx/listctrl.h>
 #include <wx/xrc/xmlres.h>
 
 #include "MainFrame.h"
 #include "FileOpenDialog.h"
+
+#include "../whatsapp/Database.h"
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_MENU(XRCID("ID_OpenDatabase"),   MainFrame::OnOpenDatabase)
@@ -12,7 +15,7 @@ wxEND_EVENT_TABLE()
 
 MainFrame::MainFrame(wxWindow* parent)
 {
-    wxXmlResource::Get()->LoadFrame(this, parent, wxT("MainFrame"));
+    wxXmlResource::Get()->LoadFrame(this, parent, _("MainFrame"));
     SetStatusText("Welcome to wxWidgets!");
 }
 
@@ -32,12 +35,18 @@ void MainFrame::OnOpenDatabase(wxCommandEvent& event)
 {
     auto filename = fileOpenDialog(this);
 
-    if (filename)
+    if (!filename)
     {
-        wxLogMessage((*filename).c_str());
+        return;
     }
-    else
+
+    database = std::make_unique<WhatsApp::Database>(*filename);
+
+    wxListCtrl* chats = XRCCTRL(*this, "chats", wxListCtrl);
+    chats->DeleteAllItems();
+
+    for(auto& chat: database->getChats())
     {
-        wxLogMessage("No file selected");
+        chats->InsertItem(chats->GetItemCount(), chat.getId());
     }
 }
