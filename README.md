@@ -10,6 +10,12 @@ in order to build cross-platform GUI applications for Linux, macOS and Windows.
 
 ## Conan profile
 
+### General
+
+```
+conan profile update settings.compiler.cppstd=17 default
+```
+
 ### Linux profile
 
 ```

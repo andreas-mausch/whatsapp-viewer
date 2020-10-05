@@ -6,6 +6,7 @@ workspace("WhatsAppViewer")
     project "WhatsAppViewer"
         kind "WindowedApp"
         language "C++"
+        cppdialect "C++17"
         targetdir "bin/%{cfg.buildcfg}"
 
         linkoptions { conan_exelinkflags }
