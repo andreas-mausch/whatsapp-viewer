@@ -2,6 +2,7 @@ include("conanbuildinfo.premake.lua")
 
 workspace("WhatsAppViewer")
     conan_basic_setup()
+    configurations { "Debug", "Release" }
 
     project "WhatsAppViewer"
         kind "WindowedApp"
