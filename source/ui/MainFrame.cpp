@@ -8,7 +8,7 @@
 #include "../whatsapp/Database.h"
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
-    EVT_MENU(XRCID("ID_OpenDatabase"),   MainFrame::OnOpenDatabase)
+    EVT_MENU(XRCID("ID_OpenDatabase"), MainFrame::OnOpenDatabase)
     EVT_MENU(wxID_EXIT,  MainFrame::OnExit)
     EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 wxEND_EVENT_TABLE()
@@ -16,6 +16,7 @@ wxEND_EVENT_TABLE()
 MainFrame::MainFrame(wxWindow* parent)
 {
     wxXmlResource::Get()->LoadFrame(this, parent, _("MainFrame"));
+    SetIcon(wxXmlResource::Get()->LoadIcon(_("icon")));
     SetStatusText(_("Welcome to wxWidgets!"));
 }
 

@@ -10,6 +10,7 @@ bool App::OnInit()
 {
     wxXmlResource::Get()->InitAllHandlers();
     InitXmlResource();
+    wxInitAllImageHandlers();
 
     MainFrame *frame = new MainFrame(nullptr);
     frame->Show(true);

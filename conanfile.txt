@@ -4,15 +4,12 @@ sqlitecpp/3.1.1
 
 [options]
 wxwidgets:compatibility=3.1
-wxwidgets:zlib=off
-wxwidgets:png=off
-wxwidgets:jpeg=off
 wxwidgets:tiff=off
 wxwidgets:opengl=False
 wxwidgets:ribbon=False
 wxwidgets:sockets=False
 wxwidgets:webview=False
-wxwidgets:custom_disables=wxUSE_ARTPROVIDER_TANGO,wxUSE_SVG,wxUSE_ZIPSTREAM,wxUSE_PROTOCOL,wxUSE_FS_INET,wxUSE_URL
+wxwidgets:custom_disables=wxUSE_ARTPROVIDER_TANGO,wxUSE_ZIPSTREAM,wxUSE_PROTOCOL,wxUSE_FS_INET,wxUSE_URL
 
 [generators]
 premake
