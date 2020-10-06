@@ -1,12 +1,8 @@
-Sample project to test the compatibility of wxWidgets, conan and premake
-in order to build cross-platform GUI applications for Linux, macOS and Windows.
-
-(Check the `xrc` branch for [XML Based Resource System](https://docs.wxwidgets.org/3.1/overview_xrc.html))
-
 # Prerequisites
 
 - Conan
 - Premake 5
+- CMake
 
 ## Conan profile
 
@@ -46,7 +42,7 @@ conan install . --build=missing
 
 ```
 premake5 gmake2
-make
+make config=release
 ```
 
 ## Windows
@@ -54,11 +50,5 @@ make
 ```
 call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86
 premake5 vs2019
-msbuild /p:Platform=Win32
+msbuild /p:Platform=Win32 /p:Configuration=Release
 ```
-
-# My personal conclusion
-
-I've written a blog post about this experiment:
-
-[https://andreas-mausch.de/blog/2020/09/29/wxwidgets/](https://andreas-mausch.de/blog/2020/09/29/wxwidgets/)
