@@ -26,8 +26,8 @@ void MainFrame::OnExit(wxCommandEvent& event)
 
 void MainFrame::OnAbout(wxCommandEvent& event)
 {
-    wxMessageBox("This is a wxWidgets' Hello world sample",
-                 "About Hello World",
+    wxMessageBox(_("WhatsApp Viewer by Andreas Mausch"),
+                 "About WhatsApp Viewer",
                  wxOK | wxICON_INFORMATION);
 }
 
