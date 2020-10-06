@@ -16,7 +16,7 @@ wxEND_EVENT_TABLE()
 MainFrame::MainFrame(wxWindow* parent)
 {
     wxXmlResource::Get()->LoadFrame(this, parent, _("MainFrame"));
-    SetStatusText("Welcome to wxWidgets!");
+    SetStatusText(_("Welcome to wxWidgets!"));
 }
 
 void MainFrame::OnExit(wxCommandEvent& event)
@@ -27,7 +27,7 @@ void MainFrame::OnExit(wxCommandEvent& event)
 void MainFrame::OnAbout(wxCommandEvent& event)
 {
     wxMessageBox(_("WhatsApp Viewer by Andreas Mausch"),
-                 "About WhatsApp Viewer",
+                 _("About WhatsApp Viewer"),
                  wxOK | wxICON_INFORMATION);
 }
 
