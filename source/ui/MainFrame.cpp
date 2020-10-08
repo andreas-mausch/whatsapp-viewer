@@ -42,12 +42,17 @@ void MainFrame::OnOpenDatabase(wxCommandEvent& event)
     }
 
     database = std::make_unique<WhatsApp::Database>(*filename);
+    chats = database->loadChats();
+    updateChats();
+}
 
-    wxListCtrl* chats = XRCCTRL(*this, "chats", wxListCtrl);
-    chats->DeleteAllItems();
+void MainFrame::updateChats()
+{
+    wxListCtrl* chatControl = XRCCTRL(*this, "chats", wxListCtrl);
+    chatControl->DeleteAllItems();
 
-    for(auto& chat: database->getChats())
+    for(auto& chat: chats)
     {
-        chats->InsertItem(chats->GetItemCount(), chat.getId());
+        chatControl->InsertItem(chatControl->GetItemCount(), chat.getId());
     }
 }

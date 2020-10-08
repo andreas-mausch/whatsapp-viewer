@@ -13,12 +13,10 @@ class Database
 private:
     SQLite::Database database;
 
-	std::vector<Chat> chats;
-
 public:
     Database(const std::string &filename);
 
-	std::vector<Chat> &getChats();
+	std::vector<Chat> loadChats();
 };
 
 }
