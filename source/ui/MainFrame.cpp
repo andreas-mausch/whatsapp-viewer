@@ -11,6 +11,7 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
     EVT_MENU(XRCID("ID_OpenDatabase"), MainFrame::OnOpenDatabase)
     EVT_MENU(wxID_EXIT,  MainFrame::OnExit)
     EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
+    EVT_LIST_ITEM_SELECTED(XRCID("chats"), MainFrame::OnDisplayChat)
 wxEND_EVENT_TABLE()
 
 MainFrame::MainFrame(wxWindow* parent)
@@ -42,8 +43,15 @@ void MainFrame::OnOpenDatabase(wxCommandEvent& event)
     }
 
     database = std::make_unique<WhatsApp::Database>(*filename);
+    selectedChat = std::nullopt;
     chats = database->loadChats();
     updateChats();
+}
+
+void MainFrame::OnDisplayChat(wxListEvent& event)
+{
+    WhatsApp::Chat &chat = *reinterpret_cast<WhatsApp::Chat *>(event.GetData());
+    openChat(chat);
 }
 
 void MainFrame::updateChats()
@@ -53,6 +61,15 @@ void MainFrame::updateChats()
 
     for(auto& chat: chats)
     {
-        chatControl->InsertItem(chatControl->GetItemCount(), chat.getId());
+        wxListItem item;
+        item.SetId(chatControl->GetItemCount());
+        item.SetData(&chat);
+        item.SetText(chat.getId());
+        chatControl->InsertItem(item);
     }
+}
+
+void MainFrame::openChat(WhatsApp::Chat &chat)
+{
+    selectedChat = std::make_optional(&chat);
 }
