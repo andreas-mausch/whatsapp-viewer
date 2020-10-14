@@ -3,12 +3,12 @@
 namespace WhatsApp
 {
 
-Chat::Chat(const std::string &id)
+Message::Message(const std::string &id)
     : id(id)
 {
 }
 
-std::string Chat::getId() const
+std::string Message::getId()
 {
     return id;
 }

@@ -5,15 +5,15 @@
 namespace WhatsApp
 {
 
-class Chat
+class Message
 {
 private:
     std::string id;
 
 public:
-    Chat(const std::string &id);
+    Message(const std::string &id);
 
-	std::string getId() const;
+	std::string getId();
 };
 
 }
