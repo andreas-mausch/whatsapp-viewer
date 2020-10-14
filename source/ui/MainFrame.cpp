@@ -4,6 +4,7 @@
 
 #include "MainFrame.h"
 #include "FileOpenDialog.h"
+#include "MessagePanel.h"
 
 #include "../whatsapp/Database.h"
 
@@ -17,6 +18,7 @@ wxEND_EVENT_TABLE()
 MainFrame::MainFrame(wxWindow* parent)
 {
     wxXmlResource::Get()->LoadFrame(this, parent, _("MainFrame"));
+    wxXmlResource::Get()->AttachUnknownControl("messagePanel", new MessagePanel(this, "No chat selected"));
     SetIcon(wxXmlResource::Get()->LoadIcon(_("icon")));
     SetStatusText(_("Welcome to wxWidgets!"));
 }
@@ -73,4 +75,8 @@ void MainFrame::openChat(WhatsApp::Chat &chat)
 {
     chat.setMessages(database->loadMessages(chat));
     selectedChat = std::make_optional(&chat);
+
+    wxSizer *sizer = this->GetSizer();
+    sizer->Add(new MessagePanel(this, chat.getMessages().front().getId()), wxEXPAND | wxALL);
+    sizer->Layout();
 }

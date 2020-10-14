@@ -8,7 +8,7 @@ Message::Message(const std::string &id)
 {
 }
 
-std::string Message::getId()
+std::string Message::getId() const
 {
     return id;
 }

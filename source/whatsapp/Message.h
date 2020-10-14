@@ -13,7 +13,7 @@ private:
 public:
     Message(const std::string &id);
 
-	std::string getId();
+	std::string getId() const;
 };
 
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<resource
+    xmlns="http://www.wxwidgets.org/wxxrc" version="2.3.0.1">
+    <object class="wxPanel" name="MessagePanel">
+        <object class="wxStaticText" name="message">
+            <label />
+        </object>
+    </object>
+</resource>

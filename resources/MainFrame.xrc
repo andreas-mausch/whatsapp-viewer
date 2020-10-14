@@ -24,8 +24,6 @@
         </object>
         <object class="wxStatusBar" name="status_bar" />
         <object class="wxFlexGridSizer">
-            <cols>2</cols>
-            <rows>1</rows>
             <growablecols>1</growablecols>
             <growablerows>0</growablerows>
             <object class="sizeritem">
@@ -39,6 +37,9 @@
                         <align>wxLIST_FORMAT_LEFT</align>
                     </object>
                 </object>
+            </object>
+            <object class="sizeritem">
+                <object class="unknown" name="messagePanel" />
             </object>
         </object>
     </object>
