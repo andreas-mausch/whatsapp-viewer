@@ -71,5 +71,6 @@ void MainFrame::updateChats()
 
 void MainFrame::openChat(WhatsApp::Chat &chat)
 {
+    chat.setMessages(database->loadMessages(chat));
     selectedChat = std::make_optional(&chat);
 }
