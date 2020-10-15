@@ -68,6 +68,8 @@ void MainFrame::updateChats()
         item.SetText(chat.getId());
         chatControl->InsertItem(item);
     }
+
+    chatControl->SetColumnWidth(0, wxLIST_AUTOSIZE);
 }
 
 void MainFrame::openChat(WhatsApp::Chat &chat)
