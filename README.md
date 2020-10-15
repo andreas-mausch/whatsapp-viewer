@@ -52,3 +52,7 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliar
 premake5 vs2019
 msbuild /p:Platform=Win32 /p:Configuration=Release
 ```
+
+# Tipps
+
+For Visual Studio Code I use the `llvm-vs-code-extensions.vscode-clangd` extension for formatting.
