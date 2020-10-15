@@ -1,7 +1,8 @@
 #pragma once
 
-class App: public wxApp
-{
+#include <wx/wx.h>
+
+class App : public wxApp {
 public:
-    virtual bool OnInit();
+  virtual bool OnInit();
 };

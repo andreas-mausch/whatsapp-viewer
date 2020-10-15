@@ -4,21 +4,19 @@
 
 #include "Message.h"
 
-namespace WhatsApp
-{
+namespace WhatsApp {
 
-class Chat
-{
+class Chat {
 private:
-    std::string id;
-    std::vector<Message> messages;
+  std::string id;
+  std::vector<Message> messages;
 
 public:
-    Chat(const std::string &id);
+  Chat(const std::string &id);
 
-	std::string getId() const;
-	const std::vector<Message> &getMessages() const;
-	void setMessages(const std::vector<Message> &messages);
+  std::string getId() const;
+  const std::vector<Message> &getMessages() const;
+  void setMessages(const std::vector<Message> &messages);
 };
 
-}
+} // namespace WhatsApp

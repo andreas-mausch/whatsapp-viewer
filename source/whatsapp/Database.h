@@ -1,24 +1,22 @@
 #pragma once
 
-#include <vector>
 #include <SQLiteCpp/SQLiteCpp.h>
+#include <vector>
 
 #include "Chat.h"
 #include "Message.h"
 
-namespace WhatsApp
-{
+namespace WhatsApp {
 
-class Database
-{
+class Database {
 private:
-    SQLite::Database database;
+  SQLite::Database database;
 
 public:
-    Database(const std::string &filename);
+  Database(const std::string &filename);
 
-    std::vector<Chat> loadChats();
-    std::vector<Message> loadMessages(const Chat &chat);
+  std::vector<Chat> loadChats();
+  std::vector<Message> loadMessages(const Chat &chat);
 };
 
-}
+} // namespace WhatsApp

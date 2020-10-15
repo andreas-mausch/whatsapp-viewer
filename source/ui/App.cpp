@@ -1,4 +1,3 @@
-#include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
 
 #include "App.h"
@@ -6,14 +5,13 @@
 
 extern void InitXmlResource();
 
-bool App::OnInit()
-{
-    wxXmlResource::Get()->InitAllHandlers();
-    InitXmlResource();
-    wxInitAllImageHandlers();
+bool App::OnInit() {
+  wxXmlResource::Get()->InitAllHandlers();
+  InitXmlResource();
+  wxInitAllImageHandlers();
 
-    MainFrame *frame = new MainFrame(nullptr);
-    frame->Show(true);
+  MainFrame *frame = new MainFrame(nullptr);
+  frame->Show(true);
 
-    return true;
+  return true;
 }

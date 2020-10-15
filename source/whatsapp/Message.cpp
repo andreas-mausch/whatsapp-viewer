@@ -1,16 +1,9 @@
 #include "Database.h"
 
-namespace WhatsApp
-{
+namespace WhatsApp {
 
-Message::Message(const std::string &id)
-    : id(id)
-{
-}
+Message::Message(const std::string &id) : id(id) {}
 
-std::string Message::getId() const
-{
-    return id;
-}
+std::string Message::getId() const { return id; }
 
-}
+} // namespace WhatsApp

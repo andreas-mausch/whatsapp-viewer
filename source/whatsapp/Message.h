@@ -2,18 +2,16 @@
 
 #include <string>
 
-namespace WhatsApp
-{
+namespace WhatsApp {
 
-class Message
-{
+class Message {
 private:
-    std::string id;
+  std::string id;
 
 public:
-    Message(const std::string &id);
+  Message(const std::string &id);
 
-	std::string getId() const;
+  std::string getId() const;
 };
 
-}
+} // namespace WhatsApp
