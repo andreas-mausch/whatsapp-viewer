@@ -4,6 +4,7 @@
     <object class="wxIcon" name="icon">icon.png</object>
     <object class="wxFrame" name="MainFrame">
         <title>WhatsApp Viewer</title>
+        <size>600,400</size>
         <centered>1</centered>
         <object class="wxMenuBar" name="main_menu_bar">
             <object class="wxMenu" name="file_menu">
@@ -22,29 +23,21 @@
             </object>
         </object>
         <object class="wxStatusBar" name="status_bar" />
-        <object class="wxFlexGridSizer">
-            <growablecols>1</growablecols>
-            <growablerows>0</growablerows>
-            <object class="sizeritem">
-                <flag>wxEXPAND|wxALL</flag>
-                <object class="wxListCtrl" name="chats">
-                    <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
-                    <size>250,-1</size>
-                    <object class="listcol">
-                        <text>Name</text>
-                        <width>-1</width>
-                        <align>wxLIST_FORMAT_LEFT</align>
-                    </object>
+        <object class="wxSplitterWindow">
+            <orientation>vertical</orientation>
+            <sashpos>250</sashpos>
+            <object class="wxListCtrl" name="chats">
+                <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
+                <object class="listcol">
+                    <text>Name</text>
+                    <width>-1</width>
+                    <align>wxLIST_FORMAT_LEFT</align>
                 </object>
             </object>
-            <object class="sizeritem">
-                <flag>wxEXPAND|wxALL</flag>
-                <minsize>350,400</minsize>
-                <object class="wxScrolledWindow" name="messages">
-                    <scrollrate>1,1</scrollrate>
-                    <object class="wxBoxSizer">
-                        <orient>wxVERTICAL</orient>
-                    </object>
+            <object class="wxScrolledWindow" name="messages">
+                <scrollrate>1,1</scrollrate>
+                <object class="wxBoxSizer">
+                    <orient>wxVERTICAL</orient>
                 </object>
             </object>
         </object>
