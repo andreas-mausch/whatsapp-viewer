@@ -31,5 +31,6 @@ workspace("WhatsAppViewer")
         optimize "On"
 
         filter "system:Windows"
+        architecture "x86"
         toolset "v141_xp"
         staticruntime "On"
