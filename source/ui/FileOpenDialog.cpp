@@ -2,6 +2,8 @@
 
 #include "FileOpenDialog.h"
 
+namespace UI {
+
 std::optional<std::string> fileOpenDialog(wxWindow *parent) {
   wxFileDialog dialog(parent, _("Open Database file"), "", "",
                       "Database files (*.db)|*.db",
@@ -13,3 +15,5 @@ std::optional<std::string> fileOpenDialog(wxWindow *parent) {
 
   return std::make_optional(dialog.GetPath().ToStdString());
 }
+
+} // namespace UI

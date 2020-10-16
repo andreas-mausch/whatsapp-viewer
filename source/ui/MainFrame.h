@@ -12,6 +12,8 @@ class Chat;
 class Database;
 } // namespace WhatsApp
 
+namespace UI {
+
 class MainFrame : public wxFrame {
 public:
   MainFrame(wxWindow *parent);
@@ -30,3 +32,5 @@ private:
   void OnAbout(wxCommandEvent &event);
   wxDECLARE_EVENT_TABLE();
 };
+
+} // namespace UI

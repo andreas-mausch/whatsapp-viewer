@@ -5,4 +5,8 @@
 
 class wxWindow;
 
+namespace UI {
+
 std::optional<std::string> fileOpenDialog(wxWindow *parent);
+
+}

@@ -8,11 +8,13 @@
 
 #include "../whatsapp/Database.h"
 
+namespace UI {
+
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
-    EVT_MENU(XRCID("ID_OpenDatabase"), MainFrame::OnOpenDatabase)
-    EVT_MENU(wxID_EXIT,  MainFrame::OnExit)
-    EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
-    EVT_LIST_ITEM_SELECTED(XRCID("chats"), MainFrame::OnDisplayChat)
+  EVT_MENU(XRCID("ID_OpenDatabase"), MainFrame::OnOpenDatabase)
+  EVT_MENU(wxID_EXIT, MainFrame::OnExit)
+  EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
+  EVT_LIST_ITEM_SELECTED(XRCID("chats"), MainFrame::OnDisplayChat)
 wxEND_EVENT_TABLE()
 
 MainFrame::MainFrame(wxWindow *parent) {
@@ -77,3 +79,5 @@ void MainFrame::openChat(WhatsApp::Chat &chat) {
   messages->SetVirtualSize(messages->GetBestVirtualSize());
   messages->FitInside();
 }
+
+} // namespace UI

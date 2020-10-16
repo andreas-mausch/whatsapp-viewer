@@ -5,6 +5,8 @@
 
 extern void InitXmlResource();
 
+namespace UI {
+
 bool App::OnInit() {
   wxXmlResource::Get()->InitAllHandlers();
   InitXmlResource();
@@ -15,3 +17,5 @@ bool App::OnInit() {
 
   return true;
 }
+
+} // namespace UI

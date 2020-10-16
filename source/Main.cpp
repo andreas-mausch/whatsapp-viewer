@@ -2,4 +2,4 @@
 
 #include "ui/App.h"
 
-wxIMPLEMENT_APP(App);
+wxIMPLEMENT_APP(UI::App);
