@@ -1,10 +1,11 @@
-#include <wx/listctrl.h>
+#include <memory>
+
 #include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
 
+#include "DatabasePanel.h"
 #include "FileOpenDialog.h"
 #include "MainFrame.h"
-#include "MessagePanel.h"
 
 #include "../whatsapp/Database.h"
 
@@ -14,10 +15,10 @@ wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
   EVT_MENU(XRCID("ID_OpenDatabase"), MainFrame::OnOpenDatabase)
   EVT_MENU(wxID_EXIT, MainFrame::OnExit)
   EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
-  EVT_LIST_ITEM_SELECTED(XRCID("chats"), MainFrame::OnDisplayChat)
 wxEND_EVENT_TABLE()
 
-MainFrame::MainFrame(wxWindow *parent) {
+MainFrame::MainFrame(wxWindow *parent)
+    : mainPanel(std::nullopt) {
   wxXmlResource::Get()->LoadFrame(this, parent, _("MainFrame"));
   SetIcon(wxXmlResource::Get()->LoadIcon(_("icon")));
   SetStatusText(_("Welcome to wxWidgets!"));
@@ -37,47 +38,15 @@ void MainFrame::OnOpenDatabase(wxCommandEvent &event) {
     return;
   }
 
-  database = std::make_unique<WhatsApp::Database>(*filename);
-  selectedChat = std::nullopt;
-  chats = database->loadChats();
-  updateChats();
-}
-
-void MainFrame::OnDisplayChat(wxListEvent &event) {
-  WhatsApp::Chat &chat = *reinterpret_cast<WhatsApp::Chat *>(event.GetData());
-  openChat(chat);
-}
-
-void MainFrame::updateChats() {
-  wxListCtrl *chatControl = XRCCTRL(*this, "chats", wxListCtrl);
-  chatControl->DeleteAllItems();
-
-  for (auto &chat : chats) {
-    wxListItem item;
-    item.SetId(chatControl->GetItemCount());
-    item.SetData(&chat);
-    item.SetText(chat.getId());
-    chatControl->InsertItem(item);
+  if (mainPanel) {
+    (*mainPanel)->Destroy();
+    mainPanel = std::nullopt;
   }
 
-  chatControl->SetColumnWidth(0, wxLIST_AUTOSIZE);
-}
-
-void MainFrame::openChat(WhatsApp::Chat &chat) {
-  chat.setMessages(database->loadMessages(chat));
-  selectedChat = std::make_optional(&chat);
-
-  wxScrolledWindow *messages = XRCCTRL(*this, "messages", wxScrolledWindow);
-  wxSizer *sizer = messages->GetSizer();
-  sizer->Clear(true);
-
-  for (auto &message : chat.getMessages()) {
-    sizer->Add(new MessagePanel(messages, message.getId()));
-  }
-
-  sizer->Layout();
-  messages->SetVirtualSize(messages->GetBestVirtualSize());
-  messages->FitInside();
+  auto database = std::make_unique<WhatsApp::Database>(*filename);
+  mainPanel = std::make_optional<DatabasePanel *>(
+      new DatabasePanel(this, std::move(database)));
+  wxXmlResource::Get()->AttachUnknownControl("mainPanel", *mainPanel);
 }
 
 } // namespace UI

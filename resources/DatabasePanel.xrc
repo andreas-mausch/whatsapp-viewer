@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<resource
+    xmlns="http://www.wxwidgets.org/wxxrc" version="2.3.0.1">
+    <object class="wxPanel" name="DatabasePanel">
+        <object class="wxFlexGridSizer">
+            <growablecols>0</growablecols>
+            <growablerows>0</growablerows>
+            <object class="sizeritem">
+                <flag>wxALL|wxEXPAND</flag>
+                <object class="wxSplitterWindow">
+                    <orientation>vertical</orientation>
+                    <sashpos>250</sashpos>
+                    <object class="wxListCtrl" name="chats">
+                        <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
+                        <object class="listcol">
+                            <text>Name</text>
+                            <width>-1</width>
+                            <align>wxLIST_FORMAT_LEFT</align>
+                        </object>
+                    </object>
+                    <object class="wxScrolledWindow" name="messages">
+                        <scrollrate>1,1</scrollrate>
+                        <object class="wxBoxSizer">
+                            <orient>wxVERTICAL</orient>
+                        </object>
+                    </object>
+                </object>
+            </object>
+        </object>
+    </object>
+</resource>
