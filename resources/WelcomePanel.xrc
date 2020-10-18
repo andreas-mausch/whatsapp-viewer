@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<resource
+    xmlns="http://www.wxwidgets.org/wxxrc" version="2.3.0.1">
+    <object class="wxPanel" name="WelcomePanel">
+        <object class="wxFlexGridSizer">
+            <growablecols>0</growablecols>
+            <growablerows>0</growablerows>
+            <object class="sizeritem">
+                <flag>wxALIGN_CENTER</flag>
+                <object class="wxPanel">
+                    <object class="wxBoxSizer">
+                        <orient>wxVERTICAL</orient>
+                        <object class="sizeritem">
+                            <flag>wxALL|wxALIGN_CENTER</flag>
+                            <border>5</border>
+                            <object class="wxStaticText">
+                                <label>Welcome to WhatsApp Viewer</label>
+                                <font>
+                                    <sysfont>wxSYS_DEFAULT_GUI_FONT</sysfont>
+                                    <weight>bold</weight>
+                                    <relativesize>1.5</relativesize>
+                                </font>
+                            </object>
+                        </object>
+                        <object class="spacer">
+                            <size>-1,30</size>
+                        </object>
+                        <object class="sizeritem">
+                            <flag>wxALL</flag>
+                            <border>5</border>
+                            <object class="wxStaticText">
+                                <wrap>300</wrap>
+                                <label>To load a previously decryted database, or a plain database downloaded from a rooted device, please click File->Open database... to load the database.</label>
+                            </object>
+                        </object>
+                        <object class="sizeritem">
+                            <flag>wxALL</flag>
+                            <border>5</border>
+                            <object class="wxStaticText">
+                                <wrap>300</wrap>
+                                <label>In order to decrypt a .crypt12 database file, you need to have the matching key file as well. If you do, please click File->Decrypt... and perform the wizard steps.</label>
+                            </object>
+                        </object>
+                    </object>
+                </object>
+            </object>
+        </object>
+    </object>
+</resource>

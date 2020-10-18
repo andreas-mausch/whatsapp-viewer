@@ -6,6 +6,7 @@
 #include "DatabasePanel.h"
 #include "FileOpenDialog.h"
 #include "MainFrame.h"
+#include "WelcomePanel.h"
 
 #include "../whatsapp/Database.h"
 
@@ -21,7 +22,7 @@ MainFrame::MainFrame(wxWindow *parent)
     : mainPanel(std::nullopt) {
   wxXmlResource::Get()->LoadFrame(this, parent, _("MainFrame"));
   SetIcon(wxXmlResource::Get()->LoadIcon(_("icon")));
-  SetStatusText(_("Welcome to wxWidgets!"));
+  setMainPanel(new WelcomePanel(this));
 }
 
 void MainFrame::OnExit(wxCommandEvent &event) { Close(true); }
@@ -44,8 +45,15 @@ void MainFrame::OnOpenDatabase(wxCommandEvent &event) {
   }
 
   auto database = std::make_unique<WhatsApp::Database>(*filename);
-  mainPanel = std::make_optional<DatabasePanel *>(
-      new DatabasePanel(this, std::move(database)));
+  setMainPanel(new DatabasePanel(this, std::move(database)));
+}
+
+void MainFrame::setMainPanel(wxPanel *panel) {
+  if (mainPanel) {
+    (*mainPanel)->Destroy();
+  }
+
+  mainPanel = std::make_optional<wxPanel *>(panel);
   wxXmlResource::Get()->AttachUnknownControl("mainPanel", *mainPanel);
 }
 

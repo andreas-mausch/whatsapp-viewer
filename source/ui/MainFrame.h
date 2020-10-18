@@ -13,6 +13,8 @@ public:
 private:
   std::optional<wxPanel *> mainPanel;
 
+  void setMainPanel(wxPanel *panel);
+
   void OnOpenDatabase(wxCommandEvent &event);
   void OnExit(wxCommandEvent &event);
   void OnAbout(wxCommandEvent &event);

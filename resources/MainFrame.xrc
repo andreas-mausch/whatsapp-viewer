@@ -21,7 +21,6 @@
                 <object class="wxMenuItem" name="wxID_ABOUT" />
             </object>
         </object>
-        <object class="wxStatusBar" name="status_bar" />
         <object class="wxFlexGridSizer">
             <growablecols>0</growablecols>
             <growablerows>0</growablerows>
