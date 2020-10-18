@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<resource
+    xmlns="http://www.wxwidgets.org/wxxrc" version="2.3.0.1">
+    <object class="wxScrolledWindow" name="PanelList">
+        <scrollrate>1,1</scrollrate>
+        <object class="wxBoxSizer">
+            <orient>wxVERTICAL</orient>
+        </object>
+    </object>
+</resource>

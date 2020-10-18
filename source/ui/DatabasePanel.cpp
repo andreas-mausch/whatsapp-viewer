@@ -3,7 +3,7 @@
 #include <wx/xrc/xmlres.h>
 
 #include "DatabasePanel.h"
-#include "MessagePanel.h"
+#include "MessagePanelList.h"
 
 #include "../whatsapp/Database.h"
 
@@ -16,6 +16,8 @@ wxEND_EVENT_TABLE()
 DatabasePanel::DatabasePanel(wxWindow *parent, std::unique_ptr<WhatsApp::Database> database)
     : database(std::move(database)), selectedChat(std::nullopt) {
   wxXmlResource::Get()->LoadPanel(this, parent, _("DatabasePanel"));
+  wxXmlResource::Get()->AttachUnknownControl("messages", new MessagePanelList(this));
+
   chats = this->database->loadChats();
   updateChats();
 }
@@ -44,17 +46,9 @@ void DatabasePanel::openChat(WhatsApp::Chat &chat) {
   chat.setMessages(database->loadMessages(chat));
   selectedChat = std::make_optional(&chat);
 
-  wxScrolledWindow *messages = XRCCTRL(*this, "messages", wxScrolledWindow);
-  wxSizer *sizer = messages->GetSizer();
-  sizer->Clear(true);
-
-  for (auto &message : chat.getMessages()) {
-    sizer->Add(new MessagePanel(messages, message.getId()));
-  }
-
-  sizer->Layout();
-  messages->SetVirtualSize(messages->GetBestVirtualSize());
-  messages->FitInside();
+  auto *messages = XRCCTRL(*this, "messages", MessagePanelList);
+  messages->clear();
+  messages->setList(chat.getMessages());
 }
 
 } // namespace UI

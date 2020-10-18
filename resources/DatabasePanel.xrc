@@ -18,12 +18,7 @@
                             <align>wxLIST_FORMAT_LEFT</align>
                         </object>
                     </object>
-                    <object class="wxScrolledWindow" name="messages">
-                        <scrollrate>1,1</scrollrate>
-                        <object class="wxBoxSizer">
-                            <orient>wxVERTICAL</orient>
-                        </object>
-                    </object>
+                    <object class="unknown" name="messages" />
                 </object>
             </object>
         </object>
