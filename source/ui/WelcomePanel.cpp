@@ -5,9 +5,6 @@
 
 namespace UI {
 
-wxBEGIN_EVENT_TABLE(WelcomePanel, wxPanel)
-wxEND_EVENT_TABLE()
-
 WelcomePanel::WelcomePanel(wxWindow *parent) {
   wxXmlResource::Get()->LoadPanel(this, parent, _("WelcomePanel"));
 }

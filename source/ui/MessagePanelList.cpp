@@ -8,9 +8,6 @@
 
 namespace UI {
 
-wxBEGIN_EVENT_TABLE(MessagePanelList, wxScrolledWindow)
-wxEND_EVENT_TABLE()
-
 MessagePanelList::MessagePanelList(wxWindow *parent) {
   wxXmlResource::Get()->LoadObject(this, parent, _("PanelList"), "wxScrolledWindow");
 }

@@ -15,9 +15,6 @@ public:
 
   void clear();
   void setList(const std::vector<WhatsApp::Message> &list);
-
-private:
-  wxDECLARE_EVENT_TABLE();
 };
 
 } // namespace UI
