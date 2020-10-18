@@ -26,8 +26,6 @@ private:
   void openChat(WhatsApp::Chat &chat);
 
   void OnDisplayChat(wxListEvent &event);
-
-  wxDECLARE_EVENT_TABLE();
 };
 
 } // namespace UI

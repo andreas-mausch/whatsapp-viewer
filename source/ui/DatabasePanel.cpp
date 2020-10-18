@@ -9,12 +9,9 @@
 
 namespace UI {
 
-wxBEGIN_EVENT_TABLE(DatabasePanel, wxPanel)
-  EVT_LIST_ITEM_SELECTED(XRCID("chats"), DatabasePanel::OnDisplayChat)
-wxEND_EVENT_TABLE()
-
 DatabasePanel::DatabasePanel(wxWindow *parent, std::unique_ptr<WhatsApp::Database> database)
     : database(std::move(database)), selectedChat(std::nullopt) {
+  Bind(wxEVT_LIST_ITEM_SELECTED, &DatabasePanel::OnDisplayChat, this, XRCID("chats"));
   wxXmlResource::Get()->LoadPanel(this, parent, _("DatabasePanel"));
   wxXmlResource::Get()->AttachUnknownControl("messages", new MessagePanelList(this));
 
