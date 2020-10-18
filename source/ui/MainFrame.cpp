@@ -12,15 +12,14 @@
 
 namespace UI {
 
-wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
-  EVT_MENU(XRCID("ID_OpenDatabase"), MainFrame::OnOpenDatabase)
-  EVT_MENU(wxID_EXIT, MainFrame::OnExit)
-  EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
-wxEND_EVENT_TABLE()
-
 MainFrame::MainFrame(wxWindow *parent)
     : mainPanel(std::nullopt) {
   wxXmlResource::Get()->LoadFrame(this, parent, _("MainFrame"));
+
+  Bind(wxEVT_MENU, &MainFrame::OnOpenDatabase, this, XRCID("ID_OpenDatabase"));
+  Bind(wxEVT_MENU, &MainFrame::OnExit, this, wxID_EXIT);
+  Bind(wxEVT_MENU, &MainFrame::OnAbout, this, wxID_ABOUT);
+
   SetIcon(wxXmlResource::Get()->LoadIcon(_("icon")));
   setMainPanel(new WelcomePanel(this));
 }
