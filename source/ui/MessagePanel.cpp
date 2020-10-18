@@ -3,11 +3,13 @@
 
 #include "MessagePanel.h"
 
+#include "../whatsapp/Message.h"
+
 namespace UI {
 
-MessagePanel::MessagePanel(wxWindow *parent, const std::string &message) {
+MessagePanel::MessagePanel(wxWindow *parent, const WhatsApp::Message &message) {
   wxXmlResource::Get()->LoadPanel(this, parent, _("MessagePanel"));
-  XRCCTRL(*this, "message", wxStaticText)->SetLabelText(message);
+  XRCCTRL(*this, "message", wxStaticText)->SetLabelText(message.getId());
 }
 
 } // namespace UI
