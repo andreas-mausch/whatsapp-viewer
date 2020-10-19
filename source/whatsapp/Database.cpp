@@ -50,7 +50,9 @@ std::vector<Message> Database::loadMessages(const Chat &chat) {
   std::vector<Message> messages;
   while (statement.executeStep()) {
     std::string id = statement.getColumn(0);
-    messages.push_back(Message(id));
+    std::string data = statement.getColumn(4);
+    std::string thumbnail = statement.getColumn(18);
+    messages.push_back(Message(id, data, thumbnail.length() > 0 ? std::make_optional(thumbnail) : std::nullopt));
   }
 
   return messages;

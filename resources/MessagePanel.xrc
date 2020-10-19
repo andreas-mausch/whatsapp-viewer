@@ -2,8 +2,14 @@
 <resource
     xmlns="http://www.wxwidgets.org/wxxrc" version="2.3.0.1">
     <object class="wxPanel" name="MessagePanel">
-        <object class="wxStaticText" name="message">
-            <label />
+        <object class="wxBoxSizer">
+            <orient>wxVERTICAL</orient>
+            <object class="sizeritem">
+                <object class="wxStaticText" name="message" />
+            </object>
+            <object class="sizeritem">
+                <object class="wxStaticBitmap" name="thumbnail" />
+            </object>
         </object>
     </object>
 </resource>
