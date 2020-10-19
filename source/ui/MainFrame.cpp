@@ -38,12 +38,16 @@ void MainFrame::OnOpenDatabase(wxCommandEvent &event) {
     return;
   }
 
+  openDatabase(*filename);
+}
+
+void MainFrame::openDatabase(const std::string &filename) {
   if (mainPanel) {
     (*mainPanel)->Destroy();
     mainPanel = std::nullopt;
   }
 
-  auto database = std::make_unique<WhatsApp::Database>(*filename);
+  auto database = std::make_unique<WhatsApp::Database>(filename);
   setMainPanel(new DatabasePanel(this, std::move(database)));
 }
 

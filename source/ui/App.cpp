@@ -15,7 +15,7 @@ bool App::OnInit() {
   InitXmlResource();
   wxInitAllImageHandlers();
 
-  MainFrame *frame = new MainFrame(nullptr);
+  frame = new MainFrame(nullptr);
   frame->Show(true);
 
   return true;
@@ -26,15 +26,22 @@ int App::OnRun() {
     char **argv = this->argv;
 
     options.add_options()
-          ("h,help", "Print usage");
+          ("h,help", "Print usage")
+          ("database", "Load database file", cxxopts::value<std::string>());
+    options.parse_positional({"database"});
     auto parsed = options.parse(argc, argv);
 
     if (parsed.count("help")) {
       std::cout << options.help() << std::endl;
       return 0;
     }
+
+    if (parsed.count("database")) {
+      auto filename = parsed["database"].as<std::string>();
+      frame->openDatabase(filename);
+    }
   } catch (cxxopts::OptionException &exception) {
-    std::cout << "Invalid options" << std::endl;
+    std::cout << "Invalid options: " << exception.what() << std::endl;
     std::cout << options.help() << std::endl;
     return -1;
   }

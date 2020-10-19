@@ -9,6 +9,7 @@ namespace UI {
 class MainFrame : public wxFrame {
 public:
   MainFrame(wxWindow *parent);
+  void openDatabase(const std::string &filename);
 
 private:
   std::optional<wxPanel *> mainPanel;
