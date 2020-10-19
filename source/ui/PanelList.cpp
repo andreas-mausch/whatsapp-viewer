@@ -24,7 +24,7 @@ void PanelList<T, Panel>::clear() {
 template <class T, class Panel>
 void PanelList<T, Panel>::setList(const std::vector<T> &list) {
   for (auto &item : list) {
-    GetSizer()->Add(new Panel(this, item));
+    GetSizer()->Add(new Panel(this, item), wxSizerFlags().Expand().Border(wxALL, 0));
   }
 
   GetSizer()->Layout();
