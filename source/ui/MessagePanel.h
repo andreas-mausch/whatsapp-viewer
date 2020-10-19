@@ -8,7 +8,7 @@ namespace UI {
 
 class MessagePanel : public wxPanel {
 public:
-  MessagePanel(wxWindow *parent, const WhatsApp::Message &message);
+  MessagePanel(wxWindow *parent, const WhatsApp::Message *message);
 };
 
 } // namespace UI

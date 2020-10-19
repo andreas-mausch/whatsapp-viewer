@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SQLiteCpp/SQLiteCpp.h>
+#include <memory>
 #include <vector>
 
 #include "Chat.h"
@@ -15,8 +16,8 @@ private:
 public:
   Database(const std::string &filename);
 
-  std::vector<Chat> loadChats();
-  std::vector<Message> loadMessages(const Chat &chat);
+  std::vector<std::unique_ptr<Chat>> loadChats();
+  std::vector<std::unique_ptr<Message>> loadMessages(const Chat &chat);
 };
 
 } // namespace WhatsApp

@@ -8,11 +8,11 @@
 
 namespace UI {
 
-MessagePanel::MessagePanel(wxWindow *parent, const WhatsApp::Message &message) {
+MessagePanel::MessagePanel(wxWindow *parent, const WhatsApp::Message *message) {
   wxXmlResource::Get()->LoadPanel(this, parent, _("MessagePanel"));
-  XRCCTRL(*this, "message", wxStaticText)->SetLabelText(message.getData());
+  XRCCTRL(*this, "message", wxStaticText)->SetLabelText(message->getData());
 
-  auto thumbnail = message.getThumbnail();
+  auto thumbnail = message->getThumbnail();
   if (thumbnail) {
     wxMemoryInputStream stream(thumbnail->c_str(), thumbnail->length());
     wxImage image(stream);

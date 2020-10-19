@@ -19,7 +19,7 @@ public:
 
 private:
   std::unique_ptr<WhatsApp::Database> database;
-  std::vector<WhatsApp::Chat> chats;
+  std::vector<std::unique_ptr<WhatsApp::Chat>> chats;
   std::optional<WhatsApp::Chat *> selectedChat;
 
   void updateChats();

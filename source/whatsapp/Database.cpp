@@ -4,7 +4,7 @@ namespace WhatsApp {
 
 Database::Database(const std::string &filename) : database(filename) {}
 
-std::vector<Chat> Database::loadChats() {
+std::vector<std::unique_ptr<Chat>> Database::loadChats() {
   std::string query = "SELECT chat_list.key_remote_jid, chat_list.subject, "
                       "chat_list.creation, max(messages.timestamp) "
                       "FROM chat_list "
@@ -15,16 +15,16 @@ std::vector<Chat> Database::loadChats() {
                       "ORDER BY max(messages.timestamp) desc";
 
   SQLite::Statement statement(database, query);
-  std::vector<Chat> chats;
+  std::vector<std::unique_ptr<Chat>> chats;
   while (statement.executeStep()) {
     std::string id = statement.getColumn(0);
-    chats.push_back(Chat(id));
+    chats.push_back(std::make_unique<Chat>(id));
   }
 
   return chats;
 }
 
-std::vector<Message> Database::loadMessages(const Chat &chat) {
+std::vector<std::unique_ptr<Message>> Database::loadMessages(const Chat &chat) {
   std::string query =
       "SELECT messages.key_id, messages.key_remote_jid, messages.key_from_me, "
       "messages.status, messages.data, messages.timestamp, messages.media_url, "
@@ -47,12 +47,12 @@ std::vector<Message> Database::loadMessages(const Chat &chat) {
   SQLite::Statement statement(database, query);
   statement.bind(1, chat.getId());
 
-  std::vector<Message> messages;
+  std::vector<std::unique_ptr<Message>> messages;
   while (statement.executeStep()) {
     std::string id = statement.getColumn(0);
     std::string data = statement.getColumn(4);
     std::string thumbnail = statement.getColumn(18);
-    messages.push_back(Message(id, data, thumbnail.length() > 0 ? std::make_optional(thumbnail) : std::nullopt));
+    messages.push_back(std::make_unique<Message>(id, data, thumbnail.length() > 0 ? std::make_optional(thumbnail) : std::nullopt));
   }
 
   return messages;

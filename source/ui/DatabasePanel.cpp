@@ -10,13 +10,13 @@
 
 namespace UI {
 
-template class PanelList<WhatsApp::Message, MessagePanel>;
+template class PanelList<WhatsApp::Message *, MessagePanel>;
 
 DatabasePanel::DatabasePanel(wxWindow *parent, std::unique_ptr<WhatsApp::Database> database)
     : database(std::move(database)), selectedChat(std::nullopt) {
   Bind(wxEVT_LIST_ITEM_SELECTED, &DatabasePanel::OnDisplayChat, this, XRCID("chats"));
   wxXmlResource::Get()->LoadPanel(this, parent, _("DatabasePanel"));
-  wxXmlResource::Get()->AttachUnknownControl("messages", new PanelList<WhatsApp::Message, MessagePanel>(this));
+  wxXmlResource::Get()->AttachUnknownControl("messages", new PanelList<WhatsApp::Message *, MessagePanel>(this));
 
   chats = this->database->loadChats();
   updateChats();
@@ -34,8 +34,8 @@ void DatabasePanel::updateChats() {
   for (auto &chat : chats) {
     wxListItem item;
     item.SetId(chatControl->GetItemCount());
-    item.SetData(&chat);
-    item.SetText(chat.getId());
+    item.SetData(chat.get());
+    item.SetText(chat->getId());
     chatControl->InsertItem(item);
   }
 
@@ -46,9 +46,13 @@ void DatabasePanel::openChat(WhatsApp::Chat &chat) {
   chat.setMessages(database->loadMessages(chat));
   selectedChat = std::make_optional(&chat);
 
-  auto *messages = static_cast<PanelList<WhatsApp::Message, MessagePanel> *>(this->FindWindowByName("messages"));
-  messages->clear();
-  messages->setList(chat.getMessages());
+  auto *messagesPanel = static_cast<PanelList<WhatsApp::Message *, MessagePanel> *>(this->FindWindowByName("messages"));
+  messagesPanel->clear();
+
+  std::vector<WhatsApp::Message *> messages;
+  std::transform(chat.getMessages().begin(), chat.getMessages().end(), std::back_inserter(messages),
+      [](const auto& message){return message.get();});
+  messagesPanel->setList(messages);
 }
 
 } // namespace UI
