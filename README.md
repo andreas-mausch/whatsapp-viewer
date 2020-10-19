@@ -81,3 +81,4 @@ For Visual Studio Code I use the `llvm-vs-code-extensions.vscode-clangd` extensi
 - premake
 - wxWidgets
 - sqlite and sqlitecpp
+- cxxopts
