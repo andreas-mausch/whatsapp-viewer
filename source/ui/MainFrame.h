@@ -17,6 +17,7 @@ private:
   void setMainPanel(wxPanel *panel);
 
   void OnOpenDatabase(wxCommandEvent &event);
+  void OnDropFiles(wxDropFilesEvent &event);
   void OnExit(wxCommandEvent &event);
   void OnAbout(wxCommandEvent &event);
 };

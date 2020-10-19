@@ -15,10 +15,12 @@ namespace UI {
 MainFrame::MainFrame(wxWindow *parent)
     : mainPanel(std::nullopt) {
   wxXmlResource::Get()->LoadFrame(this, parent, _("MainFrame"));
+  DragAcceptFiles(true);
 
   Bind(wxEVT_MENU, &MainFrame::OnOpenDatabase, this, XRCID("ID_OpenDatabase"));
   Bind(wxEVT_MENU, &MainFrame::OnExit, this, wxID_EXIT);
   Bind(wxEVT_MENU, &MainFrame::OnAbout, this, wxID_ABOUT);
+  Bind(wxEVT_DROP_FILES, wxDropFilesEventHandler(MainFrame::OnDropFiles), this, wxID_ANY);
 
   SetIcon(wxXmlResource::Get()->LoadIcon(_("icon")));
   setMainPanel(new WelcomePanel(this));
@@ -39,6 +41,12 @@ void MainFrame::OnOpenDatabase(wxCommandEvent &event) {
   }
 
   openDatabase(*filename);
+}
+
+void MainFrame::OnDropFiles(wxDropFilesEvent &event) {
+  if (event.GetNumberOfFiles() == 1) {
+    openDatabase(event.GetFiles()[0].ToStdString());
+  }
 }
 
 void MainFrame::openDatabase(const std::string &filename) {
