@@ -16,6 +16,8 @@ workspace("WhatsAppViewer")
 
         prebuildcommands { "{MKDIR} generated" }
 
+        defines { "LIBASYNC_STATIC" }
+
         filter "system:Windows"
         prebuildcommands { "\"./bin/wxrc.exe\" /c resources/*.xrc /o generated/Resources.cpp" }
 

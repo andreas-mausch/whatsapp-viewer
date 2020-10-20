@@ -22,7 +22,8 @@ private:
   std::vector<std::unique_ptr<WhatsApp::Chat>> chats;
   std::optional<WhatsApp::Chat *> selectedChat;
 
-  void updateChats();
+  void updateChats(wxCommandEvent &event);
+  void updateMessages(wxCommandEvent &event);
   void openChat(WhatsApp::Chat &chat);
 
   void OnDisplayChat(wxListEvent &event);

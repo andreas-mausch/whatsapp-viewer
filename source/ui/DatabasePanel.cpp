@@ -1,3 +1,5 @@
+#include <async++.h>
+
 #include <wx/listctrl.h>
 #include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
@@ -12,14 +14,22 @@ namespace UI {
 
 template class PanelList<WhatsApp::Message *, MessagePanel>;
 
+wxDEFINE_EVENT(DATABASE_PANEL_CHATS_LOADED, wxCommandEvent);
+wxDEFINE_EVENT(DATABASE_PANEL_MESSAGES_LOADED, wxCommandEvent);
+
 DatabasePanel::DatabasePanel(wxWindow *parent, std::unique_ptr<WhatsApp::Database> database)
     : database(std::move(database)), selectedChat(std::nullopt) {
   Bind(wxEVT_LIST_ITEM_SELECTED, &DatabasePanel::OnDisplayChat, this, XRCID("chats"));
+  Bind(DATABASE_PANEL_CHATS_LOADED, &DatabasePanel::updateChats, this);
+  Bind(DATABASE_PANEL_MESSAGES_LOADED, &DatabasePanel::updateMessages, this);
   wxXmlResource::Get()->LoadPanel(this, parent, _("DatabasePanel"));
   wxXmlResource::Get()->AttachUnknownControl("messages", new PanelList<WhatsApp::Message *, MessagePanel>(this));
 
-  chats = this->database->loadChats();
-  updateChats();
+  async::spawn([this] { return this->database->loadChats(); })
+    .then([this](std::vector<std::unique_ptr<WhatsApp::Chat>> chats) {
+      this->chats = std::move(chats);
+      wxPostEvent(this, wxCommandEvent(DATABASE_PANEL_CHATS_LOADED));
+    });
 }
 
 void DatabasePanel::OnDisplayChat(wxListEvent &event) {
@@ -27,7 +37,7 @@ void DatabasePanel::OnDisplayChat(wxListEvent &event) {
   openChat(chat);
 }
 
-void DatabasePanel::updateChats() {
+void DatabasePanel::updateChats(wxCommandEvent &event) {
   wxListCtrl *chatControl = XRCCTRL(*this, "chats", wxListCtrl);
   chatControl->DeleteAllItems();
 
@@ -42,17 +52,25 @@ void DatabasePanel::updateChats() {
   chatControl->SetColumnWidth(0, wxLIST_AUTOSIZE);
 }
 
-void DatabasePanel::openChat(WhatsApp::Chat &chat) {
-  chat.setMessages(database->loadMessages(chat));
-  selectedChat = std::make_optional(&chat);
-
+void DatabasePanel::updateMessages(wxCommandEvent &event) {
   auto *messagesPanel = static_cast<PanelList<WhatsApp::Message *, MessagePanel> *>(this->FindWindowByName("messages"));
   messagesPanel->clear();
 
-  std::vector<WhatsApp::Message *> messages;
-  std::transform(chat.getMessages().begin(), chat.getMessages().end(), std::back_inserter(messages),
-      [](const auto& message){return message.get();});
-  messagesPanel->setList(messages);
+  if (selectedChat) {
+    std::vector<WhatsApp::Message *> messagePointers;
+    std::transform((*selectedChat)->getMessages().begin(), (*selectedChat)->getMessages().end(), std::back_inserter(messagePointers),
+        [](const auto& message){return message.get();});
+    messagesPanel->setList(messagePointers);
+  }
+}
+
+void DatabasePanel::openChat(WhatsApp::Chat &chat) {
+  async::spawn([this, &chat] { return this->database->loadMessages(chat); })
+    .then([this, &chat](std::vector<std::unique_ptr<WhatsApp::Message>> messages) {
+      chat.setMessages(std::move(messages));
+      selectedChat = std::make_optional(&chat);
+      wxPostEvent(this, wxCommandEvent(DATABASE_PANEL_MESSAGES_LOADED));
+    });
 }
 
 } // namespace UI
