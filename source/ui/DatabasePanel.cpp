@@ -1,3 +1,6 @@
+#include <asynqro/future.h>
+#include <asynqro/tasks.h>
+
 #include <wx/listctrl.h>
 #include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
@@ -6,6 +9,7 @@
 #include "MessagePanel.h"
 #include "PanelList.cpp"
 
+#include "../whatsapp/Chat.h"
 #include "../whatsapp/Database.h"
 
 namespace UI {
@@ -18,8 +22,11 @@ DatabasePanel::DatabasePanel(wxWindow *parent, std::unique_ptr<WhatsApp::Databas
   wxXmlResource::Get()->LoadPanel(this, parent, _("DatabasePanel"));
   wxXmlResource::Get()->AttachUnknownControl("messages", new PanelList<WhatsApp::Message *, MessagePanel>(this));
 
-  chats = this->database->loadChats();
-  updateChats();
+  asynqro::tasks::run([this]() { return this->database->loadChats(); })
+    .onSuccess([](std::vector<std::unique_ptr<WhatsApp::Chat>> chats) {
+      // this->chats = std::move(chats);
+      // this->updateChats();
+    });
 }
 
 void DatabasePanel::OnDisplayChat(wxListEvent &event) {
@@ -28,31 +35,39 @@ void DatabasePanel::OnDisplayChat(wxListEvent &event) {
 }
 
 void DatabasePanel::updateChats() {
+  std::cout << "updateChats 1" << std::endl;
   wxListCtrl *chatControl = XRCCTRL(*this, "chats", wxListCtrl);
+  std::cout << "updateChats 2" << std::endl;
   chatControl->DeleteAllItems();
+  std::cout << "updateChats 3" << std::endl;
 
   for (auto &chat : chats) {
+    std::cout << "updateChats 3a: " << chat->getId() << std::endl;
     wxListItem item;
     item.SetId(chatControl->GetItemCount());
     item.SetData(chat.get());
     item.SetText(chat->getId());
     chatControl->InsertItem(item);
   }
+  std::cout << "updateChats 4" << std::endl;
 
   chatControl->SetColumnWidth(0, wxLIST_AUTOSIZE);
 }
 
 void DatabasePanel::openChat(WhatsApp::Chat &chat) {
-  chat.setMessages(database->loadMessages(chat));
-  selectedChat = std::make_optional(&chat);
+/*  asynqro::tasks::run([this, &chat]() { return database->loadMessages(chat); })
+    .onSuccess([this, &chat](auto messages) {
+      chat.setMessages(std::move(messages));
+      selectedChat = std::make_optional(&chat);
 
-  auto *messagesPanel = static_cast<PanelList<WhatsApp::Message *, MessagePanel> *>(this->FindWindowByName("messages"));
-  messagesPanel->clear();
+      auto *messagesPanel = static_cast<PanelList<WhatsApp::Message *, MessagePanel> *>(this->FindWindowByName("messages"));
+      messagesPanel->clear();
 
-  std::vector<WhatsApp::Message *> messages;
-  std::transform(chat.getMessages().begin(), chat.getMessages().end(), std::back_inserter(messages),
-      [](const auto& message){return message.get();});
-  messagesPanel->setList(messages);
+      std::vector<WhatsApp::Message *> pointerMessages;
+      std::transform(chat.getMessages().begin(), chat.getMessages().end(), std::back_inserter(pointerMessages),
+          [](const auto& message){return message.get();});
+      messagesPanel->setList(pointerMessages);
+    });*/
 }
 
 } // namespace UI
