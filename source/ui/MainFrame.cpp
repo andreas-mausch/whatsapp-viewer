@@ -5,6 +5,7 @@
 
 #include "DatabasePanel.h"
 #include "FileOpenDialog.h"
+#include "LoadingPanel.h"
 #include "MainFrame.h"
 #include "WelcomePanel.h"
 
@@ -52,7 +53,11 @@ void MainFrame::OnDropFiles(wxDropFilesEvent &event) {
 void MainFrame::openDatabase(const std::string &filename) {
   try {
     auto database = std::make_unique<WhatsApp::Database>(filename);
-    setMainPanel(new DatabasePanel(this, std::move(database)));
+    auto loadingPanel = new LoadingPanel(this);
+    auto databasePanel = new DatabasePanel(loadingPanel, std::move(database));
+    loadingPanel->setChild(databasePanel);
+    databasePanel->loadChats();
+    setMainPanel(loadingPanel);
   } catch (std::exception &exception) {
     wxMessageBox(exception.what(), _("An error occured"), wxICON_ERROR);
   }

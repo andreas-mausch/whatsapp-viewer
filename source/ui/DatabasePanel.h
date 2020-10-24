@@ -13,9 +13,12 @@ class Database;
 
 namespace UI {
 
+class LoadingPanel;
+
 class DatabasePanel : public wxPanel {
 public:
   DatabasePanel(wxWindow *parent, std::unique_ptr<WhatsApp::Database> database);
+  void loadChats();
 
 private:
   std::unique_ptr<WhatsApp::Database> database;

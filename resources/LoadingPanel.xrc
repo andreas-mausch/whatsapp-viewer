@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<resource
+    xmlns="http://www.wxwidgets.org/wxxrc" version="2.3.0.1">
+    <object class="wxPanel" name="LoadingPanel">
+        <object class="wxFlexGridSizer">
+            <growablecols>0</growablecols>
+            <growablerows>0</growablerows>
+            <object class="sizeritem">
+                <flag>wxALL|wxEXPAND</flag>
+                <object class="wxFlexGridSizer">
+                    <cols>1</cols>
+                    <rows>2</rows>
+                    <growablecols>0</growablecols>
+                    <growablerows>1</growablerows>
+                    <object class="sizeritem">
+                        <object class="wxStaticText" name="loading">
+                            <label>Loading</label>
+                        </object>
+                    </object>
+                    <object class="sizeritem">
+                        <flag>wxALL|wxEXPAND</flag>
+                        <object class="unknown" name="child" />
+                    </object>
+                </object>
+            </object>
+        </object>
+    </object>
+</resource>
