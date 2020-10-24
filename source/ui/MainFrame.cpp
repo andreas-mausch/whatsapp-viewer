@@ -13,15 +13,15 @@
 
 namespace UI {
 
-MainFrame::MainFrame(wxWindow *parent)
-    : mainPanel(std::nullopt) {
+MainFrame::MainFrame(wxWindow *parent) {
   wxXmlResource::Get()->LoadFrame(this, parent, _("MainFrame"));
   DragAcceptFiles(true);
 
   Bind(wxEVT_MENU, &MainFrame::OnOpenDatabase, this, XRCID("ID_OpenDatabase"));
   Bind(wxEVT_MENU, &MainFrame::OnExit, this, wxID_EXIT);
   Bind(wxEVT_MENU, &MainFrame::OnAbout, this, wxID_ABOUT);
-  Bind(wxEVT_DROP_FILES, wxDropFilesEventHandler(MainFrame::OnDropFiles), this, wxID_ANY);
+  Bind(wxEVT_DROP_FILES, wxDropFilesEventHandler(MainFrame::OnDropFiles), this,
+       wxID_ANY);
 
   SetIcon(wxXmlResource::Get()->LoadIcon(_("icon")));
   setMainPanel(new WelcomePanel(this));
@@ -53,24 +53,20 @@ void MainFrame::OnDropFiles(wxDropFilesEvent &event) {
 void MainFrame::openDatabase(const std::string &filename) {
   try {
     auto database = std::make_unique<WhatsApp::Database>(filename);
-    auto loadingPanel = new LoadingPanel(this);
-    auto databasePanel = new DatabasePanel(loadingPanel, std::move(database));
-    loadingPanel->setChild(databasePanel);
+    auto databasePanel = new DatabasePanel(getLoadingPanel(), std::move(database));
+    setMainPanel(databasePanel);
     databasePanel->loadChats();
-    setMainPanel(loadingPanel);
   } catch (std::exception &exception) {
     wxMessageBox(exception.what(), _("An error occured"), wxICON_ERROR);
   }
 }
 
 void MainFrame::setMainPanel(wxPanel *panel) {
-  if (mainPanel) {
-    (*mainPanel)->Destroy();
-    mainPanel = std::nullopt;
-  }
+  getLoadingPanel()->setChild(panel);
+}
 
-  mainPanel = std::make_optional<wxPanel *>(panel);
-  wxXmlResource::Get()->AttachUnknownControl("mainPanel", *mainPanel);
+LoadingPanel *MainFrame::getLoadingPanel() {
+  return static_cast<LoadingPanel *>(this->FindWindowByName("loadingPanel"));
 }
 
 } // namespace UI

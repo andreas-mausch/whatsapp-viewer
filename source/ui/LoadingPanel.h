@@ -2,6 +2,8 @@
 
 #include <optional>
 
+#include <wx/wx.h>
+
 namespace async {
   template<class Result> class task;
 }

@@ -4,6 +4,8 @@
 #include <optional>
 #include <vector>
 
+#include <wx/wx.h>
+
 class wxListEvent;
 
 namespace WhatsApp {

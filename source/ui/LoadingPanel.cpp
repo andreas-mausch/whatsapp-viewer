@@ -13,6 +13,11 @@ LoadingPanel::LoadingPanel(wxWindow *parent) {
 }
 
 void LoadingPanel::setChild(wxWindow *child) {
+  wxWindow *previousChild = this->FindWindow("child");
+  if (previousChild != nullptr) {
+    previousChild->Destroy();
+  }
+
   wxXmlResource::Get()->AttachUnknownControl("child", child);
 }
 
