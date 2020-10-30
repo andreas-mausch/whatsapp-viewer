@@ -5,7 +5,6 @@
 #include <wx/xrc/xmlres.h>
 
 #include "DatabasePanel.h"
-#include "LoadingPanel.h"
 #include "MessagePanel.h"
 #include "PanelList.cpp"
 
@@ -25,6 +24,8 @@ DatabasePanel::DatabasePanel(wxWindow *parent, std::unique_ptr<WhatsApp::Databas
   Bind(DATABASE_PANEL_MESSAGES_LOADED, &DatabasePanel::updateMessages, this);
   wxXmlResource::Get()->LoadPanel(this, parent, _("DatabasePanel"));
   wxXmlResource::Get()->AttachUnknownControl("messages", new PanelList<WhatsApp::Message *, MessagePanel>(this));
+
+  loadChats();
 }
 
 void DatabasePanel::loadChats() {
@@ -33,9 +34,6 @@ void DatabasePanel::loadChats() {
       this->chats = std::move(chats);
       wxPostEvent(this, wxCommandEvent(DATABASE_PANEL_CHATS_LOADED));
     });
-
-  auto *loadingPanel = static_cast<LoadingPanel *>(GetParent()->GetParent());
-  loadingPanel->setTask(task);
 }
 
 void DatabasePanel::OnDisplayChat(wxListEvent &event) {

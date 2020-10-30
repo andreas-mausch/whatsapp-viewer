@@ -14,8 +14,8 @@ public:
   void openDatabase(const std::string &filename);
 
 private:
+  std::optional<wxPanel *> mainPanel;
   void setMainPanel(wxPanel *panel);
-  LoadingPanel *getLoadingPanel();
 
   void OnOpenDatabase(wxCommandEvent &event);
   void OnDropFiles(wxDropFilesEvent &event);

@@ -13,7 +13,8 @@
 
 namespace UI {
 
-MainFrame::MainFrame(wxWindow *parent) {
+MainFrame::MainFrame(wxWindow *parent) :
+  mainPanel(std::nullopt) {
   wxXmlResource::Get()->LoadFrame(this, parent, _("MainFrame"));
   DragAcceptFiles(true);
 
@@ -53,20 +54,19 @@ void MainFrame::OnDropFiles(wxDropFilesEvent &event) {
 void MainFrame::openDatabase(const std::string &filename) {
   try {
     auto database = std::make_unique<WhatsApp::Database>(filename);
-    auto databasePanel = new DatabasePanel(getLoadingPanel(), std::move(database));
-    setMainPanel(databasePanel);
-    databasePanel->loadChats();
+    setMainPanel(new DatabasePanel(this, std::move(database)));
   } catch (std::exception &exception) {
     wxMessageBox(exception.what(), _("An error occured"), wxICON_ERROR);
   }
 }
 
 void MainFrame::setMainPanel(wxPanel *panel) {
-  getLoadingPanel()->setChild(panel);
-}
+  if (mainPanel) {
+    (*mainPanel)->Destroy();
+  }
 
-LoadingPanel *MainFrame::getLoadingPanel() {
-  return static_cast<LoadingPanel *>(this->FindWindowByName("loadingPanel"));
+  mainPanel = std::make_optional<wxPanel *>(panel);
+  wxXmlResource::Get()->AttachUnknownControl("mainPanel", *mainPanel);
 }
 
 } // namespace UI
