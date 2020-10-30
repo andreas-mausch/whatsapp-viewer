@@ -18,7 +18,9 @@ public:
   void setTask(async::task<void> &loading);
 
 private:
-  std::optional<async::task<void> *> loading;
+  bool loading;
+
+  void finally(wxCommandEvent &event);
 };
 
 } // namespace UI

@@ -13,8 +13,9 @@
                     <growablecols>0</growablecols>
                     <growablerows>1</growablerows>
                     <object class="sizeritem">
-                        <object class="wxStaticText" name="loading">
-                            <label>Loading</label>
+                        <flag>wxALIGN_CENTER</flag>
+                        <object class="wxAnimationCtrl" name="spinner">
+                            <animation>loading.gif</animation>
                         </object>
                     </object>
                     <object class="sizeritem">
