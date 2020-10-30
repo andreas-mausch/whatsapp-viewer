@@ -24,7 +24,6 @@ void LoadingPanel::setChild(wxWindow *child) {
 void LoadingPanel::setTask(async::task<void> &loading) {
   XRCCTRL(*this, "loading", wxStaticText)->SetForegroundColour(*wxYELLOW);
   this->loading = std::make_optional<async::task<void> *>(&loading);
-  XRCCTRL(*this, "child", wxWindow)->Disable();
   loading.then([this](async::task<void> task) {
     try {
       task.get();
@@ -33,7 +32,6 @@ void LoadingPanel::setTask(async::task<void> &loading) {
       XRCCTRL(*this, "loading", wxStaticText)->SetForegroundColour(*wxRED);
     }
     this->loading = std::nullopt;
-    XRCCTRL(*this, "child", wxWindow)->Enable();
   });
 }
 
