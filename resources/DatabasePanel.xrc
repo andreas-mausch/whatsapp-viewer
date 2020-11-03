@@ -7,7 +7,7 @@
             <growablerows>0</growablerows>
             <object class="sizeritem">
                 <flag>wxALL|wxEXPAND</flag>
-                <object class="LoadingPanel" name="loadingPanel">
+                <object class="LoadingPanel" name="databaseLoadingPanel">
                     <object class="wxSplitterWindow">
                         <orientation>vertical</orientation>
                         <sashpos>250</sashpos>
@@ -19,7 +19,18 @@
                                 <align>wxLIST_FORMAT_LEFT</align>
                             </object>
                         </object>
-                        <object class="unknown" name="messages" />
+                        <object class="LoadingPanel" name="messagesLoadingPanel">
+                            <object class="wxPanel">
+                                <object class="wxFlexGridSizer">
+                                    <growablecols>0</growablecols>
+                                    <growablerows>0</growablerows>
+                                    <object class="sizeritem">
+                                        <flag>wxALL|wxEXPAND</flag>
+                                        <object class="unknown" name="messages" />
+                                    </object>
+                                </object>
+                            </object>
+                        </object>
                     </object>
                 </object>
             </object>

@@ -34,7 +34,8 @@ private:
 
   void OnDisplayChat(wxListEvent &event);
 
-  LoadingPanel &getLoadingPanel();
+  LoadingPanel &getDatabaseLoadingPanel();
+  LoadingPanel &getMessagesLoadingPanel();
 };
 
 } // namespace UI

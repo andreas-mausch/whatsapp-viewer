@@ -29,22 +29,28 @@ DatabasePanel::DatabasePanel(wxWindow *parent, std::unique_ptr<WhatsApp::Databas
 
 DatabasePanel::~DatabasePanel() {
   database->interrupt();
-  getLoadingPanel().cancel();
+  getMessagesLoadingPanel().cancel();
+  getDatabaseLoadingPanel().cancel();
 }
 
-LoadingPanel &DatabasePanel::getLoadingPanel() {
-  return *static_cast<LoadingPanel *>(this->FindWindow("loadingPanel"));
+LoadingPanel &DatabasePanel::getDatabaseLoadingPanel() {
+  return *static_cast<LoadingPanel *>(this->FindWindow("databaseLoadingPanel"));
+}
+
+LoadingPanel &DatabasePanel::getMessagesLoadingPanel() {
+  return *static_cast<LoadingPanel *>(this->FindWindow("messagesLoadingPanel"));
 }
 
 void DatabasePanel::loadChats() {
   auto cancellationToken = std::make_unique<async::cancellation_token>();
   auto task = async::spawn([this] { return this->database->loadChats(); })
     .then([this](std::vector<std::unique_ptr<WhatsApp::Chat>> &&chats) {
+      this->selectedChat = std::nullopt;
       this->chats = std::move(chats);
       wxPostEvent(this, wxCommandEvent(DATABASE_PANEL_CHATS_LOADED));
     });
 
-  getLoadingPanel().setTask(std::move(task), std::move(cancellationToken));
+  getDatabaseLoadingPanel().setTask(std::move(task), std::move(cancellationToken));
 }
 
 void DatabasePanel::OnDisplayChat(wxListEvent &event) {
@@ -68,7 +74,7 @@ void DatabasePanel::updateChats(wxCommandEvent &event) {
 }
 
 void DatabasePanel::updateMessages(wxCommandEvent &event) {
-  auto *messagesPanel = static_cast<PanelList<WhatsApp::Message *, MessagePanel> *>(this->FindWindow("messages"));
+  auto *messagesPanel = static_cast<PanelList<WhatsApp::Message *, MessagePanel> *>(FindWindow("messages"));
   messagesPanel->clear();
 
   if (selectedChat) {
@@ -80,12 +86,18 @@ void DatabasePanel::updateMessages(wxCommandEvent &event) {
 }
 
 void DatabasePanel::openChat(WhatsApp::Chat &chat) {
-  async::spawn([this, &chat] { return this->database->loadMessages(chat); })
+  database->interrupt();
+  getMessagesLoadingPanel().cancel();
+
+  auto cancellationToken = std::make_unique<async::cancellation_token>();
+  auto task = async::spawn([this, &chat] { return this->database->loadMessages(chat); })
     .then([this, &chat](std::vector<std::unique_ptr<WhatsApp::Message>> messages) {
       chat.setMessages(std::move(messages));
       selectedChat = std::make_optional(&chat);
       wxPostEvent(this, wxCommandEvent(DATABASE_PANEL_MESSAGES_LOADED));
     });
+
+  getMessagesLoadingPanel().setTask(std::move(task), std::move(cancellationToken));
 }
 
 } // namespace UI

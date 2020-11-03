@@ -19,12 +19,7 @@ LoadingPanel::LoadingPanel(wxWindow *parent) {
 }
 
 void LoadingPanel::setChild(wxWindow *child) {
-  wxWindow *previousChild = this->FindWindow("child");
-  if (previousChild != nullptr) {
-    previousChild->Destroy();
-  }
-
-  wxXmlResource::Get()->AttachUnknownControl("child", child);
+  wxXmlResource::Get()->AttachUnknownControl("child", child, this);
 }
 
 void LoadingPanel::setTask(async::task<void> loading, std::unique_ptr<async::cancellation_token> cancellationToken) {
