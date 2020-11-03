@@ -18,6 +18,8 @@ public:
 
   std::vector<std::unique_ptr<Chat>> loadChats();
   std::vector<std::unique_ptr<Message>> loadMessages(const Chat &chat);
+
+  void interrupt();
 };
 
 } // namespace WhatsApp

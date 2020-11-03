@@ -1,5 +1,3 @@
-#include <async++.h>
-
 #include <wx/listctrl.h>
 #include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
@@ -29,15 +27,24 @@ DatabasePanel::DatabasePanel(wxWindow *parent, std::unique_ptr<WhatsApp::Databas
   loadChats();
 }
 
+DatabasePanel::~DatabasePanel() {
+  database->interrupt();
+  getLoadingPanel().cancel();
+}
+
+LoadingPanel &DatabasePanel::getLoadingPanel() {
+  return *static_cast<LoadingPanel *>(this->FindWindow("loadingPanel"));
+}
+
 void DatabasePanel::loadChats() {
+  auto cancellationToken = std::make_unique<async::cancellation_token>();
   auto task = async::spawn([this] { return this->database->loadChats(); })
     .then([this](std::vector<std::unique_ptr<WhatsApp::Chat>> &&chats) {
       this->chats = std::move(chats);
       wxPostEvent(this, wxCommandEvent(DATABASE_PANEL_CHATS_LOADED));
     });
 
-  auto *loadingPanel = static_cast<LoadingPanel *>(this->FindWindow("loadingPanel"));
-  loadingPanel->setTask(task);
+  getLoadingPanel().setTask(std::move(task), std::move(cancellationToken));
 }
 
 void DatabasePanel::OnDisplayChat(wxListEvent &event) {

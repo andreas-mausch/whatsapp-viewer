@@ -20,6 +20,7 @@ class LoadingPanel;
 class DatabasePanel : public wxPanel {
 public:
   DatabasePanel(wxWindow *parent, std::unique_ptr<WhatsApp::Database> database);
+  ~DatabasePanel();
   void loadChats();
 
 private:
@@ -32,6 +33,8 @@ private:
   void openChat(WhatsApp::Chat &chat);
 
   void OnDisplayChat(wxListEvent &event);
+
+  LoadingPanel &getLoadingPanel();
 };
 
 } // namespace UI

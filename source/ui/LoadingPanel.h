@@ -1,7 +1,9 @@
 #pragma once
 
+#include <memory>
 #include <optional>
 
+#include <async++.h>
 #include <wx/wx.h>
 
 namespace async {
@@ -15,10 +17,13 @@ public:
   LoadingPanel(wxWindow *parent);
 
   void setChild(wxWindow *child);
-  void setTask(async::task<void> &loading);
+  void setTask(async::task<void> loading, std::unique_ptr<async::cancellation_token> cancellationToken);
+
+  void cancel();
 
 private:
-  bool loading;
+  std::optional<async::task<void>> loading;
+  std::unique_ptr<async::cancellation_token> cancellationToken;
 
   void finally(wxCommandEvent &event);
 };

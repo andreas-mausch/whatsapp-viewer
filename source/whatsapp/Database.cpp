@@ -1,3 +1,5 @@
+#include <sqlite3.h>
+
 #include "Database.h"
 
 namespace WhatsApp {
@@ -56,6 +58,10 @@ std::vector<std::unique_ptr<Message>> Database::loadMessages(const Chat &chat) {
   }
 
   return messages;
+}
+
+void Database::interrupt() {
+  sqlite3_interrupt(database.getHandle());
 }
 
 } // namespace WhatsApp
