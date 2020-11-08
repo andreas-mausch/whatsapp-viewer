@@ -12,7 +12,7 @@
                         <orient>wxVERTICAL</orient>
                         <object class="sizeritem">
                             <flag>wxALL|wxALIGN_CENTER</flag>
-                            <border>5</border>
+                            <border>5d</border>
                             <object class="wxStaticText">
                                 <label>Welcome to WhatsApp Viewer</label>
                                 <font>
@@ -23,19 +23,19 @@
                             </object>
                         </object>
                         <object class="spacer">
-                            <size>-1,30</size>
+                            <size>-1,30d</size>
                         </object>
                         <object class="sizeritem">
                             <flag>wxALL</flag>
-                            <border>5</border>
+                            <border>5d</border>
                             <object class="wxStaticText">
-                                <wrap>300</wrap>
+                                <wrap>300d</wrap>
                                 <label>To load a previously decryted database, or a plain database downloaded from a rooted device, please click File->Open database... to load the database.</label>
                             </object>
                         </object>
                         <object class="sizeritem">
                             <flag>wxALL</flag>
-                            <border>5</border>
+                            <border>5d</border>
                             <object class="wxStaticText">
                                 <wrap>300</wrap>
                                 <label>In order to decrypt a .crypt12 database file, you need to have the matching key file as well. If you do, please click File->Decrypt... and perform the wizard steps.</label>

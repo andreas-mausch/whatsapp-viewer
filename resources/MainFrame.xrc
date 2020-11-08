@@ -25,9 +25,10 @@
             <growablecols>0</growablecols>
             <growablerows>0</growablerows>
             <object class="sizeritem">
-                <minsize>600,400</minsize>
                 <flag>wxALL|wxEXPAND</flag>
-                <object class="unknown" name="panel" />
+                <object class="unknown" name="panel">
+                    <size>600,360d</size>
+                </object>
             </object>
         </object>
     </object>
