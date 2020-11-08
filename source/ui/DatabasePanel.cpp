@@ -18,9 +18,10 @@ wxDEFINE_EVENT(DATABASE_PANEL_MESSAGES_LOADED, wxCommandEvent);
 
 DatabasePanel::DatabasePanel(wxWindow *parent, std::unique_ptr<WhatsApp::Database> database)
     : database(std::move(database)), selectedChat(std::nullopt) {
-  Bind(wxEVT_LIST_ITEM_SELECTED, &DatabasePanel::OnDisplayChat, this, XRCID("chats"));
-  Bind(DATABASE_PANEL_CHATS_LOADED, &DatabasePanel::updateChats, this);
-  Bind(DATABASE_PANEL_MESSAGES_LOADED, &DatabasePanel::updateMessages, this);
+  Bind(wxEVT_LIST_ITEM_SELECTED, &DatabasePanel::onChatSelected, this, XRCID("chats"));
+  Bind(DATABASE_PANEL_CHATS_LOADED, &DatabasePanel::onChatsLoaded, this);
+  Bind(DATABASE_PANEL_MESSAGES_LOADED, &DatabasePanel::onMessagesLoaded, this);
+
   wxXmlResource::Get()->LoadPanel(this, parent, _("DatabasePanel"));
   wxXmlResource::Get()->AttachUnknownControl("messages", new PanelList<WhatsApp::Message *, MessagePanel>(this));
 
@@ -53,12 +54,12 @@ void DatabasePanel::loadChats() {
   getDatabaseLoadingPanel().setTask(std::move(task), std::move(cancellationToken));
 }
 
-void DatabasePanel::OnDisplayChat(wxListEvent &event) {
+void DatabasePanel::onChatSelected(wxListEvent &event) {
   WhatsApp::Chat &chat = *reinterpret_cast<WhatsApp::Chat *>(event.GetData());
-  openChat(chat);
+  displayChat(chat);
 }
 
-void DatabasePanel::updateChats(wxCommandEvent &event) {
+void DatabasePanel::onChatsLoaded(wxCommandEvent &event) {
   wxListCtrl *chatControl = XRCCTRL(*this, "chats", wxListCtrl);
   chatControl->DeleteAllItems();
 
@@ -73,7 +74,7 @@ void DatabasePanel::updateChats(wxCommandEvent &event) {
   chatControl->SetColumnWidth(0, wxLIST_AUTOSIZE);
 }
 
-void DatabasePanel::updateMessages(wxCommandEvent &event) {
+void DatabasePanel::onMessagesLoaded(wxCommandEvent &event) {
   auto *messagesPanel = static_cast<PanelList<WhatsApp::Message *, MessagePanel> *>(FindWindow("messages"));
   messagesPanel->clear();
 
@@ -85,7 +86,7 @@ void DatabasePanel::updateMessages(wxCommandEvent &event) {
   }
 }
 
-void DatabasePanel::openChat(WhatsApp::Chat &chat) {
+void DatabasePanel::displayChat(WhatsApp::Chat &chat) {
   database->interrupt();
   getMessagesLoadingPanel().cancel();
 

@@ -30,11 +30,11 @@ private:
   std::vector<std::unique_ptr<WhatsApp::Chat>> chats;
   std::optional<WhatsApp::Chat *> selectedChat;
 
-  void updateChats(wxCommandEvent &event);
-  void updateMessages(wxCommandEvent &event);
-  void openChat(WhatsApp::Chat &chat);
+  void onChatsLoaded(wxCommandEvent &event);
+  void onMessagesLoaded(wxCommandEvent &event);
 
-  void OnDisplayChat(wxListEvent &event);
+  void onChatSelected(wxListEvent &event);
+  void displayChat(WhatsApp::Chat &chat);
 
   LoadingPanel::LoadingPanel &getDatabaseLoadingPanel();
   LoadingPanel::LoadingPanel &getMessagesLoadingPanel();
