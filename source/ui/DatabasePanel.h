@@ -15,7 +15,9 @@ class Database;
 
 namespace UI {
 
+namespace LoadingPanel {
 class LoadingPanel;
+}
 
 class DatabasePanel : public wxPanel {
 public:
@@ -34,8 +36,8 @@ private:
 
   void OnDisplayChat(wxListEvent &event);
 
-  LoadingPanel &getDatabaseLoadingPanel();
-  LoadingPanel &getMessagesLoadingPanel();
+  LoadingPanel::LoadingPanel &getDatabaseLoadingPanel();
+  LoadingPanel::LoadingPanel &getMessagesLoadingPanel();
 };
 
 } // namespace UI

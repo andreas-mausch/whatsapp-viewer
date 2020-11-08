@@ -6,8 +6,6 @@ class wxCommandEvent;
 
 namespace UI {
 
-class LoadingPanel;
-
 class MainFrame : public wxFrame {
 public:
   MainFrame(wxWindow *parent);

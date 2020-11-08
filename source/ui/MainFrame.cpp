@@ -5,7 +5,6 @@
 
 #include "DatabasePanel.h"
 #include "FileOpenDialog.h"
-#include "LoadingPanel.h"
 #include "MainFrame.h"
 #include "WelcomePanel.h"
 

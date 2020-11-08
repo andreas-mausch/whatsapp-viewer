@@ -3,7 +3,7 @@
 #include <wx/xrc/xmlres.h>
 
 #include "DatabasePanel.h"
-#include "LoadingPanel.h"
+#include "LoadingPanel/LoadingPanel.h"
 #include "MessagePanel.h"
 #include "PanelList.cpp"
 
@@ -33,12 +33,12 @@ DatabasePanel::~DatabasePanel() {
   getDatabaseLoadingPanel().cancel();
 }
 
-LoadingPanel &DatabasePanel::getDatabaseLoadingPanel() {
-  return *static_cast<LoadingPanel *>(this->FindWindow("databaseLoadingPanel"));
+LoadingPanel::LoadingPanel &DatabasePanel::getDatabaseLoadingPanel() {
+  return *static_cast<LoadingPanel::LoadingPanel *>(this->FindWindow("databaseLoadingPanel"));
 }
 
-LoadingPanel &DatabasePanel::getMessagesLoadingPanel() {
-  return *static_cast<LoadingPanel *>(this->FindWindow("messagesLoadingPanel"));
+LoadingPanel::LoadingPanel &DatabasePanel::getMessagesLoadingPanel() {
+  return *static_cast<LoadingPanel::LoadingPanel *>(this->FindWindow("messagesLoadingPanel"));
 }
 
 void DatabasePanel::loadChats() {

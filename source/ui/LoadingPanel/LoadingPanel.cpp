@@ -6,7 +6,7 @@
 
 #include "LoadingPanel.h"
 
-namespace UI {
+namespace UI::LoadingPanel {
 
 wxDEFINE_EVENT(LOADING_PANEL_LOADED, wxCommandEvent);
 wxDEFINE_EVENT(LOADING_PANEL_ERROR, wxCommandEvent);

@@ -10,7 +10,7 @@ namespace async {
   template<class Result> class task;
 }
 
-namespace UI {
+namespace UI::LoadingPanel {
 
 class LoadingPanel : public wxPanel {
 public:
