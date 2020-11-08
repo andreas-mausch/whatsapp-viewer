@@ -12,13 +12,13 @@ public:
   void openDatabase(const std::string &filename);
 
 private:
-  std::optional<wxPanel *> mainPanel;
-  void setMainPanel(wxPanel *panel);
+  std::optional<wxPanel *> panel;
+  void setPanel(wxPanel *panel);
 
-  void OnOpenDatabase(wxCommandEvent &event);
-  void OnDropFiles(wxDropFilesEvent &event);
-  void OnExit(wxCommandEvent &event);
-  void OnAbout(wxCommandEvent &event);
+  void onExit(wxCommandEvent &event);
+  void onAbout(wxCommandEvent &event);
+  void onOpenDatabase(wxCommandEvent &event);
+  void onDropFiles(wxDropFilesEvent &event);
 };
 
 } // namespace UI

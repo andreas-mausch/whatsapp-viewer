@@ -27,7 +27,7 @@
             <object class="sizeritem">
                 <minsize>600,400</minsize>
                 <flag>wxALL|wxEXPAND</flag>
-                <object class="unknown" name="mainPanel" />
+                <object class="unknown" name="panel" />
             </object>
         </object>
     </object>
