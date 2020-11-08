@@ -10,7 +10,7 @@
                 <object class="LoadingPanel" name="databaseLoadingPanel">
                     <object class="wxSplitterWindow">
                         <orientation>vertical</orientation>
-                        <sashpos>250</sashpos>
+                        <sashpos>250d</sashpos>
                         <object class="wxListCtrl" name="chats">
                             <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
                             <object class="listcol">
