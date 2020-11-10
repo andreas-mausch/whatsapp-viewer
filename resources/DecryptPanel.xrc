@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<resource
+    xmlns="http://www.wxwidgets.org/wxxrc" version="2.3.0.1">
+    <object class="wxPanel" name="DecryptPanel">
+        <object class="wxFlexGridSizer">
+            <growablecols>0</growablecols>
+            <growablerows>0</growablerows>
+            <object class="sizeritem">
+                <flag>wxALL|wxEXPAND</flag>
+                <border>70d</border>
+                <object class="wxPanel">
+                    <object class="wxGridBagSizer">
+                        <growablecols>1</growablecols>
+                        <growablerows></growablerows>
+                        <object class="sizeritem">
+                            <cellpos>0,0</cellpos>
+                            <flag>wxALL|wxEXPAND</flag>
+                            <border>4d</border>
+                            <object class="wxStaticText">
+                                <label>Encrypted database file</label>
+                            </object>
+                        </object>
+                        <object class="sizeritem">
+                            <cellpos>0,1</cellpos>
+                            <flag>wxALL|wxEXPAND</flag>
+                            <object class="wxFilePickerCtrl" />
+                        </object>
+                        <object class="sizeritem">
+                            <cellpos>1,0</cellpos>
+                            <flag>wxALL|wxEXPAND</flag>
+                            <border>4d</border>
+                            <object class="wxStaticText">
+                                <label>Key file</label>
+                            </object>
+                        </object>
+                        <object class="sizeritem">
+                            <cellpos>1,1</cellpos>
+                            <flag>wxALL|wxEXPAND</flag>
+                            <object class="wxFilePickerCtrl" />
+                        </object>
+                        <object class="sizeritem">
+                            <cellpos>2,0</cellpos>
+                            <cellspan>1,2</cellspan>
+                            <flag>wxALL|wxALIGN_CENTER</flag>
+                            <border>16d</border>
+                            <object class="wxButton">
+                                <size>100,20d</size>
+                                <label>Decrypt...</label>
+                            </object>
+                        </object>
+                    </object>
+                </object>
+            </object>
+        </object>
+    </object>
+</resource>
