@@ -8,7 +8,7 @@
 #include "MainFrame.h"
 #include "WelcomePanel.h"
 
-#include "../whatsapp/Database.h"
+#include "../WhatsApp/Database.h"
 
 namespace UI {
 

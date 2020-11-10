@@ -7,7 +7,7 @@
 #include "MessagePanel.h"
 #include "PanelList.cpp"
 
-#include "../whatsapp/Database.h"
+#include "../WhatsApp/Database.h"
 
 namespace UI {
 

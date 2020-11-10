@@ -4,7 +4,7 @@
 
 #include "MessagePanel.h"
 
-#include "../whatsapp/Message.h"
+#include "../WhatsApp/Message.h"
 
 namespace UI {
 
