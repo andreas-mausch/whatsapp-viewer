@@ -23,7 +23,7 @@
                         <object class="sizeritem">
                             <cellpos>0,1</cellpos>
                             <flag>wxALL|wxEXPAND</flag>
-                            <object class="wxFilePickerCtrl" />
+                            <object class="wxFilePickerCtrl" name="encryptedDatabase" />
                         </object>
                         <object class="sizeritem">
                             <cellpos>1,0</cellpos>
@@ -36,14 +36,14 @@
                         <object class="sizeritem">
                             <cellpos>1,1</cellpos>
                             <flag>wxALL|wxEXPAND</flag>
-                            <object class="wxFilePickerCtrl" />
+                            <object class="wxFilePickerCtrl" name="key" />
                         </object>
                         <object class="sizeritem">
                             <cellpos>2,0</cellpos>
                             <cellspan>1,2</cellspan>
                             <flag>wxALL|wxALIGN_CENTER</flag>
                             <border>16d</border>
-                            <object class="wxButton">
+                            <object class="wxButton" name="decrypt">
                                 <size>100,20d</size>
                                 <label>Decrypt...</label>
                             </object>
