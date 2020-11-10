@@ -4,6 +4,7 @@
 #include <wx/xrc/xmlres.h>
 
 #include "DatabasePanel.h"
+#include "DecryptPanel.h"
 #include "FileOpenDialog.h"
 #include "MainFrame.h"
 #include "WelcomePanel.h"
@@ -18,6 +19,7 @@ MainFrame::MainFrame(wxWindow *parent) :
   DragAcceptFiles(true);
 
   Bind(wxEVT_MENU, &MainFrame::onOpenDatabase, this, XRCID("ID_OpenDatabase"));
+  Bind(wxEVT_MENU, &MainFrame::onDecryptDatabase, this, XRCID("ID_DecryptDatabase"));
   Bind(wxEVT_MENU, &MainFrame::onExit, this, wxID_EXIT);
   Bind(wxEVT_MENU, &MainFrame::onAbout, this, wxID_ABOUT);
   Bind(wxEVT_DROP_FILES, wxDropFilesEventHandler(MainFrame::onDropFiles), this,
@@ -42,6 +44,10 @@ void MainFrame::onOpenDatabase(wxCommandEvent &event) {
   }
 
   openDatabase(*filename);
+}
+
+void MainFrame::onDecryptDatabase(wxCommandEvent &event) {
+  setPanel(new DecryptPanel(this));
 }
 
 void MainFrame::onDropFiles(wxDropFilesEvent &event) {

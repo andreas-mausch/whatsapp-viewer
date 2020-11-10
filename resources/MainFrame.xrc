@@ -14,6 +14,12 @@
                     <accel>Ctrl-O</accel>
                 </object>
                 <object class="break" />
+                <object class="wxMenuItem" name="ID_DecryptDatabase">
+                    <label>&amp;Decrypt database...</label>
+                    <help>Use your private key file to decrypt the database</help>
+                    <accel>Ctrl-D</accel>
+                </object>
+                <object class="break" />
                 <object class="wxMenuItem" name="wxID_EXIT" />
             </object>
             <object class="wxMenu" name="help_menu">

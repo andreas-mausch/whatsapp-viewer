@@ -18,6 +18,7 @@ private:
   void onExit(wxCommandEvent &event);
   void onAbout(wxCommandEvent &event);
   void onOpenDatabase(wxCommandEvent &event);
+  void onDecryptDatabase(wxCommandEvent &event);
   void onDropFiles(wxDropFilesEvent &event);
 };
 
