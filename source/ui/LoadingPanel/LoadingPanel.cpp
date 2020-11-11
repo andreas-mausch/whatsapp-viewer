@@ -25,7 +25,7 @@ void LoadingPanel::setChild(wxWindow *child) {
 void LoadingPanel::setTask(async::task<void> loading, std::unique_ptr<async::cancellation_token> cancellationToken) {
   XRCCTRL(*this, "child", wxWindow)->Hide();
   XRCCTRL(*this, "spinner", wxAnimationCtrl)->Show();
-  GetSizer()->Layout();
+  Layout();
   XRCCTRL(*this, "spinner", wxAnimationCtrl)->Play();
   this->cancellationToken = std::move(cancellationToken);
   this->loading = loading.then([this](async::task<void> task) {
@@ -45,7 +45,7 @@ void LoadingPanel::setTask(async::task<void> loading, std::unique_ptr<async::can
 void LoadingPanel::finally(wxCommandEvent &event) {
   XRCCTRL(*this, "child", wxWindow)->Show();
   XRCCTRL(*this, "spinner", wxAnimationCtrl)->Hide();
-  GetSizer()->Layout();
+  Layout();
   XRCCTRL(*this, "spinner", wxAnimationCtrl)->Stop();
   this->loading = std::nullopt;
   this->cancellationToken.reset();
