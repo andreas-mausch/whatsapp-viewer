@@ -9,7 +9,7 @@ namespace UI::ButtonWithSpinner {
 ButtonWithSpinner::ButtonWithSpinner(wxSize size, const std::string &label, wxWindow *parent) {
   wxXmlResource::Get()->LoadPanel(this, parent, _("ButtonWithSpinner"));
   Bind(wxEVT_BUTTON, &ButtonWithSpinner::onClick, this, XRCID("button"));
-  SetSize(size);
+  SetMinSize(size);
   XRCCTRL(*this, "button", wxButton)->SetLabel(label);
   setLoading(false);
 }

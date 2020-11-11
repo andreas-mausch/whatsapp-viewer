@@ -2,14 +2,17 @@
 <resource
     xmlns="http://www.wxwidgets.org/wxxrc" version="2.3.0.1">
     <object class="wxPanel" name="ButtonWithSpinner">
-        <object class="wxBoxSizer">
-            <orient>wxHORIZONTAL</orient>
+        <object class="wxFlexGridSizer">
+            <cols>1</cols>
+            <rows>2</rows>
+            <growablecols>0</growablecols>
+            <growablerows>0</growablerows>
             <object class="sizeritem">
                 <flag>wxALL|wxEXPAND</flag>
                 <object class="wxButton" name="button" />
             </object>
             <object class="sizeritem">
-                <flags>wxRESERVE_SPACE_EVEN_IF_HIDDEN|wxALIGN_CENTER_VERTICAL</flags>
+                <flag>wxRESERVE_SPACE_EVEN_IF_HIDDEN|wxALIGN_CENTER</flag>
                 <object class="wxAnimationCtrl" name="spinner">
                     <animation>loading.gif</animation>
                 </object>

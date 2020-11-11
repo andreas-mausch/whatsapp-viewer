@@ -44,7 +44,7 @@
                             <flag>wxALL|wxALIGN_CENTER</flag>
                             <border>16d</border>
                             <object class="ButtonWithSpinner" name="decrypt">
-                                <size>100,20d</size>
+                                <size>100,40d</size>
                                 <label>Decrypt...</label>
                             </object>
                         </object>
