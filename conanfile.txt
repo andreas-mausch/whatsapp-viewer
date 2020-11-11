@@ -4,6 +4,7 @@ sqlitecpp/3.1.1
 cxxopts/2.2.1
 asyncplusplus/1.1
 mbedtls/2.23.0
+fmt/7.1.2
 
 [options]
 wxwidgets:compatibility=3.1

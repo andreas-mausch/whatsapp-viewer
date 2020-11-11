@@ -13,6 +13,8 @@ namespace UI {
 App::App() : options("WhatsAppViewer", "Small tool to display chats from the Android msgstore.db database (crypt12)") {}
 
 bool App::OnInit() {
+  std::locale::global(std::locale(""));
+
   wxXmlResource::Get()->InitAllHandlers();
   wxXmlResource::Get()->AddHandler(new LoadingPanel::ResourceHandler());
   wxXmlResource::Get()->AddHandler(new ButtonWithSpinner::ResourceHandler());

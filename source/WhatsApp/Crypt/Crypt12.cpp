@@ -1,4 +1,5 @@
 #include <cstring>
+#include <fmt/core.h>
 #include <fstream>
 
 #include "../../Crypt/AES.h"
@@ -17,7 +18,7 @@ void decrypt12(const std::string &filename, unsigned char *key, const std::strin
 	std::ifstream file(filename, std::ios::binary);
 
   if (!file) {
-    throw std::runtime_error("Could not open database file.");
+    throw std::runtime_error(fmt::format("Could not open database file '{}'.", filename));
   }
 
 	file.seekg(0, std::ios::end);
@@ -61,14 +62,14 @@ void loadKey(const std::string &filename, unsigned char *key, unsigned char *iv)
 	std::ifstream file(filename, std::ios::binary);
 
   if (!file) {
-		throw std::runtime_error("Could not open key file.");
+		throw std::runtime_error(fmt::format("Could not open key file '{}'.", filename));
   }
 
 	file.seekg(0, std::ios::end);
 	std::streamoff filesize = file.tellg();
 
 	if (filesize != 158) {
-		throw std::runtime_error("Expected key filesize of 158 bytes does not match.");
+		throw std::runtime_error(fmt::format("Expected key filesize of 158 bytes does not match (was: {:L}).", filesize));
 	}
 
 	file.seekg(110, std::ios::beg);
