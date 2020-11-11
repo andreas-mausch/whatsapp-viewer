@@ -37,13 +37,13 @@ void DecryptPanel::onDecrypt(wxCommandEvent &event) {
 }
 
 void DecryptPanel::onDone(wxCommandEvent &event) {
-  wxMessageBox(_("Database decrypted successfully"), _("Decryption"), wxICON_INFORMATION);
   getDecryptButton().setLoading(false);
+  wxMessageBox(_("Database decrypted successfully"), _("Decryption"), wxICON_INFORMATION);
 }
 
 void DecryptPanel::onError(wxCommandEvent &event) {
-  wxMessageBox(_("Something went wrong"), _("An error occured"), wxICON_ERROR);
   getDecryptButton().setLoading(false);
+  wxMessageBox(_("Something went wrong"), _("An error occured"), wxICON_ERROR);
 }
 
 ButtonWithSpinner::ButtonWithSpinner &DecryptPanel::getDecryptButton() {
