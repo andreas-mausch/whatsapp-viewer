@@ -1,25 +1,25 @@
-#include <memory>
+#include "MainFrame.h"
 
 #include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
 
+#include <memory>
+
+#include "../WhatsApp/Database.h"
 #include "DatabasePanel.h"
 #include "DecryptPanel.h"
 #include "FileOpenDialog.h"
-#include "MainFrame.h"
 #include "WelcomePanel.h"
-
-#include "../WhatsApp/Database.h"
 
 namespace UI {
 
-MainFrame::MainFrame(wxWindow *parent) :
-  panel(std::nullopt) {
+MainFrame::MainFrame(wxWindow *parent) : panel(std::nullopt) {
   wxXmlResource::Get()->LoadFrame(this, parent, _("MainFrame"));
   DragAcceptFiles(true);
 
   Bind(wxEVT_MENU, &MainFrame::onOpenDatabase, this, XRCID("ID_OpenDatabase"));
-  Bind(wxEVT_MENU, &MainFrame::onDecryptDatabase, this, XRCID("ID_DecryptDatabase"));
+  Bind(wxEVT_MENU, &MainFrame::onDecryptDatabase, this,
+       XRCID("ID_DecryptDatabase"));
   Bind(wxEVT_MENU, &MainFrame::onExit, this, wxID_EXIT);
   Bind(wxEVT_MENU, &MainFrame::onAbout, this, wxID_ABOUT);
   Bind(wxEVT_DROP_FILES, wxDropFilesEventHandler(MainFrame::onDropFiles), this,

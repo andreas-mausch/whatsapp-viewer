@@ -1,11 +1,13 @@
+#include "ResourceHandler.h"
+
 #include <wx/xml/xml.h>
 
 #include "LoadingPanel.h"
-#include "ResourceHandler.h"
 
 namespace UI::LoadingPanel {
 
-wxIMPLEMENT_DYNAMIC_CLASS(UI::LoadingPanel::ResourceHandler, wxXmlResourceHandler);
+wxIMPLEMENT_DYNAMIC_CLASS(UI::LoadingPanel::ResourceHandler,
+                          wxXmlResourceHandler);
 
 ResourceHandler::ResourceHandler() {
   XRC_ADD_STYLE(wxTAB_TRAVERSAL);
@@ -17,7 +19,8 @@ ResourceHandler::ResourceHandler() {
 
 wxObject *ResourceHandler::DoCreateResource() {
   if (GetInstance() != nullptr) {
-    throw std::runtime_error("LoadingPanel::ResourceHandler: Instance already created");
+    throw std::runtime_error(
+        "LoadingPanel::ResourceHandler: Instance already created");
   }
   LoadingPanel *control = new LoadingPanel(m_parentAsWindow);
   control->SetName(GetName());
@@ -44,4 +47,4 @@ bool ResourceHandler::CanHandle(wxXmlNode *node) {
   return IsOfClass(node, _("LoadingPanel"));
 }
 
-}; // namespace UI
+}; // namespace UI::LoadingPanel

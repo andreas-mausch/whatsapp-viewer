@@ -1,10 +1,9 @@
-#include <async++.h>
+#include "LoadingPanel.h"
 
+#include <async++.h>
 #include <wx/animate.h>
 #include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
-
-#include "LoadingPanel.h"
 
 namespace UI::LoadingPanel {
 
@@ -22,7 +21,9 @@ void LoadingPanel::setChild(wxWindow *child) {
   wxXmlResource::Get()->AttachUnknownControl("child", child, this);
 }
 
-void LoadingPanel::setTask(async::task<void> loading, std::unique_ptr<async::cancellation_token> cancellationToken) {
+void LoadingPanel::setTask(
+    async::task<void> loading,
+    std::unique_ptr<async::cancellation_token> cancellationToken) {
   XRCCTRL(*this, "child", wxWindow)->Hide();
   XRCCTRL(*this, "spinner", wxAnimationCtrl)->Show();
   Layout();
@@ -33,7 +34,7 @@ void LoadingPanel::setTask(async::task<void> loading, std::unique_ptr<async::can
       task.get();
       async::interruption_point(*this->cancellationToken);
       wxPostEvent(this, wxCommandEvent(LOADING_PANEL_LOADED));
-    } catch (const std::runtime_error& exception) {
+    } catch (const std::runtime_error &exception) {
       async::interruption_point(*this->cancellationToken);
       wxPostEvent(this, wxCommandEvent(LOADING_PANEL_ERROR));
     }
@@ -61,4 +62,4 @@ void LoadingPanel::cancel() {
   }
 }
 
-} // namespace UI
+} // namespace UI::LoadingPanel

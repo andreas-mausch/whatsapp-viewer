@@ -1,8 +1,8 @@
-#include <wx/wx.h>
-#include <wx/mstream.h>
-#include <wx/xrc/xmlres.h>
-
 #include "MessagePanel.h"
+
+#include <wx/mstream.h>
+#include <wx/wx.h>
+#include <wx/xrc/xmlres.h>
 
 #include "../WhatsApp/Message.h"
 

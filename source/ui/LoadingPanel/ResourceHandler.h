@@ -10,4 +10,4 @@ public:
   wxDECLARE_DYNAMIC_CLASS(ResourceHandler);
 };
 
-}; // namespace UI
+}; // namespace UI::LoadingPanel

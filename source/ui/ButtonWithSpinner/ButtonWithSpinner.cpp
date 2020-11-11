@@ -1,12 +1,13 @@
+#include "ButtonWithSpinner.h"
+
 #include <wx/animate.h>
 #include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
 
-#include "ButtonWithSpinner.h"
-
 namespace UI::ButtonWithSpinner {
 
-ButtonWithSpinner::ButtonWithSpinner(wxSize size, const std::string &label, wxWindow *parent) {
+ButtonWithSpinner::ButtonWithSpinner(wxSize size, const std::string &label,
+                                     wxWindow *parent) {
   wxXmlResource::Get()->LoadPanel(this, parent, _("ButtonWithSpinner"));
   Bind(wxEVT_BUTTON, &ButtonWithSpinner::onClick, this, XRCID("button"));
   SetMinSize(size);
@@ -32,4 +33,4 @@ void ButtonWithSpinner::onClick(wxCommandEvent &_) {
   HandleWindowEvent(event);
 }
 
-} // namespace UI
+} // namespace UI::ButtonWithSpinner

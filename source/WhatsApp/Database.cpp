@@ -54,14 +54,14 @@ std::vector<std::unique_ptr<Message>> Database::loadMessages(const Chat &chat) {
     std::string id = statement.getColumn(0);
     std::string data = statement.getColumn(4);
     std::string thumbnail = statement.getColumn(18);
-    messages.push_back(std::make_unique<Message>(id, data, thumbnail.length() > 0 ? std::make_optional(thumbnail) : std::nullopt));
+    messages.push_back(std::make_unique<Message>(
+        id, data,
+        thumbnail.length() > 0 ? std::make_optional(thumbnail) : std::nullopt));
   }
 
   return messages;
 }
 
-void Database::interrupt() {
-  sqlite3_interrupt(database.getHandle());
-}
+void Database::interrupt() { sqlite3_interrupt(database.getHandle()); }
 
 } // namespace WhatsApp

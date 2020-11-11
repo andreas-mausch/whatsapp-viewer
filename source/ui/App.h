@@ -1,7 +1,8 @@
 #pragma once
 
-#include <cxxopts.hpp>
 #include <wx/wx.h>
+
+#include <cxxopts.hpp>
 
 namespace UI {
 
@@ -12,6 +13,7 @@ public:
   App();
   virtual bool OnInit();
   virtual int OnRun();
+
 private:
   MainFrame *frame;
   cxxopts::Options options;

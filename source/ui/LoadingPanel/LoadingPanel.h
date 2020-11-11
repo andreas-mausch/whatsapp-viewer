@@ -1,13 +1,13 @@
 #pragma once
 
-#include <memory>
-#include <optional>
-
 #include <async++.h>
 #include <wx/wx.h>
 
+#include <memory>
+#include <optional>
+
 namespace async {
-  template<class Result> class task;
+template <class Result> class task;
 }
 
 namespace UI::LoadingPanel {
@@ -17,7 +17,8 @@ public:
   LoadingPanel(wxWindow *parent);
 
   void setChild(wxWindow *child);
-  void setTask(async::task<void> loading, std::unique_ptr<async::cancellation_token> cancellationToken);
+  void setTask(async::task<void> loading,
+               std::unique_ptr<async::cancellation_token> cancellationToken);
 
   void cancel();
 
@@ -28,4 +29,4 @@ private:
   void finally(wxCommandEvent &event);
 };
 
-} // namespace UI
+} // namespace UI::LoadingPanel

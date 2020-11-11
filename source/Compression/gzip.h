@@ -4,6 +4,6 @@
 
 namespace Compression {
 
-void unzipBuffer(std::istream& compressed, std::ostream& uncompressed);
+void unzipBuffer(std::istream &compressed, std::ostream &uncompressed);
 
 };

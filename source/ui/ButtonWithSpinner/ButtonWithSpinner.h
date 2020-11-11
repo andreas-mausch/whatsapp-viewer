@@ -9,8 +9,9 @@ public:
   ButtonWithSpinner(wxSize size, const std::string &label, wxWindow *parent);
 
   void setLoading(bool loading);
+
 private:
   void onClick(wxCommandEvent &event);
 };
 
-} // namespace UI
+} // namespace UI::ButtonWithSpinner

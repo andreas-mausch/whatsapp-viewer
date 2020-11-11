@@ -2,7 +2,9 @@
 
 namespace WhatsApp {
 
-Message::Message(const std::string &id, const std::string &data, const std::optional<std::string> &thumbnail) : id(id), data(data), thumbnail(thumbnail) {}
+Message::Message(const std::string &id, const std::string &data,
+                 const std::optional<std::string> &thumbnail)
+    : id(id), data(data), thumbnail(thumbnail) {}
 
 std::string Message::getId() const { return id; }
 

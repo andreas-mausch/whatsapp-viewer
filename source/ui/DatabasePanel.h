@@ -1,10 +1,10 @@
 #pragma once
 
+#include <wx/wx.h>
+
 #include <memory>
 #include <optional>
 #include <vector>
-
-#include <wx/wx.h>
 
 class wxListEvent;
 

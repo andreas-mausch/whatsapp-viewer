@@ -1,6 +1,6 @@
-#include <wx/wx.h>
-
 #include "FileOpenDialog.h"
+
+#include <wx/wx.h>
 
 namespace UI {
 
