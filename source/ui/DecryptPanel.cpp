@@ -13,6 +13,12 @@ namespace UI {
 wxDEFINE_EVENT(DECRYPT_PANEL_DECRYPTED, wxCommandEvent);
 wxDEFINE_EVENT(DECRYPT_PANEL_ERROR, wxCommandEvent);
 
+wxCommandEvent createCommandEvent(wxEventType commandEventType, const std::string &message) {
+  wxCommandEvent event(commandEventType);
+  event.SetString(message);
+  return std::move(event);
+}
+
 DecryptPanel::DecryptPanel(wxWindow *parent) {
   wxXmlResource::Get()->LoadPanel(this, parent, _("DecryptPanel"));
   Bind(wxEVT_BUTTON, &DecryptPanel::onDecrypt, this, getDecryptButton().GetId());
@@ -31,7 +37,7 @@ void DecryptPanel::onDecrypt(wxCommandEvent &event) {
         task.get();
         wxPostEvent(this, wxCommandEvent(DECRYPT_PANEL_DECRYPTED));
       } catch (const std::exception& e) {
-        wxPostEvent(this, wxCommandEvent(DECRYPT_PANEL_ERROR));
+        wxPostEvent(this, createCommandEvent(DECRYPT_PANEL_ERROR, e.what()));
       }
     });
 }
@@ -43,7 +49,7 @@ void DecryptPanel::onDone(wxCommandEvent &event) {
 
 void DecryptPanel::onError(wxCommandEvent &event) {
   getDecryptButton().setLoading(false);
-  wxMessageBox(_("Something went wrong"), _("An error occured"), wxICON_ERROR);
+  wxMessageBox(event.GetString(), _("Something went wrong"), wxICON_ERROR);
 }
 
 ButtonWithSpinner::ButtonWithSpinner &DecryptPanel::getDecryptButton() {

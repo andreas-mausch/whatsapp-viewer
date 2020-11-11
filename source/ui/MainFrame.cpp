@@ -61,7 +61,7 @@ void MainFrame::openDatabase(const std::string &filename) {
     auto database = std::make_unique<WhatsApp::Database>(filename);
     setPanel(new DatabasePanel(this, std::move(database)));
   } catch (std::exception &exception) {
-    wxMessageBox(exception.what(), _("An error occured"), wxICON_ERROR);
+    wxMessageBox(exception.what(), _("Something went wrong"), wxICON_ERROR);
   }
 }
 
