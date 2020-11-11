@@ -2,6 +2,7 @@
 #include <wx/xrc/xmlres.h>
 
 #include "App.h"
+#include "ButtonWithSpinner/ResourceHandler.h"
 #include "LoadingPanel/ResourceHandler.h"
 #include "MainFrame.h"
 
@@ -14,6 +15,7 @@ App::App() : options("WhatsAppViewer", "Small tool to display chats from the And
 bool App::OnInit() {
   wxXmlResource::Get()->InitAllHandlers();
   wxXmlResource::Get()->AddHandler(new LoadingPanel::ResourceHandler());
+  wxXmlResource::Get()->AddHandler(new ButtonWithSpinner::ResourceHandler());
   InitXmlResource();
   wxInitAllImageHandlers();
 

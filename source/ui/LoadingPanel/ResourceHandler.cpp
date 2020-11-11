@@ -5,7 +5,7 @@
 
 namespace UI::LoadingPanel {
 
-wxIMPLEMENT_DYNAMIC_CLASS(ResourceHandler, wxXmlResourceHandler);
+wxIMPLEMENT_DYNAMIC_CLASS(UI::LoadingPanel::ResourceHandler, wxXmlResourceHandler);
 
 ResourceHandler::ResourceHandler() {
   XRC_ADD_STYLE(wxTAB_TRAVERSAL);
