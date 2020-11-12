@@ -36,5 +36,5 @@ workspace("WhatsAppViewer")
         architecture "x86"
         toolset "v141_xp"
         staticruntime "On"
-        defines { "wxUSE_DPI_AWARE_MANIFEST" }
+        defines { "wxUSE_DPI_AWARE_MANIFEST=1" }
         files { "resources/windows.rc" }
