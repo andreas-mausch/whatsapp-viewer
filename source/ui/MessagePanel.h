@@ -1,5 +1,7 @@
 #pragma once
 
+#include <wx/wx.h>
+
 namespace WhatsApp {
 class Message;
 } // namespace WhatsApp

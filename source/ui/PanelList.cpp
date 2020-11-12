@@ -1,6 +1,5 @@
 #include "PanelList.h"
 
-#include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
 
 #include "MessagePanel.h"

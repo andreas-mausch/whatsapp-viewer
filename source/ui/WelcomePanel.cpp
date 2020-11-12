@@ -1,6 +1,5 @@
 #include "WelcomePanel.h"
 
-#include <wx/wx.h>
 #include <wx/xrc/xmlres.h>
 
 namespace UI {

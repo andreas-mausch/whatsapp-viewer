@@ -1,5 +1,6 @@
 #pragma once
 
+#include <wx/wx.h>
 #include <vector>
 
 namespace UI {
