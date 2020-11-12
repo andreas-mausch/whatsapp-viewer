@@ -17,7 +17,8 @@ MessagePanel::MessagePanel(wxWindow *parent, const WhatsApp::Message *message) {
     wxImage image(stream);
 
     if (image.IsOk()) {
-      image.Rescale(image.GetWidth() * 2, image.GetHeight() * 2);
+      wxSize size = FromDIP(image.GetSize());
+      image.Rescale(size.GetWidth(), size.GetHeight());
 
       wxBitmap bitmap(image);
       XRCCTRL(*this, "thumbnail", wxStaticBitmap)->SetBitmap(bitmap);
