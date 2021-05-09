@@ -47,7 +47,8 @@ private:
 	void decryptDatabaseCrypt7();
 	void decryptDatabaseCrypt8();
 	void decryptDatabaseCrypt12();
-	void decryptDatabaseCrypt7_8_12(void (*decryptWhatsappDatabase)(const std::string &filename, const std::string &filenameDecrypted, const std::string &keyFilename));
+	void decryptDatabaseCrypt14();
+	void decryptDatabaseCrypt7_8_12_14(void (*decryptWhatsappDatabase)(const std::string &filename, const std::string &filenameDecrypted, const std::string &keyFilename));
 	void clearChats();
 	void clearChatList();
 

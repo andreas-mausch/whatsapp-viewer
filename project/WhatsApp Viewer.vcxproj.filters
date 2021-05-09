@@ -414,6 +414,9 @@
     <ClCompile Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessage.cpp">
       <Filter>Quelldateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\WhatsApp\Crypt14.cpp">
+      <Filter>Quelldateien\WhatsApp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\CLI.h">
