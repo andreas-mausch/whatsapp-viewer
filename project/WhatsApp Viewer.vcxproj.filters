@@ -770,6 +770,9 @@
     <ClInclude Include="..\source\Platforms\Win32\GUI\ChatControl\Elements\Messages\ChatControlMessage.h">
       <Filter>Headerdateien\Platforms\Win32\GUI\ChatControl\Elements\Messages</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\WhatsApp\Crypt14.h">
+      <Filter>Headerdateien\WhatsApp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="smileys\0203C.PNG">

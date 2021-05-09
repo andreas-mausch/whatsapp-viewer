@@ -302,6 +302,7 @@
     <ClInclude Include="..\source\WhatsApp\Chat.h" />
     <ClInclude Include="..\source\WhatsApp\Contacts.h" />
     <ClInclude Include="..\source\WhatsApp\Crypt12.h" />
+    <ClInclude Include="..\source\WhatsApp\Crypt14.h" />
     <ClInclude Include="..\source\WhatsApp\Crypt5.h" />
     <ClInclude Include="..\source\WhatsApp\Crypt7.h" />
     <ClInclude Include="..\source\WhatsApp\Crypt8.h" />
