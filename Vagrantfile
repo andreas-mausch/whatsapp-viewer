@@ -9,5 +9,6 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
   config.vm.box = "gusztavvargadr/windows-10"
+  config.vm.box_version = "2009.0.2012"
   config.vm.provision "shell", inline: $script
 end
