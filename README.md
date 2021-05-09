@@ -29,6 +29,7 @@ See *build-release.cmd*.
 
 ## Credits
 
+* @askeron and @zmeyc for bulk export https://github.com/andreas-mausch/whatsapp-viewer/pull/103
 * @torsade for crypt14 support https://github.com/andreas-mausch/whatsapp-viewer/pull/115
 * TripCode for crypt12 support https://github.com/EliteAndroidApps/WhatsApp-Crypt12-Decrypter
 * Whatsapp Xtract
