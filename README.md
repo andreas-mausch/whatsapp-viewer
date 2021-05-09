@@ -25,7 +25,22 @@ You cannot see bigger images because only thumbnails are stored in the database.
 
 ## Build
 
+### Visual Studio
+
+Open *WhatsApp Viewer.sln*.
+
+### Command-line
+
 See *build-release.cmd*.
+
+### Vagrant
+
+You can also use vagrant to build (for example if you are on a Linux machine):
+
+```bash
+vagrant up
+vagrant powershell -c 'cmd.exe /c "cd C:\vagrant && build-release.cmd"'
+```
 
 ## Credits
 
