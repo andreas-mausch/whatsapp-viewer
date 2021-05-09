@@ -1,3 +1,7 @@
+v1.14 (2021-05-09)
+	Fix UTF smileys (#72)
+	crypt14 support (#114)
+	Batch export (#36)
 v1.13 (2020-09-21)
 	Fix runtime error on large databases (#46)
 v1.12 (2018-03-26)
