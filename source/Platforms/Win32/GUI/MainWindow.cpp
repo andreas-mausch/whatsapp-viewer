@@ -27,6 +27,7 @@
 #include "../../../WhatsApp/Crypt7.h"
 #include "../../../WhatsApp/Crypt8.h"
 #include "../../../WhatsApp/Crypt12.h"
+#include "../../../WhatsApp/Crypt14.h"
 #include "../../../WhatsApp/Database.h"
 #include "../../../WhatsApp/Message.h"
 #include "../../../VectorUtils.h"
@@ -536,7 +537,7 @@ void MainWindow::decryptDatabaseCrypt5()
 	}
 }
 
-void MainWindow::decryptDatabaseCrypt7_8_12(void (*decryptWhatsappDatabase)(const std::string &filename, const std::string &filenameDecrypted, const std::string &keyFilename))
+void MainWindow::decryptDatabaseCrypt7_8_12_14(void (*decryptWhatsappDatabase)(const std::string &filename, const std::string &filenameDecrypted, const std::string &keyFilename))
 {
 	OpenDatabaseStruct openDatabaseStruct = lastDatabaseOpened;
 	DecryptDatabaseDialog7 dialog(MainWindow::dialog, openDatabaseStruct);
@@ -564,17 +565,22 @@ void MainWindow::decryptDatabaseCrypt7_8_12(void (*decryptWhatsappDatabase)(cons
 
 void MainWindow::decryptDatabaseCrypt7()
 {
-	decryptDatabaseCrypt7_8_12(decryptWhatsappDatabase7);
+	decryptDatabaseCrypt7_8_12_14(decryptWhatsappDatabase7);
 }
 
 void MainWindow::decryptDatabaseCrypt8()
 {
-	decryptDatabaseCrypt7_8_12(decryptWhatsappDatabase8);
+	decryptDatabaseCrypt7_8_12_14(decryptWhatsappDatabase8);
 }
 
 void MainWindow::decryptDatabaseCrypt12()
 {
-	decryptDatabaseCrypt7_8_12(decryptWhatsappDatabase12);
+	decryptDatabaseCrypt7_8_12_14(decryptWhatsappDatabase12);
+}
+
+void MainWindow::decryptDatabaseCrypt14()
+{
+	decryptDatabaseCrypt7_8_12_14(decryptWhatsappDatabase14);
 }
 
 void MainWindow::displayException(HWND mainWindow, Exception &exception)
@@ -698,6 +704,10 @@ INT_PTR MainWindow::handleMessage(HWND dialog, UINT message, WPARAM wParam, LPAR
 						case ID_MENU_MAIN_FILE_DECRYPT_CRYPT12:
 						{
 							decryptDatabaseCrypt12();
+						} break;
+						case ID_MENU_MAIN_FILE_DECRYPT_CRYPT14:
+						{
+							decryptDatabaseCrypt14();
 						} break;
 						case IDC_MAIN_EXPORT_TXT:
 						{
