@@ -197,8 +197,8 @@ BEGIN
         MENUITEM "Decrypt .crypt&5...\tCtrl+5", ID_MENU_MAIN_FILE_DECRYPT_CRYPT5
         MENUITEM "Decrypt .crypt&7...\tCtrl+7", ID_MENU_MAIN_FILE_DECRYPT_CRYPT7
         MENUITEM "Decrypt .crypt&8...\tCtrl+8", ID_MENU_MAIN_FILE_DECRYPT_CRYPT8
-        MENUITEM "Decrypt .crypt&12...",        ID_MENU_MAIN_FILE_DECRYPT_CRYPT12
-        MENUITEM "Decrypt .crypt&14...",        ID_MENU_MAIN_FILE_DECRYPT_CRYPT14
+        MENUITEM "Decrypt .crypt1&2...",        ID_MENU_MAIN_FILE_DECRYPT_CRYPT12
+        MENUITEM "Decrypt .crypt1&4...",        ID_MENU_MAIN_FILE_DECRYPT_CRYPT14
         MENUITEM SEPARATOR
         MENUITEM "Export All Chats To Txt...",     ID_MENU_MAIN_FILE_EXPORT_ALL_CHATS_TXT
         MENUITEM "Export All Chats To Html...",    ID_MENU_MAIN_FILE_EXPORT_ALL_CHATS_HTML
