@@ -9,9 +9,12 @@
 #include "Crypt7.h"
 #include "Crypt8.h"
 
-const int chunk = 16384;
-
-void decryptWhatsappDatabase12(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key)
+void decryptWhatsappDatabase12_14(const std::string &filename,
+								  const std::string &filenameDecrypted,
+								  unsigned char *key,
+								  std::streamoff initVectorOffset,
+								  std::streamoff dataOffset,
+								  std::streamoff footerSize)
 {
 	std::ifstream file(filename, std::ios::binary);
 
@@ -19,10 +22,11 @@ void decryptWhatsappDatabase12(const std::string &filename, const std::string &f
 	std::streamoff filesize = file.tellg();
 
 	unsigned char initVector[16];
-	file.seekg(51, std::ios::beg);
+	file.seekg(initVectorOffset, std::ios::beg);
 	file.read(reinterpret_cast<char*>(initVector), 16);
+	file.seekg(dataOffset, std::ios::beg);
 
-	std::streamoff databaseSize = filesize - skipBytesCrypt7 - 20;
+	std::streamoff databaseSize = filesize - dataOffset - footerSize;
 	const std::string tempFilename = filenameDecrypted + ".temp";
 
 	{
@@ -50,5 +54,5 @@ void decryptWhatsappDatabase12(const std::string& filename, const std::string& f
 	unsigned char iv[16];
 
 	loadKey(keyFilename, key, iv);
-	decryptWhatsappDatabase12(filename, filenameDecrypted, key);
+	decryptWhatsappDatabase12_14(filename, filenameDecrypted, key, 51, 67, 20);
 }
