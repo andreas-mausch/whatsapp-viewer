@@ -16,6 +16,10 @@ WhatsAppViewer.sln
 WhatsAppViewer.vcxproj
 WhatsAppViewer.vcxproj.filters
 
+# Vagrant
+
+.vagrant/
+
 # Target
 
 bin/

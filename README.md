@@ -71,6 +71,8 @@ premake5 vs2019
 msbuild /p:Platform=Win32 /p:Configuration=Release
 ```
 
+Note: There is also a *Vagrantfile* available for Windows.
+
 ## Tipps
 
 For Visual Studio Code I use the `llvm-vs-code-extensions.vscode-clangd` extension for formatting (which itself uses `clang-format`).
