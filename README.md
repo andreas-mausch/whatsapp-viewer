@@ -37,6 +37,16 @@ conan profile update settings.compiler.cppstd=17 default
 conan profile update settings.compiler.libcxx=libstdc++11 default
 ```
 
+For `clang`:
+
+```
+conan profile update settings.compiler=clang default
+conan profile update env.CC=/usr/bin/clang default
+conan profile update settings.compiler.version=12 default
+conan profile update env.CC=/usr/bin/clang default
+conan profile update env.CXX=/usr/bin/clang++ default
+```
+
 #### Windows profile
 
 ```
