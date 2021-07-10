@@ -27,6 +27,7 @@ WhatsApp Viewer is a small tool to display chats from the Android msgstore.db da
 #### General
 
 ```
+conan profile new default --detect
 conan profile update settings.compiler.cppstd=17 default
 ```
 
@@ -47,7 +48,8 @@ conan profile update settings.compiler.runtime=MT default
 ### Conan remote
 
 ```
-conan remote add bincrafters "https://api.bintray.com/conan/bincrafters/public-conan"
+conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
+conan config set general.revisions_enabled=1
 ```
 
 ## Build
