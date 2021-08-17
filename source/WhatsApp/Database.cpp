@@ -35,10 +35,11 @@ void WhatsappDatabase::validate()
 
 void WhatsappDatabase::getChats(Settings &settings, std::vector<WhatsappChat*> &chats)
 {
-	const char *query = "SELECT chat_list.key_remote_jid, chat_list.subject, chat_list.creation, max(messages.timestamp) " \
-						"FROM chat_list " \
-						"LEFT OUTER JOIN messages on messages.key_remote_jid = chat_list.key_remote_jid " \
-						"GROUP BY chat_list.key_remote_jid, chat_list.subject, chat_list.creation " \
+	const char *query = "SELECT chat_view.raw_string_jid, chat_view.subject, chat_view.created_timestamp, max(messages.timestamp) " \
+						"FROM chat_view " \
+						"LEFT OUTER JOIN messages on messages.key_remote_jid = chat_view.raw_string_jid " \
+						"WHERE chat_view.hidden = '0' "\
+						"GROUP BY chat_view.raw_string_jid, chat_view.subject, chat_view.created_timestamp " \
 						"ORDER BY max(messages.timestamp) desc";
 
 	sqlite3_stmt *res;
