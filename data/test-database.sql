@@ -1,5 +1,5 @@
 BEGIN TRANSACTION;
-CREATE TABLE chat_list (_id INTEGER PRIMARY KEY AUTOINCREMENT, key_remote_jid TEXT UNIQUE, message_table_id INTEGER, subject TEXT, creation INTEGER);
+CREATE TABLE chat_view (_id INTEGER PRIMARY KEY AUTOINCREMENT, raw_string_jid TEXT UNIQUE, message_table_id INTEGER, subject TEXT, created_timestamp INTEGER, hidden INTEGER);
 CREATE TABLE `messages` (
 	`_id`	INTEGER PRIMARY KEY AUTOINCREMENT,
 	`key_remote_jid`	TEXT NOT NULL,
@@ -88,27 +88,27 @@ CREATE TABLE IF NOT EXISTS `messages_links` (
 
 CREATE UNIQUE INDEX messages_key_index on messages (key_remote_jid, key_from_me, key_id);
 
-INSERT INTO chat_list VALUES(1,'MessageFromToday',0,NULL,NULL);
-INSERT INTO chat_list VALUES(2,'0-Text',0,NULL,NULL);
-INSERT INTO chat_list VALUES(3,'0-Text-WithSmileys',0,NULL,NULL);
-INSERT INTO chat_list VALUES(4,'0-Text-Long',0,NULL,NULL);
-INSERT INTO chat_list VALUES(5,'0-Text-InvalidUTF8',0,NULL,NULL);
-INSERT INTO chat_list VALUES(6,'0-Quote',0,NULL,NULL);
-INSERT INTO chat_list VALUES(7,'0-Link',0,NULL,NULL);
-INSERT INTO chat_list VALUES(100,'1-Image',0,NULL,NULL);
-INSERT INTO chat_list VALUES(101,'1-Image-ThumbnailTable',0,NULL,NULL);
-INSERT INTO chat_list VALUES(200,'2-Audio',0,NULL,NULL);
-INSERT INTO chat_list VALUES(300,'3-Video',0,NULL,NULL);
-INSERT INTO chat_list VALUES(400,'4-Contact',0,NULL,NULL);
-INSERT INTO chat_list VALUES(500,'5-Location',0,NULL,NULL);
-INSERT INTO chat_list VALUES(800,'8-Call',0,NULL,NULL);
-INSERT INTO chat_list VALUES(900,'9-File',0,NULL,NULL);
-INSERT INTO chat_list VALUES(1300,'13-Gif',0,NULL,NULL);
-INSERT INTO chat_list VALUES(1600,'16-LiveLocation',0,NULL,NULL);
-INSERT INTO chat_list VALUES(9000,'&Ampersand',0,NULL,NULL);
-INSERT INTO chat_list VALUES(9001,'4917612345000@s.whatsapp.net',0,NULL,NULL);
-INSERT INTO chat_list VALUES(9002,'4917612345000-1234567890@g.us',0,'Group Chat',NULL);
-INSERT INTO chat_list VALUES(9003,'TestCaseTextWithSmileysAndImages',0,NULL,NULL);
+INSERT INTO chat_view VALUES(1,'MessageFromToday',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(2,'0-Text',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(3,'0-Text-WithSmileys',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(4,'0-Text-Long',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(5,'0-Text-InvalidUTF8',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(6,'0-Quote',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(7,'0-Link',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(100,'1-Image',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(101,'1-Image-ThumbnailTable',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(200,'2-Audio',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(300,'3-Video',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(400,'4-Contact',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(500,'5-Location',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(800,'8-Call',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(900,'9-File',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(1300,'13-Gif',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(1600,'16-LiveLocation',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(9000,'&Ampersand',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(9001,'4917612345000@s.whatsapp.net',0,NULL,NULL,0);
+INSERT INTO chat_view VALUES(9002,'4917612345000-1234567890@g.us',0,'Group Chat',NULL,0);
+INSERT INTO chat_view VALUES(9003,'TestCaseTextWithSmileysAndImages',0,NULL,NULL,0);
 
 INSERT INTO messages VALUES(1,-1,0,-1,-1,0,NULL,0,NULL,NULL,-1,-1,NULL,NULL,0,0,0.0,0.0,NULL,NULL,-1,-1,-1,-1,NULL,NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL);
 
