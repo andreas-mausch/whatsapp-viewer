@@ -55,6 +55,13 @@ yay -S android-sdk-cmdline-tools-latest android-emulator
 yes | sudo sdkmanager "system-images;android-30;google_apis;x86"
 avdmanager create avd --name "WhatsApp-Viewer" --package "system-images;android-30;google_apis;x86" --device "Nexus 6P"
 emulator -avd "WhatsApp-Viewer"
+
+adb install ./WhatsApp.apk
+
+adb pull -a /sdcard/WhatsApp/Databases/msgstore.db.crypt14
+adb root
+adb pull -a /data/data/com.whatsapp
+adb unroot
 ```
 
 I've also did [this](https://stackoverflow.com/a/27137079) to enable the hardware keyboard.
