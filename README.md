@@ -69,7 +69,13 @@ I've also did [this](https://stackoverflow.com/a/27137079) to enable the hardwar
 ## Export schema
 
 ```bash
-sqlite3 msgstore.db .schema > ./data/msgstore.db.schema.sql
+sqlite3 msgstore.db ".schema --nosys" > ./data/msgstore.db.schema.sql
+```
+
+## Build test database
+
+```bash
+sqlite3 msgstore.test.db -cmd ".read data/msgstore.db.schema.sql" ".read data/test-database.sql"
 ```
 
 ## Credits
