@@ -69,7 +69,7 @@ I've also did [this](https://stackoverflow.com/a/27137079) to enable the hardwar
 ## Export schema
 
 ```bash
-sqlite3 msgstore.db .schema > ./data/schema.sql
+sqlite3 msgstore.db .schema > ./data/msgstore.db.schema.sql
 ```
 
 ## Credits
