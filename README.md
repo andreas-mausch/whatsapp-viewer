@@ -42,6 +42,23 @@ vagrant up
 vagrant powershell -c 'cmd.exe /c "cd C:\vagrant && build-release.cmd"'
 ```
 
+## Android Emulator
+
+I use the Android Emulator to test WhatsApp (and the creation of backups) on my developer machine.
+
+I'm on Manjaro and use this (see [here](https://wiki.archlinux.org/title/android)):
+
+```bash
+sudo mkdir /opt/android-sdk/platforms
+sudo mkdir /opt/android-sdk/platform-tools
+yay -S android-sdk-cmdline-tools-latest android-emulator
+yes | sudo sdkmanager "system-images;android-30;google_apis;x86"
+avdmanager create avd --name "WhatsApp-Viewer" --package "system-images;android-30;google_apis;x86" --device "Nexus 6P"
+emulator -avd "WhatsApp-Viewer"
+```
+
+I've also did [this](https://stackoverflow.com/a/27137079) to enable the hardware keyboard.
+
 ## Credits
 
 * @askeron and @zmeyc for bulk export https://github.com/andreas-mausch/whatsapp-viewer/pull/103
