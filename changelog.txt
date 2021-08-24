@@ -1,4 +1,5 @@
 v1.15 (2021-08-24)
+	Use new crypt14 offsets for init vector and data (#120)
 	Fix for database schema change 'chat_list' (#127)
 v1.14 (2021-05-09)
 	Fix UTF smileys (#72)
