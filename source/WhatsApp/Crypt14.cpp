@@ -14,5 +14,5 @@ void decryptWhatsappDatabase14(const std::string& filename, const std::string& f
 	unsigned char iv[16];
 
 	loadKey(keyFilename, key, iv);
-	decryptWhatsappDatabase12_14(filename, filenameDecrypted, key, 66, 99, 0);
+	decryptWhatsappDatabase12_14(filename, filenameDecrypted, key, 67, 191, 0);
 }
