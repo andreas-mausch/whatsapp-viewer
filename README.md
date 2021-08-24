@@ -66,6 +66,12 @@ adb unroot
 
 I've also did [this](https://stackoverflow.com/a/27137079) to enable the hardware keyboard.
 
+## Export schema
+
+```bash
+sqlite3 msgstore.db .schema > ./data/schema.sql
+```
+
 ## Credits
 
 * @askeron and @zmeyc for bulk export https://github.com/andreas-mausch/whatsapp-viewer/pull/103
