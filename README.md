@@ -75,7 +75,7 @@ sqlite3 msgstore.db ".schema --nosys" > ./data/msgstore.db.schema.sql
 ## Build test database
 
 ```bash
-sqlite3 msgstore.test.db -cmd ".read data/msgstore.db.schema.sql" ".read data/test-database.sql"
+rm -f ./data/test-database.db && sqlite3 ./data/test-database.db -cmd ".read data/msgstore.db.schema.sql" ".read data/test-database.sql"
 ```
 
 ## Credits
