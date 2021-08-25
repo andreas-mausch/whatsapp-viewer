@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 void decryptWhatsappDatabase12_14(const std::string& filename,
 								  const std::string& filenameDecrypted,
 								  unsigned char* key,

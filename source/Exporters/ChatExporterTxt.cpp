@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <fstream>
 #include <windows.h>
 
@@ -113,7 +114,7 @@ void ChatExporterTxt::exportChat(WhatsappChat &chat, std::ofstream &file)
 
 void ChatExporterTxt::exportChats(const std::vector<WhatsappChat *> &chats, const std::string &filename)
 {
-	std::ofstream file(filename.c_str());
+	std::ofstream file(std::filesystem::u8path(filename));
 
 	if (!file)
 	{

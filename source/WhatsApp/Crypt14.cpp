@@ -1,10 +1,3 @@
-#include <fstream>
-#include <iostream>
-#include <vector>
-
-#include "../Exceptions/Exception.h"
-#include "../Libraries/AES/MyAES.h"
-#include "../Libraries/Zip/zlib.h"
 #include "Crypt7.h"
 #include "Crypt12.h"
 

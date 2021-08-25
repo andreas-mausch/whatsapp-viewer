@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -16,7 +17,7 @@ void decryptWhatsappDatabase12_14(const std::string &filename,
 								  std::streamoff dataOffset,
 								  std::streamoff footerSize)
 {
-	std::ifstream file(filename, std::ios::binary);
+	std::ifstream file(std::filesystem::u8path(filename), std::ios::binary);
 
 	file.seekg(0, std::ios::end);
 	std::streamoff filesize = file.tellg();
@@ -30,20 +31,20 @@ void decryptWhatsappDatabase12_14(const std::string &filename,
 	const std::string tempFilename = filenameDecrypted + ".temp";
 
 	{
-		std::ofstream decryptedFile(tempFilename, std::ios::binary);
+		std::ofstream decryptedFile(std::filesystem::u8path(tempFilename), std::ios::binary);
 		decrypt_aes_gcm(file, databaseSize, key, initVector, decryptedFile);
 	}
 
 	{
-		std::ifstream decryptedFile(tempFilename, std::ios::binary);
-		std::ofstream uncompressedFile(filenameDecrypted, std::ios::binary);
+		std::ifstream decryptedFile(std::filesystem::u8path(tempFilename), std::ios::binary);
+		std::ofstream uncompressedFile(std::filesystem::u8path(filenameDecrypted), std::ios::binary);
 		uncompressGzipBuffer(decryptedFile, uncompressedFile);
 	}
 
 	std::remove(tempFilename.c_str());
 
 	{
-		std::ifstream uncompressedFile(filenameDecrypted, std::ios::binary);
+		std::ifstream uncompressedFile(std::filesystem::u8path(filenameDecrypted), std::ios::binary);
 		validateOutput(uncompressedFile);
 	}
 }

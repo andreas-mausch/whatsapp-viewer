@@ -1,4 +1,5 @@
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 
 #include "../Libraries/AES/MyAES.h"
@@ -11,7 +12,7 @@ const int skipBytesCrypt7 = 67;
 
 void loadKey(const std::string &filename, unsigned char *key, unsigned char *iv)
 {
-	std::ifstream file(filename, std::ios::binary);
+	std::ifstream file(std::filesystem::u8path(filename), std::ios::binary);
 	file.seekg(0, std::ios::end);
 	std::streamoff filesize = file.tellg();
 
@@ -27,7 +28,7 @@ void loadKey(const std::string &filename, unsigned char *key, unsigned char *iv)
 
 void decryptWhatsappDatabase7(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key)
 {
-	std::ifstream file(filename, std::ios::binary);
+	std::ifstream file(std::filesystem::u8path(filename), std::ios::binary);
 
 	file.seekg(0, std::ios::end);
 	std::streamoff filesize = file.tellg();
@@ -39,12 +40,12 @@ void decryptWhatsappDatabase7(const std::string &filename, const std::string &fi
 	std::streamoff databaseSize = filesize - skipBytesCrypt7;
 
 	{
-		std::ofstream decryptedFile(filenameDecrypted, std::ios::binary);
+		std::ofstream decryptedFile(std::filesystem::u8path(filenameDecrypted), std::ios::binary);
 		decrypt_aes_cbc(256, file, databaseSize, key, initVector, decryptedFile);
 	}
 
 	{
-		std::ifstream decryptedFile(filenameDecrypted, std::ios::binary);
+		std::ifstream decryptedFile(std::filesystem::u8path(filenameDecrypted), std::ios::binary);
 		validateOutput(decryptedFile);
 	}
 }

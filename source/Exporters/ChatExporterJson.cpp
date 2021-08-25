@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <windows.h>
@@ -165,7 +166,7 @@ void ChatExporterJson::exportChats(const std::vector<WhatsappChat *> &chats, con
 	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
 	json.Accept(writer);
 
-	std::ofstream file(filename.c_str());
+	std::ofstream file(std::filesystem::u8path(filename));
 	if (!file)
 	{
 		throw Exception("could not open chat export file");

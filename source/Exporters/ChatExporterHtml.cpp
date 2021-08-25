@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <windows.h>
@@ -235,7 +236,7 @@ std::string ChatExporterHtml::exportChat(WhatsappChat &chat, std::set<int> &used
 
 void ChatExporterHtml::exportChats(const std::vector<WhatsappChat *> &chats, const std::string &filename)
 {
-	std::ofstream file(filename.c_str());
+	std::ofstream file(std::filesystem::u8path(filename));
 	if (!file)
 	{
 		throw Exception("could not open chat export file");

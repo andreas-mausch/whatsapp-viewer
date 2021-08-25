@@ -1,4 +1,5 @@
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 
 #include "../Libraries/AES/MyAES.h"
@@ -39,7 +40,7 @@ void validateOutput(std::istream &input)
 
 void decryptWhatsappDatabase5(const std::string &filename, const std::string &filenameDecrypted, unsigned char *key)
 {
-	std::ifstream file(filename, std::ios::binary);
+	std::ifstream file(std::filesystem::u8path(filename), std::ios::binary);
 
 	file.seekg(0, std::ios::end);
 	std::streamoff filesize = file.tellg();
@@ -48,13 +49,13 @@ void decryptWhatsappDatabase5(const std::string &filename, const std::string &fi
 	memcpy(iv, initVector, 16);
 
 	{
-		std::ofstream decryptedFile(filenameDecrypted, std::ios::binary);
+		std::ofstream decryptedFile(std::filesystem::u8path(filenameDecrypted), std::ios::binary);
 		file.seekg(0, std::ios::beg);
 		decrypt_aes_cbc(192, file, filesize, key, iv, decryptedFile);
 	}
 
 	{
-		std::ifstream decryptedFile(filenameDecrypted, std::ios::binary);
+		std::ifstream decryptedFile(std::filesystem::u8path(filenameDecrypted), std::ios::binary);
 		validateOutput(decryptedFile);
 	}
 }

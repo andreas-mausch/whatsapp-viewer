@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <commctrl.h>
 #include <algorithm>
+#include <filesystem>
 #include <fstream>
 #include <locale>
 #include <sstream>
@@ -363,7 +364,7 @@ void MainWindow::setSortingColumn(int columnIndex)
 
 bool isPlainWhatsappDatabase(const std::string &filename)
 {
-	std::ifstream file(filename.c_str(), std::ios_base::in | std::ios_base::binary);
+	std::ifstream file(std::filesystem::u8path(filename), std::ios_base::in | std::ios_base::binary);
 	if (!file)
 	{
 		return false;
