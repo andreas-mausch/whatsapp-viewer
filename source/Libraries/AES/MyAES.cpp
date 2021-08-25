@@ -29,7 +29,7 @@ void decrypt_aes_cbc(int keySize, std::istream& input, std::streamoff length, co
 
 		if (bytesRead == 0 && !input.eof())
 		{
-			throw Exception("Could not read crypted file.");
+			throw Exception("Could not read crypted file cbc.");
 		}
 
 		totalRead += bytesRead;
@@ -74,7 +74,7 @@ void decrypt_aes_gcm(std::istream &input, std::streamoff length, const unsigned 
 
 		if (bytesRead == 0 && !input.eof())
 		{
-			throw Exception("Could not read crypted file.");
+			throw Exception("Could not read crypted file gcm.");
 		}
 
 		totalRead += bytesRead;
