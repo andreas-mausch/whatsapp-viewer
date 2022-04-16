@@ -22,11 +22,11 @@ void QueryMessagesThread::interrupt()
 	sqlite3_interrupt(sqLiteDatabase.getHandle());
 }
 
-WhatsappMessage *QueryMessagesThread::findByMessageId(const std::string &messageId)
+WhatsappMessage *QueryMessagesThread::findByMessageIdReverse(const std::string &messageId)
 {
-	for(std::vector<WhatsappMessage *>::iterator it = messages.begin(); it != messages.end(); ++it)
+	for (std::vector<WhatsappMessage *>::reverse_iterator it = messages.rbegin(); it != messages.rend(); ++it)
 	{
-		WhatsappMessage *message = *it;
+		WhatsappMessage  *message = *it;
 		if (message->getMessageId() == messageId)
 		{
 			return message;
@@ -92,7 +92,7 @@ void QueryMessagesThread::run()
 		WhatsappMessage *quotedMessage = NULL;
 		if (quotedMessageId.length() > 0)
 		{
-			quotedMessage = findByMessageId(quotedMessageId);
+			quotedMessage = findByMessageIdReverse(quotedMessageId);
 		}
 		WhatsappMessage *message = new WhatsappMessage(messageId, chatId, fromMe == 1, status, data, timestamp, 0, 0, mediaUrl, mediaMimeType, mediaWhatsappType, mediaSize, mediaName, mediaCaption, mediaDuration, latitude, longitude, thumbImage, thumbImageSize, remoteResource, rawData, rawDataSize, thumbnailData, thumbnailDataSize, quotedMessage, linkId > 0);
 		messages.push_back(message);
