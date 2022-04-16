@@ -24,7 +24,7 @@ void QueryMessagesThread::interrupt()
 
 WhatsappMessage *QueryMessagesThread::findByMessageIdReverse(const std::string &messageId)
 {
-	for (std::vector<WhatsappMessage *>::reverse_iterator it = messages.rbegin(); it != messages.rend(); ++it)
+	for(std::vector<WhatsappMessage *>::reverse_iterator it = messages.rbegin(); it != messages.rend(); ++it)
 	{
 		WhatsappMessage *message = *it;
 		if (message->getMessageId() == messageId)
