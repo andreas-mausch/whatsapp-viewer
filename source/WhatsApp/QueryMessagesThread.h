@@ -14,8 +14,7 @@ private:
 	WhatsappDatabase &database;
 	SQLiteDatabase &sqLiteDatabase;
 	const std::string &chatId;
-	std::vector<WhatsappMessage *> &messages;
-	
+	std::vector<WhatsappMessage *> &messages;	
 	WhatsappMessage *findByMessageIdReverse(const std::string &messageId);
 
 public:
