@@ -2,6 +2,19 @@
 
 Small tool to display chats from the Android msgstore.db database.
 
+## Status
+
+**🛑⚠ WhatsApp Viewer does *not work* with the latest WhatsApp database format. ⚠🛑**
+
+I only maintain this project every once in a while.
+
+WhatsApp gets a lot of updates with a bunch of new features.  
+I do have interests beside this project and unfortunately not enough time to keep up
+with the updates.
+
+This project is not dead though (even if it looks like it), and I still take a plaintext
+database backup once in a while (about every year) and try to update this software accordingly.
+
 ## How to use
 
 1. **You need root access to your phone.** If you don't know what it is: [Wikipedia](https://en.wikipedia.org/wiki/Rooting_%28Android%29)
