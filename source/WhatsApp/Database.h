@@ -20,7 +20,7 @@ private:
 	bool hasColumn(const std::string &tableName, const std::string &columnName);
 
 	std::string findDisplayName(Settings &settings, const std::string &key);
-	int messagesCount(const std::string &chatId, int fromMe);
+	int messagesCount(int chatId, int fromMe, sqlite3_stmt *res);
 
 public:
 	WhatsappDatabase(const std::string &filename);
