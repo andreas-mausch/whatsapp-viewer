@@ -13,13 +13,13 @@ class QueryMessagesThread : public ThreadWindows
 private:
 	WhatsappDatabase &database;
 	SQLiteDatabase &sqLiteDatabase;
-	const std::string &chatId;
+	int chatId;
 	std::vector<WhatsappMessage *> &messages;
 
 	WhatsappMessage *findByMessageIdReverse(const std::string &messageId);
 
 public:
-	QueryMessagesThread(WhatsappDatabase &database, SQLiteDatabase &sqLiteDatabase, const std::string &chatId, std::vector<WhatsappMessage *> &messages);
+	QueryMessagesThread(WhatsappDatabase &database, SQLiteDatabase &sqLiteDatabase, int chatId, std::vector<WhatsappMessage *> &messages);
 	virtual ~QueryMessagesThread();
 
 	virtual void interrupt();

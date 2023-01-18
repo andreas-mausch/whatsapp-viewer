@@ -70,7 +70,7 @@ void WhatsappDatabase::getChats(Settings &settings, std::vector<WhatsappChat*> &
 		int messagesSent = messagesCount(chat_id, 1, count_res);
 		int messagesReceived = messagesCount(chat_id, 0, count_res);
 
-		WhatsappChat *chat = new WhatsappChat(*this, displayName, key, subject, creation, lastMessage, messagesSent, messagesReceived);
+		WhatsappChat *chat = new WhatsappChat(*this, chat_id,displayName, key, subject, creation, lastMessage, messagesSent, messagesReceived);
 		chats.push_back(chat);
 	}
 
@@ -100,7 +100,7 @@ int WhatsappDatabase::messagesCount(int chatId, int fromMe, sqlite3_stmt *res)
 	return count;
 }
 
-void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<WhatsappMessage*> &messages, const volatile bool &running)
+void WhatsappDatabase::getMessages(int chatId, std::vector<WhatsappMessage*> &messages, const volatile bool &running)
 {
 	QueryMessagesThread queryMessagesThread(*this, database, chatId, messages);
 	queryMessagesThread.start();

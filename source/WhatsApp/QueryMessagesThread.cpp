@@ -7,7 +7,7 @@
 #include "../Libraries/SQLite/SQLiteDatabase.h"
 #include "../Libraries/SQLite/sqlite3.h"
 
-QueryMessagesThread::QueryMessagesThread(WhatsappDatabase &database, SQLiteDatabase &sqLiteDatabase, const std::string &chatId, std::vector<WhatsappMessage *> &messages)
+QueryMessagesThread::QueryMessagesThread(WhatsappDatabase &database, SQLiteDatabase &sqLiteDatabase, int chatId, std::vector<WhatsappMessage *> &messages)
 	: database(database), sqLiteDatabase(sqLiteDatabase), chatId(chatId), messages(messages)
 {
 }
@@ -38,21 +38,30 @@ WhatsappMessage *QueryMessagesThread::findByMessageIdReverse(const std::string &
 
 void QueryMessagesThread::run()
 {
-	const char *query = "SELECT messages.key_id, messages.key_remote_jid, messages.key_from_me, messages.status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_caption, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, message_thumbnails.thumbnail, messages_quotes.key_id, messages_links._id " \
-				"FROM messages " \
-				"LEFT JOIN message_thumbnails on messages.key_id = message_thumbnails.key_id " \
-				"LEFT JOIN messages_quotes on messages.quoted_row_id > 0 AND messages.quoted_row_id = messages_quotes._id " \
-				"LEFT JOIN messages_links on messages._id = messages_links.message_row_id " \
-				"WHERE messages.key_remote_jid = ? " \
-				"ORDER BY messages.timestamp asc";
+	const std::string query = "SELECT message_view.key_id, message_view.chat_row_id, message_view.from_me, message_view.starred, message_view.text_data, message_view.timestamp, message_view.media_url, message_view.media_mime_type, message_view.message_type, message_view.media_size, message_view.media_name, message_view.media_caption, message_view.media_duration, message_view.latitude, message_view.longitude, message_view.thumb_image, message_view.raw_data, message_thumbnail.thumbnail, message_quoted.key_id, message_link._id "
+				"FROM message_view "
+				"LEFT JOIN message_thumbnail on message_view._id = message_thumbnail.message_row_id "
+				"LEFT JOIN message_quoted on message_view._id = message_quoted.message_row_id "
+				"LEFT JOIN message_link on message_view._id = message_link.message_row_id "
+				"WHERE message_view.chat_row_id = ? "
+				"ORDER BY message_view.timestamp asc ";
 
+
+	/*SELECT message_view.key_id, message_view.chat_row_id, message_view.from_me, message_view.starred, message_view.text_data, message_view.timestamp, message_view.media_url, message_view.media_mime_type, messages.media_wa_type, message_view.media_size, message_view.media_name, message_view.media_caption, message_view.media_duration, message_view.latitude, message_view.longitude, message_view.thumb_image, messages.remote_resource, message_view.raw_data, message_thumbnail.thumbnail, message_quoted.key_id, message_link._id
+		FROM message_view
+		LEFT JOIN message_thumbnail on message_view._id = message_thumbnail.message_row_id
+		LEFT JOIN message_quoted on message_view._id = message_quoted.message_row_id
+		LEFT JOIN message_link on message_view._id = message_link.message_row_id
+		WHERE message_view.chat_row_id = ?
+		ORDER BY message_view.timestamp asc
+	*/
 	sqlite3_stmt *res;
-	if (sqlite3_prepare_v2(sqLiteDatabase.getHandle(), query, -1, &res, NULL) != SQLITE_OK)
+	if (sqlite3_prepare_v2(sqLiteDatabase.getHandle(), query.c_str(), -1, &res, NULL) != SQLITE_OK)
 	{
 		throw SQLiteException("Could not load messages", sqLiteDatabase);
 	}
 
-	if (sqlite3_bind_text(res, 1, chatId.c_str(), -1, SQLITE_STATIC) != SQLITE_OK)
+	if (sqlite3_bind_int(res, 1, chatId) != SQLITE_OK)
 	{
 		throw SQLiteException("Could not bind sql parameter", sqLiteDatabase);
 	}
@@ -81,7 +90,7 @@ void QueryMessagesThread::run()
 		double longitude = sqlite3_column_double(res, 14);
 		const void *thumbImage = sqlite3_column_blob(res, 15);
 		int thumbImageSize = sqlite3_column_bytes(res, 15);
-		std::string remoteResource = sqLiteDatabase.readString(res, 16);
+		std::string remoteResource = "";
 		const void *rawData = sqlite3_column_blob(res, 17);
 		int rawDataSize = sqlite3_column_bytes(res, 17);
 		const void *thumbnailData = sqlite3_column_blob(res, 18);
