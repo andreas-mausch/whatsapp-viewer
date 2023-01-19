@@ -49,7 +49,7 @@ void WhatsappDatabase::getChats(Settings &settings, std::vector<WhatsappChat*> &
 		throw SQLiteException("Could not load chat list", database);
 	}
 
-	const std::string count_query = "SELECT count(_id) from message_view where _id = ? and from_me = ?";
+	const std::string count_query = "SELECT count(_id) from message_view where chat_row_id = ? and from_me = ?";
 	sqlite3_stmt* count_res;
 
 	if (sqlite3_prepare_v2(database.getHandle(), count_query.c_str(), -1, &count_res, NULL) != SQLITE_OK)
