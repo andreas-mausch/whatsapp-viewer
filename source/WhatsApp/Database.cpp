@@ -23,14 +23,13 @@ WhatsappDatabase::~WhatsappDatabase()
 
 void WhatsappDatabase::validate()
 {
-	if (!hasTable("message_thumbnails")
-		|| !hasTable("messages_quotes")
-		|| !hasTable("messages_links")
-		|| !hasColumn("messages", "quoted_row_id")
-		|| !hasColumn("messages", "media_caption"))
+	if (!hasTable("message_thumbnail")
+		|| !hasTable("message_quoted")
+		|| !hasTable("message_link")
+		|| !hasColumn("message_quoted", "chat_row_id")
+		|| !hasColumn("message_view", "media_caption"))
 	{
-		//TODO Create updated checks
-		//throw Exception("It seems like you tried to open an older WhatsApp database. Please try to use an older version of WhatsApp Viewer.");
+		throw Exception("It seems like you tried to open an older WhatsApp database. Please try to use an older version of WhatsApp Viewer.");
 	}
 }
 
