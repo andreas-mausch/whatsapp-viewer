@@ -23,11 +23,11 @@ WhatsappDatabase::~WhatsappDatabase()
 
 void WhatsappDatabase::validate()
 {
-	if (!hasTable("message_thumbnails")
-		|| !hasTable("messages_quotes")
-		|| !hasTable("messages_links")
-		|| !hasColumn("messages", "quoted_row_id")
-		|| !hasColumn("messages", "media_caption"))
+	if (!hasTable("message_thumbnail")
+		|| !hasTable("message_quoted")
+		|| !hasTable("message_link")
+		|| !hasColumn("message_quoted", "chat_row_id")
+		|| !hasColumn("message_view", "media_caption"))
 	{
 		throw Exception("It seems like you tried to open an older WhatsApp database. Please try to use an older version of WhatsApp Viewer.");
 	}
@@ -35,18 +35,27 @@ void WhatsappDatabase::validate()
 
 void WhatsappDatabase::getChats(Settings &settings, std::vector<WhatsappChat*> &chats)
 {
-	const char *query = "SELECT chat_view.raw_string_jid, chat_view.subject, chat_view.created_timestamp, max(messages.timestamp) " \
-						"FROM chat_view " \
-						"LEFT OUTER JOIN messages on messages.key_remote_jid = chat_view.raw_string_jid " \
-						"WHERE chat_view.hidden = 0 "\
-						"GROUP BY chat_view.raw_string_jid, chat_view.subject, chat_view.created_timestamp " \
-						"ORDER BY max(messages.timestamp) desc";
+	const std::string query = "SELECT chat_view.raw_string_jid, chat_view.subject, chat_view.created_timestamp, max(message.timestamp), chat_view._id "
+						"FROM chat_view "
+						"LEFT OUTER JOIN message on message.chat_row_id = chat_view._id "
+						"WHERE chat_view.hidden = 0 "
+						"GROUP BY chat_view.raw_string_jid, chat_view.subject, chat_view.created_timestamp "
+						"ORDER BY max(message.timestamp) desc";
 
 	sqlite3_stmt *res;
-	if (sqlite3_prepare_v2(database.getHandle(), query, -1, &res, NULL) != SQLITE_OK)
+	if (sqlite3_prepare_v2(database.getHandle(), query.c_str(), -1, &res, NULL) != SQLITE_OK)
 	{
 		throw SQLiteException("Could not load chat list", database);
 	}
+
+	const std::string count_query = "SELECT count(_id) from message_view where chat_row_id = ? and from_me = ?";
+	sqlite3_stmt* count_res;
+
+	if (sqlite3_prepare_v2(database.getHandle(), count_query.c_str(), -1, &count_res, NULL) != SQLITE_OK)
+	{
+		throw SQLiteException("Could not load messages", database);
+	}
+
 
 	while (sqlite3_step(res) == SQLITE_ROW)
 	{
@@ -55,28 +64,21 @@ void WhatsappDatabase::getChats(Settings &settings, std::vector<WhatsappChat*> &
 		long long creation = sqlite3_column_int64(res, 2);
 		long long lastMessage = sqlite3_column_int64(res, 3);
 		std::string displayName = settings.findDisplayName(key);
+		int chat_id = sqlite3_column_int64(res, 4);
 
-		int messagesSent = messagesCount(key, 1);
-		int messagesReceived = messagesCount(key, 0);
+		int messagesSent = messagesCount(chat_id, 1, count_res);
+		int messagesReceived = messagesCount(chat_id, 0, count_res);
 
-		WhatsappChat *chat = new WhatsappChat(*this, displayName, key, subject, creation, lastMessage, messagesSent, messagesReceived);
+		WhatsappChat *chat = new WhatsappChat(*this, chat_id,displayName, key, subject, creation, lastMessage, messagesSent, messagesReceived);
 		chats.push_back(chat);
 	}
 
 	sqlite3_finalize(res);
 }
 
-int WhatsappDatabase::messagesCount(const std::string &chatId, int fromMe)
+int WhatsappDatabase::messagesCount(int chatId, int fromMe, sqlite3_stmt *res)
 {
-	const char *query = "SELECT count(_id) from messages where key_remote_jid = ? and key_from_me = ?";
-
-	sqlite3_stmt *res;
-	if (sqlite3_prepare_v2(database.getHandle(), query, -1, &res, NULL) != SQLITE_OK)
-	{
-		throw SQLiteException("Could not load messages", database);
-	}
-
-	if (sqlite3_bind_text(res, 1, chatId.c_str(), -1, SQLITE_STATIC) != SQLITE_OK)
+	if (sqlite3_bind_int(res, 1, chatId) != SQLITE_OK)
 	{
 		throw SQLiteException("Could not bind sql parameter", database);
 	}
@@ -92,12 +94,12 @@ int WhatsappDatabase::messagesCount(const std::string &chatId, int fromMe)
 	}
 
 	int count = sqlite3_column_int(res, 0);
-	sqlite3_finalize(res);
+	sqlite3_reset(res);
 
 	return count;
 }
 
-void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<WhatsappMessage*> &messages, const volatile bool &running)
+void WhatsappDatabase::getMessages(int chatId, std::vector<WhatsappMessage*> &messages, const volatile bool &running)
 {
 	QueryMessagesThread queryMessagesThread(*this, database, chatId, messages);
 	queryMessagesThread.start();

@@ -11,6 +11,7 @@ class WhatsappChat
 private:
 	WhatsappDatabase &database;
 
+	int chatId;
 	std::string displayName;
 	std::string key;
 	std::string subject;
@@ -24,7 +25,7 @@ private:
 	std::vector<WhatsappMessage *> messages;
 
 public:
-	WhatsappChat(WhatsappDatabase &database, const std::string &displayName, const std::string &key, const std::string &subject, long long creation, long long lastMessage, int messagesSent, int messagesReceived);
+	WhatsappChat(WhatsappDatabase &database, int chatId, const std::string &displayName, const std::string &key, const std::string &subject, long long creation, long long lastMessage, int messagesSent, int messagesReceived);
 	~WhatsappChat();
 
 	const std::string& getDisplayName() const;
