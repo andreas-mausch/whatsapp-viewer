@@ -38,11 +38,13 @@ WhatsappMessage *QueryMessagesThread::findByMessageIdReverse(const std::string &
 
 void QueryMessagesThread::run()
 {
-	const std::string query = "SELECT message_view.key_id, message_view.chat_row_id, message_view.from_me, message_view.starred, message_view.text_data, message_view.timestamp, message_view.media_url, message_view.media_mime_type, message_view.message_type, message_view.media_size, message_view.media_name, message_view.media_caption, message_view.media_duration, message_view.latitude, message_view.longitude, message_view.thumb_image, message_view.raw_data, message_thumbnail.thumbnail, message_quoted.key_id, message_link._id "
+	const std::string query = "SELECT message_view.key_id, message_view.chat_row_id, message_view.from_me, message_view.starred, message_view.text_data, message_view.timestamp, message_media.message_url, message_media.mime_type, message_view.message_type, message_media.file_length, message_media.media_name, message_view.media_caption, message_media.media_duration, message_location.latitude, message_location.longitude, message_view.thumb_image, message_view.raw_data, message_thumbnail.thumbnail, message_quoted.key_id, message_link._id "
 				"FROM message_view "
 				"LEFT JOIN message_thumbnail on message_view._id = message_thumbnail.message_row_id "
 				"LEFT JOIN message_quoted on message_view._id = message_quoted.message_row_id "
 				"LEFT JOIN message_link on message_view._id = message_link.message_row_id "
+				"LEFT JOIN message_media on message_view._id = message_media.message_row_id "
+				"LEFT JOIN message_location on message_view._id = message_location.message_row_id "
 				"WHERE message_view.chat_row_id = ? "
 				"ORDER BY message_view.timestamp asc ";
 
@@ -91,12 +93,12 @@ void QueryMessagesThread::run()
 		const void *thumbImage = sqlite3_column_blob(res, 15);
 		int thumbImageSize = sqlite3_column_bytes(res, 15);
 		std::string remoteResource = "";
-		const void *rawData = sqlite3_column_blob(res, 17);
-		int rawDataSize = sqlite3_column_bytes(res, 17);
-		const void *thumbnailData = sqlite3_column_blob(res, 18);
-		int thumbnailDataSize = sqlite3_column_bytes(res, 18);
-		std::string quotedMessageId = sqLiteDatabase.readString(res, 19);
-		int linkId = sqlite3_column_int(res, 20);
+		const void *rawData = sqlite3_column_blob(res, 16);
+		int rawDataSize = sqlite3_column_bytes(res, 16);
+		const void *thumbnailData = sqlite3_column_blob(res, 17);
+		int thumbnailDataSize = sqlite3_column_bytes(res, 17);
+		std::string quotedMessageId = sqLiteDatabase.readString(res, 18);
+		int linkId = sqlite3_column_int(res, 19);
 
 		WhatsappMessage *quotedMessage = NULL;
 		if (quotedMessageId.length() > 0)
