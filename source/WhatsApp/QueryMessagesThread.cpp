@@ -48,15 +48,6 @@ void QueryMessagesThread::run()
 				"WHERE message_view.chat_row_id = ? "
 				"ORDER BY message_view.timestamp asc ";
 
-
-	/*SELECT message_view.key_id, message_view.chat_row_id, message_view.from_me, message_view.starred, message_view.text_data, message_view.timestamp, message_view.media_url, message_view.media_mime_type, messages.media_wa_type, message_view.media_size, message_view.media_name, message_view.media_caption, message_view.media_duration, message_view.latitude, message_view.longitude, message_view.thumb_image, messages.remote_resource, message_view.raw_data, message_thumbnail.thumbnail, message_quoted.key_id, message_link._id
-		FROM message_view
-		LEFT JOIN message_thumbnail on message_view._id = message_thumbnail.message_row_id
-		LEFT JOIN message_quoted on message_view._id = message_quoted.message_row_id
-		LEFT JOIN message_link on message_view._id = message_link.message_row_id
-		WHERE message_view.chat_row_id = ?
-		ORDER BY message_view.timestamp asc
-	*/
 	sqlite3_stmt *res;
 	if (sqlite3_prepare_v2(sqLiteDatabase.getHandle(), query.c_str(), -1, &res, NULL) != SQLITE_OK)
 	{
