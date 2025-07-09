@@ -90,10 +90,10 @@ BEGIN
     LTEXT           "WhatsApp Viewer",IDC_ABOUT_APPLICATION_NAME,123,27,221,23
     LTEXT           "Author",IDC_STATIC,20,113,23,8
     LTEXT           "Web",IDC_STATIC,20,127,16,8
-    LTEXT           "Andreas Mausch",IDC_STATIC,123,113,54,8
-    LTEXT           "https://andreas-mausch.de/whatsapp-viewer/",IDC_STATIC,123,127,166,8
+    LTEXT           "Madocter",IDC_STATIC,123,113,54,8
+    LTEXT           "https://github.com/madocter/whatsapp-viewer",IDC_STATIC,123,127,166,8
     LTEXT           "v1.x",IDC_ABOUT_APPLICATION_VERSION,123,50,221,8
-    LTEXT           "https://github.com/andreas-mausch/",IDC_STATIC,123,138,119,8
+    LTEXT           "https://github.com/madocter/",IDC_STATIC,123,138,119,8
     LTEXT           "Thanks",IDC_STATIC,20,154,24,8
     LTEXT           "TripCode for his crypt12 implementation",IDC_STATIC,123,154,128,8
     LTEXT           "https://github.com/EliteAndroidApps/WhatsApp-Crypt12-Decrypter",IDC_STATIC,123,165,221,8
@@ -1979,14 +1979,14 @@ BEGIN
     BEGIN
         BLOCK "000004b0"
         BEGIN
-            VALUE "Comments", "http://andreas-mausch.de/whatsapp-viewer/"
+            VALUE "Comments", "https://github.com/madocter/whatsapp-viewer/"
             VALUE "FileDescription", "WhatsApp Viewer"
-            VALUE "FileVersion", "1, 15, 0, 0"
+            VALUE "FileVersion", "2, 15, 0, 0"
             VALUE "InternalName", "WhatsApp Viewer"
-            VALUE "LegalCopyright", "Copyright (C) 2014-2020 Andreas Mausch"
+            VALUE "LegalCopyright", "Copyright (C) 2020-2025 Madocter"
             VALUE "OriginalFilename", "WhatsApp Viewer.exe"
             VALUE "ProductName", "WhatsApp Viewer"
-            VALUE "ProductVersion", "v1.15"
+            VALUE "ProductVersion", "v2.15"
         END
     END
     BLOCK "VarFileInfo"

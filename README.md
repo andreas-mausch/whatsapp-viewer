@@ -4,16 +4,15 @@ Small tool to display chats from the Android msgstore.db database.
 
 ## Status
 
-**🛑⚠ WhatsApp Viewer does *not work* with the latest WhatsApp database format. ⚠🛑**
+**🟠⚠ Work with Whatsapp June 2025 ⚠🟠**
 
-I only maintain this project every once in a while.
+Because of technical reason with the SQLite driver we need to remove one index using any SQLite client before:
 
-WhatsApp gets a lot of updates with a bunch of new features.  
-I do have interests beside this project and unfortunately not enough time to keep up
-with the updates.
+```bash
+sqlite3 msgstore.db "DROP INDEX IF EXISTS lid_display_name_upper_username_index;"
+```
 
-This project is not dead though (even if it looks like it), and I still take a plaintext
-database backup once in a while (about every year) and try to update this software accordingly.
+Will create branches for each whatsapp version that might need another database format. 
 
 ## How to use
 
