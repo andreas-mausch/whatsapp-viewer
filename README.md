@@ -1,5 +1,5 @@
 # WhatsApp Viewer
-
+2312052463
 Small tool to display chats from the Android msgstore.db database.
 
 ## Status
@@ -30,7 +30,8 @@ database backup once in a while (about every year) and try to update this softwa
 
 ## Command line support
 
-```bash
+```b![1000070310](https://github.com/user-attachments/assets/b57adb55-911f-4b7b-b08d-6b87258d4534)
+ash
 "WhatsApp Viewer.exe" -decrypt14 msgstore-2016-10-22.1.db.crypt14 whatsapp.cryptkey14 decrypted.db
 ```
 
