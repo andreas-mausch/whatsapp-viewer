@@ -14,6 +14,7 @@
 WhatsappDatabase::WhatsappDatabase(const std::string &filename)
 	: database(filename)
 {
+	schemaVersion = SCHEMA_LEGACY;
 	validate();
 }
 
@@ -23,6 +24,17 @@ WhatsappDatabase::~WhatsappDatabase()
 
 void WhatsappDatabase::validate()
 {
+	if (hasTable("message")
+		&& hasTable("chat")
+		&& hasTable("jid")
+		&& hasColumn("message", "chat_row_id")
+		&& hasColumn("message", "text_data")
+		&& hasColumn("message", "from_me"))
+	{
+		schemaVersion = SCHEMA_MODERN;
+		return;
+	}
+
 	if (!hasTable("message_thumbnails")
 		|| !hasTable("messages_quotes")
 		|| !hasTable("messages_links")
@@ -35,12 +47,19 @@ void WhatsappDatabase::validate()
 
 void WhatsappDatabase::getChats(Settings &settings, std::vector<WhatsappChat*> &chats)
 {
-	const char *query = "SELECT chat_view.raw_string_jid, chat_view.subject, chat_view.created_timestamp, max(messages.timestamp) " \
+	const char *legacyQuery = "SELECT chat_view.raw_string_jid, chat_view.subject, chat_view.created_timestamp, max(messages.timestamp) " \
 						"FROM chat_view " \
 						"LEFT OUTER JOIN messages on messages.key_remote_jid = chat_view.raw_string_jid " \
 						"WHERE chat_view.hidden = 0 "\
 						"GROUP BY chat_view.raw_string_jid, chat_view.subject, chat_view.created_timestamp " \
 						"ORDER BY max(messages.timestamp) desc";
+	const char *modernQuery = "SELECT COALESCE(jid.raw_string, jid.user || '@' || jid.server), chat.subject, chat.created_timestamp, max(message.timestamp) " \
+						"FROM chat " \
+						"LEFT OUTER JOIN jid on chat.jid_row_id = jid._id " \
+						"LEFT OUTER JOIN message on message.chat_row_id = chat._id " \
+						"GROUP BY COALESCE(jid.raw_string, jid.user || '@' || jid.server), chat.subject, chat.created_timestamp " \
+						"ORDER BY max(message.timestamp) desc";
+	const char *query = schemaVersion == SCHEMA_MODERN ? modernQuery : legacyQuery;
 
 	sqlite3_stmt *res;
 	if (sqlite3_prepare_v2(database.getHandle(), query, -1, &res, NULL) != SQLITE_OK)
@@ -68,7 +87,52 @@ void WhatsappDatabase::getChats(Settings &settings, std::vector<WhatsappChat*> &
 
 int WhatsappDatabase::messagesCount(const std::string &chatId, int fromMe)
 {
+	if (schemaVersion == SCHEMA_MODERN)
+	{
+		return messagesCountModern(chatId, fromMe);
+	}
+
+	return messagesCountLegacy(chatId, fromMe);
+}
+
+int WhatsappDatabase::messagesCountLegacy(const std::string &chatId, int fromMe)
+{
 	const char *query = "SELECT count(_id) from messages where key_remote_jid = ? and key_from_me = ?";
+
+	sqlite3_stmt *res;
+	if (sqlite3_prepare_v2(database.getHandle(), query, -1, &res, NULL) != SQLITE_OK)
+	{
+		throw SQLiteException("Could not load messages", database);
+	}
+
+	if (sqlite3_bind_text(res, 1, chatId.c_str(), -1, SQLITE_STATIC) != SQLITE_OK)
+	{
+		throw SQLiteException("Could not bind sql parameter", database);
+	}
+
+	if (sqlite3_bind_int(res, 2, fromMe) != SQLITE_OK)
+	{
+		throw SQLiteException("Could not bind sql parameter", database);
+	}
+
+	if (sqlite3_step(res) != SQLITE_ROW)
+	{
+		throw SQLiteException("No result for count query", database);
+	}
+
+	int count = sqlite3_column_int(res, 0);
+	sqlite3_finalize(res);
+
+	return count;
+}
+
+int WhatsappDatabase::messagesCountModern(const std::string &chatId, int fromMe)
+{
+	const char *query = "SELECT count(message._id) " \
+						"FROM message " \
+						"LEFT OUTER JOIN chat on message.chat_row_id = chat._id " \
+						"LEFT OUTER JOIN jid on chat.jid_row_id = jid._id " \
+						"WHERE COALESCE(jid.raw_string, jid.user || '@' || jid.server) = ? and message.from_me = ?";
 
 	sqlite3_stmt *res;
 	if (sqlite3_prepare_v2(database.getHandle(), query, -1, &res, NULL) != SQLITE_OK)
@@ -113,6 +177,10 @@ void WhatsappDatabase::getMessages(const std::string &chatId, std::vector<Whatsa
 	}
 }
 
+bool WhatsappDatabase::isModernSchema() const
+{
+	return schemaVersion == SCHEMA_MODERN;
+}
 
 bool WhatsappDatabase::hasTable(const std::string &tableName)
 {

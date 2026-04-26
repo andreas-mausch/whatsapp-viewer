@@ -2,6 +2,7 @@
 #include <sstream>
 
 #include "QueryMessagesThread.h"
+#include "Database.h"
 #include "Message.h"
 #include "../Exceptions/SQLiteException.h"
 #include "../Libraries/SQLite/SQLiteDatabase.h"
@@ -38,13 +39,21 @@ WhatsappMessage *QueryMessagesThread::findByMessageId(const std::string &message
 
 void QueryMessagesThread::run()
 {
-	const char *query = "SELECT messages.key_id, messages.key_remote_jid, messages.key_from_me, messages.status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_caption, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, message_thumbnails.thumbnail, messages_quotes.key_id, messages_links._id " \
+	const char *legacyQuery = "SELECT messages.key_id, messages.key_remote_jid, messages.key_from_me, messages.status, messages.data, messages.timestamp, messages.media_url, messages.media_mime_type, messages.media_wa_type, messages.media_size, messages.media_name, messages.media_caption, messages.media_duration, messages.latitude, messages.longitude, messages.thumb_image, messages.remote_resource, messages.raw_data, message_thumbnails.thumbnail, messages_quotes.key_id, messages_links._id " \
 				"FROM messages " \
 				"LEFT JOIN message_thumbnails on messages.key_id = message_thumbnails.key_id " \
 				"LEFT JOIN messages_quotes on messages.quoted_row_id > 0 AND messages.quoted_row_id = messages_quotes._id " \
 				"LEFT JOIN messages_links on messages._id = messages_links.message_row_id " \
 				"WHERE messages.key_remote_jid = ? " \
 				"ORDER BY messages.timestamp asc";
+	const char *modernQuery = "SELECT message.key_id, COALESCE(jid.raw_string, jid.user || '@' || jid.server), message.from_me, message.status, message.text_data, message.timestamp, '', '', message.message_type, 0, '', '', 0, 0, 0, NULL, COALESCE(sender_jid.raw_string, sender_jid.user || '@' || sender_jid.server), NULL, NULL, '', 0 " \
+				"FROM message " \
+				"LEFT JOIN chat on message.chat_row_id = chat._id " \
+				"LEFT JOIN jid on chat.jid_row_id = jid._id " \
+				"LEFT JOIN jid sender_jid on message.sender_jid_row_id = sender_jid._id " \
+				"WHERE COALESCE(jid.raw_string, jid.user || '@' || jid.server) = ? " \
+				"ORDER BY message.timestamp asc";
+	const char *query = database.isModernSchema() ? modernQuery : legacyQuery;
 
 	sqlite3_stmt *res;
 	if (sqlite3_prepare_v2(sqLiteDatabase.getHandle(), query, -1, &res, NULL) != SQLITE_OK)

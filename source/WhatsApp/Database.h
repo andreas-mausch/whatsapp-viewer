@@ -13,7 +13,14 @@ class WhatsappMessage;
 class WhatsappDatabase
 {
 private:
+	enum SchemaVersion
+	{
+		SCHEMA_LEGACY,
+		SCHEMA_MODERN
+	};
+
 	SQLiteDatabase database;
+	SchemaVersion schemaVersion;
 
 	void validate();
 	bool hasTable(const std::string &tableName);
@@ -21,6 +28,8 @@ private:
 
 	std::string findDisplayName(Settings &settings, const std::string &key);
 	int messagesCount(const std::string &chatId, int fromMe);
+	int messagesCountLegacy(const std::string &chatId, int fromMe);
+	int messagesCountModern(const std::string &chatId, int fromMe);
 
 public:
 	WhatsappDatabase(const std::string &filename);
@@ -28,5 +37,6 @@ public:
 
 	void getChats(Settings &settings, std::vector<WhatsappChat *> &chats);
 	void getMessages(const std::string &chatId, std::vector<WhatsappMessage *> &messages, const volatile bool &running);
+	bool isModernSchema() const;
 
 };
